@@ -1,4 +1,4 @@
-我的体系实验：https://github.com/DreaminginCodeZH/orgexp
+我的体系实验：https://github.com/DreaminginCodeZH/archexp
 
 可以使用 Tag 定位到各次实验的代码，生成的 .bit 文件可以在 Releases 中下载。
 
