@@ -1,0 +1,39 @@
+2005冬体系卷子
+
+简答题 4题X6分
+1, 用LL，SC实现EXCH R2, 0(R1)
+
+2, Trace Scheduling的目标，主要思想和步骤
+
+3,软件流水的主要思想，给一个例子说明
+
+4，硬件投机的原理，ROB的作用
+
+分析计算 46分
+
+1，相关性分析（真相关，输出相关或反相关），指出是否loop-carried
+
+for(i=0;i<=100;i=i+1)
+{
+    A[i]=B[i]+C[i];
+    B[i]=A[i]+D[i];
+    A[i+1]=A[i]+E[i];
+}
+
+2，课本上的Example，英文书343页
+
+3，多发射＋投机， 英文书235页的Example，大致类似有些改变
+给出指令序列，画出双发射带动态投机的情况下，指令的执行情况，就是填充图3.34这样的图。
+
+4，目录协议，当前状态如下：
+p1 TAG Value State
+   A         Invalid
+p2 TAG Value State
+   A         Invalid
+p3 TAG Value State
+   A    2    Exclusive
+目录中
+   TAG State    Sharers 
+   A   Invalid  {P3}
+
+给出P1执行x=3的具体过程，指出收发的消息，Sharers的变化，节点上Value的变化
