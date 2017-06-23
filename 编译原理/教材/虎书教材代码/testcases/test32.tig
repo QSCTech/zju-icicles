@@ -1,0 +1,9 @@
+/* error : initializing exp and array type differ */
+
+let
+	type arrayty = array of int
+
+	var a := arrayty [10] of " "
+in
+	0
+end
