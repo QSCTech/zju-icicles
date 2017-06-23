@@ -1,0 +1,42 @@
+
+state 0
+	$accept : _program $end 
+
+	ID  shift 3
+	.  error
+
+	program  goto 1
+	exp  goto 2
+
+state 1
+	$accept :  program_$end 
+
+	$end  accept
+	.  error
+
+
+state 2
+	program :  exp_    (1)
+
+	.  reduce 1
+
+
+state 3
+	exp :  ID_    (2)
+
+	.  reduce 2
+
+
+45/3000 terminals, 2/1000 nonterminals
+3/2000 grammar rules, 4/5000 states
+0 shift/reduce, 0 reduce/reduce conflicts reported
+3/1400 working sets used
+memory: states,etc. 30/40000, parser 1/70000
+3/600 distinct lookahead sets
+0 extra closures
+1 shift entries, 1 exceptions
+2 goto entries
+0 entries saved by goto default
+Optimizer space used: input 6/40000, output 3/70000
+3 table entries, 0 zero
+maximum spread: 257, maximum offset: 257
