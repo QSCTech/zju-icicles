@@ -1,6 +1,5 @@
-# Tiger compiler module for programming exercises
+# Tiger Compiler Module for Programming Exercises
 
-just one word to clarify that this repo can be downloaded from [Modern Compiler Implementation in C](https://www.cs.princeton.edu/~appel/modern/c/)
+This repo can also be downloaded from [Modern Compiler Implementation in C](https://www.cs.princeton.edu/~appel/modern/c/).
 
-
-> note that the pdf version of textbook is also available in the website mentioned above
+> Note that the PDF version of textbook is also available in the website mentioned above.
