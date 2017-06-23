@@ -1,0 +1,2 @@
+/* correct if */
+if (10 > 20) then 30 else 40	

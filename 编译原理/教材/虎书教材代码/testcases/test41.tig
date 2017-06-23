@@ -1,0 +1,10 @@
+/* local types hide global */
+let
+	type a = int
+in
+	let
+		type a = string
+	in
+		0
+	end
+end
