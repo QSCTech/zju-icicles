@@ -1,0 +1,3 @@
+/* error : integer required */
+
+3 + "var"

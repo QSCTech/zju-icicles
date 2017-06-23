@@ -1,0 +1,8 @@
+/* redeclaration of variable; this is legal, there are two different
+   variables with the same name.  The second one hides the first.  */
+let
+	var a := 0
+	var a := " "
+in
+	0
+end
