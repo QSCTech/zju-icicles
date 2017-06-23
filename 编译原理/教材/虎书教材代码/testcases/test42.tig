@@ -1,0 +1,30 @@
+/* correct declarations */
+let 
+
+type arrtype1 = array of int
+type rectype1 = {name:string, address:string, id: int , age: int}
+type arrtype2 = array of rectype1
+type rectype2 = {name : string, dates: arrtype1}
+
+type arrtype3 = array of string
+
+var arr1 := arrtype1 [10] of 0
+var arr2  := arrtype2 [5] of rectype1 {name="aname", address="somewhere", id=0, age=0}
+var arr3:arrtype3 := arrtype3 [100] of ""
+
+var rec1 := rectype1 {name="Kapoios", address="Kapou", id=02432, age=44}
+var rec2 := rectype2 {name="Allos", dates= arrtype1 [3] of 1900}
+
+in
+
+arr1[0] := 1; 
+arr1[9] := 3;
+arr2[3].name := "kati";
+arr2[1].age := 23;
+arr3[34] := "sfd";
+
+rec1.name := "sdf";
+rec2.dates[0] := 2323;
+rec2.dates[2] := 2323
+
+end
