@@ -1,0 +1,158 @@
+Release 8.2i Map I.31
+Xilinx Mapping Report File for Design 'ex8'
+
+Design Information
+------------------
+Command Line   : D:\Xilinx\bin\nt\map.exe -ise E:/Jade/ex8/ex8.ise -intstyle ise
+-p xc3s500e-fg320-5 -cm area -pr b -k 4 -c 100 -o ex8_map.ncd ex8.ngd ex8.pcf 
+Target Device  : xc3s500e
+Target Package : fg320
+Target Speed   : -5
+Mapper Version : spartan3e -- $Revision: 1.34.32.1 $
+Mapped Date    : Wed Dec 24 09:57:04 2008
+
+Design Summary
+--------------
+Number of errors:      0
+Number of warnings:    0
+Logic Utilization:
+  Number of Slice Flip Flops:          76 out of   9,312    1%
+  Number of 4 input LUTs:             170 out of   9,312    1%
+Logic Distribution:
+  Number of occupied Slices:                          127 out of   4,656    2%
+    Number of Slices containing only related logic:     127 out of     127  100%
+    Number of Slices containing unrelated logic:          0 out of     127    0%
+      *See NOTES below for an explanation of the effects of unrelated logic
+Total Number 4 input LUTs:            235 out of   9,312    2%
+  Number used as logic:                170
+  Number used as a route-thru:          65
+  Number of bonded IOBs:               14 out of     232    6%
+  Number of GCLKs:                     1 out of      24    4%
+
+Total equivalent gate count for design:  2,087
+Additional JTAG gate count for IOBs:  672
+Peak Memory Usage:  150 MB
+
+NOTES:
+
+   Related logic is defined as being logic that shares connectivity - e.g. two
+   LUTs are "related" if they share common inputs.  When assembling slices,
+   Map gives priority to combine logic that is related.  Doing so results in
+   the best timing performance.
+
+   Unrelated logic shares no connectivity.  Map will only begin packing
+   unrelated logic into a slice once 99% of the slices are occupied through
+   related logic packing.
+
+   Note that once logic distribution reaches the 99% level through related
+   logic packing, this does not mean the device is completely utilized.
+   Unrelated logic packing will then begin, continuing until all usable LUTs
+   and FFs are occupied.  Depending on your timing budget, increased levels of
+   unrelated logic packing may adversely affect the overall timing performance
+   of your design.
+
+Table of Contents
+-----------------
+Section 1 - Errors
+Section 2 - Warnings
+Section 3 - Informational
+Section 4 - Removed Logic Summary
+Section 5 - Removed Logic
+Section 6 - IOB Properties
+Section 7 - RPMs
+Section 8 - Guide Report
+Section 9 - Area Group and Partition Summary
+Section 10 - Modular Design Summary
+Section 11 - Timing Report
+Section 12 - Configuration String Information
+
+Section 1 - Errors
+------------------
+
+Section 2 - Warnings
+--------------------
+
+Section 3 - Informational
+-------------------------
+INFO:MapLib:562 - No environment variables are currently set.
+INFO:MapLib:535 - The following Virtex BUFG(s) is/are being retargetted to
+   Virtex2 BUFGMUX(s) with input tied to I0 and Select pin tied to constant 0:
+   BUFGP symbol "CLK_BUFGP" (output signal=CLK_BUFGP)
+INFO:LIT:244 - All of the single ended outputs in this design are using slew
+   rate limited output drivers. The delay on speed critical single ended outputs
+   can be dramatically reduced by designating them as fast outputs in the
+   schematic.
+
+Section 4 - Removed Logic Summary
+---------------------------------
+   2 block(s) optimized away
+
+Section 5 - Removed Logic
+-------------------------
+
+Optimized Block(s):
+TYPE 		BLOCK
+GND 		XST_GND
+VCC 		XST_VCC
+
+To enable printing of redundant blocks removed and signals merged, set the
+detailed map report option and rerun map.
+
+Section 6 - IOB Properties
+--------------------------
+
++-----------------------------------------------------------------------------------------------------------------------------------------+
+| IOB Name                           | IOB Type         | Direction | IO Standard | Drive    | Slew | Reg (s)      | Resistor | IBUF/IFD  |
+|                                    |                  |           |             | Strength | Rate |              |          | Delay     |
++-----------------------------------------------------------------------------------------------------------------------------------------+
+| CLK                                | IBUF             | INPUT     | LVCMOS25    |          |      |              |          | 0 / 0     |
+| LCD_E                              | IOB              | OUTPUT    | LVCMOS25    | 12       | SLOW |              |          | 0 / 0     |
+| LCD_RS                             | IOB              | OUTPUT    | LVCMOS25    | 12       | SLOW |              |          | 0 / 0     |
+| LCD_RW                             | IOB              | OUTPUT    | LVCMOS25    | 12       | SLOW |              |          | 0 / 0     |
+| RST                                | IBUF             | INPUT     | LVCMOS25    |          |      |              |          | 0 / 0     |
+| SEND                               | IBUF             | INPUT     | LVCMOS25    |          |      |              |          | 0 / 0     |
+| lcd_data<0>                        | IBUF             | INPUT     | LVCMOS25    |          |      |              |          | 0 / 0     |
+| lcd_data<1>                        | IBUF             | INPUT     | LVCMOS25    |          |      |              |          | 0 / 0     |
+| lcd_data<2>                        | IBUF             | INPUT     | LVCMOS25    |          |      |              |          | 0 / 0     |
+| lcd_data<3>                        | IBUF             | INPUT     | LVCMOS25    |          |      |              |          | 0 / 0     |
+| sf_d<0>                            | IOB              | OUTPUT    | LVCMOS25    | 12       | SLOW |              |          | 0 / 0     |
+| sf_d<1>                            | IOB              | OUTPUT    | LVCMOS25    | 12       | SLOW |              |          | 0 / 0     |
+| sf_d<2>                            | IOB              | OUTPUT    | LVCMOS25    | 12       | SLOW |              |          | 0 / 0     |
+| sf_d<3>                            | IOB              | OUTPUT    | LVCMOS25    | 12       | SLOW |              |          | 0 / 0     |
++-----------------------------------------------------------------------------------------------------------------------------------------+
+
+Section 7 - RPMs
+----------------
+
+Section 8 - Guide Report
+------------------------
+Guide not run on this design.
+
+Section 9 - Area Group and Partition Summary
+--------------------------------------------
+
+Partition Implementation Status
+-------------------------------
+
+  No Partitions were found in this design.
+
+-------------------------------
+
+Area Group Information
+----------------------
+
+  No area groups were found in this design.
+
+----------------------
+
+Section 10 - Modular Design Summary
+-----------------------------------
+Modular Design not used for this design.
+
+Section 11 - Timing Report
+--------------------------
+This design was not run using timing mode.
+
+Section 12 - Configuration String Details
+-----------------------------------------
+Use the "-detail" map option to print out Configuration Strings

@@ -1,0 +1,243 @@
+Release 8.2i Map I.31
+Xilinx Mapping Report File for Design 'PS2'
+
+Design Information
+------------------
+Command Line   : E:\Xilinx\bin\nt\map.exe -ise E:/Xilinx/PS2_prj2/PS2_prj2.ise
+-intstyle ise -p xc3s500e-fg320-5 -cm area -pr b -k 4 -c 100 -o PS2_map.ncd
+PS2.ngd PS2.pcf 
+Target Device  : xc3s500e
+Target Package : fg320
+Target Speed   : -5
+Mapper Version : spartan3e -- $Revision: 1.34.32.1 $
+Mapped Date    : Tue Nov 04 13:55:10 2008
+
+Design Summary
+--------------
+Number of errors:      0
+Number of warnings:    2
+Logic Utilization:
+  Number of Slice Flip Flops:          32 out of   9,312    1%
+  Number of 4 input LUTs:             167 out of   9,312    1%
+Logic Distribution:
+  Number of occupied Slices:                          144 out of   4,656    3%
+    Number of Slices containing only related logic:     144 out of     144  100%
+    Number of Slices containing unrelated logic:          0 out of     144    0%
+      *See NOTES below for an explanation of the effects of unrelated logic
+Total Number 4 input LUTs:            232 out of   9,312    2%
+  Number used as logic:                167
+  Number used as a route-thru:           2
+  Number used as Shift registers:       63
+  Number of bonded IOBs:               13 out of     232    5%
+    IOB Flip Flops:                     1
+  Number of GCLKs:                     1 out of      24    4%
+
+Total equivalent gate count for design:  5,370
+Additional JTAG gate count for IOBs:  624
+Peak Memory Usage:  159 MB
+
+NOTES:
+
+   Related logic is defined as being logic that shares connectivity - e.g. two
+   LUTs are "related" if they share common inputs.  When assembling slices,
+   Map gives priority to combine logic that is related.  Doing so results in
+   the best timing performance.
+
+   Unrelated logic shares no connectivity.  Map will only begin packing
+   unrelated logic into a slice once 99% of the slices are occupied through
+   related logic packing.
+
+   Note that once logic distribution reaches the 99% level through related
+   logic packing, this does not mean the device is completely utilized.
+   Unrelated logic packing will then begin, continuing until all usable LUTs
+   and FFs are occupied.  Depending on your timing budget, increased levels of
+   unrelated logic packing may adversely affect the overall timing performance
+   of your design.
+
+Table of Contents
+-----------------
+Section 1 - Errors
+Section 2 - Warnings
+Section 3 - Informational
+Section 4 - Removed Logic Summary
+Section 5 - Removed Logic
+Section 6 - IOB Properties
+Section 7 - RPMs
+Section 8 - Guide Report
+Section 9 - Area Group and Partition Summary
+Section 10 - Modular Design Summary
+Section 11 - Timing Report
+Section 12 - Configuration String Information
+
+Section 1 - Errors
+------------------
+
+Section 2 - Warnings
+--------------------
+WARNING:LIT:243 - Logical network Mshreg_ps2_clkr_999_0/Q has no load.
+WARNING:LIT:395 - The above warning message base_net_load_rule is repeated 61
+   more times for the following (max. 5 shown):
+   Mshreg_ps2_clkr_999_1/Q,
+   Mshreg_ps2_clkr_999_2/Q,
+   Mshreg_ps2_clkr_999_3/Q,
+   Mshreg_ps2_clkr_999_4/Q,
+   Mshreg_ps2_clkr_999_5/Q
+   To see the details of these warning messages, please use the -detail switch.
+
+Section 3 - Informational
+-------------------------
+INFO:MapLib:562 - No environment variables are currently set.
+INFO:MapLib:535 - The following Virtex BUFG(s) is/are being retargetted to
+   Virtex2 BUFGMUX(s) with input tied to I0 and Select pin tied to constant 0:
+   BUFGP symbol "clk_BUFGP" (output signal=clk_BUFGP)
+INFO:LIT:244 - All of the single ended outputs in this design are using slew
+   rate limited output drivers. The delay on speed critical single ended outputs
+   can be dramatically reduced by designating them as fast outputs in the
+   schematic.
+
+Section 4 - Removed Logic Summary
+---------------------------------
+  65 block(s) optimized away
+  62 signal(s) removed
+
+Section 5 - Removed Logic
+-------------------------
+
+The trimmed logic report below shows the logic removed from your design due to
+sourceless or loadless signals, and VCC or ground connections.  If the removal
+of a signal or symbol results in the subsequent removal of an additional signal
+or symbol, the message explaining that second removal will be indented.  This
+indentation will be repeated as a chain of related logic is removed.
+
+To quickly locate the original cause for the removal of a chain of logic, look
+above the place where that logic is listed in the trimming report, then locate
+the lines that are least indented (begin at the leftmost edge).
+
+The signal "Mshreg_ps2_clkr_999_0/Q" is sourceless and has been removed.
+The signal "Mshreg_ps2_clkr_999_1/Q" is sourceless and has been removed.
+The signal "Mshreg_ps2_clkr_999_2/Q" is sourceless and has been removed.
+The signal "Mshreg_ps2_clkr_999_3/Q" is sourceless and has been removed.
+The signal "Mshreg_ps2_clkr_999_4/Q" is sourceless and has been removed.
+The signal "Mshreg_ps2_clkr_999_5/Q" is sourceless and has been removed.
+The signal "Mshreg_ps2_clkr_999_6/Q" is sourceless and has been removed.
+The signal "Mshreg_ps2_clkr_999_7/Q" is sourceless and has been removed.
+The signal "Mshreg_ps2_clkr_999_8/Q" is sourceless and has been removed.
+The signal "Mshreg_ps2_clkr_999_9/Q" is sourceless and has been removed.
+The signal "Mshreg_ps2_clkr_999_10/Q" is sourceless and has been removed.
+The signal "Mshreg_ps2_clkr_999_11/Q" is sourceless and has been removed.
+The signal "Mshreg_ps2_clkr_999_12/Q" is sourceless and has been removed.
+The signal "Mshreg_ps2_clkr_999_13/Q" is sourceless and has been removed.
+The signal "Mshreg_ps2_clkr_999_14/Q" is sourceless and has been removed.
+The signal "Mshreg_ps2_clkr_999_15/Q" is sourceless and has been removed.
+The signal "Mshreg_ps2_clkr_999_16/Q" is sourceless and has been removed.
+The signal "Mshreg_ps2_clkr_999_17/Q" is sourceless and has been removed.
+The signal "Mshreg_ps2_clkr_999_18/Q" is sourceless and has been removed.
+The signal "Mshreg_ps2_clkr_999_19/Q" is sourceless and has been removed.
+The signal "Mshreg_ps2_clkr_999_20/Q" is sourceless and has been removed.
+The signal "Mshreg_ps2_clkr_999_21/Q" is sourceless and has been removed.
+The signal "Mshreg_ps2_clkr_999_22/Q" is sourceless and has been removed.
+The signal "Mshreg_ps2_clkr_999_23/Q" is sourceless and has been removed.
+The signal "Mshreg_ps2_clkr_999_24/Q" is sourceless and has been removed.
+The signal "Mshreg_ps2_clkr_999_25/Q" is sourceless and has been removed.
+The signal "Mshreg_ps2_clkr_999_26/Q" is sourceless and has been removed.
+The signal "Mshreg_ps2_clkr_999_27/Q" is sourceless and has been removed.
+The signal "Mshreg_ps2_clkr_999_28/Q" is sourceless and has been removed.
+The signal "Mshreg_ps2_clkr_999_29/Q" is sourceless and has been removed.
+The signal "Mshreg_ps2_clkr_999_30/Q" is sourceless and has been removed.
+The signal "Mshreg_ps2_clkr_999_31/Q" is sourceless and has been removed.
+The signal "Mshreg_ps2_clkr_999_32/Q" is sourceless and has been removed.
+The signal "Mshreg_ps2_clkr_999_33/Q" is sourceless and has been removed.
+The signal "Mshreg_ps2_clkr_999_34/Q" is sourceless and has been removed.
+The signal "Mshreg_ps2_clkr_999_35/Q" is sourceless and has been removed.
+The signal "Mshreg_ps2_clkr_999_36/Q" is sourceless and has been removed.
+The signal "Mshreg_ps2_clkr_999_37/Q" is sourceless and has been removed.
+The signal "Mshreg_ps2_clkr_999_38/Q" is sourceless and has been removed.
+The signal "Mshreg_ps2_clkr_999_39/Q" is sourceless and has been removed.
+The signal "Mshreg_ps2_clkr_999_40/Q" is sourceless and has been removed.
+The signal "Mshreg_ps2_clkr_999_41/Q" is sourceless and has been removed.
+The signal "Mshreg_ps2_clkr_999_42/Q" is sourceless and has been removed.
+The signal "Mshreg_ps2_clkr_999_43/Q" is sourceless and has been removed.
+The signal "Mshreg_ps2_clkr_999_44/Q" is sourceless and has been removed.
+The signal "Mshreg_ps2_clkr_999_45/Q" is sourceless and has been removed.
+The signal "Mshreg_ps2_clkr_999_46/Q" is sourceless and has been removed.
+The signal "Mshreg_ps2_clkr_999_47/Q" is sourceless and has been removed.
+The signal "Mshreg_ps2_clkr_999_48/Q" is sourceless and has been removed.
+The signal "Mshreg_ps2_clkr_999_49/Q" is sourceless and has been removed.
+The signal "Mshreg_ps2_clkr_999_50/Q" is sourceless and has been removed.
+The signal "Mshreg_ps2_clkr_999_51/Q" is sourceless and has been removed.
+The signal "Mshreg_ps2_clkr_999_52/Q" is sourceless and has been removed.
+The signal "Mshreg_ps2_clkr_999_53/Q" is sourceless and has been removed.
+The signal "Mshreg_ps2_clkr_999_54/Q" is sourceless and has been removed.
+The signal "Mshreg_ps2_clkr_999_55/Q" is sourceless and has been removed.
+The signal "Mshreg_ps2_clkr_999_56/Q" is sourceless and has been removed.
+The signal "Mshreg_ps2_clkr_999_57/Q" is sourceless and has been removed.
+The signal "Mshreg_ps2_clkr_999_58/Q" is sourceless and has been removed.
+The signal "Mshreg_ps2_clkr_999_59/Q" is sourceless and has been removed.
+The signal "Mshreg_ps2_clkr_999_60/Q" is sourceless and has been removed.
+The signal "Mshreg_ps2_clkr_999_61/Q" is sourceless and has been removed.
+
+Optimized Block(s):
+TYPE 		BLOCK
+GND 		XST_GND
+VCC 		XST_VCC
+
+To enable printing of redundant blocks removed and signals merged, set the
+detailed map report option and rerun map.
+
+Section 6 - IOB Properties
+--------------------------
+
++-----------------------------------------------------------------------------------------------------------------------------------------+
+| IOB Name                           | IOB Type         | Direction | IO Standard | Drive    | Slew | Reg (s)      | Resistor | IBUF/IFD  |
+|                                    |                  |           |             | Strength | Rate |              |          | Delay     |
++-----------------------------------------------------------------------------------------------------------------------------------------+
+| clk                                | IBUF             | INPUT     | LVCMOS25    |          |      |              |          | 0 / 0     |
+| data_out<0>                        | IOB              | OUTPUT    | LVCMOS25    | 12       | SLOW |              |          | 0 / 0     |
+| data_out<1>                        | IOB              | OUTPUT    | LVCMOS25    | 12       | SLOW |              |          | 0 / 0     |
+| data_out<2>                        | IOB              | OUTPUT    | LVCMOS25    | 12       | SLOW |              |          | 0 / 0     |
+| data_out<3>                        | IOB              | OUTPUT    | LVCMOS25    | 12       | SLOW |              |          | 0 / 0     |
+| data_out<4>                        | IOB              | OUTPUT    | LVCMOS25    | 12       | SLOW |              |          | 0 / 0     |
+| data_out<5>                        | IOB              | OUTPUT    | LVCMOS25    | 12       | SLOW |              |          | 0 / 0     |
+| data_out<6>                        | IOB              | OUTPUT    | LVCMOS25    | 12       | SLOW |              |          | 0 / 0     |
+| data_out<7>                        | IOB              | OUTPUT    | LVCMOS25    | 12       | SLOW |              |          | 0 / 0     |
+| ps2_clk                            | IBUF             | INPUT     | LVCMOS25    |          |      |              |          | 0 / 0     |
+| ps2_data                           | IBUF             | INPUT     | LVCMOS25    |          |      | IFF1         |          | 0 / 2     |
+| rst                                | IBUF             | INPUT     | LVCMOS25    |          |      |              |          | 0 / 0     |
+| sel                                | IBUF             | INPUT     | LVCMOS25    |          |      |              |          | 0 / 0     |
++-----------------------------------------------------------------------------------------------------------------------------------------+
+
+Section 7 - RPMs
+----------------
+
+Section 8 - Guide Report
+------------------------
+Guide not run on this design.
+
+Section 9 - Area Group and Partition Summary
+--------------------------------------------
+
+Partition Implementation Status
+-------------------------------
+
+  No Partitions were found in this design.
+
+-------------------------------
+
+Area Group Information
+----------------------
+
+  No area groups were found in this design.
+
+----------------------
+
+Section 10 - Modular Design Summary
+-----------------------------------
+Modular Design not used for this design.
+
+Section 11 - Timing Report
+--------------------------
+This design was not run using timing mode.
+
+Section 12 - Configuration String Details
+-----------------------------------------
+Use the "-detail" map option to print out Configuration Strings

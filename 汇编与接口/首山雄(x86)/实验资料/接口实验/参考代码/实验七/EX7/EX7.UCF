@@ -1,0 +1,15 @@
+NET "ps2_clk" LOC = "G14";
+NET "ps2_data" LOC = "G13";
+
+NET "clk" LOC = "C9";
+NET "rst" LOC = "K17";
+NET "sel" LOC = "N17";
+
+NET "out[0]" LOC = "F12";
+NET "out[1]" LOC = "E12";
+NET "out[2]" LOC = "E11";
+NET "out[3]" LOC = "F11";
+NET "out[4]" LOC = "C11";
+NET "out[5]" LOC = "D11";
+NET "out[6]" LOC = "E9";
+NET "out[7]" LOC = "F9";
