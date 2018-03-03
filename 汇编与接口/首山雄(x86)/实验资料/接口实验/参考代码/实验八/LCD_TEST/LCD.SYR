@@ -1,0 +1,450 @@
+Release 8.2i - xst I.31
+Copyright (c) 1995-2006 Xilinx, Inc.  All rights reserved.
+--> Parameter TMPDIR set to ./xst/projnav.tmp
+CPU : 0.00 / 0.33 s | Elapsed : 0.00 / 0.00 s
+ 
+--> Parameter xsthdpdir set to ./xst
+CPU : 0.00 / 0.33 s | Elapsed : 0.00 / 0.00 s
+ 
+--> Reading design: lcd.prj
+
+TABLE OF CONTENTS
+  1) Synthesis Options Summary
+  2) HDL Compilation
+  3) Design Hierarchy Analysis
+  4) HDL Analysis
+  5) HDL Synthesis
+     5.1) HDL Synthesis Report
+  6) Advanced HDL Synthesis
+     6.1) Advanced HDL Synthesis Report
+  7) Low Level Synthesis
+  8) Partition Report
+  9) Final Report
+     9.1) Device utilization summary
+     9.2) TIMING REPORT
+
+
+=========================================================================
+*                      Synthesis Options Summary                        *
+=========================================================================
+---- Source Parameters
+Input File Name                    : "lcd.prj"
+Input Format                       : mixed
+Ignore Synthesis Constraint File   : NO
+
+---- Target Parameters
+Output File Name                   : "lcd"
+Output Format                      : NGC
+Target Device                      : xc3s500e-5-fg320
+
+---- Source Options
+Top Module Name                    : lcd
+Automatic FSM Extraction           : YES
+FSM Encoding Algorithm             : Auto
+FSM Style                          : lut
+RAM Extraction                     : Yes
+RAM Style                          : Auto
+ROM Extraction                     : Yes
+Mux Style                          : Auto
+Decoder Extraction                 : YES
+Priority Encoder Extraction        : YES
+Shift Register Extraction          : YES
+Logical Shifter Extraction         : YES
+XOR Collapsing                     : YES
+ROM Style                          : Auto
+Mux Extraction                     : YES
+Resource Sharing                   : YES
+Multiplier Style                   : auto
+Automatic Register Balancing       : No
+
+---- Target Options
+Add IO Buffers                     : YES
+Global Maximum Fanout              : 500
+Add Generic Clock Buffer(BUFG)     : 8
+Register Duplication               : YES
+Slice Packing                      : YES
+Pack IO Registers into IOBs        : auto
+Equivalent register Removal        : YES
+
+---- General Options
+Optimization Goal                  : Speed
+Optimization Effort                : 1
+Keep Hierarchy                     : NO
+RTL Output                         : Yes
+Global Optimization                : AllClockNets
+Write Timing Constraints           : NO
+Hierarchy Separator                : /
+Bus Delimiter                      : <>
+Case Specifier                     : maintain
+Slice Utilization Ratio            : 100
+Slice Utilization Ratio Delta      : 5
+
+---- Other Options
+lso                                : lcd.lso
+Read Cores                         : YES
+cross_clock_analysis               : NO
+verilog2001                        : YES
+safe_implementation                : No
+Optimize Instantiated Primitives   : NO
+use_clock_enable                   : Yes
+use_sync_set                       : Yes
+use_sync_reset                     : Yes
+
+=========================================================================
+
+
+=========================================================================
+*                          HDL Compilation                              *
+=========================================================================
+Compiling verilog file "lcd.v" in library work
+Module <lcd> compiled
+Module <counter> compiled
+Module <counter1> compiled
+Module <time_1ms> compiled
+Module <anti> compiled
+No errors in compilation
+Analysis of file <"lcd.prj"> succeeded.
+ 
+
+=========================================================================
+*                     Design Hierarchy Analysis                         *
+=========================================================================
+Analyzing hierarchy for module <lcd> in library <work>.
+
+Analyzing hierarchy for module <time_1ms> in library <work>.
+
+Analyzing hierarchy for module <anti> in library <work>.
+
+Analyzing hierarchy for module <counter> in library <work>.
+
+Analyzing hierarchy for module <counter1> in library <work>.
+
+Building hierarchy successfully finished.
+
+=========================================================================
+*                            HDL Analysis                               *
+=========================================================================
+Analyzing top module <lcd>.
+WARNING:Xst:863 - "lcd.v" line 22: Name conflict (<send> and <SEND>, renaming send as send_rnm0).
+Module <lcd> is correct for synthesis.
+ 
+Analyzing module <time_1ms> in library <work>.
+Module <time_1ms> is correct for synthesis.
+ 
+Analyzing module <anti> in library <work>.
+Module <anti> is correct for synthesis.
+ 
+Analyzing module <counter> in library <work>.
+Module <counter> is correct for synthesis.
+ 
+Analyzing module <counter1> in library <work>.
+Module <counter1> is correct for synthesis.
+ 
+
+=========================================================================
+*                           HDL Synthesis                               *
+=========================================================================
+
+Performing bidirectional port resolution...
+INFO:Xst:1304 - Contents of register <LCD_RW> in unit <lcd> never changes during circuit operation. The register is replaced by logic.
+
+Synthesizing Unit <time_1ms>.
+    Related source file is "lcd.v".
+    Found 1-bit register for signal <clk_1ms>.
+    Found 16-bit comparator greatequal for signal <$cmp_ge0000> created at line 259.
+    Found 16-bit up counter for signal <cnt>.
+    Summary:
+	inferred   1 Counter(s).
+	inferred   1 D-type flip-flop(s).
+	inferred   1 Comparator(s).
+Unit <time_1ms> synthesized.
+
+
+Synthesizing Unit <anti>.
+    Related source file is "lcd.v".
+    Found 4-bit register for signal <btn_out>.
+    Found 4-bit comparator not equal for signal <$cmp_ne0000> created at line 282.
+    Found 4-bit register for signal <btn_old>.
+    Found 4-bit up counter for signal <cnt_aj>.
+    Summary:
+	inferred   1 Counter(s).
+	inferred   8 D-type flip-flop(s).
+	inferred   1 Comparator(s).
+Unit <anti> synthesized.
+
+
+Synthesizing Unit <counter>.
+    Related source file is "lcd.v".
+    Found 32-bit up counter for signal <qout>.
+    Summary:
+	inferred   1 Counter(s).
+Unit <counter> synthesized.
+
+
+Synthesizing Unit <counter1>.
+    Related source file is "lcd.v".
+    Found 32-bit up counter for signal <qout>.
+    Summary:
+	inferred   1 Counter(s).
+Unit <counter1> synthesized.
+
+
+Synthesizing Unit <lcd>.
+    Related source file is "lcd.v".
+    Register <k> equivalent to <LCD_RS> has been removed
+    Found 1-bit register for signal <LCD_RS>.
+    Found 1-bit register for signal <LCD_E1>.
+    Found 1-bit register for signal <LCD_E2>.
+    Found 4-bit register for signal <sf_d1>.
+    Found 4-bit register for signal <sf_d2>.
+    Summary:
+	inferred  11 D-type flip-flop(s).
+Unit <lcd> synthesized.
+
+
+=========================================================================
+HDL Synthesis Report
+
+Macro Statistics
+# Counters                                             : 4
+ 16-bit up counter                                     : 1
+ 32-bit up counter                                     : 2
+ 4-bit up counter                                      : 1
+# Registers                                            : 8
+ 1-bit register                                        : 4
+ 4-bit register                                        : 4
+# Comparators                                          : 2
+ 16-bit comparator greatequal                          : 1
+ 4-bit comparator not equal                            : 1
+
+=========================================================================
+
+=========================================================================
+*                       Advanced HDL Synthesis                          *
+=========================================================================
+
+Loading device for application Rf_Device from file '3s500e.nph' in environment E:\Xilinx.
+WARNING:Xst:1291 - FF/Latch <btn_out_1> is unconnected in block <m1>.
+WARNING:Xst:1291 - FF/Latch <btn_out_2> is unconnected in block <m1>.
+WARNING:Xst:1291 - FF/Latch <btn_out_3> is unconnected in block <m1>.
+
+=========================================================================
+Advanced HDL Synthesis Report
+
+Macro Statistics
+# Counters                                             : 4
+ 16-bit up counter                                     : 1
+ 32-bit up counter                                     : 2
+ 4-bit up counter                                      : 1
+# Registers                                            : 52
+ Flip-Flops                                            : 52
+# Comparators                                          : 2
+ 16-bit comparator greatequal                          : 1
+ 4-bit comparator not equal                            : 1
+
+=========================================================================
+
+=========================================================================
+*                         Low Level Synthesis                           *
+=========================================================================
+INFO:Xst:2261 - The FF/Latch <m1/btn_out_1> in Unit <lcd> is equivalent to the following 2 FFs/Latches, which will be removed : <m1/btn_out_2> <m1/btn_out_3> 
+INFO:Xst:2261 - The FF/Latch <m1/btn_old_1> in Unit <lcd> is equivalent to the following 2 FFs/Latches, which will be removed : <m1/btn_old_2> <m1/btn_old_3> 
+WARNING:Xst:1710 - FF/Latch  <m1/btn_old_1> (without init value) has a constant value of 0 in block <lcd>.
+WARNING:Xst:1291 - FF/Latch <m1/btn_out_1> is unconnected in block <lcd>.
+
+Optimizing unit <lcd> ...
+
+Mapping all equations...
+Building and optimizing final netlist ...
+Found area constraint ratio of 100 (+ 5) on block lcd, actual ratio is 2.
+FlipFlop count/qout_1 has been replicated 1 time(s)
+
+Final Macro Processing ...
+
+=========================================================================
+Final Register Report
+
+Macro Statistics
+# Registers                                            : 99
+ Flip-Flops                                            : 99
+
+=========================================================================
+
+=========================================================================
+*                          Partition Report                             *
+=========================================================================
+
+Partition Implementation Status
+-------------------------------
+
+  No Partitions were found in this design.
+
+-------------------------------
+
+=========================================================================
+*                            Final Report                               *
+=========================================================================
+Final Results
+RTL Top Level Output File Name     : lcd.ngr
+Top Level Output File Name         : lcd
+Output Format                      : NGC
+Optimization Goal                  : Speed
+Keep Hierarchy                     : NO
+
+Design Statistics
+# IOs                              : 14
+
+Cell Usage :
+# BELS                             : 424
+#      GND                         : 1
+#      INV                         : 7
+#      LUT1                        : 78
+#      LUT2                        : 14
+#      LUT2_D                      : 2
+#      LUT2_L                      : 1
+#      LUT3                        : 20
+#      LUT3_D                      : 6
+#      LUT3_L                      : 6
+#      LUT4                        : 86
+#      LUT4_D                      : 11
+#      LUT4_L                      : 18
+#      MUXCY                       : 91
+#      MUXF5                       : 5
+#      VCC                         : 1
+#      XORCY                       : 77
+# FlipFlops/Latches                : 99
+#      FDE                         : 12
+#      FDR                         : 50
+#      FDRE                        : 34
+#      FDRSE                       : 3
+# Clock Buffers                    : 1
+#      BUFGP                       : 1
+# IO Buffers                       : 13
+#      IBUF                        : 6
+#      OBUF                        : 7
+=========================================================================
+
+Device utilization summary:
+---------------------------
+
+Selected Device : 3s500efg320-5 
+
+ Number of Slices:                     128  out of   4656     2%  
+ Number of Slice Flip Flops:            99  out of   9312     1%  
+ Number of 4 input LUTs:               249  out of   9312     2%  
+ Number of IOs:                         14
+ Number of bonded IOBs:                 14  out of    232     6%  
+ Number of GCLKs:                        1  out of     24     4%  
+
+
+=========================================================================
+TIMING REPORT
+
+NOTE: THESE TIMING NUMBERS ARE ONLY A SYNTHESIS ESTIMATE.
+      FOR ACCURATE TIMING INFORMATION PLEASE REFER TO THE TRACE REPORT
+      GENERATED AFTER PLACE-and-ROUTE.
+
+Clock Information:
+------------------
+-----------------------------------+------------------------+-------+
+Clock Signal                       | Clock buffer(FF name)  | Load  |
+-----------------------------------+------------------------+-------+
+CLK                                | BUFGP                  | 99    |
+-----------------------------------+------------------------+-------+
+
+Asynchronous Control Signals Information:
+----------------------------------------
+No asynchronous control signals found in this design
+
+Timing Summary:
+---------------
+Speed Grade: -5
+
+   Minimum period: 9.959ns (Maximum Frequency: 100.412MHz)
+   Minimum input arrival time before clock: 5.840ns
+   Maximum output required time after clock: 6.766ns
+   Maximum combinational path delay: No path found
+
+Timing Detail:
+--------------
+All values displayed in nanoseconds (ns)
+
+=========================================================================
+Timing constraint: Default period analysis for Clock 'CLK'
+  Clock period: 9.959ns (frequency: 100.412MHz)
+  Total number of paths / destination ports: 5504 / 197
+-------------------------------------------------------------------------
+Delay:               9.959ns (Levels of Logic = 7)
+  Source:            count/qout_14 (FF)
+  Destination:       LCD_E1 (FF)
+  Source Clock:      CLK rising
+  Destination Clock: CLK rising
+
+  Data Path: count/qout_14 to LCD_E1
+                                Gate     Net
+    Cell:in->out      fanout   Delay   Delay  Logical Name (Net Name)
+    ----------------------------------------  ------------
+     FDR:C->Q             10   0.514   0.967  count/qout_14 (count/qout_14)
+     LUT4:I3->O            1   0.612   0.684  _xor0003722 (_xor00037_map67)
+     LUT4:I3->O            4   0.612   0.782  _xor0003736 (N21)
+     LUT4:I3->O            2   0.612   0.897  _cmp_eq0015 (_cmp_eq0015)
+     LUT4_L:I0->LO         1   0.612   0.103  _mux000021_SW0 (N751)
+     LUT4:I3->O            2   0.612   0.775  _mux000021 (_mux0000_map119)
+     LUT4:I2->O            1   0.612   0.684  _mux0001<2>1551_SW8 (N739)
+     LUT4:I3->O            1   0.612   0.000  _mux000060 (_mux0000)
+     FDE:D                     0.268          LCD_E1
+    ----------------------------------------
+    Total                      9.959ns (5.066ns logic, 4.893ns route)
+                                       (50.9% logic, 49.1% route)
+
+=========================================================================
+Timing constraint: Default OFFSET IN BEFORE for Clock 'CLK'
+  Total number of paths / destination ports: 86 / 86
+-------------------------------------------------------------------------
+Offset:              5.840ns (Levels of Logic = 2)
+  Source:            RST (PAD)
+  Destination:       count1/qout_0 (FF)
+  Destination Clock: CLK rising
+
+  Data Path: RST to count1/qout_0
+                                Gate     Net
+    Cell:in->out      fanout   Delay   Delay  Logical Name (Net Name)
+    ----------------------------------------  ------------
+     IBUF:I->O            40   1.106   1.766  RST_IBUF (RST_IBUF)
+     LUT2:I0->O           29   0.612   1.561  count1/qout__or00001 (count1/qout__or0000)
+     FDRE:R                    0.795          count1/qout_30
+    ----------------------------------------
+    Total                      5.840ns (2.513ns logic, 3.327ns route)
+                                       (43.0% logic, 57.0% route)
+
+=========================================================================
+Timing constraint: Default OFFSET OUT AFTER for Clock 'CLK'
+  Total number of paths / destination ports: 16 / 6
+-------------------------------------------------------------------------
+Offset:              6.766ns (Levels of Logic = 2)
+  Source:            LCD_RS (FF)
+  Destination:       LCD_E (PAD)
+  Source Clock:      CLK rising
+
+  Data Path: LCD_RS to LCD_E
+                                Gate     Net
+    Cell:in->out      fanout   Delay   Delay  Logical Name (Net Name)
+    ----------------------------------------  ------------
+     FDRE:C->Q            45   0.514   1.790  LCD_RS (LCD_RS_OBUF)
+     LUT3:I0->O            1   0.612   0.681  LCD_E3 (LCD_E_OBUF)
+     OBUF:I->O                 3.169          LCD_E_OBUF (LCD_E)
+    ----------------------------------------
+    Total                      6.766ns (4.295ns logic, 2.471ns route)
+                                       (63.5% logic, 36.5% route)
+
+=========================================================================
+CPU : 21.02 / 21.39 s | Elapsed : 21.00 / 21.00 s
+ 
+--> 
+
+Total memory usage is 163252 kilobytes
+
+Number of errors   :    0 (   0 filtered)
+Number of warnings :    9 (   0 filtered)
+Number of infos    :    3 (   0 filtered)
+
