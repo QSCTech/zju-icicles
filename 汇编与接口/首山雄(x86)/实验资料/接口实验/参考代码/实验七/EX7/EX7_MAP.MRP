@@ -1,0 +1,173 @@
+Release 8.2i Map I.31
+Xilinx Mapping Report File for Design 'ex7'
+
+Design Information
+------------------
+Command Line   : D:\Xilinx\bin\nt\map.exe -ise E:/jrui/ex7/ex7.ise -intstyle ise
+-p xc3s500e-fg320-5 -cm area -pr b -k 4 -c 100 -o ex7_map.ncd ex7.ngd ex7.pcf 
+Target Device  : xc3s500e
+Target Package : fg320
+Target Speed   : -5
+Mapper Version : spartan3e -- $Revision: 1.34.32.1 $
+Mapped Date    : Sat Dec 20 14:25:29 2008
+
+Design Summary
+--------------
+Number of errors:      0
+Number of warnings:    1
+Logic Utilization:
+  Number of Slice Flip Flops:          27 out of   9,312    1%
+  Number of 4 input LUTs:             135 out of   9,312    1%
+Logic Distribution:
+  Number of occupied Slices:                           78 out of   4,656    1%
+    Number of Slices containing only related logic:      78 out of      78  100%
+    Number of Slices containing unrelated logic:          0 out of      78    0%
+      *See NOTES below for an explanation of the effects of unrelated logic
+Total Number 4 input LUTs:            138 out of   9,312    1%
+  Number used as logic:                135
+  Number used as a route-thru:           3
+  Number of bonded IOBs:               13 out of     232    5%
+    IOB Flip Flops:                     1
+  Number of GCLKs:                     1 out of      24    4%
+
+Total equivalent gate count for design:  1,103
+Additional JTAG gate count for IOBs:  624
+Peak Memory Usage:  149 MB
+
+NOTES:
+
+   Related logic is defined as being logic that shares connectivity - e.g. two
+   LUTs are "related" if they share common inputs.  When assembling slices,
+   Map gives priority to combine logic that is related.  Doing so results in
+   the best timing performance.
+
+   Unrelated logic shares no connectivity.  Map will only begin packing
+   unrelated logic into a slice once 99% of the slices are occupied through
+   related logic packing.
+
+   Note that once logic distribution reaches the 99% level through related
+   logic packing, this does not mean the device is completely utilized.
+   Unrelated logic packing will then begin, continuing until all usable LUTs
+   and FFs are occupied.  Depending on your timing budget, increased levels of
+   unrelated logic packing may adversely affect the overall timing performance
+   of your design.
+
+Table of Contents
+-----------------
+Section 1 - Errors
+Section 2 - Warnings
+Section 3 - Informational
+Section 4 - Removed Logic Summary
+Section 5 - Removed Logic
+Section 6 - IOB Properties
+Section 7 - RPMs
+Section 8 - Guide Report
+Section 9 - Area Group and Partition Summary
+Section 10 - Modular Design Summary
+Section 11 - Timing Report
+Section 12 - Configuration String Information
+
+Section 1 - Errors
+------------------
+
+Section 2 - Warnings
+--------------------
+WARNING:LIT:243 - Logical network N1022 has no load.
+
+Section 3 - Informational
+-------------------------
+INFO:MapLib:562 - No environment variables are currently set.
+INFO:MapLib:535 - The following Virtex BUFG(s) is/are being retargetted to
+   Virtex2 BUFGMUX(s) with input tied to I0 and Select pin tied to constant 0:
+   BUFGP symbol "clk_BUFGP" (output signal=clk_BUFGP)
+INFO:LIT:244 - All of the single ended outputs in this design are using slew
+   rate limited output drivers. The delay on speed critical single ended outputs
+   can be dramatically reduced by designating them as fast outputs in the
+   schematic.
+
+Section 4 - Removed Logic Summary
+---------------------------------
+   1 block(s) removed
+   1 block(s) optimized away
+   1 signal(s) removed
+
+Section 5 - Removed Logic
+-------------------------
+
+The trimmed logic report below shows the logic removed from your design due to
+sourceless or loadless signals, and VCC or ground connections.  If the removal
+of a signal or symbol results in the subsequent removal of an additional signal
+or symbol, the message explaining that second removal will be indented.  This
+indentation will be repeated as a chain of related logic is removed.
+
+To quickly locate the original cause for the removal of a chain of logic, look
+above the place where that logic is listed in the trimming report, then locate
+the lines that are least indented (begin at the leftmost edge).
+
+The signal "N1022" is loadless and has been removed.
+ Loadless block "XST_GND" (ZERO) removed.
+
+Optimized Block(s):
+TYPE 		BLOCK
+VCC 		XST_VCC
+
+To enable printing of redundant blocks removed and signals merged, set the
+detailed map report option and rerun map.
+
+Section 6 - IOB Properties
+--------------------------
+
++-----------------------------------------------------------------------------------------------------------------------------------------+
+| IOB Name                           | IOB Type         | Direction | IO Standard | Drive    | Slew | Reg (s)      | Resistor | IBUF/IFD  |
+|                                    |                  |           |             | Strength | Rate |              |          | Delay     |
++-----------------------------------------------------------------------------------------------------------------------------------------+
+| clk                                | IBUF             | INPUT     | LVCMOS25    |          |      |              |          | 0 / 0     |
+| out<0>                             | IOB              | OUTPUT    | LVCMOS25    | 12       | SLOW |              |          | 0 / 0     |
+| out<1>                             | IOB              | OUTPUT    | LVCMOS25    | 12       | SLOW |              |          | 0 / 0     |
+| out<2>                             | IOB              | OUTPUT    | LVCMOS25    | 12       | SLOW |              |          | 0 / 0     |
+| out<3>                             | IOB              | OUTPUT    | LVCMOS25    | 12       | SLOW |              |          | 0 / 0     |
+| out<4>                             | IOB              | OUTPUT    | LVCMOS25    | 12       | SLOW |              |          | 0 / 0     |
+| out<5>                             | IOB              | OUTPUT    | LVCMOS25    | 12       | SLOW |              |          | 0 / 0     |
+| out<6>                             | IOB              | OUTPUT    | LVCMOS25    | 12       | SLOW |              |          | 0 / 0     |
+| out<7>                             | IOB              | OUTPUT    | LVCMOS25    | 12       | SLOW |              |          | 0 / 0     |
+| ps2_clk                            | IBUF             | INPUT     | LVCMOS25    |          |      | IFF1         |          | 0 / 2     |
+| ps2_data                           | IBUF             | INPUT     | LVCMOS25    |          |      |              |          | 0 / 0     |
+| rst                                | IBUF             | INPUT     | LVCMOS25    |          |      |              |          | 0 / 0     |
+| sel                                | IBUF             | INPUT     | LVCMOS25    |          |      |              |          | 0 / 0     |
++-----------------------------------------------------------------------------------------------------------------------------------------+
+
+Section 7 - RPMs
+----------------
+
+Section 8 - Guide Report
+------------------------
+Guide not run on this design.
+
+Section 9 - Area Group and Partition Summary
+--------------------------------------------
+
+Partition Implementation Status
+-------------------------------
+
+  No Partitions were found in this design.
+
+-------------------------------
+
+Area Group Information
+----------------------
+
+  No area groups were found in this design.
+
+----------------------
+
+Section 10 - Modular Design Summary
+-----------------------------------
+Modular Design not used for this design.
+
+Section 11 - Timing Report
+--------------------------
+This design was not run using timing mode.
+
+Section 12 - Configuration String Details
+-----------------------------------------
+Use the "-detail" map option to print out Configuration Strings

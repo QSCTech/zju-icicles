@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- IMPORTANT: This is an internal file that has been generated
+     by the Xilinx ISE software.  Any direct editing or
+     changes made to this file may result in unpredictable
+     behavior or data corruption.  It is strongly advised that
+     users do not edit the contents of this file. -->
+<messages>
+<msg type="info" file="Par" num="282" delta="unknown" >No user timing constraints were detected or you have set the option to ignore timing constraints (&quot;par -x&quot;). Place and Route will run in &quot;Performance Evaluation Mode&quot; to automatically improve the performance of all internal clocks in this design. The PAR timing summary will list the performance achieved for each clock. Note: For the fastest runtime, set the effort level to &quot;std&quot;.  For best performance, set the effort level to &quot;high&quot;. For a balance between the fastest runtime and best performance, set the effort level to &quot;med&quot;.
+</msg>
+
+<msg type="info" file="Timing" num="2761" delta="unknown" >N/A entries in the Constraints list may indicate that the constraint does not cover any paths or that it has no requested value.</msg>
+
+</messages>

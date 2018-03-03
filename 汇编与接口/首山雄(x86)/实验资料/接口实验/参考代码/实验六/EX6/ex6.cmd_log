@@ -1,0 +1,57 @@
+xst -ise "E:/jrui/ex6/ex6.ise" -intstyle ise -ifn ex6.xst -ofn ex6.syr
+xst -ise "E:/jrui/ex6/ex6.ise" -intstyle ise -ifn ex6.xst -ofn ex6.syr
+xst -ise "E:/jrui/ex6/ex6.ise" -intstyle ise -ifn ex6.xst -ofn ex6.syr
+xst -ise "E:/jrui/ex6/ex6.ise" -intstyle ise -ifn ex6.xst -ofn ex6.syr
+xst -ise "E:/jrui/ex6/ex6.ise" -intstyle ise -ifn ex6.xst -ofn ex6.syr
+xst -ise "E:/jrui/ex6/ex6.ise" -intstyle ise -ifn ex6.xst -ofn ex6.syr
+xst -ise "E:/jrui/ex6/ex6.ise" -intstyle ise -ifn ex6.xst -ofn ex6.syr
+xst -ise "E:/jrui/ex6/ex6.ise" -intstyle ise -ifn ex6.xst -ofn ex6.syr
+xst -ise "E:/jrui/ex6/ex6.ise" -intstyle ise -ifn ex6.xst -ofn ex6.syr
+xst -ise "E:/jrui/ex6/ex6.ise" -intstyle ise -ifn ex6.xst -ofn ex6.syr
+xst -ise "E:/jrui/ex6/ex6.ise" -intstyle ise -ifn ex6.xst -ofn ex6.syr
+ngdbuild -ise "E:/jrui/ex6/ex6.ise" -intstyle ise -dd _ngo -nt timestamp -uc "ex6.ucf" -p xc3s500e-fg320-5 "ex6.ngc" ex6.ngd
+map -ise "E:/jrui/ex6/ex6.ise" -intstyle ise -p xc3s500e-fg320-5 -cm area -pr b -k 4 -c 100 -o ex6_map.ncd ex6.ngd ex6.pcf
+par -ise "E:/jrui/ex6/ex6.ise" -w -intstyle ise -ol std -t 1 ex6_map.ncd ex6.ncd ex6.pcf
+trce -ise "E:/jrui/ex6/ex6.ise" -intstyle ise -e 3 -l 3 -s 5 -xml ex6 ex6.ncd -o ex6.twr ex6.pcf -ucf ex6.ucf
+xst -ise "E:/jrui/ex6/ex6.ise" -intstyle ise -ifn ex6.xst -ofn ex6.syr
+xst -ise "E:/jrui/ex6/ex6.ise" -intstyle ise -ifn ex6.xst -ofn ex6.syr
+xst -ise "E:/jrui/ex6/ex6.ise" -intstyle ise -ifn ex6.xst -ofn ex6.syr
+xst -ise "E:/jrui/ex6/ex6.ise" -intstyle ise -ifn ex6.xst -ofn ex6.syr
+ngdbuild -ise "E:/jrui/ex6/ex6.ise" -intstyle ise -dd _ngo -nt timestamp -uc "ex6.ucf" -p xc3s500e-fg320-5 "ex6.ngc" ex6.ngd
+map -ise "E:/jrui/ex6/ex6.ise" -intstyle ise -p xc3s500e-fg320-5 -cm area -pr b -k 4 -c 100 -o ex6_map.ncd ex6.ngd ex6.pcf
+par -ise "E:/jrui/ex6/ex6.ise" -w -intstyle ise -ol std -t 1 ex6_map.ncd ex6.ncd ex6.pcf
+trce -ise "E:/jrui/ex6/ex6.ise" -intstyle ise -e 3 -l 3 -s 5 -xml ex6 ex6.ncd -o ex6.twr ex6.pcf -ucf ex6.ucf
+bitgen -ise "E:/jrui/ex6/ex6.ise" -intstyle ise -f ex6.ut ex6.ncd
+xst -ise "E:/jrui/ex6/ex6.ise" -intstyle ise -ifn ex6.xst -ofn ex6.syr
+xst -ise "E:/jrui/ex6/ex6.ise" -intstyle ise -ifn ex6.xst -ofn ex6.syr
+xst -ise "E:/jrui/ex6/ex6.ise" -intstyle ise -ifn ex6.xst -ofn ex6.syr
+xst -ise "E:/jrui/ex6/ex6.ise" -intstyle ise -ifn ex6.xst -ofn ex6.syr
+ngdbuild -ise "E:/jrui/ex6/ex6.ise" -intstyle ise -dd _ngo -nt timestamp -uc "ex6.ucf" -p xc3s500e-fg320-5 "ex6.ngc" ex6.ngd
+map -ise "E:/jrui/ex6/ex6.ise" -intstyle ise -p xc3s500e-fg320-5 -cm area -pr b -k 4 -c 100 -o ex6_map.ncd ex6.ngd ex6.pcf
+par -ise "E:/jrui/ex6/ex6.ise" -w -intstyle ise -ol std -t 1 ex6_map.ncd ex6.ncd ex6.pcf
+trce -ise "E:/jrui/ex6/ex6.ise" -intstyle ise -e 3 -l 3 -s 5 -xml ex6 ex6.ncd -o ex6.twr ex6.pcf -ucf ex6.ucf
+xst -ise "E:/jrui/ex6/ex6.ise" -intstyle ise -ifn ex6.xst -ofn ex6.syr
+ngdbuild -ise "E:/jrui/ex6/ex6.ise" -intstyle ise -dd _ngo -nt timestamp -uc "ex6.ucf" -p xc3s500e-fg320-5 "ex6.ngc" ex6.ngd
+map -ise "E:/jrui/ex6/ex6.ise" -intstyle ise -p xc3s500e-fg320-5 -cm area -pr b -k 4 -c 100 -o ex6_map.ncd ex6.ngd ex6.pcf
+par -ise "E:/jrui/ex6/ex6.ise" -w -intstyle ise -ol std -t 1 ex6_map.ncd ex6.ncd ex6.pcf
+trce -ise "E:/jrui/ex6/ex6.ise" -intstyle ise -e 3 -l 3 -s 5 -xml ex6 ex6.ncd -o ex6.twr ex6.pcf -ucf ex6.ucf
+xst -ise "E:/jrui/ex6/ex6.ise" -intstyle ise -ifn ex6.xst -ofn ex6.syr
+xst -ise "E:/jrui/ex6/ex6.ise" -intstyle ise -ifn ex6.xst -ofn ex6.syr
+xst -ise "E:/jrui/ex6/ex6.ise" -intstyle ise -ifn ex6.xst -ofn ex6.syr
+ngdbuild -ise "E:/jrui/ex6/ex6.ise" -intstyle ise -dd _ngo -nt timestamp -uc "ex6.ucf" -p xc3s500e-fg320-5 "ex6.ngc" ex6.ngd
+map -ise "E:/jrui/ex6/ex6.ise" -intstyle ise -p xc3s500e-fg320-5 -cm area -pr b -k 4 -c 100 -o ex6_map.ncd ex6.ngd ex6.pcf
+par -ise "E:/jrui/ex6/ex6.ise" -w -intstyle ise -ol std -t 1 ex6_map.ncd ex6.ncd ex6.pcf
+trce -ise "E:/jrui/ex6/ex6.ise" -intstyle ise -e 3 -l 3 -s 5 -xml ex6 ex6.ncd -o ex6.twr ex6.pcf -ucf ex6.ucf
+xst -ise "E:/jrui/ex6/ex6.ise" -intstyle ise -ifn ex6.xst -ofn ex6.syr
+ngdbuild -ise "E:/jrui/ex6/ex6.ise" -intstyle ise -dd _ngo -nt timestamp -uc "ex6.ucf" -p xc3s500e-fg320-5 "ex6.ngc" ex6.ngd
+map -ise "E:/jrui/ex6/ex6.ise" -intstyle ise -p xc3s500e-fg320-5 -cm area -pr b -k 4 -c 100 -o ex6_map.ncd ex6.ngd ex6.pcf
+par -ise "E:/jrui/ex6/ex6.ise" -w -intstyle ise -ol std -t 1 ex6_map.ncd ex6.ncd ex6.pcf
+trce -ise "E:/jrui/ex6/ex6.ise" -intstyle ise -e 3 -l 3 -s 5 -xml ex6 ex6.ncd -o ex6.twr ex6.pcf -ucf ex6.ucf
+bitgen -ise "E:/jrui/ex6/ex6.ise" -intstyle ise -f ex6.ut ex6.ncd
+xst -ise "E:/jrui/ex6/ex6.ise" -intstyle ise -ifn ex6.xst -ofn ex6.syr
+xst -ise "E:/jrui/ex6/ex6.ise" -intstyle ise -ifn ex6.xst -ofn ex6.syr
+ngdbuild -ise "E:/jrui/ex6/ex6.ise" -intstyle ise -dd _ngo -nt timestamp -uc "ex6.ucf" -p xc3s500e-fg320-5 "ex6.ngc" ex6.ngd
+map -ise "E:/jrui/ex6/ex6.ise" -intstyle ise -p xc3s500e-fg320-5 -cm area -pr b -k 4 -c 100 -o ex6_map.ncd ex6.ngd ex6.pcf
+par -ise "E:/jrui/ex6/ex6.ise" -w -intstyle ise -ol std -t 1 ex6_map.ncd ex6.ncd ex6.pcf
+trce -ise "E:/jrui/ex6/ex6.ise" -intstyle ise -e 3 -l 3 -s 5 -xml ex6 ex6.ncd -o ex6.twr ex6.pcf -ucf ex6.ucf
+bitgen -ise "E:/jrui/ex6/ex6.ise" -intstyle ise -f ex6.ut ex6.ncd
