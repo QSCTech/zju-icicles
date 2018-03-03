@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- IMPORTANT: This is an internal file that has been generated
+     by the Xilinx ISE software.  Any direct editing or
+     changes made to this file may result in unpredictable
+     behavior or data corruption.  It is strongly advised that
+     users do not edit the contents of this file. -->
+<messages>
+<msg type="warning" file="HDLCompilers" num="259" delta="unknown" ><arg fmt="%s" index="1">&quot;lcd.v&quot; line 48 </arg>Connection to input port &apos;<arg fmt="%s" index="2">btn_in</arg>&apos; does not match port size
+</msg>
+
+<msg type="warning" file="HDLCompilers" num="261" delta="unknown" ><arg fmt="%s" index="1">&quot;lcd.v&quot; line 48 </arg>Connection to output port &apos;<arg fmt="%s" index="2">btn_out</arg>&apos; does not match port size
+</msg>
+
+<msg type="warning" file="HDLCompilers" num="259" delta="unknown" ><arg fmt="%s" index="1">&quot;lcd.v&quot; line 49 </arg>Connection to input port &apos;<arg fmt="%s" index="2">btn_in</arg>&apos; does not match port size
+</msg>
+
+<msg type="warning" file="HDLCompilers" num="261" delta="unknown" ><arg fmt="%s" index="1">&quot;lcd.v&quot; line 49 </arg>Connection to output port &apos;<arg fmt="%s" index="2">btn_out</arg>&apos; does not match port size
+</msg>
+
+<msg type="warning" file="HDLCompilers" num="259" delta="unknown" ><arg fmt="%s" index="1">&quot;lcd.v&quot; line 51 </arg>Connection to input port &apos;<arg fmt="%s" index="2">k</arg>&apos; does not match port size
+</msg>
+
+<msg type="warning" file="Xst" num="863" delta="unknown" >&quot;<arg fmt="%s" index="1">lcd.v</arg>&quot; line <arg fmt="%d" index="2">22</arg>: Name conflict (<arg fmt="%s" index="3">&lt;send&gt; and &lt;SEND&gt;, renaming send as send_rnm0</arg>).
+</msg>
+
+<msg type="warning" file="Xst" num="863" delta="unknown" >&quot;<arg fmt="%s" index="1">lcd.v</arg>&quot; line <arg fmt="%d" index="2">22</arg>: Name conflict (<arg fmt="%s" index="3">&lt;ROTATE&gt; and &lt;rotate&gt;, renaming ROTATE as rotate_rnm0</arg>).
+</msg>
+
+<msg type="info" file="Xst" num="1304" delta="unknown" >Contents of register &lt;<arg fmt="%s" index="1">LCD_RW</arg>&gt; in unit &lt;<arg fmt="%s" index="2">lcd</arg>&gt; never changes during circuit operation. The register is replaced by logic.
+</msg>
+
+<msg type="warning" file="Xst" num="1291" delta="unknown" >FF/Latch &lt;<arg fmt="%s" index="1">btn_out_1</arg>&gt; is unconnected in block &lt;<arg fmt="%s" index="2">m1</arg>&gt;.
+</msg>
+
+<msg type="warning" file="Xst" num="1291" delta="unknown" >FF/Latch &lt;<arg fmt="%s" index="1">btn_out_2</arg>&gt; is unconnected in block &lt;<arg fmt="%s" index="2">m1</arg>&gt;.
+</msg>
+
+<msg type="warning" file="Xst" num="1291" delta="unknown" >FF/Latch &lt;<arg fmt="%s" index="1">btn_out_3</arg>&gt; is unconnected in block &lt;<arg fmt="%s" index="2">m1</arg>&gt;.
+</msg>
+
+<msg type="warning" file="Xst" num="1291" delta="unknown" >FF/Latch &lt;<arg fmt="%s" index="1">btn_out_1</arg>&gt; is unconnected in block &lt;<arg fmt="%s" index="2">m3</arg>&gt;.
+</msg>
+
+<msg type="warning" file="Xst" num="1291" delta="unknown" >FF/Latch &lt;<arg fmt="%s" index="1">btn_out_2</arg>&gt; is unconnected in block &lt;<arg fmt="%s" index="2">m3</arg>&gt;.
+</msg>
+
+<msg type="warning" file="Xst" num="1291" delta="unknown" >FF/Latch &lt;<arg fmt="%s" index="1">btn_out_3</arg>&gt; is unconnected in block &lt;<arg fmt="%s" index="2">m3</arg>&gt;.
+</msg>
+
+<msg type="info" file="Xst" num="2261" delta="unknown" >The FF/Latch &lt;<arg fmt="%s" index="1">m3/btn_old_1</arg>&gt; in Unit &lt;<arg fmt="%s" index="2">lcd</arg>&gt; is equivalent to the following <arg fmt="%s" index="3">2 FFs/Latches</arg>, which will be removed : <arg fmt="%s" index="4">&lt;m3/btn_old_2&gt; &lt;m3/btn_old_3&gt; </arg>
+</msg>
+
+<msg type="info" file="Xst" num="2261" delta="unknown" >The FF/Latch &lt;<arg fmt="%s" index="1">m1/btn_out_1</arg>&gt; in Unit &lt;<arg fmt="%s" index="2">lcd</arg>&gt; is equivalent to the following <arg fmt="%s" index="3">2 FFs/Latches</arg>, which will be removed : <arg fmt="%s" index="4">&lt;m1/btn_out_2&gt; &lt;m1/btn_out_3&gt; </arg>
+</msg>
+
+<msg type="info" file="Xst" num="2261" delta="unknown" >The FF/Latch &lt;<arg fmt="%s" index="1">m3/btn_out_1</arg>&gt; in Unit &lt;<arg fmt="%s" index="2">lcd</arg>&gt; is equivalent to the following <arg fmt="%s" index="3">2 FFs/Latches</arg>, which will be removed : <arg fmt="%s" index="4">&lt;m3/btn_out_2&gt; &lt;m3/btn_out_3&gt; </arg>
+</msg>
+
+<msg type="info" file="Xst" num="2261" delta="unknown" >The FF/Latch &lt;<arg fmt="%s" index="1">m1/btn_old_1</arg>&gt; in Unit &lt;<arg fmt="%s" index="2">lcd</arg>&gt; is equivalent to the following <arg fmt="%s" index="3">2 FFs/Latches</arg>, which will be removed : <arg fmt="%s" index="4">&lt;m1/btn_old_2&gt; &lt;m1/btn_old_3&gt; </arg>
+</msg>
+
+<msg type="warning" file="Xst" num="1710" delta="unknown" >FF/Latch  &lt;<arg fmt="%s" index="1">m3/btn_old_1</arg>&gt; (without init value) has a constant value of <arg fmt="%d" index="2">0</arg> in block &lt;<arg fmt="%s" index="3">lcd</arg>&gt;.
+</msg>
+
+<msg type="warning" file="Xst" num="1895" delta="unknown" >Due to other FF/Latch trimming, FF/Latch  &lt;<arg fmt="%s" index="1">m1/btn_old_1</arg>&gt; (without init value) has a constant value of <arg fmt="%d" index="2">0</arg> in block &lt;<arg fmt="%s" index="3">lcd</arg>&gt;.
+</msg>
+
+<msg type="warning" file="Xst" num="1291" delta="unknown" >FF/Latch &lt;<arg fmt="%s" index="1">m3/btn_out_1</arg>&gt; is unconnected in block &lt;<arg fmt="%s" index="2">lcd</arg>&gt;.
+</msg>
+
+<msg type="warning" file="Xst" num="1291" delta="unknown" >FF/Latch &lt;<arg fmt="%s" index="1">m1/btn_out_1</arg>&gt; is unconnected in block &lt;<arg fmt="%s" index="2">lcd</arg>&gt;.
+</msg>
+
+<msg type="info" file="Xst" num="2146" delta="unknown" >In block &lt;<arg fmt="%s" index="1">lcd</arg>&gt;, <arg fmt="%s" index="2">Counter</arg> &lt;<arg fmt="%s" index="3">count/qout</arg>&gt; </msg>
+
+</messages>

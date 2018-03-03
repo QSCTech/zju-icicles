@@ -1,0 +1,68 @@
+xst -ise "E:/jrui/ex9/ex9.ise" -intstyle ise -ifn ex9.xst -ofn ex9.syr
+ngdbuild -ise "E:/jrui/ex9/ex9.ise" -intstyle ise -dd _ngo -nt timestamp -uc "lcd.ucf" -p xc3s500e-fg320-5 "ex9.ngc" ex9.ngd
+map -ise "E:/jrui/ex9/ex9.ise" -intstyle ise -p xc3s500e-fg320-5 -cm area -pr b -k 4 -c 100 -o ex9_map.ncd ex9.ngd ex9.pcf
+par -ise "E:/jrui/ex9/ex9.ise" -w -intstyle ise -ol std -t 1 ex9_map.ncd ex9.ncd ex9.pcf
+trce -ise "E:/jrui/ex9/ex9.ise" -intstyle ise -e 3 -l 3 -s 5 -xml ex9 ex9.ncd -o ex9.twr ex9.pcf -ucf lcd.ucf
+bitgen -ise "E:/jrui/ex9/ex9.ise" -intstyle ise -f ex9.ut ex9.ncd
+xst -ise "E:/jrui/ex9/ex9.ise" -intstyle ise -ifn ex9.xst -ofn ex9.syr
+xst -ise "E:/jrui/ex9/ex9.ise" -intstyle ise -ifn ex9.xst -ofn ex9.syr
+ngdbuild -ise "E:/jrui/ex9/ex9.ise" -intstyle ise -dd _ngo -nt timestamp -uc "lcd.ucf" -p xc3s500e-fg320-5 "ex9.ngc" ex9.ngd
+map -ise "E:/jrui/ex9/ex9.ise" -intstyle ise -p xc3s500e-fg320-5 -cm area -pr b -k 4 -c 100 -o ex9_map.ncd ex9.ngd ex9.pcf
+par -ise "E:/jrui/ex9/ex9.ise" -w -intstyle ise -ol std -t 1 ex9_map.ncd ex9.ncd ex9.pcf
+trce -ise "E:/jrui/ex9/ex9.ise" -intstyle ise -e 3 -l 3 -s 5 -xml ex9 ex9.ncd -o ex9.twr ex9.pcf -ucf lcd.ucf
+bitgen -ise "E:/jrui/ex9/ex9.ise" -intstyle ise -f ex9.ut ex9.ncd
+xst -ise "E:/jrui/ex9/ex9.ise" -intstyle ise -ifn ex9.xst -ofn ex9.syr
+ngdbuild -ise "E:/jrui/ex9/ex9.ise" -intstyle ise -dd _ngo -nt timestamp -uc "lcd.ucf" -p xc3s500e-fg320-5 "ex9.ngc" ex9.ngd
+map -ise "E:/jrui/ex9/ex9.ise" -intstyle ise -p xc3s500e-fg320-5 -cm area -pr b -k 4 -c 100 -o ex9_map.ncd ex9.ngd ex9.pcf
+par -ise "E:/jrui/ex9/ex9.ise" -w -intstyle ise -ol std -t 1 ex9_map.ncd ex9.ncd ex9.pcf
+trce -ise "E:/jrui/ex9/ex9.ise" -intstyle ise -e 3 -l 3 -s 5 -xml ex9 ex9.ncd -o ex9.twr ex9.pcf -ucf lcd.ucf
+bitgen -ise "E:/jrui/ex9/ex9.ise" -intstyle ise -f ex9.ut ex9.ncd
+xst -ise "E:/jrui/ex9/ex9.ise" -intstyle ise -ifn ex9.xst -ofn ex9.syr
+ngdbuild -ise "E:/jrui/ex9/ex9.ise" -intstyle ise -dd _ngo -nt timestamp -uc "lcd.ucf" -p xc3s500e-fg320-5 "ex9.ngc" ex9.ngd
+map -ise "E:/jrui/ex9/ex9.ise" -intstyle ise -p xc3s500e-fg320-5 -cm area -pr b -k 4 -c 100 -o ex9_map.ncd ex9.ngd ex9.pcf
+par -ise "E:/jrui/ex9/ex9.ise" -w -intstyle ise -ol std -t 1 ex9_map.ncd ex9.ncd ex9.pcf
+trce -ise "E:/jrui/ex9/ex9.ise" -intstyle ise -e 3 -l 3 -s 5 -xml ex9 ex9.ncd -o ex9.twr ex9.pcf -ucf lcd.ucf
+bitgen -ise "E:/jrui/ex9/ex9.ise" -intstyle ise -f ex9.ut ex9.ncd
+xst -ise "E:/jrui/ex9/ex9.ise" -intstyle ise -ifn ex9.xst -ofn ex9.syr
+ngdbuild -ise "E:/jrui/ex9/ex9.ise" -intstyle ise -dd _ngo -nt timestamp -uc "lcd.ucf" -p xc3s500e-fg320-5 "ex9.ngc" ex9.ngd
+map -ise "E:/jrui/ex9/ex9.ise" -intstyle ise -p xc3s500e-fg320-5 -cm area -pr b -k 4 -c 100 -o ex9_map.ncd ex9.ngd ex9.pcf
+par -ise "E:/jrui/ex9/ex9.ise" -w -intstyle ise -ol std -t 1 ex9_map.ncd ex9.ncd ex9.pcf
+trce -ise "E:/jrui/ex9/ex9.ise" -intstyle ise -e 3 -l 3 -s 5 -xml ex9 ex9.ncd -o ex9.twr ex9.pcf -ucf lcd.ucf
+bitgen -ise "E:/jrui/ex9/ex9.ise" -intstyle ise -f ex9.ut ex9.ncd
+ngdbuild -ise "E:/jrui/ex9/ex9.ise" -intstyle ise -dd _ngo -nt timestamp -uc "lcd.ucf" -p xc3s500e-fg320-5 "ex9.ngc" ex9.ngd
+map -ise "E:/jrui/ex9/ex9.ise" -intstyle ise -p xc3s500e-fg320-5 -cm area -pr b -k 4 -c 100 -o ex9_map.ncd ex9.ngd ex9.pcf
+par -ise "E:/jrui/ex9/ex9.ise" -w -intstyle ise -ol std -t 1 ex9_map.ncd ex9.ncd ex9.pcf
+trce -ise "E:/jrui/ex9/ex9.ise" -intstyle ise -e 3 -l 3 -s 5 -xml ex9 ex9.ncd -o ex9.twr ex9.pcf -ucf lcd.ucf
+bitgen -ise "E:/jrui/ex9/ex9.ise" -intstyle ise -f ex9.ut ex9.ncd
+ngdbuild -ise "E:/jrui/ex9/ex9.ise" -intstyle ise -dd _ngo -nt timestamp -uc "lcd.ucf" -p xc3s500e-fg320-5 "ex9.ngc" ex9.ngd
+xst -ise "E:/jrui/ex9/ex9.ise" -intstyle ise -ifn ex9.xst -ofn ex9.syr
+ngdbuild -ise "E:/jrui/ex9/ex9.ise" -intstyle ise -dd _ngo -nt timestamp -uc "lcd.ucf" -p xc3s500e-fg320-5 "ex9.ngc" ex9.ngd
+map -ise "E:/jrui/ex9/ex9.ise" -intstyle ise -p xc3s500e-fg320-5 -cm area -pr b -k 4 -c 100 -o ex9_map.ncd ex9.ngd ex9.pcf
+par -ise "E:/jrui/ex9/ex9.ise" -w -intstyle ise -ol std -t 1 ex9_map.ncd ex9.ncd ex9.pcf
+trce -ise "E:/jrui/ex9/ex9.ise" -intstyle ise -e 3 -l 3 -s 5 -xml ex9 ex9.ncd -o ex9.twr ex9.pcf -ucf lcd.ucf
+bitgen -ise "E:/jrui/ex9/ex9.ise" -intstyle ise -f ex9.ut ex9.ncd
+xst -ise "E:/jrui/ex9/ex9.ise" -intstyle ise -ifn ex9.xst -ofn ex9.syr
+xst -ise "E:/jrui/ex9/ex9.ise" -intstyle ise -ifn ex9.xst -ofn ex9.syr
+ngdbuild -ise "E:/jrui/ex9/ex9.ise" -intstyle ise -dd _ngo -nt timestamp -uc "lcd.ucf" -p xc3s500e-fg320-5 "ex9.ngc" ex9.ngd
+map -ise "E:/jrui/ex9/ex9.ise" -intstyle ise -p xc3s500e-fg320-5 -cm area -pr b -k 4 -c 100 -o ex9_map.ncd ex9.ngd ex9.pcf
+par -ise "E:/jrui/ex9/ex9.ise" -w -intstyle ise -ol std -t 1 ex9_map.ncd ex9.ncd ex9.pcf
+trce -ise "E:/jrui/ex9/ex9.ise" -intstyle ise -e 3 -l 3 -s 5 -xml ex9 ex9.ncd -o ex9.twr ex9.pcf -ucf lcd.ucf
+bitgen -ise "E:/jrui/ex9/ex9.ise" -intstyle ise -f ex9.ut ex9.ncd
+xst -ise "E:/jrui/ex9/ex9.ise" -intstyle ise -ifn ex9.xst -ofn ex9.syr
+ngdbuild -ise "E:/jrui/ex9/ex9.ise" -intstyle ise -dd _ngo -nt timestamp -uc "lcd.ucf" -p xc3s500e-fg320-5 "ex9.ngc" ex9.ngd
+map -ise "E:/jrui/ex9/ex9.ise" -intstyle ise -p xc3s500e-fg320-5 -cm area -pr b -k 4 -c 100 -o ex9_map.ncd ex9.ngd ex9.pcf
+par -ise "E:/jrui/ex9/ex9.ise" -w -intstyle ise -ol std -t 1 ex9_map.ncd ex9.ncd ex9.pcf
+trce -ise "E:/jrui/ex9/ex9.ise" -intstyle ise -e 3 -l 3 -s 5 -xml ex9 ex9.ncd -o ex9.twr ex9.pcf -ucf lcd.ucf
+bitgen -ise "E:/jrui/ex9/ex9.ise" -intstyle ise -f ex9.ut ex9.ncd
+xst -ise "E:/Jade/ex9/ex9.ise" -intstyle ise -ifn ex9.xst -ofn ex9.syr
+ngdbuild -ise "E:/Jade/ex9/ex9.ise" -intstyle ise -dd _ngo -nt timestamp -uc "lcd.ucf" -p xc3s500e-fg320-5 "ex9.ngc" ex9.ngd
+map -ise "E:/Jade/ex9/ex9.ise" -intstyle ise -p xc3s500e-fg320-5 -cm area -pr b -k 4 -c 100 -o ex9_map.ncd ex9.ngd ex9.pcf
+par -ise "E:/Jade/ex9/ex9.ise" -w -intstyle ise -ol std -t 1 ex9_map.ncd ex9.ncd ex9.pcf
+trce -ise "E:/Jade/ex9/ex9.ise" -intstyle ise -e 3 -l 3 -s 5 -xml ex9 ex9.ncd -o ex9.twr ex9.pcf -ucf lcd.ucf
+bitgen -ise "E:/Jade/ex9/ex9.ise" -intstyle ise -f ex9.ut ex9.ncd
+xst -ise "E:/Jade/ex9/ex9.ise" -intstyle ise -ifn ex9.xst -ofn ex9.syr
+ngdbuild -ise "E:/Jade/ex9/ex9.ise" -intstyle ise -dd _ngo -nt timestamp -uc "lcd.ucf" -p xc3s500e-fg320-5 "ex9.ngc" ex9.ngd
+map -ise "E:/Jade/ex9/ex9.ise" -intstyle ise -p xc3s500e-fg320-5 -cm area -pr b -k 4 -c 100 -o ex9_map.ncd ex9.ngd ex9.pcf
+par -ise "E:/Jade/ex9/ex9.ise" -w -intstyle ise -ol std -t 1 ex9_map.ncd ex9.ncd ex9.pcf
+trce -ise "E:/Jade/ex9/ex9.ise" -intstyle ise -e 3 -l 3 -s 5 -xml ex9 ex9.ncd -o ex9.twr ex9.pcf -ucf lcd.ucf
+bitgen -ise "E:/Jade/ex9/ex9.ise" -intstyle ise -f ex9.ut ex9.ncd

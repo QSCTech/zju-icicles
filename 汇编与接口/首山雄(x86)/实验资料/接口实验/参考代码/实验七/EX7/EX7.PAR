@@ -1,0 +1,200 @@
+Release 8.2i par I.31
+Copyright (c) 1995-2006 Xilinx, Inc.  All rights reserved.
+
+FLAG41::  Sat Dec 20 14:25:43 2008
+
+par -w -intstyle ise -ol std -t 1 ex7_map.ncd ex7.ncd ex7.pcf 
+
+
+Constraints file: ex7.pcf.
+Loading device for application Rf_Device from file '3s500e.nph' in environment D:\Xilinx.
+   "ex7" is an NCD, version 3.1, device xc3s500e, package fg320, speed -5
+
+Initializing temperature to 85.000 Celsius. (default - Range: -40.000 to 100.000 Celsius)
+Initializing voltage to 1.140 Volts. (default - Range: 1.140 to 1.320 Volts)
+
+INFO:Par:282 - No user timing constraints were detected or you have set the option to ignore timing constraints ("par
+   -x"). Place and Route will run in "Performance Evaluation Mode" to automatically improve the performance of all
+   internal clocks in this design. The PAR timing summary will list the performance achieved for each clock. Note: For
+   the fastest runtime, set the effort level to "std".  For best performance, set the effort level to "high". For a
+   balance between the fastest runtime and best performance, set the effort level to "med".
+
+Device speed data version:  "PRODUCTION 1.23 2006-05-10".
+
+
+Design Summary Report:
+
+ Number of External IOBs                          13 out of 232     5%
+
+   Number of External Input IOBs                  5
+
+      Number of External Input IBUFs              5
+        Number of LOCed External Input IBUFs      5 out of 5     100%
+
+
+   Number of External Output IOBs                 8
+
+      Number of External Output IOBs              8
+        Number of LOCed External Output IOBs      8 out of 8     100%
+
+
+   Number of External Bidir IOBs                  0
+
+
+   Number of BUFGMUXs                  1 out of 24      4%
+   Number of Slices                   78 out of 4656    1%
+      Number of SLICEMs                0 out of 2328    0%
+
+
+
+Overall effort level (-ol):   Standard 
+Placer effort level (-pl):    High 
+Placer cost table entry (-t): 1
+Router effort level (-rl):    Standard 
+
+
+Starting Placer
+
+Phase 1.1
+Phase 1.1 (Checksum:9897ef) REAL time: 6 secs 
+
+Phase 2.31
+Phase 2.31 (Checksum:1312cfe) REAL time: 7 secs 
+
+Phase 3.2
+......
+.................
+
+
+Phase 3.2 (Checksum:98a243) REAL time: 15 secs 
+
+Phase 4.30
+Phase 4.30 (Checksum:26259fc) REAL time: 15 secs 
+
+Phase 5.8
+....
+....
+.....
+....
+.
+Phase 5.8 (Checksum:9b7192) REAL time: 15 secs 
+
+Phase 6.5
+Phase 6.5 (Checksum:39386fa) REAL time: 15 secs 
+
+Phase 7.18
+Phase 7.18 (Checksum:42c1d79) REAL time: 16 secs 
+
+Phase 8.5
+Phase 8.5 (Checksum:4c4b3f8) REAL time: 16 secs 
+
+Writing design to file ex7.ncd
+
+
+Total REAL time to Placer completion: 16 secs 
+Total CPU time to Placer completion: 14 secs 
+
+Starting Router
+
+Phase 1: 583 unrouted;       REAL time: 23 secs 
+
+Phase 2: 563 unrouted;       REAL time: 23 secs 
+
+Phase 3: 180 unrouted;       REAL time: 23 secs 
+
+Phase 4: 180 unrouted; (125)      REAL time: 23 secs 
+
+Phase 5: 182 unrouted; (0)      REAL time: 23 secs 
+
+Phase 6: 0 unrouted; (0)      REAL time: 24 secs 
+
+Phase 7: 0 unrouted; (0)      REAL time: 24 secs 
+
+Phase 8: 0 unrouted; (0)      REAL time: 24 secs 
+
+Phase 9: 0 unrouted; (0)      REAL time: 24 secs 
+
+
+Total REAL time to Router completion: 24 secs 
+Total CPU time to Router completion: 22 secs 
+
+Partition Implementation Status
+-------------------------------
+
+  No Partitions were found in this design.
+
+-------------------------------
+
+Generating "PAR" statistics.
+
+**************************
+Generating Clock Report
+**************************
+
++---------------------+--------------+------+------+------------+-------------+
+|        Clock Net    |   Resource   |Locked|Fanout|Net Skew(ns)|Max Delay(ns)|
++---------------------+--------------+------+------+------------+-------------+
+|           clk_BUFGP | BUFGMUX_X1Y11| No   |   19 |  0.034     |  0.167      |
++---------------------+--------------+------+------+------------+-------------+
+
+* Net Skew is the difference between the minimum and maximum routing
+only delays for the net. Note this is different from Clock Skew which
+is reported in TRCE timing report. Clock Skew is the difference between
+the minimum and maximum path delays which includes logic delays.
+
+
+   The Delay Summary Report
+
+
+The NUMBER OF SIGNALS NOT COMPLETELY ROUTED for this design is: 0
+
+   The AVERAGE CONNECTION DELAY for this design is:        1.057
+   The MAXIMUM PIN DELAY IS:                               3.363
+   The AVERAGE CONNECTION DELAY on the 10 WORST NETS is:   2.312
+
+   Listing Pin Delays by value: (nsec)
+
+    d < 1.00   < d < 2.00  < d < 3.00  < d < 4.00  < d < 5.00  d >= 5.00
+   ---------   ---------   ---------   ---------   ---------   ---------
+         273         260          45           4           0           0
+
+Timing Score: 0
+
+Asterisk (*) preceding a constraint indicates it was not met.
+   This may be due to a setup or hold violation.
+
+------------------------------------------------------------------------------------------------------
+  Constraint                                | Requested  | Actual     | Logic  | Absolute   |Number of
+                                            |            |            | Levels | Slack      |errors   
+------------------------------------------------------------------------------------------------------
+  Autotimespec constraint for clock net clk | N/A        | 4.193ns    | 2      | N/A        | N/A     
+  _BUFGP                                    |            |            |        |            |         
+------------------------------------------------------------------------------------------------------
+
+
+All constraints were met.
+INFO:Timing:2761 - N/A entries in the Constraints list may indicate that the 
+   constraint does not cover any paths or that it has no requested value.
+
+
+Generating Pad Report.
+
+All signals are completely routed.
+
+Total REAL time to PAR completion: 29 secs 
+Total CPU time to PAR completion: 26 secs 
+
+Peak Memory Usage:  152 MB
+
+Placement: Completed - No errors found.
+Routing: Completed - No errors found.
+
+Number of error messages: 0
+Number of warning messages: 0
+Number of info messages: 1
+
+Writing design to file ex7.ncd
+
+
+
+PAR done!

@@ -1,0 +1,63 @@
+data segment
+  table dw 524,588,660,698,784,880,988
+data ends
+stack segment
+  sta db 20 dup(?)
+  top equ length sta
+stack ends
+code segment
+assume cs:code,ds:data,ss:stack,es:data
+start:
+    mov ax,data
+    mov ds,ax
+    mov ax,stack
+    mov ss,ax
+    mov ax,top
+    mov sp,ax
+ sing:
+    mov ah,01
+    int 21h
+    cmp al,03h
+    jz finish
+    sub al,31h
+    shl al,01
+    mov bl,al
+    mov ax,0000h
+    mov dx,12h
+    mov bh,00
+    div word ptr [table+bx]
+    mov bx,ax
+    mov al,10110110b
+    out 43h,al
+    mov ax,bx
+    out 42h,al
+    mov al,ah
+    out 42h,al
+    in al,61h
+    or al,03h
+    out 61h,al
+    call delay
+    in al,61h
+    and al,0fch
+    out 61h,al
+    jmp sing
+ finish:
+    mov ax,4c00h
+    int 21h
+ delay:
+    push cx
+    push ax
+    mov ax,0fh
+ x1:
+    mov cx,0ffffh
+ x2:
+    dec cx
+    jnz x2
+    dec ax
+    jnz x1
+    pop ax
+    pop cx
+    ret
+code ends
+end start
+    
