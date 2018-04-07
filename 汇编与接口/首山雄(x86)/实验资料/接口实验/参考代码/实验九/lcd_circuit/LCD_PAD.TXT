@@ -1,0 +1,350 @@
+Release 8.2i - par I.31
+Copyright (c) 1995-2006 Xilinx, Inc.  All rights reserved.
+
+Fri Dec 05 16:30:05 2008
+
+
+INFO: The IO information is provided in three file formats as part of the Place and Route (PAR) process.  These formats are:
+1. The <design name>_pad.txt file (this file) designed to provide information on IO usage in a human readable ASCII text format viewable through common text editors.
+2. The <design namd>_pad.csv file for use with spreadsheet programs such as MS Excel. This file can also be read by PACE to communicate post PAR IO information.
+3. The <design name>.pad file designed for parsing by customers.  It uses the "|" as a data field separator.
+
+INPUT FILE:       lcd_map.ncd
+OUTPUT FILE:      lcd_pad.txt
+PART TYPE:        xc3s500e
+SPEED GRADE:      -5
+PACKAGE:          fg320
+
+Pinout by Pin Number:
+
++------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+|Pin Number|Signal Name|Pin Usage|Pin Name                 |Direction|IO Standard|IO Bank Number|Drive (mA)|Slew Rate|Termination|IOB Delay|Voltage  |Constraint|DCI Value|IO Register|Signal Integrity|
++------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+|A1        |           |         |GND                      |         |           |              |          |         |           |         |         |          |         |           |                |
+|A2        |           |         |TDI                      |         |           |              |          |         |           |         |         |          |         |           |                |
+|A3        |           |IBUF     |IP                       |UNUSED   |           |0             |          |         |           |         |         |          |         |           |                |
+|A4        |           |DIFFM    |IO_L24P_0                |UNUSED   |           |0             |          |         |           |         |         |          |         |           |                |
+|A5        |           |DIFFMI   |IP_L22P_0                |UNUSED   |           |0             |          |         |           |         |         |          |         |           |                |
+|A6        |           |DIFFS    |IO_L20N_0                |UNUSED   |           |0             |          |         |           |         |         |          |         |           |                |
+|A7        |           |IBUF     |IP                       |UNUSED   |           |0             |          |         |           |         |         |          |         |           |                |
+|A8        |           |IOB      |IO                       |UNUSED   |           |0             |          |         |           |         |         |          |         |           |                |
+|A9        |           |         |VCCO_0                   |         |           |0             |          |         |           |         |2.50     |          |         |           |                |
+|A10       |           |DIFFS    |IO_L12N_0/GCLK7          |UNUSED   |           |0             |          |         |           |         |         |          |         |           |                |
+|A11       |           |IOB      |IO                       |UNUSED   |           |0             |          |         |           |         |         |          |         |           |                |
+|A12       |           |         |NC                       |         |           |              |          |         |           |         |         |          |         |           |                |
+|A13       |           |DIFFM    |IO_L05P_0                |UNUSED   |           |0             |          |         |           |         |         |          |         |           |                |
+|A14       |           |DIFFS    |IO_L04N_0                |UNUSED   |           |0             |          |         |           |         |         |          |         |           |                |
+|A15       |           |DIFFSI   |IP_L02N_0                |UNUSED   |           |0             |          |         |           |         |         |          |         |           |                |
+|A16       |           |DIFFS    |IO_L01N_0                |UNUSED   |           |0             |          |         |           |         |         |          |         |           |                |
+|A17       |           |         |TCK                      |         |           |              |          |         |           |         |         |          |         |           |                |
+|A18       |           |         |GND                      |         |           |              |          |         |           |         |         |          |         |           |                |
+|B1        |           |         |PROG_B                   |         |           |              |          |         |           |         |         |          |         |           |                |
+|B2        |           |         |GND                      |         |           |              |          |         |           |         |         |          |         |           |                |
+|B3        |           |DIFFS    |IO_L25N_0/HSWAP          |UNUSED   |           |0             |          |         |           |         |         |          |         |           |                |
+|B4        |           |DIFFS    |IO_L24N_0                |UNUSED   |           |0             |          |         |           |         |         |          |         |           |                |
+|B5        |           |DIFFSI   |IP_L22N_0                |UNUSED   |           |0             |          |         |           |         |         |          |         |           |                |
+|B6        |           |DIFFM    |IO_L20P_0                |UNUSED   |           |0             |          |         |           |         |         |          |         |           |                |
+|B7        |           |         |VCCAUX                   |         |           |              |          |         |           |         |2.5      |          |         |           |                |
+|B8        |           |DIFFMI   |IP_L13P_0/GCLK8          |UNUSED   |           |0             |          |         |           |         |         |          |         |           |                |
+|B9        |           |DIFFSI   |IP_L13N_0/GCLK9          |UNUSED   |           |0             |          |         |           |         |         |          |         |           |                |
+|B10       |           |DIFFM    |IO_L12P_0/GCLK6          |UNUSED   |           |0             |          |         |           |         |         |          |         |           |                |
+|B11       |           |IOB      |IO/VREF_0                |UNUSED   |           |0             |          |         |           |         |         |          |         |           |                |
+|B12       |           |         |VCCAUX                   |         |           |              |          |         |           |         |2.5      |          |         |           |                |
+|B13       |           |DIFFS    |IO_L05N_0/VREF_0         |UNUSED   |           |0             |          |         |           |         |         |          |         |           |                |
+|B14       |           |DIFFM    |IO_L04P_0                |UNUSED   |           |0             |          |         |           |         |         |          |         |           |                |
+|B15       |           |DIFFMI   |IP_L02P_0                |UNUSED   |           |0             |          |         |           |         |         |          |         |           |                |
+|B16       |           |DIFFM    |IO_L01P_0                |UNUSED   |           |0             |          |         |           |         |         |          |         |           |                |
+|B17       |           |         |GND                      |         |           |              |          |         |           |         |         |          |         |           |                |
+|B18       |           |IBUF     |IP                       |UNUSED   |           |1             |          |         |           |         |         |          |         |           |                |
+|C1        |           |DIFFM    |IO_L01P_3                |UNUSED   |           |3             |          |         |           |         |         |          |         |           |                |
+|C2        |           |DIFFS    |IO_L01N_3                |UNUSED   |           |3             |          |         |           |         |         |          |         |           |                |
+|C3        |           |DIFFM    |IO_L25P_0                |UNUSED   |           |0             |          |         |           |         |         |          |         |           |                |
+|C4        |           |IOB      |IO                       |UNUSED   |           |0             |          |         |           |         |         |          |         |           |                |
+|C5        |           |DIFFM    |IO_L23P_0                |UNUSED   |           |0             |          |         |           |         |         |          |         |           |                |
+|C6        |           |         |VCCO_0                   |         |           |0             |          |         |           |         |2.50     |          |         |           |                |
+|C7        |           |DIFFM    |IO_L18P_0                |UNUSED   |           |0             |          |         |           |         |         |          |         |           |                |
+|C8        |           |DIFFMI   |IP_L16P_0                |UNUSED   |           |0             |          |         |           |         |         |          |         |           |                |
+|C9        |CLK        |IBUF     |IO_L14P_0/GCLK10         |INPUT    |LVCMOS25   |0             |          |         |           |NONE     |         |LOCATED   |         |NO         |NONE            |
+|C10       |           |         |GND                      |         |           |              |          |         |           |         |         |          |         |           |                |
+|C11       |           |DIFFM    |IO_L09P_0                |UNUSED   |           |0             |          |         |           |         |         |          |         |           |                |
+|C12       |           |DIFFMI   |IP_L07P_0                |UNUSED   |           |0             |          |         |           |         |         |          |         |           |                |
+|C13       |           |         |VCCO_0                   |         |           |0             |          |         |           |         |2.50     |          |         |           |                |
+|C14       |           |DIFFS    |IO_L03N_0/VREF_0         |UNUSED   |           |0             |          |         |           |         |         |          |         |           |                |
+|C15       |           |IBUF     |IP                       |UNUSED   |           |0             |          |         |           |         |         |          |         |           |                |
+|C16       |           |         |TDO                      |         |           |              |          |         |           |         |         |          |         |           |                |
+|C17       |           |DIFFS    |IO_L24N_1/LDC2           |UNUSED   |           |1             |          |         |           |         |         |          |         |           |                |
+|C18       |           |DIFFM    |IO_L24P_1/LDC1           |UNUSED   |           |1             |          |         |           |         |         |          |         |           |                |
+|D1        |           |DIFFM    |IO_L02P_3                |UNUSED   |           |3             |          |         |           |         |         |          |         |           |                |
+|D2        |           |DIFFS    |IO_L02N_3/VREF_3         |UNUSED   |           |3             |          |         |           |         |         |          |         |           |                |
+|D3        |           |IBUF     |IP                       |UNUSED   |           |3             |          |         |           |         |         |          |         |           |                |
+|D4        |           |         |NC                       |         |           |              |          |         |           |         |         |          |         |           |                |
+|D5        |           |DIFFS    |IO_L23N_0/VREF_0         |UNUSED   |           |0             |          |         |           |         |         |          |         |           |                |
+|D6        |           |         |NC                       |         |           |              |          |         |           |         |         |          |         |           |                |
+|D7        |           |DIFFS    |IO_L18N_0/VREF_0         |UNUSED   |           |0             |          |         |           |         |         |          |         |           |                |
+|D8        |           |DIFFSI   |IP_L16N_0                |UNUSED   |           |0             |          |         |           |         |         |          |         |           |                |
+|D9        |           |DIFFS    |IO_L14N_0/GCLK11         |UNUSED   |           |0             |          |         |           |         |         |          |         |           |                |
+|D10       |           |DIFFM    |IO_L11P_0/GCLK4          |UNUSED   |           |0             |          |         |           |         |         |          |         |           |                |
+|D11       |           |DIFFS    |IO_L09N_0                |UNUSED   |           |0             |          |         |           |         |         |          |         |           |                |
+|D12       |           |DIFFSI   |IP_L07N_0                |UNUSED   |           |0             |          |         |           |         |         |          |         |           |                |
+|D13       |           |IBUF     |IP                       |UNUSED   |           |0             |          |         |           |         |         |          |         |           |                |
+|D14       |           |DIFFM    |IO_L03P_0                |UNUSED   |           |0             |          |         |           |         |         |          |         |           |                |
+|D15       |           |         |TMS                      |         |           |              |          |         |           |         |         |          |         |           |                |
+|D16       |           |DIFFS    |IO_L23N_1/LDC0           |UNUSED   |           |1             |          |         |           |         |         |          |         |           |                |
+|D17       |           |DIFFM    |IO_L23P_1/HDC            |UNUSED   |           |1             |          |         |           |         |         |          |         |           |                |
+|D18       |SEND       |IBUF     |IP/VREF_1                |INPUT    |LVCMOS25   |1             |          |         |           |IFD      |         |LOCATED   |         |YES        |NONE            |
+|E1        |           |DIFFS    |IO_L03N_3                |UNUSED   |           |3             |          |         |           |         |         |          |         |           |                |
+|E2        |           |DIFFM    |IO_L03P_3                |UNUSED   |           |3             |          |         |           |         |         |          |         |           |                |
+|E3        |           |         |NC                       |         |           |              |          |         |           |         |         |          |         |           |                |
+|E4        |           |         |NC                       |         |           |              |          |         |           |         |         |          |         |           |                |
+|E5        |           |         |VCCINT                   |         |           |              |          |         |           |         |1.2      |          |         |           |                |
+|E6        |           |         |NC                       |         |           |              |          |         |           |         |         |          |         |           |                |
+|E7        |           |DIFFS    |IO_L19N_0/VREF_0         |UNUSED   |           |0             |          |         |           |         |         |          |         |           |                |
+|E8        |           |DIFFM    |IO_L17P_0                |UNUSED   |           |0             |          |         |           |         |         |          |         |           |                |
+|E9        |           |DIFFM    |IO_L15P_0                |UNUSED   |           |0             |          |         |           |         |         |          |         |           |                |
+|E10       |           |DIFFS    |IO_L11N_0/GCLK5          |UNUSED   |           |0             |          |         |           |         |         |          |         |           |                |
+|E11       |           |DIFFM    |IO_L08P_0                |UNUSED   |           |0             |          |         |           |         |         |          |         |           |                |
+|E12       |           |DIFFS    |IO_L06N_0                |UNUSED   |           |0             |          |         |           |         |         |          |         |           |                |
+|E13       |           |IOB      |IO                       |UNUSED   |           |0             |          |         |           |         |         |          |         |           |                |
+|E14       |           |         |VCCINT                   |         |           |              |          |         |           |         |1.2      |          |         |           |                |
+|E15       |           |         |NC                       |         |           |              |          |         |           |         |         |          |         |           |                |
+|E16       |           |         |NC                       |         |           |              |          |         |           |         |         |          |         |           |                |
+|E17       |           |IOB      |IO                       |UNUSED   |           |1             |          |         |           |         |         |          |         |           |                |
+|E18       |           |IBUF     |IP                       |UNUSED   |           |1             |          |         |           |         |         |          |         |           |                |
+|F1        |           |DIFFM    |IO_L05P_3                |UNUSED   |           |3             |          |         |           |         |         |          |         |           |                |
+|F2        |           |DIFFS    |IO_L05N_3                |UNUSED   |           |3             |          |         |           |         |         |          |         |           |                |
+|F3        |           |         |VCCO_3                   |         |           |3             |          |         |           |         |any******|          |         |           |                |
+|F4        |           |IOB      |IO                       |UNUSED   |           |3             |          |         |           |         |         |          |         |           |                |
+|F5        |           |IBUF     |IP                       |UNUSED   |           |3             |          |         |           |         |         |          |         |           |                |
+|F6        |           |         |VCCINT                   |         |           |              |          |         |           |         |1.2      |          |         |           |                |
+|F7        |           |DIFFM    |IO_L19P_0                |UNUSED   |           |0             |          |         |           |         |         |          |         |           |                |
+|F8        |           |DIFFS    |IO_L17N_0                |UNUSED   |           |0             |          |         |           |         |         |          |         |           |                |
+|F9        |           |DIFFS    |IO_L15N_0                |UNUSED   |           |0             |          |         |           |         |         |          |         |           |                |
+|F10       |           |DIFFMI   |IP_L10P_0                |UNUSED   |           |0             |          |         |           |         |         |          |         |           |                |
+|F11       |           |DIFFS    |IO_L08N_0                |UNUSED   |           |0             |          |         |           |         |         |          |         |           |                |
+|F12       |           |DIFFM    |IO_L06P_0                |UNUSED   |           |0             |          |         |           |         |         |          |         |           |                |
+|F13       |           |         |VCCINT                   |         |           |              |          |         |           |         |1.2      |          |         |           |                |
+|F14       |           |DIFFS    |IO_L21N_1                |UNUSED   |           |1             |          |         |           |         |         |          |         |           |                |
+|F15       |           |DIFFM    |IO_L21P_1                |UNUSED   |           |1             |          |         |           |         |         |          |         |           |                |
+|F16       |           |         |VCCO_1                   |         |           |1             |          |         |           |         |2.50     |          |         |           |                |
+|F17       |           |DIFFS    |IO_L19N_1                |UNUSED   |           |1             |          |         |           |         |         |          |         |           |                |
+|F18       |           |DIFFM    |IO_L19P_1                |UNUSED   |           |1             |          |         |           |         |         |          |         |           |                |
+|G1        |           |IBUF     |IP                       |UNUSED   |           |3             |          |         |           |         |         |          |         |           |                |
+|G2        |           |         |VCCAUX                   |         |           |              |          |         |           |         |2.5      |          |         |           |                |
+|G3        |           |DIFFM    |IO_L06P_3                |UNUSED   |           |3             |          |         |           |         |         |          |         |           |                |
+|G4        |           |DIFFS    |IO_L06N_3/VREF_3         |UNUSED   |           |3             |          |         |           |         |         |          |         |           |                |
+|G5        |           |DIFFS    |IO_L07N_3                |UNUSED   |           |3             |          |         |           |         |         |          |         |           |                |
+|G6        |           |DIFFM    |IO_L07P_3                |UNUSED   |           |3             |          |         |           |         |         |          |         |           |                |
+|G7        |           |         |GND                      |         |           |              |          |         |           |         |         |          |         |           |                |
+|G8        |           |         |VCCO_0                   |         |           |0             |          |         |           |         |2.50     |          |         |           |                |
+|G9        |           |IOB      |IO                       |UNUSED   |           |0             |          |         |           |         |         |          |         |           |                |
+|G10       |           |DIFFSI   |IP_L10N_0                |UNUSED   |           |0             |          |         |           |         |         |          |         |           |                |
+|G11       |           |         |VCCO_0                   |         |           |0             |          |         |           |         |2.50     |          |         |           |                |
+|G12       |           |         |GND                      |         |           |              |          |         |           |         |         |          |         |           |                |
+|G13       |           |DIFFS    |IO_L20N_1                |UNUSED   |           |1             |          |         |           |         |         |          |         |           |                |
+|G14       |           |DIFFM    |IO_L20P_1                |UNUSED   |           |1             |          |         |           |         |         |          |         |           |                |
+|G15       |           |DIFFM    |IO_L18P_1                |UNUSED   |           |1             |          |         |           |         |         |          |         |           |                |
+|G16       |           |DIFFS    |IO_L18N_1                |UNUSED   |           |1             |          |         |           |         |         |          |         |           |                |
+|G17       |           |         |VCCAUX                   |         |           |              |          |         |           |         |2.5      |          |         |           |                |
+|G18       |           |IBUF     |IP                       |UNUSED   |           |1             |          |         |           |         |         |          |         |           |                |
+|H1        |           |DIFFS    |IO_L10N_3                |UNUSED   |           |3             |          |         |           |         |         |          |         |           |                |
+|H2        |           |DIFFM    |IO_L10P_3                |UNUSED   |           |3             |          |         |           |         |         |          |         |           |                |
+|H3        |           |DIFFS    |IO_L09N_3                |UNUSED   |           |3             |          |         |           |         |         |          |         |           |                |
+|H4        |           |DIFFM    |IO_L09P_3                |UNUSED   |           |3             |          |         |           |         |         |          |         |           |                |
+|H5        |           |DIFFS    |IO_L08N_3                |UNUSED   |           |3             |          |         |           |         |         |          |         |           |                |
+|H6        |           |DIFFM    |IO_L08P_3                |UNUSED   |           |3             |          |         |           |         |         |          |         |           |                |
+|H7        |           |         |VCCO_3                   |         |           |3             |          |         |           |         |any******|          |         |           |                |
+|H8        |           |         |GND                      |         |           |              |          |         |           |         |         |          |         |           |                |
+|H9        |           |         |GND                      |         |           |              |          |         |           |         |         |          |         |           |                |
+|H10       |           |         |GND                      |         |           |              |          |         |           |         |         |          |         |           |                |
+|H11       |           |         |GND                      |         |           |              |          |         |           |         |         |          |         |           |                |
+|H12       |           |         |VCCO_1                   |         |           |1             |          |         |           |         |2.50     |          |         |           |                |
+|H13       |rotate     |IBUF     |IP                       |INPUT    |LVCMOS25   |1             |          |         |           |IFD      |         |LOCATED   |         |YES        |NONE            |
+|H14       |           |DIFFM    |IO_L17P_1                |UNUSED   |           |1             |          |         |           |         |         |          |         |           |                |
+|H15       |           |DIFFS    |IO_L17N_1                |UNUSED   |           |1             |          |         |           |         |         |          |         |           |                |
+|H16       |           |DIFFM    |IO_L16P_1                |UNUSED   |           |1             |          |         |           |         |         |          |         |           |                |
+|H17       |           |DIFFS    |IO_L16N_1/A0             |UNUSED   |           |1             |          |         |           |         |         |          |         |           |                |
+|H18       |lcd_data<2>|IBUF     |IP/VREF_1                |INPUT    |LVCMOS25   |1             |          |         |           |NONE     |         |LOCATED   |         |NO         |NONE            |
+|J1        |           |DIFFM    |IO_L12P_3/LHCLK2         |UNUSED   |           |3             |          |         |           |         |         |          |         |           |                |
+|J2        |           |DIFFS    |IO_L12N_3/LHCLK3/IRDY2   |UNUSED   |           |3             |          |         |           |         |         |          |         |           |                |
+|J3        |           |         |GND                      |         |           |              |          |         |           |         |         |          |         |           |                |
+|J4        |           |DIFFS    |IO_L11N_3/LHCLK1         |UNUSED   |           |3             |          |         |           |         |         |          |         |           |                |
+|J5        |           |DIFFM    |IO_L11P_3/LHCLK0         |UNUSED   |           |3             |          |         |           |         |         |          |         |           |                |
+|J6        |           |IBUF     |IP/VREF_3                |UNUSED   |           |3             |          |         |           |         |         |          |         |           |                |
+|J7        |           |IBUF     |IP                       |UNUSED   |           |3             |          |         |           |         |         |          |         |           |                |
+|J8        |           |         |GND                      |         |           |              |          |         |           |         |         |          |         |           |                |
+|J11       |           |         |GND                      |         |           |              |          |         |           |         |         |          |         |           |                |
+|J12       |           |DIFFM    |IO_L15P_1/A2             |UNUSED   |           |1             |          |         |           |         |         |          |         |           |                |
+|J13       |           |DIFFS    |IO_L15N_1/A1             |UNUSED   |           |1             |          |         |           |         |         |          |         |           |                |
+|J14       |           |DIFFS    |IO_L14N_1/A3/RHCLK7      |UNUSED   |           |1             |          |         |           |         |         |          |         |           |                |
+|J15       |           |DIFFM    |IO_L14P_1/A4/RHCLK6      |UNUSED   |           |1             |          |         |           |         |         |          |         |           |                |
+|J16       |           |DIFFS    |IO_L13N_1/A5/RHCLK5      |UNUSED   |           |1             |          |         |           |         |         |          |         |           |                |
+|J17       |           |DIFFM    |IO_L13P_1/A6/RHCLK4/IRDY1|UNUSED   |           |1             |          |         |           |         |         |          |         |           |                |
+|J18       |           |         |VCCO_1                   |         |           |1             |          |         |           |         |2.50     |          |         |           |                |
+|K1        |           |         |VCCO_3                   |         |           |3             |          |         |           |         |any******|          |         |           |                |
+|K2        |           |IBUF     |IP                       |UNUSED   |           |3             |          |         |           |         |         |          |         |           |                |
+|K3        |           |DIFFM    |IO_L13P_3/LHCLK4/TRDY2   |UNUSED   |           |3             |          |         |           |         |         |          |         |           |                |
+|K4        |           |DIFFS    |IO_L13N_3/LHCLK5         |UNUSED   |           |3             |          |         |           |         |         |          |         |           |                |
+|K5        |           |DIFFS    |IO_L14N_3/LHCLK7         |UNUSED   |           |3             |          |         |           |         |         |          |         |           |                |
+|K6        |           |DIFFM    |IO_L14P_3/LHCLK6         |UNUSED   |           |3             |          |         |           |         |         |          |         |           |                |
+|K7        |           |IBUF     |IP                       |UNUSED   |           |3             |          |         |           |         |         |          |         |           |                |
+|K8        |           |         |GND                      |         |           |              |          |         |           |         |         |          |         |           |                |
+|K11       |           |         |GND                      |         |           |              |          |         |           |         |         |          |         |           |                |
+|K12       |           |DIFFS    |IO_L11N_1/A9/RHCLK1      |UNUSED   |           |1             |          |         |           |         |         |          |         |           |                |
+|K13       |           |DIFFM    |IO_L11P_1/A10/RHCLK0     |UNUSED   |           |1             |          |         |           |         |         |          |         |           |                |
+|K14       |           |DIFFS    |IO_L12N_1/A7/RHCLK3/TRDY1|UNUSED   |           |1             |          |         |           |         |         |          |         |           |                |
+|K15       |           |DIFFM    |IO_L12P_1/A8/RHCLK2      |UNUSED   |           |1             |          |         |           |         |         |          |         |           |                |
+|K16       |           |         |GND                      |         |           |              |          |         |           |         |         |          |         |           |                |
+|K17       |RST        |IBUF     |IP                       |INPUT    |LVCMOS25   |1             |          |         |           |NONE     |         |LOCATED   |         |NO         |NONE            |
+|K18       |           |IBUF     |IP                       |UNUSED   |           |1             |          |         |           |         |         |          |         |           |                |
+|L1        |           |DIFFM    |IO_L15P_3                |UNUSED   |           |3             |          |         |           |         |         |          |         |           |                |
+|L2        |           |DIFFS    |IO_L15N_3                |UNUSED   |           |3             |          |         |           |         |         |          |         |           |                |
+|L3        |           |DIFFM    |IO_L16P_3                |UNUSED   |           |3             |          |         |           |         |         |          |         |           |                |
+|L4        |           |DIFFS    |IO_L16N_3                |UNUSED   |           |3             |          |         |           |         |         |          |         |           |                |
+|L5        |           |DIFFS    |IO_L17N_3/VREF_3         |UNUSED   |           |3             |          |         |           |         |         |          |         |           |                |
+|L6        |           |DIFFM    |IO_L17P_3                |UNUSED   |           |3             |          |         |           |         |         |          |         |           |                |
+|L7        |           |         |VCCO_3                   |         |           |3             |          |         |           |         |any******|          |         |           |                |
+|L8        |           |         |GND                      |         |           |              |          |         |           |         |         |          |         |           |                |
+|L9        |           |         |GND                      |         |           |              |          |         |           |         |         |          |         |           |                |
+|L10       |           |         |GND                      |         |           |              |          |         |           |         |         |          |         |           |                |
+|L11       |           |         |GND                      |         |           |              |          |         |           |         |         |          |         |           |                |
+|L12       |           |         |VCCO_1                   |         |           |1             |          |         |           |         |2.50     |          |         |           |                |
+|L13       |lcd_data<0>|IBUF     |IP                       |INPUT    |LVCMOS25   |1             |          |         |           |NONE     |         |LOCATED   |         |NO         |NONE            |
+|L14       |lcd_data<1>|IBUF     |IP                       |INPUT    |LVCMOS25   |1             |          |         |           |NONE     |         |LOCATED   |         |NO         |NONE            |
+|L15       |           |DIFFS    |IO_L09N_1/A11            |UNUSED   |           |1             |          |         |           |         |         |          |         |           |                |
+|L16       |           |DIFFM    |IO_L09P_1/A12            |UNUSED   |           |1             |          |         |           |         |         |          |         |           |                |
+|L17       |LCD_RW     |IOB      |IO_L10N_1/VREF_1         |OUTPUT   |LVCMOS25   |1             |12        |SLOW     |NONE**     |         |         |LOCATED   |         |NO         |NONE            |
+|L18       |LCD_RS     |IOB      |IO_L10P_1                |OUTPUT   |LVCMOS25   |1             |12        |SLOW     |NONE**     |         |         |LOCATED   |         |NO         |NONE            |
+|M1        |           |IBUF     |IP                       |UNUSED   |           |3             |          |         |           |         |         |          |         |           |                |
+|M2        |           |         |VCCAUX                   |         |           |              |          |         |           |         |2.5      |          |         |           |                |
+|M3        |           |DIFFS    |IO_L18N_3                |UNUSED   |           |3             |          |         |           |         |         |          |         |           |                |
+|M4        |           |DIFFM    |IO_L18P_3                |UNUSED   |           |3             |          |         |           |         |         |          |         |           |                |
+|M5        |           |DIFFM    |IO_L19P_3                |UNUSED   |           |3             |          |         |           |         |         |          |         |           |                |
+|M6        |           |DIFFS    |IO_L19N_3                |UNUSED   |           |3             |          |         |           |         |         |          |         |           |                |
+|M7        |           |         |GND                      |         |           |              |          |         |           |         |         |          |         |           |                |
+|M8        |           |         |VCCO_2                   |         |           |2             |          |         |           |         |any******|          |         |           |                |
+|M9        |           |DIFFS    |IO_L12N_2/D6/GCLK13      |UNUSED   |           |2             |          |         |           |         |         |          |         |           |                |
+|M10       |           |DIFFM    |IO_L16P_2/M0             |UNUSED   |           |2             |          |         |           |         |         |          |         |           |                |
+|M11       |           |         |VCCO_2                   |         |           |2             |          |         |           |         |any******|          |         |           |                |
+|M12       |           |         |GND                      |         |           |              |          |         |           |         |         |          |         |           |                |
+|M13       |           |DIFFS    |IO_L05N_1/VREF_1         |UNUSED   |           |1             |          |         |           |         |         |          |         |           |                |
+|M14       |           |DIFFM    |IO_L05P_1                |UNUSED   |           |1             |          |         |           |         |         |          |         |           |                |
+|M15       |sf_d<3>    |IOB      |IO_L07P_1                |OUTPUT   |LVCMOS25   |1             |12        |SLOW     |NONE**     |         |         |LOCATED   |         |NO         |NONE            |
+|M16       |           |DIFFS    |IO_L07N_1                |UNUSED   |           |1             |          |         |           |         |         |          |         |           |                |
+|M17       |           |         |VCCAUX                   |         |           |              |          |         |           |         |2.5      |          |         |           |                |
+|M18       |LCD_E      |IOB      |IO_L08N_1                |OUTPUT   |LVCMOS25   |1             |12        |SLOW     |NONE**     |         |         |LOCATED   |         |NO         |NONE            |
+|N1        |           |IBUF     |IP                       |UNUSED   |           |3             |          |         |           |         |         |          |         |           |                |
+|N2        |           |IBUF     |IP                       |UNUSED   |           |3             |          |         |           |         |         |          |         |           |                |
+|N3        |           |         |VCCO_3                   |         |           |3             |          |         |           |         |any******|          |         |           |                |
+|N4        |           |DIFFM    |IO_L20P_3                |UNUSED   |           |3             |          |         |           |         |         |          |         |           |                |
+|N5        |           |DIFFS    |IO_L20N_3                |UNUSED   |           |3             |          |         |           |         |         |          |         |           |                |
+|N6        |           |         |VCCINT                   |         |           |              |          |         |           |         |1.2      |          |         |           |                |
+|N7        |           |DIFFM    |IO_L07P_2                |UNUSED   |           |2             |          |         |           |         |         |          |         |           |                |
+|N8        |           |DIFFS    |IO_L09N_2                |UNUSED   |           |2             |          |         |           |         |         |          |         |           |                |
+|N9        |           |DIFFM    |IO_L12P_2/D7/GCLK12      |UNUSED   |           |2             |          |         |           |         |         |          |         |           |                |
+|N10       |           |DIFFS    |IO_L16N_2/DIN/D0         |UNUSED   |           |2             |          |         |           |         |         |          |         |           |                |
+|N11       |           |DIFFS    |IO_L18N_2                |UNUSED   |           |2             |          |         |           |         |         |          |         |           |                |
+|N12       |           |         |NC                       |         |           |              |          |         |           |         |         |          |         |           |                |
+|N13       |           |         |VCCINT                   |         |           |              |          |         |           |         |1.2      |          |         |           |                |
+|N14       |           |         |NC                       |         |           |              |          |         |           |         |         |          |         |           |                |
+|N15       |           |         |NC                       |         |           |              |          |         |           |         |         |          |         |           |                |
+|N16       |           |         |VCCO_1                   |         |           |1             |          |         |           |         |2.50     |          |         |           |                |
+|N17       |lcd_data<3>|IBUF     |IP                       |INPUT    |LVCMOS25   |1             |          |         |           |NONE     |         |LOCATED   |         |NO         |NONE            |
+|N18       |           |DIFFM    |IO_L08P_1                |UNUSED   |           |1             |          |         |           |         |         |          |         |           |                |
+|P1        |           |DIFFS    |IO_L21N_3                |UNUSED   |           |3             |          |         |           |         |         |          |         |           |                |
+|P2        |           |DIFFM    |IO_L21P_3                |UNUSED   |           |3             |          |         |           |         |         |          |         |           |                |
+|P3        |           |         |NC                       |         |           |              |          |         |           |         |         |          |         |           |                |
+|P4        |           |         |NC                       |         |           |              |          |         |           |         |         |          |         |           |                |
+|P5        |           |         |VCCINT                   |         |           |              |          |         |           |         |1.2      |          |         |           |                |
+|P6        |           |DIFFS    |IO_L05N_2                |UNUSED   |           |2             |          |         |           |         |         |          |         |           |                |
+|P7        |           |DIFFS    |IO_L07N_2                |UNUSED   |           |2             |          |         |           |         |         |          |         |           |                |
+|P8        |           |DIFFM    |IO_L09P_2                |UNUSED   |           |2             |          |         |           |         |         |          |         |           |                |
+|P9        |           |IOB      |IO                       |UNUSED   |           |2             |          |         |           |         |         |          |         |           |                |
+|P10       |           |DIFFS    |IO_L15N_2/D1/GCLK3       |UNUSED   |           |2             |          |         |           |         |         |          |         |           |                |
+|P11       |           |DIFFM    |IO_L18P_2                |UNUSED   |           |2             |          |         |           |         |         |          |         |           |                |
+|P12       |           |         |NC                       |         |           |              |          |         |           |         |         |          |         |           |                |
+|P13       |           |DIFFM    |IO_L22P_2/A23            |UNUSED   |           |2             |          |         |           |         |         |          |         |           |                |
+|P14       |           |         |VCCINT                   |         |           |              |          |         |           |         |1.2      |          |         |           |                |
+|P15       |           |IOB      |IO                       |UNUSED   |           |1             |          |         |           |         |         |          |         |           |                |
+|P16       |           |         |NC                       |         |           |              |          |         |           |         |         |          |         |           |                |
+|P17       |sf_d<2>    |IOB      |IO_L06P_1                |OUTPUT   |LVCMOS25   |1             |12        |SLOW     |NONE**     |         |         |LOCATED   |         |NO         |NONE            |
+|P18       |           |DIFFS    |IO_L06N_1                |UNUSED   |           |1             |          |         |           |         |         |          |         |           |                |
+|R1        |           |IBUF     |IP                       |UNUSED   |           |3             |          |         |           |         |         |          |         |           |                |
+|R2        |           |DIFFS    |IO_L23N_3                |UNUSED   |           |3             |          |         |           |         |         |          |         |           |                |
+|R3        |           |DIFFM    |IO_L23P_3                |UNUSED   |           |3             |          |         |           |         |         |          |         |           |                |
+|R4        |           |IOB      |IO/VREF_3                |UNUSED   |           |3             |          |         |           |         |         |          |         |           |                |
+|R5        |           |DIFFM    |IO_L04P_2                |UNUSED   |           |2             |          |         |           |         |         |          |         |           |                |
+|R6        |           |DIFFM    |IO_L05P_2                |UNUSED   |           |2             |          |         |           |         |         |          |         |           |                |
+|R7        |           |DIFFSI   |IP_L08N_2                |UNUSED   |           |2             |          |         |           |         |         |          |         |           |                |
+|R8        |           |DIFFM    |IO_L10P_2                |UNUSED   |           |2             |          |         |           |         |         |          |         |           |                |
+|R9        |           |IOB      |IO/D5                    |UNUSED   |           |2             |          |         |           |         |         |          |         |           |                |
+|R10       |           |DIFFM    |IO_L15P_2/D2/GCLK2       |UNUSED   |           |2             |          |         |           |         |         |          |         |           |                |
+|R11       |           |IOB      |IO                       |UNUSED   |           |2             |          |         |           |         |         |          |         |           |                |
+|R12       |           |DIFFS    |IO_L20N_2                |UNUSED   |           |2             |          |         |           |         |         |          |         |           |                |
+|R13       |           |DIFFS    |IO_L22N_2/A22            |UNUSED   |           |2             |          |         |           |         |         |          |         |           |                |
+|R14       |           |DIFFS    |IO_L24N_2/A20            |UNUSED   |           |2             |          |         |           |         |         |          |         |           |                |
+|R15       |sf_d<0>    |IOB      |IO_L03P_1                |OUTPUT   |LVCMOS25   |1             |12        |SLOW     |NONE**     |         |         |LOCATED   |         |NO         |NONE            |
+|R16       |sf_d<1>    |IOB      |IO_L03N_1/VREF_1         |OUTPUT   |LVCMOS25   |1             |12        |SLOW     |NONE**     |         |         |LOCATED   |         |NO         |NONE            |
+|R17       |           |IBUF     |IP                       |UNUSED   |           |1             |          |         |           |         |         |          |         |           |                |
+|R18       |           |DIFFM    |IO_L02P_1/A14            |UNUSED   |           |1             |          |         |           |         |         |          |         |           |                |
+|T1        |           |DIFFS    |IO_L24N_3                |UNUSED   |           |3             |          |         |           |         |         |          |         |           |                |
+|T2        |           |DIFFM    |IO_L24P_3                |UNUSED   |           |3             |          |         |           |         |         |          |         |           |                |
+|T3        |           |DIFFS    |IO_L01N_2/INIT_B         |UNUSED   |           |2             |          |         |           |         |         |          |         |           |                |
+|T4        |           |DIFFS    |IO_L03N_2/MOSI/CSI_B     |UNUSED   |           |2             |          |         |           |         |         |          |         |           |                |
+|T5        |           |DIFFS    |IO_L04N_2                |UNUSED   |           |2             |          |         |           |         |         |          |         |           |                |
+|T6        |           |         |VCCO_2                   |         |           |2             |          |         |           |         |any******|          |         |           |                |
+|T7        |           |DIFFMI   |IP_L08P_2                |UNUSED   |           |2             |          |         |           |         |         |          |         |           |                |
+|T8        |           |DIFFS    |IO_L10N_2                |UNUSED   |           |2             |          |         |           |         |         |          |         |           |                |
+|T9        |           |         |GND                      |         |           |              |          |         |           |         |         |          |         |           |                |
+|T10       |           |DIFFSI   |IP_L14N_2/M2/GCLK1       |UNUSED   |           |2             |          |         |           |         |         |          |         |           |                |
+|T11       |           |DIFFMI   |IP_L17P_2                |UNUSED   |           |2             |          |         |           |         |         |          |         |           |                |
+|T12       |           |DIFFM    |IO_L20P_2                |UNUSED   |           |2             |          |         |           |         |         |          |         |           |                |
+|T13       |           |         |VCCO_2                   |         |           |2             |          |         |           |         |any******|          |         |           |                |
+|T14       |           |DIFFM    |IO_L24P_2/A21            |UNUSED   |           |2             |          |         |           |         |         |          |         |           |                |
+|T15       |           |IOB      |IO/VREF_2                |UNUSED   |           |2             |          |         |           |         |         |          |         |           |                |
+|T16       |           |DIFFM    |IO_L26P_2/VS0/A17        |UNUSED   |           |2             |          |         |           |         |         |          |         |           |                |
+|T17       |           |DIFFS    |IO_L01N_1/A15            |UNUSED   |           |1             |          |         |           |         |         |          |         |           |                |
+|T18       |           |DIFFS    |IO_L02N_1/A13            |UNUSED   |           |1             |          |         |           |         |         |          |         |           |                |
+|U1        |           |IBUF     |IP                       |UNUSED   |           |3             |          |         |           |         |         |          |         |           |                |
+|U2        |           |         |GND                      |         |           |              |          |         |           |         |         |          |         |           |                |
+|U3        |           |DIFFM    |IO_L01P_2/CSO_B          |UNUSED   |           |2             |          |         |           |         |         |          |         |           |                |
+|U4        |           |DIFFM    |IO_L03P_2/DOUT/BUSY      |UNUSED   |           |2             |          |         |           |         |         |          |         |           |                |
+|U5        |           |IOB      |IO/VREF_2                |UNUSED   |           |2             |          |         |           |         |         |          |         |           |                |
+|U6        |           |IBUF     |IP                       |UNUSED   |           |2             |          |         |           |         |         |          |         |           |                |
+|U7        |           |         |VCCAUX                   |         |           |              |          |         |           |         |2.5      |          |         |           |                |
+|U8        |           |DIFFMI   |IP_L11P_2                |UNUSED   |           |2             |          |         |           |         |         |          |         |           |                |
+|U9        |           |DIFFM    |IO_L13P_2/D4/GCLK14      |UNUSED   |           |2             |          |         |           |         |         |          |         |           |                |
+|U10       |           |DIFFMI   |IP_L14P_2/RDWR_B/GCLK0   |UNUSED   |           |2             |          |         |           |         |         |          |         |           |                |
+|U11       |           |DIFFSI   |IP_L17N_2                |UNUSED   |           |2             |          |         |           |         |         |          |         |           |                |
+|U12       |           |         |VCCAUX                   |         |           |              |          |         |           |         |2.5      |          |         |           |                |
+|U13       |           |IBUF     |IP                       |UNUSED   |           |2             |          |         |           |         |         |          |         |           |                |
+|U14       |           |DIFFSI   |IP_L23N_2                |UNUSED   |           |2             |          |         |           |         |         |          |         |           |                |
+|U15       |           |DIFFS    |IO_L25N_2/VS1/A18        |UNUSED   |           |2             |          |         |           |         |         |          |         |           |                |
+|U16       |           |DIFFS    |IO_L26N_2/CCLK           |UNUSED   |           |2             |          |         |           |         |         |          |         |           |                |
+|U17       |           |         |GND                      |         |           |              |          |         |           |         |         |          |         |           |                |
+|U18       |           |DIFFM    |IO_L01P_1/A16            |UNUSED   |           |1             |          |         |           |         |         |          |         |           |                |
+|V1        |           |         |GND                      |         |           |              |          |         |           |         |         |          |         |           |                |
+|V2        |           |IBUF     |IP                       |UNUSED   |           |2             |          |         |           |         |         |          |         |           |                |
+|V3        |           |DIFFSI   |IP_L02N_2                |UNUSED   |           |2             |          |         |           |         |         |          |         |           |                |
+|V4        |           |DIFFMI   |IP_L02P_2                |UNUSED   |           |2             |          |         |           |         |         |          |         |           |                |
+|V5        |           |         |NC                       |         |           |              |          |         |           |         |         |          |         |           |                |
+|V6        |           |         |NC                       |         |           |              |          |         |           |         |         |          |         |           |                |
+|V7        |           |         |NC                       |         |           |              |          |         |           |         |         |          |         |           |                |
+|V8        |           |DIFFSI   |IP_L11N_2/VREF_2         |UNUSED   |           |2             |          |         |           |         |         |          |         |           |                |
+|V9        |           |DIFFS    |IO_L13N_2/D3/GCLK15      |UNUSED   |           |2             |          |         |           |         |         |          |         |           |                |
+|V10       |           |         |VCCO_2                   |         |           |2             |          |         |           |         |any******|          |         |           |                |
+|V11       |           |IOB      |IO/M1                    |UNUSED   |           |2             |          |         |           |         |         |          |         |           |                |
+|V12       |           |DIFFM    |IO_L19P_2                |UNUSED   |           |2             |          |         |           |         |         |          |         |           |                |
+|V13       |           |DIFFS    |IO_L19N_2/VREF_2         |UNUSED   |           |2             |          |         |           |         |         |          |         |           |                |
+|V14       |           |DIFFMI   |IP_L23P_2                |UNUSED   |           |2             |          |         |           |         |         |          |         |           |                |
+|V15       |           |DIFFM    |IO_L25P_2/VS2/A19        |UNUSED   |           |2             |          |         |           |         |         |          |         |           |                |
+|V16       |           |IBUF     |IP                       |UNUSED   |           |2             |          |         |           |         |         |          |         |           |                |
+|V17       |           |         |DONE                     |         |           |              |          |         |           |         |         |          |         |           |                |
+|V18       |           |         |GND                      |         |           |              |          |         |           |         |         |          |         |           |                |
++------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+
+* Default value.
+** This default Pullup/Pulldown value can be overridden in Bitgen. 
+****** Special VCCO requirements may apply. Please consult the device 
+       family datasheet for specific guideline on VCCO requirements. 
+
+

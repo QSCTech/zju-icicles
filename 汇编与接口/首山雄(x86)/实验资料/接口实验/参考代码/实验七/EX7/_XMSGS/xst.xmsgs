@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- IMPORTANT: This is an internal file that has been generated
+     by the Xilinx ISE software.  Any direct editing or
+     changes made to this file may result in unpredictable
+     behavior or data corruption.  It is strongly advised that
+     users do not edit the contents of this file. -->
+<messages>
+<msg type="warning" file="Xst" num="882" delta="unknown" >&quot;<arg fmt="%s" index="1">ex7.v</arg>&quot; line <arg fmt="%d" index="2">78</arg>: Found &apos;Z&apos; or &apos;X&apos; in case statement, condition is always false. 
+</msg>
+
+<msg type="warning" file="Xst" num="646" delta="unknown" >Signal &lt;<arg fmt="%s" index="1">data_pre&lt;10:9&gt;</arg>&gt; is assigned but never used.
+</msg>
+
+<msg type="warning" file="Xst" num="646" delta="unknown" >Signal &lt;<arg fmt="%s" index="1">data_pre&lt;0&gt;</arg>&gt; is assigned but never used.
+</msg>
+
+<msg type="warning" file="Xst" num="1780" delta="unknown" >Signal &lt;<arg fmt="%s" index="1">falg_fallingedge</arg>&gt; is never used or assigned.
+</msg>
+
+<msg type="warning" file="Xst" num="1291" delta="unknown" >FF/Latch &lt;<arg fmt="%s" index="1">data_10</arg>&gt; is unconnected in block &lt;<arg fmt="%s" index="2">ex7</arg>&gt;.
+</msg>
+
+<msg type="warning" file="Xst" num="1291" delta="unknown" >FF/Latch &lt;<arg fmt="%s" index="1">data_9</arg>&gt; is unconnected in block &lt;<arg fmt="%s" index="2">ex7</arg>&gt;.
+</msg>
+
+<msg type="warning" file="Xst" num="1291" delta="unknown" >FF/Latch &lt;<arg fmt="%s" index="1">data_0</arg>&gt; is unconnected in block &lt;<arg fmt="%s" index="2">ex7</arg>&gt;.
+</msg>
+
+<msg type="warning" file="Xst" num="1291" delta="unknown" >FF/Latch &lt;<arg fmt="%s" index="1">data_pre_0</arg>&gt; is unconnected in block &lt;<arg fmt="%s" index="2">ex7</arg>&gt;.
+</msg>
+
+<msg type="warning" file="Xst" num="1291" delta="unknown" >FF/Latch &lt;<arg fmt="%s" index="1">data_pre_9</arg>&gt; is unconnected in block &lt;<arg fmt="%s" index="2">ex7</arg>&gt;.
+</msg>
+
+<msg type="warning" file="Xst" num="1291" delta="unknown" >FF/Latch &lt;<arg fmt="%s" index="1">data_pre_10</arg>&gt; is unconnected in block &lt;<arg fmt="%s" index="2">ex7</arg>&gt;.
+</msg>
+
+<msg type="warning" file="Xst" num="1988" delta="unknown" >Unit &lt;<arg fmt="%s" index="1">ex7</arg>&gt;: instances &lt;<arg fmt="%s" index="2">Mcompar__cmp_ge0000</arg>&gt;, &lt;<arg fmt="%s" index="3">Mcompar__cmp_lt0000</arg>&gt; of unit &lt;<arg fmt="%s" index="4">LPM_COMPARE_1</arg>&gt; and unit &lt;<arg fmt="%s" index="5">LPM_COMPARE_2</arg>&gt; are dual, second instance is removed
+</msg>
+
+</messages>

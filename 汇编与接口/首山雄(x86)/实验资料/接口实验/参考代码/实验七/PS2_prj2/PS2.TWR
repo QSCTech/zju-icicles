@@ -1,0 +1,87 @@
+--------------------------------------------------------------------------------
+Release 8.2i Trace 
+Copyright (c) 1995-2006 Xilinx, Inc.  All rights reserved.
+
+E:\Xilinx\bin\nt\trce.exe -ise E:/Xilinx/PS2_prj2/PS2_prj2.ise -intstyle ise -e
+3 -l 3 -s 5 -xml PS2 PS2.ncd -o PS2.twr PS2.pcf -ucf PS2.ucf
+
+Design file:              ps2.ncd
+Physical constraint file: ps2.pcf
+Device,speed:             xc3s500e,-5 (PRODUCTION 1.23 2006-05-10)
+Report level:             error report
+
+Environment Variable      Effect 
+--------------------      ------ 
+NONE                      No environment variables were set
+--------------------------------------------------------------------------------
+
+INFO:Timing:2698 - No timing constraints found, doing default enumeration.
+INFO:Timing:2752 - To get complete path coverage, use the unconstrained paths 
+   option. All paths that are not constrained will be reported in the 
+   unconstrained paths section(s) of the report.
+
+
+
+Data Sheet report:
+-----------------
+All values displayed in nanoseconds (ns)
+
+Setup/Hold to clock clk
+------------+------------+------------+------------------+--------+
+            |  Setup to  |  Hold to   |                  | Clock  |
+Source      | clk (edge) | clk (edge) |Internal Clock(s) | Phase  |
+------------+------------+------------+------------------+--------+
+ps2_clk     |    0.561(R)|    0.952(R)|clk_BUFGP         |   0.000|
+ps2_data    |    3.305(R)|    1.437(R)|clk_BUFGP         |   0.000|
+rst         |    3.965(R)|    0.477(R)|clk_BUFGP         |   0.000|
+------------+------------+------------+------------------+--------+
+
+Clock clk to Pad
+------------+------------+------------------+--------+
+            | clk (edge) |                  | Clock  |
+Destination |   to PAD   |Internal Clock(s) | Phase  |
+------------+------------+------------------+--------+
+data_out<0> |   17.734(R)|clk_BUFGP         |   0.000|
+data_out<1> |   15.592(R)|clk_BUFGP         |   0.000|
+data_out<2> |   14.404(R)|clk_BUFGP         |   0.000|
+data_out<3> |   18.231(R)|clk_BUFGP         |   0.000|
+data_out<4> |   21.253(R)|clk_BUFGP         |   0.000|
+data_out<5> |   17.113(R)|clk_BUFGP         |   0.000|
+data_out<6> |   14.891(R)|clk_BUFGP         |   0.000|
+data_out<7> |    9.545(R)|clk_BUFGP         |   0.000|
+------------+------------+------------------+--------+
+
+Clock to Setup on destination clock clk
+---------------+---------+---------+---------+---------+
+               | Src:Rise| Src:Fall| Src:Rise| Src:Fall|
+Source Clock   |Dest:Rise|Dest:Rise|Dest:Fall|Dest:Fall|
+---------------+---------+---------+---------+---------+
+clk            |    4.829|         |         |         |
+---------------+---------+---------+---------+---------+
+
+Pad to Pad
+---------------+---------------+---------+
+Source Pad     |Destination Pad|  Delay  |
+---------------+---------------+---------+
+sel            |data_out<0>    |   11.090|
+sel            |data_out<1>    |   12.552|
+sel            |data_out<2>    |   10.310|
+sel            |data_out<3>    |   12.329|
+sel            |data_out<4>    |   14.077|
+sel            |data_out<5>    |   14.763|
+sel            |data_out<6>    |   11.447|
+sel            |data_out<7>    |   11.009|
+---------------+---------------+---------+
+
+
+Analysis completed Tue Nov 04 13:55:35 2008
+--------------------------------------------------------------------------------
+
+Trace Settings:
+-------------------------
+Trace Settings 
+
+Peak Memory Usage: 141 MB
+
+
+
