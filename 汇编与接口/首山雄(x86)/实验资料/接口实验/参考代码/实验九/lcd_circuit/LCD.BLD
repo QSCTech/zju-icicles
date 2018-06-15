@@ -1,0 +1,31 @@
+Release 8.2i ngdbuild I.31
+Copyright (c) 1995-2006 Xilinx, Inc.  All rights reserved.
+
+Command Line: E:\Xilinx\bin\nt\ngdbuild.exe -ise
+E:/Xilinx/lcd_circuit/lcd_circuit.ise -intstyle ise -dd _ngo -nt timestamp -uc
+lcd.ucf -p xc3s500e-fg320-5 lcd.ngc lcd.ngd
+
+Reading NGO file 'E:/Xilinx/lcd_circuit/lcd.ngc' ...
+
+Applying constraints in "lcd.ucf" to the design...
+
+Checking timing specifications ...
+Checking Partitions ...
+Checking expanded design ...
+
+Partition Implementation Status
+-------------------------------
+
+  No Partitions were found in this design.
+
+-------------------------------
+
+NGDBUILD Design Results Summary:
+  Number of errors:     0
+  Number of warnings:   0
+
+Total memory usage is 69624 kilobytes
+
+Writing NGD file "lcd.ngd" ...
+
+Writing NGDBUILD log file "lcd.bld"...

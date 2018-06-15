@@ -1,0 +1,411 @@
+Release 8.2i - xst I.31
+Copyright (c) 1995-2006 Xilinx, Inc.  All rights reserved.
+--> Parameter TMPDIR set to ./xst/projnav.tmp
+CPU : 0.00 / 1.91 s | Elapsed : 0.00 / 2.00 s
+ 
+--> Parameter xsthdpdir set to ./xst
+CPU : 0.00 / 1.91 s | Elapsed : 0.00 / 2.00 s
+ 
+--> Reading design: ex7.prj
+
+TABLE OF CONTENTS
+  1) Synthesis Options Summary
+  2) HDL Compilation
+  3) Design Hierarchy Analysis
+  4) HDL Analysis
+  5) HDL Synthesis
+     5.1) HDL Synthesis Report
+  6) Advanced HDL Synthesis
+     6.1) Advanced HDL Synthesis Report
+  7) Low Level Synthesis
+  8) Partition Report
+  9) Final Report
+     9.1) Device utilization summary
+     9.2) TIMING REPORT
+
+
+=========================================================================
+*                      Synthesis Options Summary                        *
+=========================================================================
+---- Source Parameters
+Input File Name                    : "ex7.prj"
+Input Format                       : mixed
+Ignore Synthesis Constraint File   : NO
+
+---- Target Parameters
+Output File Name                   : "ex7"
+Output Format                      : NGC
+Target Device                      : xc3s500e-5-fg320
+
+---- Source Options
+Top Module Name                    : ex7
+Automatic FSM Extraction           : YES
+FSM Encoding Algorithm             : Auto
+FSM Style                          : lut
+RAM Extraction                     : Yes
+RAM Style                          : Auto
+ROM Extraction                     : Yes
+Mux Style                          : Auto
+Decoder Extraction                 : YES
+Priority Encoder Extraction        : YES
+Shift Register Extraction          : YES
+Logical Shifter Extraction         : YES
+XOR Collapsing                     : YES
+ROM Style                          : Auto
+Mux Extraction                     : YES
+Resource Sharing                   : YES
+Multiplier Style                   : auto
+Automatic Register Balancing       : No
+
+---- Target Options
+Add IO Buffers                     : YES
+Global Maximum Fanout              : 500
+Add Generic Clock Buffer(BUFG)     : 8
+Register Duplication               : YES
+Slice Packing                      : YES
+Pack IO Registers into IOBs        : auto
+Equivalent register Removal        : YES
+
+---- General Options
+Optimization Goal                  : Speed
+Optimization Effort                : 1
+Keep Hierarchy                     : NO
+RTL Output                         : Yes
+Global Optimization                : AllClockNets
+Write Timing Constraints           : NO
+Hierarchy Separator                : /
+Bus Delimiter                      : <>
+Case Specifier                     : maintain
+Slice Utilization Ratio            : 100
+Slice Utilization Ratio Delta      : 5
+
+---- Other Options
+lso                                : ex7.lso
+Read Cores                         : YES
+cross_clock_analysis               : NO
+verilog2001                        : YES
+safe_implementation                : No
+Optimize Instantiated Primitives   : NO
+use_clock_enable                   : Yes
+use_sync_set                       : Yes
+use_sync_reset                     : Yes
+
+=========================================================================
+
+
+=========================================================================
+*                          HDL Compilation                              *
+=========================================================================
+Compiling verilog file "ex7.v" in library work
+Module <ex7> compiled
+No errors in compilation
+Analysis of file <"ex7.prj"> succeeded.
+ 
+
+=========================================================================
+*                     Design Hierarchy Analysis                         *
+=========================================================================
+Analyzing hierarchy for module <ex7> in library <work>.
+
+Building hierarchy successfully finished.
+
+=========================================================================
+*                            HDL Analysis                               *
+=========================================================================
+Analyzing top module <ex7>.
+WARNING:Xst:882 - "ex7.v" line 78: Found 'Z' or 'X' in case statement, condition is always false. 
+Module <ex7> is correct for synthesis.
+ 
+
+=========================================================================
+*                           HDL Synthesis                               *
+=========================================================================
+
+Performing bidirectional port resolution...
+
+Synthesizing Unit <ex7>.
+    Related source file is "ex7.v".
+WARNING:Xst:646 - Signal <data_pre<10:9>> is assigned but never used.
+WARNING:Xst:646 - Signal <data_pre<0>> is assigned but never used.
+WARNING:Xst:1780 - Signal <falg_fallingedge> is never used or assigned.
+    Found 4-bit comparator greatequal for signal <$cmp_ge0000> created at line 55.
+    Found 4-bit comparator less for signal <$cmp_lt0000> created at line 55.
+    Found 1-bit 4-to-1 multiplexer for signal <$mux0011>.
+    Found 11-bit register for signal <data>.
+    Found 11-bit register for signal <data_pre>.
+    Found 4-bit up counter for signal <i>.
+    Found 1-bit register for signal <shift_on>.
+    Found 2-bit register for signal <stored_ps2_clk>.
+    Summary:
+	inferred   1 Counter(s).
+	inferred  25 D-type flip-flop(s).
+	inferred   2 Comparator(s).
+	inferred   1 Multiplexer(s).
+Unit <ex7> synthesized.
+
+
+=========================================================================
+HDL Synthesis Report
+
+Macro Statistics
+# Counters                                             : 1
+ 4-bit up counter                                      : 1
+# Registers                                            : 14
+ 1-bit register                                        : 12
+ 11-bit register                                       : 1
+ 2-bit register                                        : 1
+# Comparators                                          : 2
+ 4-bit comparator greatequal                           : 1
+ 4-bit comparator less                                 : 1
+# Multiplexers                                         : 1
+ 1-bit 4-to-1 multiplexer                              : 1
+
+=========================================================================
+
+=========================================================================
+*                       Advanced HDL Synthesis                          *
+=========================================================================
+
+Loading device for application Rf_Device from file '3s500e.nph' in environment D:\Xilinx.
+WARNING:Xst:1291 - FF/Latch <data_10> is unconnected in block <ex7>.
+WARNING:Xst:1291 - FF/Latch <data_9> is unconnected in block <ex7>.
+WARNING:Xst:1291 - FF/Latch <data_0> is unconnected in block <ex7>.
+WARNING:Xst:1291 - FF/Latch <data_pre_0> is unconnected in block <ex7>.
+WARNING:Xst:1291 - FF/Latch <data_pre_9> is unconnected in block <ex7>.
+WARNING:Xst:1291 - FF/Latch <data_pre_10> is unconnected in block <ex7>.
+
+=========================================================================
+Advanced HDL Synthesis Report
+
+Macro Statistics
+# Counters                                             : 1
+ 4-bit up counter                                      : 1
+# Registers                                            : 19
+ Flip-Flops                                            : 19
+# Comparators                                          : 2
+ 4-bit comparator greatequal                           : 1
+ 4-bit comparator less                                 : 1
+# Multiplexers                                         : 1
+ 1-bit 4-to-1 multiplexer                              : 1
+
+=========================================================================
+
+=========================================================================
+*                         Low Level Synthesis                           *
+=========================================================================
+WARNING:Xst:1988 - Unit <ex7>: instances <Mcompar__cmp_ge0000>, <Mcompar__cmp_lt0000> of unit <LPM_COMPARE_1> and unit <LPM_COMPARE_2> are dual, second instance is removed
+
+Optimizing unit <ex7> ...
+
+Mapping all equations...
+Building and optimizing final netlist ...
+Found area constraint ratio of 100 (+ 5) on block ex7, actual ratio is 2.
+FlipFlop data_1 has been replicated 1 time(s)
+FlipFlop data_2 has been replicated 1 time(s)
+FlipFlop data_4 has been replicated 1 time(s)
+FlipFlop data_5 has been replicated 1 time(s)
+FlipFlop data_6 has been replicated 1 time(s)
+
+Final Macro Processing ...
+
+=========================================================================
+Final Register Report
+
+Macro Statistics
+# Registers                                            : 28
+ Flip-Flops                                            : 28
+
+=========================================================================
+
+=========================================================================
+*                          Partition Report                             *
+=========================================================================
+
+Partition Implementation Status
+-------------------------------
+
+  No Partitions were found in this design.
+
+-------------------------------
+
+=========================================================================
+*                            Final Report                               *
+=========================================================================
+Final Results
+RTL Top Level Output File Name     : ex7.ngr
+Top Level Output File Name         : ex7
+Output Format                      : NGC
+Optimization Goal                  : Speed
+Keep Hierarchy                     : NO
+
+Design Statistics
+# IOs                              : 13
+
+Cell Usage :
+# BELS                             : 159
+#      INV                         : 2
+#      LUT2                        : 7
+#      LUT2_D                      : 3
+#      LUT3                        : 24
+#      LUT4                        : 96
+#      LUT4_L                      : 4
+#      MUXF5                       : 22
+#      VCC                         : 1
+# FlipFlops/Latches                : 28
+#      FD                          : 2
+#      FDE                         : 22
+#      FDRE                        : 4
+# Clock Buffers                    : 1
+#      BUFGP                       : 1
+# IO Buffers                       : 12
+#      IBUF                        : 4
+#      OBUF                        : 8
+=========================================================================
+
+Device utilization summary:
+---------------------------
+
+Selected Device : 3s500efg320-5 
+
+ Number of Slices:                      75  out of   4656     1%  
+ Number of Slice Flip Flops:            28  out of   9312     0%  
+ Number of 4 input LUTs:               136  out of   9312     1%  
+ Number of IOs:                         13
+ Number of bonded IOBs:                 13  out of    232     5%  
+ Number of GCLKs:                        1  out of     24     4%  
+
+
+=========================================================================
+TIMING REPORT
+
+NOTE: THESE TIMING NUMBERS ARE ONLY A SYNTHESIS ESTIMATE.
+      FOR ACCURATE TIMING INFORMATION PLEASE REFER TO THE TRACE REPORT
+      GENERATED AFTER PLACE-and-ROUTE.
+
+Clock Information:
+------------------
+-----------------------------------+------------------------+-------+
+Clock Signal                       | Clock buffer(FF name)  | Load  |
+-----------------------------------+------------------------+-------+
+clk                                | BUFGP                  | 28    |
+-----------------------------------+------------------------+-------+
+
+Asynchronous Control Signals Information:
+----------------------------------------
+No asynchronous control signals found in this design
+
+Timing Summary:
+---------------
+Speed Grade: -5
+
+   Minimum period: 5.876ns (Maximum Frequency: 170.179MHz)
+   Minimum input arrival time before clock: 4.646ns
+   Maximum output required time after clock: 12.490ns
+   Maximum combinational path delay: 6.557ns
+
+Timing Detail:
+--------------
+All values displayed in nanoseconds (ns)
+
+=========================================================================
+Timing constraint: Default period analysis for Clock 'clk'
+  Clock period: 5.876ns (frequency: 170.179MHz)
+  Total number of paths / destination ports: 233 / 57
+-------------------------------------------------------------------------
+Delay:               5.876ns (Levels of Logic = 5)
+  Source:            data_5_1 (FF)
+  Destination:       shift_on (FF)
+  Source Clock:      clk rising
+  Destination Clock: clk rising
+
+  Data Path: data_5_1 to shift_on
+                                Gate     Net
+    Cell:in->out      fanout   Delay   Delay  Logical Name (Net Name)
+    ----------------------------------------  ------------
+     FDE:C->Q              2   0.514   0.897  data_5_1 (data_5_1)
+     LUT2_D:I0->LO         1   0.612   0.103  out<0>141 (N1041)
+     LUT4:I3->O            1   0.612   0.684  _mux00111_SW0_G_SW0 (N937)
+     LUT4:I3->O            1   0.612   0.000  _mux00111_SW0_G (N934)
+     MUXF5:I1->O           1   0.278   0.684  _mux00111_SW0 (N927)
+     LUT4:I3->O            1   0.612   0.000  _mux00111 (_mux0011)
+     FDE:D                     0.268          shift_on
+    ----------------------------------------
+    Total                      5.876ns (3.508ns logic, 2.368ns route)
+                                       (59.7% logic, 40.3% route)
+
+=========================================================================
+Timing constraint: Default OFFSET IN BEFORE for Clock 'clk'
+  Total number of paths / destination ports: 41 / 40
+-------------------------------------------------------------------------
+Offset:              4.646ns (Levels of Logic = 3)
+  Source:            rst (PAD)
+  Destination:       data_pre_1 (FF)
+  Destination Clock: clk rising
+
+  Data Path: rst to data_pre_1
+                                Gate     Net
+    Cell:in->out      fanout   Delay   Delay  Logical Name (Net Name)
+    ----------------------------------------  ------------
+     IBUF:I->O             4   1.106   0.782  rst_IBUF (rst_IBUF)
+     LUT4_L:I3->LO         1   0.612   0.130  _not00061_SW1 (N965)
+     LUT4:I2->O            8   0.612   0.921  _not00061 (_not0006)
+     FDE:CE                    0.483          data_pre_7
+    ----------------------------------------
+    Total                      4.646ns (2.813ns logic, 1.833ns route)
+                                       (60.5% logic, 39.5% route)
+
+=========================================================================
+Timing constraint: Default OFFSET OUT AFTER for Clock 'clk'
+  Total number of paths / destination ports: 341 / 8
+-------------------------------------------------------------------------
+Offset:              12.490ns (Levels of Logic = 7)
+  Source:            data_6 (FF)
+  Destination:       out<4> (PAD)
+  Source Clock:      clk rising
+
+  Data Path: data_6 to out<4>
+                                Gate     Net
+    Cell:in->out      fanout   Delay   Delay  Logical Name (Net Name)
+    ----------------------------------------  ------------
+     FDE:C->Q             53   0.514   1.829  data_6 (data_6)
+     LUT2:I0->O            1   0.612   0.750  out<2>131 (N76)
+     LUT4:I1->O            2   0.612   0.814  out<4>255 (out<4>2_map1000)
+     LUT4:I1->O            1   0.612   0.684  out<4>277_SW2 (N990)
+     LUT4:I3->O            1   0.612   0.000  out<4>1_SW01 (N1024)
+     MUXF5:I1->O           1   0.278   0.711  out<4>1_SW0_f5 (N176)
+     LUT4:I2->O            1   0.612   0.681  out<4>1 (out_4_OBUF)
+     OBUF:I->O                 3.169          out_4_OBUF (out<4>)
+    ----------------------------------------
+    Total                     12.490ns (7.021ns logic, 5.469ns route)
+                                       (56.2% logic, 43.8% route)
+
+=========================================================================
+Timing constraint: Default path analysis
+  Total number of paths / destination ports: 8 / 8
+-------------------------------------------------------------------------
+Delay:               6.557ns (Levels of Logic = 3)
+  Source:            sel (PAD)
+  Destination:       out<7> (PAD)
+
+  Data Path: sel to out<7>
+                                Gate     Net
+    Cell:in->out      fanout   Delay   Delay  Logical Name (Net Name)
+    ----------------------------------------  ------------
+     IBUF:I->O             8   1.106   0.990  sel_IBUF (sel_IBUF)
+     LUT4:I1->O            1   0.612   0.681  out<3>1 (out_3_OBUF)
+     OBUF:I->O                 3.169          out_3_OBUF (out<3>)
+    ----------------------------------------
+    Total                      6.557ns (4.887ns logic, 1.670ns route)
+                                       (74.5% logic, 25.5% route)
+
+=========================================================================
+CPU : 29.86 / 31.94 s | Elapsed : 30.00 / 32.00 s
+ 
+--> 
+
+Total memory usage is 127872 kilobytes
+
+Number of errors   :    0 (   0 filtered)
+Number of warnings :   11 (   0 filtered)
+Number of infos    :    0 (   0 filtered)
+

@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- IMPORTANT: This is an internal file that has been generated
+     by the Xilinx ISE software.  Any direct editing or
+     changes made to this file may result in unpredictable
+     behavior or data corruption.  It is strongly advised that
+     users do not edit the contents of this file. -->
+<messages>
+<msg type="info" file="MapLib" num="562" delta="unknown" >No environment variables are currently set.
+</msg>
+
+<msg type="info" file="MapLib" num="535" delta="unknown" >The following Virtex BUFG(s) is/are being retargetted to Virtex2 BUFGMUX(s) with input tied to I0 and Select pin tied to constant 0:
+<arg fmt="%s" index="1">BUFGP symbol &quot;CLK_BUFGP&quot; (output signal=CLK_BUFGP),
+BUFG symbol &quot;count/qout_15_BUFG&quot; (output signal=count/qout&lt;15&gt;)</arg>
+</msg>
+
+<msg type="info" file="LIT" num="244" delta="unknown" >All of the single ended outputs in this design are using slew rate limited output drivers. The delay on speed critical single ended outputs can be dramatically reduced by designating them as fast outputs in the schematic.
+</msg>
+
+<msg type="warning" file="LIT" num="176" delta="unknown" >Clock buffer is designated to drive clock loads. <arg fmt="%s" index="1">BUFGMUX symbol &quot;physical_group_count/qout&lt;15&gt;/count/qout_15_BUFG&quot; (output signal=count/qout&lt;15&gt;)</arg> has a mix of clock and non-clock loads. The non-clock loads are:
+<arg fmt="%s" index="2">Pin S of count/Mcount_qout_cy&lt;15&gt;
+Pin LI of count/Mcount_qout_xor&lt;15&gt;</arg>
+</msg>
+
+</messages>

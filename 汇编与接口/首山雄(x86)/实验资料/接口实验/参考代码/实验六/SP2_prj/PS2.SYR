@@ -1,0 +1,374 @@
+Release 8.2i - xst I.31
+Copyright (c) 1995-2006 Xilinx, Inc.  All rights reserved.
+--> Parameter TMPDIR set to ./xst/projnav.tmp
+CPU : 0.00 / 0.39 s | Elapsed : 0.00 / 1.00 s
+ 
+--> Parameter xsthdpdir set to ./xst
+CPU : 0.00 / 0.39 s | Elapsed : 0.00 / 1.00 s
+ 
+--> Reading design: PS2.prj
+
+TABLE OF CONTENTS
+  1) Synthesis Options Summary
+  2) HDL Compilation
+  3) Design Hierarchy Analysis
+  4) HDL Analysis
+  5) HDL Synthesis
+     5.1) HDL Synthesis Report
+  6) Advanced HDL Synthesis
+     6.1) Advanced HDL Synthesis Report
+  7) Low Level Synthesis
+  8) Partition Report
+  9) Final Report
+     9.1) Device utilization summary
+     9.2) TIMING REPORT
+
+
+=========================================================================
+*                      Synthesis Options Summary                        *
+=========================================================================
+---- Source Parameters
+Input File Name                    : "PS2.prj"
+Input Format                       : mixed
+Ignore Synthesis Constraint File   : NO
+
+---- Target Parameters
+Output File Name                   : "PS2"
+Output Format                      : NGC
+Target Device                      : xc3s500e-5-fg320
+
+---- Source Options
+Top Module Name                    : PS2
+Automatic FSM Extraction           : YES
+FSM Encoding Algorithm             : Auto
+FSM Style                          : lut
+RAM Extraction                     : Yes
+RAM Style                          : Auto
+ROM Extraction                     : Yes
+Mux Style                          : Auto
+Decoder Extraction                 : YES
+Priority Encoder Extraction        : YES
+Shift Register Extraction          : YES
+Logical Shifter Extraction         : YES
+XOR Collapsing                     : YES
+ROM Style                          : Auto
+Mux Extraction                     : YES
+Resource Sharing                   : YES
+Multiplier Style                   : auto
+Automatic Register Balancing       : No
+
+---- Target Options
+Add IO Buffers                     : YES
+Global Maximum Fanout              : 500
+Add Generic Clock Buffer(BUFG)     : 8
+Register Duplication               : YES
+Slice Packing                      : YES
+Pack IO Registers into IOBs        : auto
+Equivalent register Removal        : YES
+
+---- General Options
+Optimization Goal                  : Speed
+Optimization Effort                : 1
+Keep Hierarchy                     : NO
+RTL Output                         : Yes
+Global Optimization                : AllClockNets
+Write Timing Constraints           : NO
+Hierarchy Separator                : /
+Bus Delimiter                      : <>
+Case Specifier                     : maintain
+Slice Utilization Ratio            : 100
+Slice Utilization Ratio Delta      : 5
+
+---- Other Options
+lso                                : PS2.lso
+Read Cores                         : YES
+cross_clock_analysis               : NO
+verilog2001                        : YES
+safe_implementation                : No
+Optimize Instantiated Primitives   : NO
+use_clock_enable                   : Yes
+use_sync_set                       : Yes
+use_sync_reset                     : Yes
+
+=========================================================================
+
+
+=========================================================================
+*                          HDL Compilation                              *
+=========================================================================
+Compiling verilog file "SP2.v" in library work
+Module <PS2> compiled
+No errors in compilation
+Analysis of file <"PS2.prj"> succeeded.
+ 
+
+=========================================================================
+*                     Design Hierarchy Analysis                         *
+=========================================================================
+Analyzing hierarchy for module <PS2> in library <work>.
+
+Building hierarchy successfully finished.
+
+=========================================================================
+*                            HDL Analysis                               *
+=========================================================================
+Analyzing top module <PS2>.
+Module <PS2> is correct for synthesis.
+ 
+
+=========================================================================
+*                           HDL Synthesis                               *
+=========================================================================
+
+Performing bidirectional port resolution...
+
+Synthesizing Unit <PS2>.
+    Related source file is "SP2.v".
+WARNING:Xst:646 - Signal <ps2_clk_risingedge> is assigned but never used.
+    Found 11-bit register for signal <data2>.
+    Found 4-bit comparator greatequal for signal <$cmp_ge0000> created at line 47.
+    Found 1-bit 11-to-1 multiplexer for signal <$COND_1>.
+    Found 11-bit register for signal <data>.
+    Found 4-bit up counter for signal <i>.
+    Found 3-bit register for signal <ps2_clkr>.
+    Summary:
+	inferred   1 Counter(s).
+	inferred  25 D-type flip-flop(s).
+	inferred   1 Comparator(s).
+	inferred   1 Multiplexer(s).
+Unit <PS2> synthesized.
+
+
+=========================================================================
+HDL Synthesis Report
+
+Macro Statistics
+# Counters                                             : 1
+ 4-bit up counter                                      : 1
+# Registers                                            : 23
+ 1-bit register                                        : 22
+ 3-bit register                                        : 1
+# Comparators                                          : 1
+ 4-bit comparator greatequal                           : 1
+# Multiplexers                                         : 1
+ 1-bit 11-to-1 multiplexer                             : 1
+
+=========================================================================
+
+=========================================================================
+*                       Advanced HDL Synthesis                          *
+=========================================================================
+
+Loading device for application Rf_Device from file '3s500e.nph' in environment E:\Xilinx.
+
+=========================================================================
+Advanced HDL Synthesis Report
+
+Macro Statistics
+# Counters                                             : 1
+ 4-bit up counter                                      : 1
+# Registers                                            : 25
+ Flip-Flops                                            : 25
+# Comparators                                          : 1
+ 4-bit comparator greatequal                           : 1
+# Multiplexers                                         : 1
+ 1-bit 11-to-1 multiplexer                             : 1
+
+=========================================================================
+
+=========================================================================
+*                         Low Level Synthesis                           *
+=========================================================================
+
+Optimizing unit <PS2> ...
+
+Mapping all equations...
+Building and optimizing final netlist ...
+Found area constraint ratio of 100 (+ 5) on block PS2, actual ratio is 0.
+
+Final Macro Processing ...
+
+Processing Unit <PS2> :
+	Found 2-bit shift register for signal <ps2_clkr_1>.
+Unit <PS2> processed.
+
+=========================================================================
+Final Register Report
+
+Macro Statistics
+# Registers                                            : 27
+ Flip-Flops                                            : 27
+# Shift Registers                                      : 1
+ 2-bit shift register                                  : 1
+
+=========================================================================
+
+=========================================================================
+*                          Partition Report                             *
+=========================================================================
+
+Partition Implementation Status
+-------------------------------
+
+  No Partitions were found in this design.
+
+-------------------------------
+
+=========================================================================
+*                            Final Report                               *
+=========================================================================
+Final Results
+RTL Top Level Output File Name     : PS2.ngr
+Top Level Output File Name         : PS2
+Output Format                      : NGC
+Optimization Goal                  : Speed
+Keep Hierarchy                     : NO
+
+Design Statistics
+# IOs                              : 15
+
+Cell Usage :
+# BELS                             : 33
+#      GND                         : 1
+#      INV                         : 1
+#      LUT2                        : 2
+#      LUT3                        : 6
+#      LUT3_L                      : 1
+#      LUT4                        : 15
+#      LUT4_D                      : 1
+#      LUT4_L                      : 3
+#      MUXF5                       : 3
+# FlipFlops/Latches                : 28
+#      FD                          : 2
+#      FDE                         : 22
+#      FDRE                        : 4
+# Shift Registers                  : 1
+#      SRL16                       : 1
+# Clock Buffers                    : 1
+#      BUFGP                       : 1
+# IO Buffers                       : 14
+#      IBUF                        : 3
+#      OBUF                        : 11
+=========================================================================
+
+Device utilization summary:
+---------------------------
+
+Selected Device : 3s500efg320-5 
+
+ Number of Slices:                      25  out of   4656     0%  
+ Number of Slice Flip Flops:            28  out of   9312     0%  
+ Number of 4 input LUTs:                30  out of   9312     0%  
+    Number used as logic:               29
+    Number used as Shift registers:      1
+ Number of IOs:                         15
+ Number of bonded IOBs:                 15  out of    232     6%  
+ Number of GCLKs:                        1  out of     24     4%  
+
+
+=========================================================================
+TIMING REPORT
+
+NOTE: THESE TIMING NUMBERS ARE ONLY A SYNTHESIS ESTIMATE.
+      FOR ACCURATE TIMING INFORMATION PLEASE REFER TO THE TRACE REPORT
+      GENERATED AFTER PLACE-and-ROUTE.
+
+Clock Information:
+------------------
+-----------------------------------+------------------------+-------+
+Clock Signal                       | Clock buffer(FF name)  | Load  |
+-----------------------------------+------------------------+-------+
+clk                                | BUFGP                  | 29    |
+-----------------------------------+------------------------+-------+
+
+Asynchronous Control Signals Information:
+----------------------------------------
+No asynchronous control signals found in this design
+
+Timing Summary:
+---------------
+Speed Grade: -5
+
+   Minimum period: 4.826ns (Maximum Frequency: 207.207MHz)
+   Minimum input arrival time before clock: 5.402ns
+   Maximum output required time after clock: 4.364ns
+   Maximum combinational path delay: No path found
+
+Timing Detail:
+--------------
+All values displayed in nanoseconds (ns)
+
+=========================================================================
+Timing constraint: Default period analysis for Clock 'clk'
+  Clock period: 4.826ns (frequency: 207.207MHz)
+  Total number of paths / destination ports: 458 / 47
+-------------------------------------------------------------------------
+Delay:               4.826ns (Levels of Logic = 2)
+  Source:            i_3 (FF)
+  Destination:       data_0 (FF)
+  Source Clock:      clk rising
+  Destination Clock: clk rising
+
+  Data Path: i_3 to data_0
+                                Gate     Net
+    Cell:in->out      fanout   Delay   Delay  Logical Name (Net Name)
+    ----------------------------------------  ------------
+     FDRE:C->Q             8   0.514   0.951  i_3 (i_3)
+     LUT4_D:I2->O          7   0.612   0.909  _not001811 (N0)
+     LUT4:I3->O            2   0.612   0.745  _not00171 (_not0017)
+     FDE:CE                    0.483          data_6
+    ----------------------------------------
+    Total                      4.826ns (2.221ns logic, 2.605ns route)
+                                       (46.0% logic, 54.0% route)
+
+=========================================================================
+Timing constraint: Default OFFSET IN BEFORE for Clock 'clk'
+  Total number of paths / destination ports: 38 / 38
+-------------------------------------------------------------------------
+Offset:              5.402ns (Levels of Logic = 3)
+  Source:            rst (PAD)
+  Destination:       data_0 (FF)
+  Destination Clock: clk rising
+
+  Data Path: rst to data_0
+                                Gate     Net
+    Cell:in->out      fanout   Delay   Delay  Logical Name (Net Name)
+    ----------------------------------------  ------------
+     IBUF:I->O             5   1.106   0.935  rst_IBUF (rst_IBUF)
+     LUT4_D:I0->O          7   0.612   0.909  _not001811 (N0)
+     LUT4:I3->O            2   0.612   0.745  _not00171 (_not0017)
+     FDE:CE                    0.483          data_6
+    ----------------------------------------
+    Total                      5.402ns (2.813ns logic, 2.589ns route)
+                                       (52.1% logic, 47.9% route)
+
+=========================================================================
+Timing constraint: Default OFFSET OUT AFTER for Clock 'clk'
+  Total number of paths / destination ports: 11 / 11
+-------------------------------------------------------------------------
+Offset:              4.364ns (Levels of Logic = 1)
+  Source:            data2_10 (FF)
+  Destination:       data2<10> (PAD)
+  Source Clock:      clk rising
+
+  Data Path: data2_10 to data2<10>
+                                Gate     Net
+    Cell:in->out      fanout   Delay   Delay  Logical Name (Net Name)
+    ----------------------------------------  ------------
+     FDE:C->Q              1   0.514   0.681  data2_10 (data2_10)
+     OBUF:I->O                 3.169          data2_10_OBUF (data2<10>)
+    ----------------------------------------
+    Total                      4.364ns (3.683ns logic, 0.681ns route)
+                                       (84.4% logic, 15.6% route)
+
+=========================================================================
+CPU : 9.41 / 9.89 s | Elapsed : 9.00 / 10.00 s
+ 
+--> 
+
+Total memory usage is 150900 kilobytes
+
+Number of errors   :    0 (   0 filtered)
+Number of warnings :    1 (   0 filtered)
+Number of infos    :    0 (   0 filtered)
+

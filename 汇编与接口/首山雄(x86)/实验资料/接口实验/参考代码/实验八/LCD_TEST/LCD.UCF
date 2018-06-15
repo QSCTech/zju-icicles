@@ -1,0 +1,19 @@
+NET "CLK" 		LOC="C9";
+NET "RST" 		LOC="K17";
+NET "SEND"		LOC="D18";
+NET "LCD_E" 	LOC="M18";
+NET "LCD_RS" 	LOC="L18";
+NET "LCD_RW" 	LOC="L17";
+
+NET "sf_d[0]" 	LOC="R15";
+
+NET "sf_d[1]" 	LOC="R16";
+
+NET "sf_d[2]" 	LOC="P17";
+
+NET "sf_d[3]" 	LOC="M15";
+
+NET "lcd_data[0]" LOC="L13";
+NET "lcd_data[1]" LOC="L14";
+NET "lcd_data[2]" LOC="H18";
+NET "lcd_data[3]" LOC="N17";
