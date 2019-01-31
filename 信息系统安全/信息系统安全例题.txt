@@ -1,0 +1,19 @@
+*	What is the purpose of having a slow hash function in the UNIX password scheme, instead of as fast hash function？
+A.	improve performance of the authentication process at runtime
+B.	slow down the authentication process to increase difficulty of offline dictionary attacks
+C.	increase the randomness of user selected passwords
+D.	All of the above
+E.	None of the above
+
+ANS: ________________
+B
+
+*	Consider the following two biometric authentication schemes, iris scan vs. voice recognition. Which of the following describes the cost vs. accuracy tradeoffs between them?
+A.	Iris scan is more accurate, and has higher cost than voice recognition.
+B.	Iris scan is more accurate, and has lower cost than voice recognition.
+C.	Iris scan is less accurate, and has higher cost than voice recognition.
+D.	Iris scan is less accurate, and has lower cost than voice recognition.
+
+ANS: ________________
+A
+
