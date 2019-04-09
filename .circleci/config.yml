@@ -32,4 +32,4 @@ jobs:
           command: ssh-add -D && ssh-add ~/.ssh/id_rsa_a42fc8ede9cdb7703618f855c916f25c
       - run:
           name: Deploy docs to gh-pages branch
-          command: pipenv run mkdocs gh-deploy
+          command: pipenv run mkdocs gh-deploy -m "[skip ci] deploy by mkdocs"
