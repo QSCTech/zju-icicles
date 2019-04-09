@@ -1,5 +1,4 @@
 import os
-from functools import reduce
 
 EXCLUDE_DIRS = ['.git', 'docs', '.vscode', '.circleci']
 README_MD = ['README.md', 'readme.md', 'index.md']
@@ -25,10 +24,8 @@ def list_files(course: str):
                 else:
                     filelist_texts += '{}- [{}]({})\n'.format(subindent,
                                                               f, '{}{}/{}'.format(BIN_URL_PREFIX, root,  f))
-
             else:
                 readme_path = '{}/{}'.format(root, f)
-
     return filelist_texts, readme_path
 
 
@@ -42,8 +39,8 @@ def generate_md(course: str, filelist_texts: str, readme_path: str):
 
 
 if __name__ == '__main__':
-    courses = list(filter(lambda x: os.path.isdir(
-        x) and (x not in EXCLUDE_DIRS), os.listdir('.')))  # list dirs and filter the courses out
+    courses = list(filter(lambda x: os.path.isdir(x) and (
+        x not in EXCLUDE_DIRS), os.listdir('.')))  # list courses
 
     for course in courses:
         filelist_texts, readme_path = list_files(course)
