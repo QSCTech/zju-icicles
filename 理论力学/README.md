@@ -10,11 +10,11 @@
 
 下载地址：
 
-ftp://software.cc98.org/，在/#Upload/shuji下（内网）
+ftp://software.cc98.org/ ，在/#Upload/shuji下（内网）
 
 或
 
-https://pan.zju.edu.cn/share/6dc46f525fec3baf0d8c5ed4a1（权限为仅zju在校生可下载）
+https://pan.zju.edu.cn/share/6dc46f525fec3baf0d8c5ed4a1 （权限为仅zju在校生可下载）
 
 ## 求物
 
