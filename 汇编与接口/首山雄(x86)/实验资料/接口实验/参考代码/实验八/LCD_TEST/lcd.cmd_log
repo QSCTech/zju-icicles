@@ -1,0 +1,54 @@
+xst -ise "E:/Xilinx/lcd_test/lcd_test.ise" -intstyle ise -ifn lcd.xst -ofn lcd.syr
+ngdbuild -ise "E:/Xilinx/lcd_test/lcd_test.ise" -intstyle ise -dd _ngo -nt timestamp -uc "lcd.ucf" -p xc3s500e-fg320-5 "lcd.ngc" lcd.ngd
+map -ise "E:/Xilinx/lcd_test/lcd_test.ise" -intstyle ise -p xc3s500e-fg320-5 -cm area -pr b -k 4 -c 100 -o lcd_map.ncd lcd.ngd lcd.pcf
+par -ise "E:/Xilinx/lcd_test/lcd_test.ise" -w -intstyle ise -ol std -t 1 lcd_map.ncd lcd.ncd lcd.pcf
+trce -ise "E:/Xilinx/lcd_test/lcd_test.ise" -intstyle ise -e 3 -l 3 -s 5 -xml lcd lcd.ncd -o lcd.twr lcd.pcf -ucf lcd.ucf
+bitgen -ise "E:/Xilinx/lcd_test/lcd_test.ise" -intstyle ise -f lcd.ut lcd.ncd
+ngdbuild -ise "E:/Xilinx/lcd_test/lcd_test.ise" -intstyle ise -dd _ngo -nt timestamp -uc "lcd.ucf" -p xc3s500e-fg320-5 "lcd.ngc" lcd.ngd
+ngdbuild -ise "E:/Xilinx/lcd_test/lcd_test.ise" -intstyle ise -dd _ngo -nt timestamp -uc "lcd.ucf" -p xc3s500e-fg320-5 "lcd.ngc" lcd.ngd
+map -ise "E:/Xilinx/lcd_test/lcd_test.ise" -intstyle ise -p xc3s500e-fg320-5 -cm area -pr b -k 4 -c 100 -o lcd_map.ncd lcd.ngd lcd.pcf
+par -ise "E:/Xilinx/lcd_test/lcd_test.ise" -w -intstyle ise -ol std -t 1 lcd_map.ncd lcd.ncd lcd.pcf
+trce -ise "E:/Xilinx/lcd_test/lcd_test.ise" -intstyle ise -e 3 -l 3 -s 5 -xml lcd lcd.ncd -o lcd.twr lcd.pcf -ucf lcd.ucf
+bitgen -ise "E:/Xilinx/lcd_test/lcd_test.ise" -intstyle ise -f lcd.ut lcd.ncd
+xst -ise "E:/Xilinx/lcd_test/lcd_test.ise" -intstyle ise -ifn lcd.xst -ofn lcd.syr
+xst -ise "E:/Xilinx/lcd_test/lcd_test.ise" -intstyle ise -ifn lcd.xst -ofn lcd.syr
+xst -ise "E:/Xilinx/lcd_test/lcd_test.ise" -intstyle ise -ifn lcd.xst -ofn lcd.syr
+ngdbuild -ise "E:/Xilinx/lcd_test/lcd_test.ise" -intstyle ise -dd _ngo -nt timestamp -uc "lcd.ucf" -p xc3s500e-fg320-5 "lcd.ngc" lcd.ngd
+map -ise "E:/Xilinx/lcd_test/lcd_test.ise" -intstyle ise -p xc3s500e-fg320-5 -cm area -pr b -k 4 -c 100 -o lcd_map.ncd lcd.ngd lcd.pcf
+par -ise "E:/Xilinx/lcd_test/lcd_test.ise" -w -intstyle ise -ol std -t 1 lcd_map.ncd lcd.ncd lcd.pcf
+trce -ise "E:/Xilinx/lcd_test/lcd_test.ise" -intstyle ise -e 3 -l 3 -s 5 -xml lcd lcd.ncd -o lcd.twr lcd.pcf -ucf lcd.ucf
+bitgen -ise "E:/Xilinx/lcd_test/lcd_test.ise" -intstyle ise -f lcd.ut lcd.ncd
+ngdbuild -ise "E:/Xilinx/lcd_test/lcd_test.ise" -intstyle ise -dd _ngo -nt timestamp -uc "lcd.ucf" -p xc3s500e-fg320-5 "lcd.ngc" lcd.ngd
+ngdbuild -ise "E:/Xilinx/lcd_test/lcd_test.ise" -intstyle ise -dd _ngo -nt timestamp -uc "lcd.ucf" -p xc3s500e-fg320-5 "lcd.ngc" lcd.ngd
+ngdbuild -ise "E:/Xilinx/lcd_test/lcd_test.ise" -intstyle ise -dd _ngo -nt timestamp -uc "lcd.ucf" -p xc3s500e-fg320-5 "lcd.ngc" lcd.ngd
+ngdbuild -ise "E:/Xilinx/lcd_test/lcd_test.ise" -intstyle ise -dd _ngo -nt timestamp -uc "lcd.ucf" -p xc3s500e-fg320-5 "lcd.ngc" lcd.ngd
+xst -ise "E:/Xilinx/lcd_test/lcd_test.ise" -intstyle ise -ifn lcd.xst -ofn lcd.syr
+xst -ise "E:/Xilinx/lcd_test/lcd_test.ise" -intstyle ise -ifn lcd.xst -ofn lcd.syr
+ngdbuild -ise "E:/Xilinx/lcd_test/lcd_test.ise" -intstyle ise -dd _ngo -nt timestamp -uc "lcd.ucf" -p xc3s500e-fg320-5 "lcd.ngc" lcd.ngd
+map -ise "E:/Xilinx/lcd_test/lcd_test.ise" -intstyle ise -p xc3s500e-fg320-5 -cm area -pr b -k 4 -c 100 -o lcd_map.ncd lcd.ngd lcd.pcf
+par -ise "E:/Xilinx/lcd_test/lcd_test.ise" -w -intstyle ise -ol std -t 1 lcd_map.ncd lcd.ncd lcd.pcf
+trce -ise "E:/Xilinx/lcd_test/lcd_test.ise" -intstyle ise -e 3 -l 3 -s 5 -xml lcd lcd.ncd -o lcd.twr lcd.pcf -ucf lcd.ucf
+bitgen -ise "E:/Xilinx/lcd_test/lcd_test.ise" -intstyle ise -f lcd.ut lcd.ncd
+xst -ise "E:/Xilinx/lcd_test/lcd_test.ise" -intstyle ise -ifn lcd.xst -ofn lcd.syr
+ngdbuild -ise "E:/Xilinx/lcd_test/lcd_test.ise" -intstyle ise -dd _ngo -nt timestamp -uc "lcd.ucf" -p xc3s500e-fg320-5 "lcd.ngc" lcd.ngd
+map -ise "E:/Xilinx/lcd_test/lcd_test.ise" -intstyle ise -p xc3s500e-fg320-5 -cm area -pr b -k 4 -c 100 -o lcd_map.ncd lcd.ngd lcd.pcf
+par -ise "E:/Xilinx/lcd_test/lcd_test.ise" -w -intstyle ise -ol std -t 1 lcd_map.ncd lcd.ncd lcd.pcf
+trce -ise "E:/Xilinx/lcd_test/lcd_test.ise" -intstyle ise -e 3 -l 3 -s 5 -xml lcd lcd.ncd -o lcd.twr lcd.pcf -ucf lcd.ucf
+bitgen -ise "E:/Xilinx/lcd_test/lcd_test.ise" -intstyle ise -f lcd.ut lcd.ncd
+xst -ise "E:/Xilinx/lcd_test/lcd_test.ise" -intstyle ise -ifn lcd.xst -ofn lcd.syr
+ngdbuild -ise "E:/Xilinx/lcd_test/lcd_test.ise" -intstyle ise -dd _ngo -nt timestamp -uc "lcd.ucf" -p xc3s500e-fg320-5 "lcd.ngc" lcd.ngd
+map -ise "E:/Xilinx/lcd_test/lcd_test.ise" -intstyle ise -p xc3s500e-fg320-5 -cm area -pr b -k 4 -c 100 -o lcd_map.ncd lcd.ngd lcd.pcf
+par -ise "E:/Xilinx/lcd_test/lcd_test.ise" -w -intstyle ise -ol std -t 1 lcd_map.ncd lcd.ncd lcd.pcf
+trce -ise "E:/Xilinx/lcd_test/lcd_test.ise" -intstyle ise -e 3 -l 3 -s 5 -xml lcd lcd.ncd -o lcd.twr lcd.pcf -ucf lcd.ucf
+bitgen -ise "E:/Xilinx/lcd_test/lcd_test.ise" -intstyle ise -f lcd.ut lcd.ncd
+ngdbuild -ise "E:/Xilinx/lcd_test/lcd_test.ise" -intstyle ise -dd _ngo -nt timestamp -uc "lcd.ucf" -p xc3s500e-fg320-5 "lcd.ngc" lcd.ngd
+map -ise "E:/Xilinx/lcd_test/lcd_test.ise" -intstyle ise -p xc3s500e-fg320-5 -cm area -pr b -k 4 -c 100 -o lcd_map.ncd lcd.ngd lcd.pcf
+par -ise "E:/Xilinx/lcd_test/lcd_test.ise" -w -intstyle ise -ol std -t 1 lcd_map.ncd lcd.ncd lcd.pcf
+trce -ise "E:/Xilinx/lcd_test/lcd_test.ise" -intstyle ise -e 3 -l 3 -s 5 -xml lcd lcd.ncd -o lcd.twr lcd.pcf -ucf lcd.ucf
+bitgen -ise "E:/Xilinx/lcd_test/lcd_test.ise" -intstyle ise -f lcd.ut lcd.ncd
+xst -ise "E:/Xilinx/lcd_test/lcd_test.ise" -intstyle ise -ifn lcd.xst -ofn lcd.syr
+ngdbuild -ise "E:/Xilinx/lcd_test/lcd_test.ise" -intstyle ise -dd _ngo -nt timestamp -uc "lcd.ucf" -p xc3s500e-fg320-5 "lcd.ngc" lcd.ngd
+map -ise "E:/Xilinx/lcd_test/lcd_test.ise" -intstyle ise -p xc3s500e-fg320-5 -cm area -pr b -k 4 -c 100 -o lcd_map.ncd lcd.ngd lcd.pcf
+par -ise "E:/Xilinx/lcd_test/lcd_test.ise" -w -intstyle ise -ol std -t 1 lcd_map.ncd lcd.ncd lcd.pcf
+trce -ise "E:/Xilinx/lcd_test/lcd_test.ise" -intstyle ise -e 3 -l 3 -s 5 -xml lcd lcd.ncd -o lcd.twr lcd.pcf -ucf lcd.ucf
+bitgen -ise "E:/Xilinx/lcd_test/lcd_test.ise" -intstyle ise -f lcd.ut lcd.ncd

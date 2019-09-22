@@ -1,0 +1,406 @@
+Release 8.2i - xst I.31
+Copyright (c) 1995-2006 Xilinx, Inc.  All rights reserved.
+--> Parameter TMPDIR set to ./xst/projnav.tmp
+CPU : 0.00 / 0.70 s | Elapsed : 0.00 / 0.00 s
+ 
+--> Parameter xsthdpdir set to ./xst
+CPU : 0.00 / 0.70 s | Elapsed : 0.00 / 0.00 s
+ 
+--> Reading design: ex8.prj
+
+TABLE OF CONTENTS
+  1) Synthesis Options Summary
+  2) HDL Compilation
+  3) Design Hierarchy Analysis
+  4) HDL Analysis
+  5) HDL Synthesis
+     5.1) HDL Synthesis Report
+  6) Advanced HDL Synthesis
+     6.1) Advanced HDL Synthesis Report
+  7) Low Level Synthesis
+  8) Partition Report
+  9) Final Report
+     9.1) Device utilization summary
+     9.2) TIMING REPORT
+
+
+=========================================================================
+*                      Synthesis Options Summary                        *
+=========================================================================
+---- Source Parameters
+Input File Name                    : "ex8.prj"
+Input Format                       : mixed
+Ignore Synthesis Constraint File   : NO
+
+---- Target Parameters
+Output File Name                   : "ex8"
+Output Format                      : NGC
+Target Device                      : xc3s500e-5-fg320
+
+---- Source Options
+Top Module Name                    : ex8
+Automatic FSM Extraction           : YES
+FSM Encoding Algorithm             : Auto
+FSM Style                          : lut
+RAM Extraction                     : Yes
+RAM Style                          : Auto
+ROM Extraction                     : Yes
+Mux Style                          : Auto
+Decoder Extraction                 : YES
+Priority Encoder Extraction        : YES
+Shift Register Extraction          : YES
+Logical Shifter Extraction         : YES
+XOR Collapsing                     : YES
+ROM Style                          : Auto
+Mux Extraction                     : YES
+Resource Sharing                   : YES
+Multiplier Style                   : auto
+Automatic Register Balancing       : No
+
+---- Target Options
+Add IO Buffers                     : YES
+Global Maximum Fanout              : 500
+Add Generic Clock Buffer(BUFG)     : 8
+Register Duplication               : YES
+Slice Packing                      : YES
+Pack IO Registers into IOBs        : auto
+Equivalent register Removal        : YES
+
+---- General Options
+Optimization Goal                  : Speed
+Optimization Effort                : 1
+Keep Hierarchy                     : NO
+RTL Output                         : Yes
+Global Optimization                : AllClockNets
+Write Timing Constraints           : NO
+Hierarchy Separator                : /
+Bus Delimiter                      : <>
+Case Specifier                     : maintain
+Slice Utilization Ratio            : 100
+Slice Utilization Ratio Delta      : 5
+
+---- Other Options
+lso                                : ex8.lso
+Read Cores                         : YES
+cross_clock_analysis               : NO
+verilog2001                        : YES
+safe_implementation                : No
+Optimize Instantiated Primitives   : NO
+use_clock_enable                   : Yes
+use_sync_set                       : Yes
+use_sync_reset                     : Yes
+
+=========================================================================
+
+
+=========================================================================
+*                          HDL Compilation                              *
+=========================================================================
+Compiling verilog file "ex8.v" in library work
+Module <ex8> compiled
+Module <counter> compiled
+Module <counter1> compiled
+Module <time_1ms> compiled
+Module <anti> compiled
+No errors in compilation
+Analysis of file <"ex8.prj"> succeeded.
+ 
+
+=========================================================================
+*                     Design Hierarchy Analysis                         *
+=========================================================================
+Analyzing hierarchy for module <ex8> in library <work>.
+
+Analyzing hierarchy for module <counter> in library <work>.
+
+Analyzing hierarchy for module <counter1> in library <work>.
+
+Building hierarchy successfully finished.
+
+=========================================================================
+*                            HDL Analysis                               *
+=========================================================================
+Analyzing top module <ex8>.
+WARNING:Xst:863 - "ex8.v" line 22: Name conflict (<send> and <SEND>, renaming send as send_rnm0).
+Module <ex8> is correct for synthesis.
+ 
+Analyzing module <counter> in library <work>.
+Module <counter> is correct for synthesis.
+ 
+Analyzing module <counter1> in library <work>.
+Module <counter1> is correct for synthesis.
+ 
+
+=========================================================================
+*                           HDL Synthesis                               *
+=========================================================================
+
+Performing bidirectional port resolution...
+INFO:Xst:1304 - Contents of register <LCD_RW> in unit <ex8> never changes during circuit operation. The register is replaced by logic.
+
+Synthesizing Unit <counter>.
+    Related source file is "ex8.v".
+    Found 32-bit up counter for signal <qout>.
+    Summary:
+	inferred   1 Counter(s).
+Unit <counter> synthesized.
+
+
+Synthesizing Unit <counter1>.
+    Related source file is "ex8.v".
+    Found 32-bit up counter for signal <qout>.
+    Found 32-bit comparator lessequal for signal <$cmp_le0000> created at line 244.
+    Summary:
+	inferred   1 Counter(s).
+	inferred   1 Comparator(s).
+Unit <counter1> synthesized.
+
+
+Synthesizing Unit <ex8>.
+    Related source file is "ex8.v".
+WARNING:Xst:1780 - Signal <send_rnm0> is never used or assigned.
+WARNING:Xst:1780 - Signal <clk_1ms> is never used or assigned.
+    Register <k> equivalent to <LCD_RS> has been removed
+    Found 1-bit register for signal <LCD_RS>.
+    Found 1-bit register for signal <LCD_E1>.
+    Found 1-bit register for signal <LCD_E2>.
+    Found 4-bit register for signal <sf_d1>.
+    Found 4-bit register for signal <sf_d2>.
+    Summary:
+	inferred  11 D-type flip-flop(s).
+Unit <ex8> synthesized.
+
+
+=========================================================================
+HDL Synthesis Report
+
+Macro Statistics
+# Counters                                             : 2
+ 32-bit up counter                                     : 2
+# Registers                                            : 5
+ 1-bit register                                        : 3
+ 4-bit register                                        : 2
+# Comparators                                          : 1
+ 32-bit comparator lessequal                           : 1
+
+=========================================================================
+
+=========================================================================
+*                       Advanced HDL Synthesis                          *
+=========================================================================
+
+Loading device for application Rf_Device from file '3s500e.nph' in environment D:\Xilinx.
+
+=========================================================================
+Advanced HDL Synthesis Report
+
+Macro Statistics
+# Counters                                             : 2
+ 32-bit up counter                                     : 2
+# Registers                                            : 43
+ Flip-Flops                                            : 43
+# Comparators                                          : 1
+ 32-bit comparator lessequal                           : 1
+
+=========================================================================
+
+=========================================================================
+*                         Low Level Synthesis                           *
+=========================================================================
+
+Optimizing unit <ex8> ...
+
+Mapping all equations...
+Building and optimizing final netlist ...
+Found area constraint ratio of 100 (+ 5) on block ex8, actual ratio is 2.
+FlipFlop count/qout_1 has been replicated 1 time(s)
+
+Final Macro Processing ...
+
+=========================================================================
+Final Register Report
+
+Macro Statistics
+# Registers                                            : 76
+ Flip-Flops                                            : 76
+
+=========================================================================
+
+=========================================================================
+*                          Partition Report                             *
+=========================================================================
+
+Partition Implementation Status
+-------------------------------
+
+  No Partitions were found in this design.
+
+-------------------------------
+
+=========================================================================
+*                            Final Report                               *
+=========================================================================
+Final Results
+RTL Top Level Output File Name     : ex8.ngr
+Top Level Output File Name         : ex8
+Output Format                      : NGC
+Optimization Goal                  : Speed
+Keep Hierarchy                     : NO
+
+Design Statistics
+# IOs                              : 14
+
+Cell Usage :
+# BELS                             : 389
+#      GND                         : 1
+#      INV                         : 6
+#      LUT1                        : 65
+#      LUT2                        : 9
+#      LUT2_D                      : 2
+#      LUT2_L                      : 2
+#      LUT3                        : 24
+#      LUT3_D                      : 6
+#      LUT3_L                      : 8
+#      LUT4                        : 85
+#      LUT4_D                      : 13
+#      LUT4_L                      : 15
+#      MUXCY                       : 82
+#      MUXF5                       : 8
+#      VCC                         : 1
+#      XORCY                       : 62
+# FlipFlops/Latches                : 76
+#      FDE                         : 10
+#      FDR                         : 33
+#      FDRE                        : 30
+#      FDRSE                       : 3
+# Clock Buffers                    : 1
+#      BUFGP                       : 1
+# IO Buffers                       : 13
+#      IBUF                        : 6
+#      OBUF                        : 7
+=========================================================================
+
+Device utilization summary:
+---------------------------
+
+Selected Device : 3s500efg320-5 
+
+ Number of Slices:                     123  out of   4656     2%  
+ Number of Slice Flip Flops:            76  out of   9312     0%  
+ Number of 4 input LUTs:               235  out of   9312     2%  
+ Number of IOs:                         14
+ Number of bonded IOBs:                 14  out of    232     6%  
+ Number of GCLKs:                        1  out of     24     4%  
+
+
+=========================================================================
+TIMING REPORT
+
+NOTE: THESE TIMING NUMBERS ARE ONLY A SYNTHESIS ESTIMATE.
+      FOR ACCURATE TIMING INFORMATION PLEASE REFER TO THE TRACE REPORT
+      GENERATED AFTER PLACE-and-ROUTE.
+
+Clock Information:
+------------------
+-----------------------------------+------------------------+-------+
+Clock Signal                       | Clock buffer(FF name)  | Load  |
+-----------------------------------+------------------------+-------+
+CLK                                | BUFGP                  | 76    |
+-----------------------------------+------------------------+-------+
+
+Asynchronous Control Signals Information:
+----------------------------------------
+No asynchronous control signals found in this design
+
+Timing Summary:
+---------------
+Speed Grade: -5
+
+   Minimum period: 9.723ns (Maximum Frequency: 102.849MHz)
+   Minimum input arrival time before clock: 5.840ns
+   Maximum output required time after clock: 6.137ns
+   Maximum combinational path delay: No path found
+
+Timing Detail:
+--------------
+All values displayed in nanoseconds (ns)
+
+=========================================================================
+Timing constraint: Default period analysis for Clock 'CLK'
+  Clock period: 9.723ns (frequency: 102.849MHz)
+  Total number of paths / destination ports: 5990 / 118
+-------------------------------------------------------------------------
+Delay:               9.723ns (Levels of Logic = 7)
+  Source:            count/qout_3 (FF)
+  Destination:       LCD_E1 (FF)
+  Source Clock:      CLK rising
+  Destination Clock: CLK rising
+
+  Data Path: count/qout_3 to LCD_E1
+                                Gate     Net
+    Cell:in->out      fanout   Delay   Delay  Logical Name (Net Name)
+    ----------------------------------------  ------------
+     FDR:C->Q             19   0.514   1.235  count/qout_3 (count/qout_3)
+     LUT4:I3->O            1   0.612   0.684  _cmp_eq002011_SW0 (N720)
+     LUT4_D:I3->O          3   0.612   0.801  _cmp_eq002011 (N161)
+     LUT4_D:I2->O          3   0.612   0.774  _cmp_eq00202 (_cmp_eq0020)
+     LUT4:I3->O            1   0.612   0.000  _mux0001<2>14881 (N793)
+     MUXF5:I0->O           1   0.278   0.711  _mux0001<2>1488_f5 (_mux0001<2>1_map932)
+     LUT4:I2->O            5   0.612   0.786  _mux0001<2>1521 (_mux0001<2>1_map941)
+     LUT4:I3->O            1   0.612   0.000  _mux0001<2> (_mux0001<2>)
+     FDE:D                     0.268          sf_d1_1
+    ----------------------------------------
+    Total                      9.723ns (4.732ns logic, 4.991ns route)
+                                       (48.7% logic, 51.3% route)
+
+=========================================================================
+Timing constraint: Default OFFSET IN BEFORE for Clock 'CLK'
+  Total number of paths / destination ports: 110 / 78
+-------------------------------------------------------------------------
+Offset:              5.840ns (Levels of Logic = 2)
+  Source:            RST (PAD)
+  Destination:       count1/qout_0 (FF)
+  Destination Clock: CLK rising
+
+  Data Path: RST to count1/qout_0
+                                Gate     Net
+    Cell:in->out      fanout   Delay   Delay  Logical Name (Net Name)
+    ----------------------------------------  ------------
+     IBUF:I->O            40   1.106   1.766  RST_IBUF (RST_IBUF)
+     LUT2:I0->O           29   0.612   1.561  count1/qout__or00001 (count1/qout__or0000)
+     FDRE:R                    0.795          count1/qout_30
+    ----------------------------------------
+    Total                      5.840ns (2.513ns logic, 3.327ns route)
+                                       (43.0% logic, 57.0% route)
+
+=========================================================================
+Timing constraint: Default OFFSET OUT AFTER for Clock 'CLK'
+  Total number of paths / destination ports: 16 / 6
+-------------------------------------------------------------------------
+Offset:              6.137ns (Levels of Logic = 2)
+  Source:            LCD_RS (FF)
+  Destination:       LCD_E (PAD)
+  Source Clock:      CLK rising
+
+  Data Path: LCD_RS to LCD_E
+                                Gate     Net
+    Cell:in->out      fanout   Delay   Delay  Logical Name (Net Name)
+    ----------------------------------------  ------------
+     FDRE:C->Q            14   0.514   1.161  LCD_RS (LCD_RS_OBUF)
+     LUT3:I0->O            1   0.612   0.681  LCD_E3 (LCD_E_OBUF)
+     OBUF:I->O                 3.169          LCD_E_OBUF (LCD_E)
+    ----------------------------------------
+    Total                      6.137ns (4.295ns logic, 1.842ns route)
+                                       (70.0% logic, 30.0% route)
+
+=========================================================================
+CPU : 31.86 / 32.66 s | Elapsed : 32.00 / 32.00 s
+ 
+--> 
+
+Total memory usage is 135552 kilobytes
+
+Number of errors   :    0 (   0 filtered)
+Number of warnings :    4 (   0 filtered)
+Number of infos    :    1 (   0 filtered)
+
