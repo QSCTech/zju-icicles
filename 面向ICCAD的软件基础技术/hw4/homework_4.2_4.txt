@@ -1,0 +1,20 @@
+
+Please CAREFULLY read the questions and follow instructions to answer.
+
+Problem 1. Build 'demo_fork.c' and run it, then try to change the red eyes to 'browse.tcl' and run it again. Invoke more directory browsers from browse.tcl. Use 'pstree' to see the process hierarchy for all of them, and show it with a screenshot.
+
+Problem 2. Run Python scripts of demo_8queen.py and demo_showqueens.py, read the source code, comments and their outputs. 
+Then (OPTIONALLY) write a Perl or Python script to analyze the solutions in 8queen.out, and show how many kinds of the solutions are unique. 
+(symmetrical solutions are not considered as unique, for example, one solution being mirrored or rotated should be eliminated from the unique list)
+
+Problem 3. Install a utility 'look' and run it. Find where the dictionary is by reading its manual. 
+Now write scripts (must use vi; OK in bash/tcl/perl/python or mixed) to process the dictionary, in order to answer following questions.
+1) How many words the dictionary has? 
+2) Which word is the longest? 
+3) Which word is the longest without vowel? 
+
+4) Write a command to show all words having at least 4 consecutive vowels. 
+
+5) One word might be just a duplicate of another word appended with an s or a 's suffix, find all of them and snapshot the last page. 
+
+6) (OPTIONAL) Are there words containing a pattern like 'XXYYZZ'?
