@@ -1,0 +1,31 @@
+#!/usr/bin/env sh
+
+# ----------------------------------------------------------------
+# Author: Zewen Ye
+# Institution: College of Information Science and Electrical Engineering, ZheJiang University
+# Usage:
+# ./pingsort + websites
+# ----------------------------------------------------------------
+
+for args in $@
+# repeat for every input website 
+do	
+	# ping 10 times
+	ping -c 10 $args | cut -d '(' -f2 | cut -d ')' -f1 | cut -d '/' -f 5 > pingsort_1.txt
+	# get the hostname and save to variable a
+	a=`sed -n 1p pingsort_1.txt`
+	# get the speed and save to variable b
+	cut -d ' ' -f 4 pingsort_1.txt > pingsort_2.txt	
+	b=`awk 'NF{a=$0}END{print a}' pingsort_2.txt`
+	
+	# if b=0, the website is unreachable.
+	c='0'
+	if [ "$b" = "$c" ]
+	then
+		echo "$args @ $a is unreachable"
+	else 
+		echo "$args @ $a @ $b ms"	
+	fi
+	# rm the file that generate before.
+	rm pingsort_1.txt pingsort_2.txt
+done
