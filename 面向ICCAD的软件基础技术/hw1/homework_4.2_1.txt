@@ -1,0 +1,86 @@
+
+#Please CAREFULLY read the requirements below and manage to finish the tasks.
+Task 1. Be sure to visit the course ftp site, and browse the resources there.
+Task 2. Try to install Ubuntu on a computer after reading Ubuntu_Installing_Guide_2018.pdf file.
+Task 3. Try to download all files in ~/video directory on ftp site to your Linux system.
+Task 4. Update your Linux system so you could watch video in it.
+Task 5. Need subtitles for the video? Try to assign a .srt file to the video.
+Task 6. Is the subtitle out of sync with the video? Try to download demo_subtitle.pl from ~/demo directory.
+Task 7. Figure out how to run demo_subtitle.pl to fix the subtitle timing marks.
+
+Then after watching all 3 episodes of Triumph of Nerds, try to answer questions below.
+1) Where does Gordon Moore sit and what does he say in the video? (Triumph of Nerds)
+2) What is Xerox PARC? Steve Jobs has mentioned 3 innovations from it, what are the other two besides GUI? (Triumph of Nerds)
+3) What is the opinion of Steve Jobs towards Bill Gates? (Triumph of Nerds)
+
+
+Then let's try working on our installed system.
+
+Problem 1.
+Try to run *cat /etc/passwd* in your shell, and read the result, each line of which is composed of some words separated by ':'.
+Then please read the manuals of UNIX utilities "cut" and "paste" (e.g., man cut; info paste), and understand how to use them. 
+Our target is to cut the 1st word (i.e., field 1 - the user names) and the 6th word (i.e., field 6 - HOME directories) in each line from file /etc/passwd, and store them in 2 separated new files.
+ 
+Then we paste the 2 files together into a new file with only 2 word columns, and these 2 columns are separated by one tab character in each line.
+The expected result looks like,
+root	/root
+daemon	/usr/sbin
+bin	/bin
+sys	/dev
+sync	/bin
+games	/usr/games
+man	/var/cache/man
+lp	/var/spool/lpd
+mail	/var/mail
+news	/var/spool/news
+landscape	/var/lib/landscape
+postgres	/var/lib/postgresql
+uucp	/var/spool/uucp
+
+Problem 2.
+Please read the manual of UNIX utility "expand", and change the tab character in the result of Problem 2 into many space characters, while the word alignment keeps and the 2nd word always begins on the 24th column.
+The expected result looks like,
+root                   /root
+daemon                 /usr/sbin
+bin                    /bin
+sys                    /dev
+sync                   /bin
+games                  /usr/games
+man                    /var/cache/man
+lp                     /var/spool/lpd
+mail                   /var/mail
+news                   /var/spool/news
+landscape              /var/lib/landscape
+postgres               /var/lib/postgresql
+uucp                   /var/spool/uucp
+
+Problem 3.
+Everything similar as in Problem 1, but try to show the results in a manner like below.
+root:
+/root
+daemon:
+/usr/sbin
+bin:
+/bin
+sys:
+/dev
+sync:
+/bin
+games:
+/usr/games
+man:
+/var/cache/man
+lp:
+/var/spool/lpd
+mail:
+/var/mail
+news:
+/var/spool/news
+landscape:
+/var/lib/landscape
+postgres:
+/var/lib/postgresql
+uucp:
+/var/spool/uucp
+
+The purpose of these problems 1/2/3 is to let the students do manual reading, understand meaning of options and practice a little on text processing.
