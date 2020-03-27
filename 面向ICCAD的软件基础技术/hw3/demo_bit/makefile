@@ -1,0 +1,14 @@
+demo_bit: demo_bit.o demo_bit_count.o
+	@echo "***$? is(are) newer than $@"
+	gcc -g -o $@ demo_bit.o demo_bit_count.o
+
+demo_bit.o: demo_bit.c
+	gcc -g -c $<
+
+demo_bit_count.o: demo_bit_count.s
+	as -o $@ $<
+
+clean:
+	rm demo_bit.o
+	rm demo_bit_count.o
+	rm demo_bit
