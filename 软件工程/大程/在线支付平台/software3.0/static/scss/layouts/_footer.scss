@@ -1,0 +1,104 @@
+
+// FOOTER
+
+#aa-footer{
+	background-color: #222;
+	display: inline;
+	float: left;	
+	width: 100%;
+	.aa-footer-top{
+		display: inline;		
+		float: left;
+		padding: 50px 0;
+		width: 100%;
+		min-height: 100px;
+		.aa-footer-top-area{
+			display: inline;		
+			float: left;			
+			width: 100%;
+			.aa-footer-widget{
+				display: block;
+				h3{
+					color: #fff;
+				}
+				.aa-footer-nav{
+					li{
+						a{
+							color: #888;
+							@include transition(all 0.5s);
+							&:hover,
+							&:focus{
+								color: #fff;
+							}
+						}
+					}
+				}
+				address{
+					p{
+						margin-bottom: 5px;
+						color: #888;
+						span{
+							margin-right: 5px;
+						}
+					}
+				}
+				.aa-footer-social{
+					a{
+						border: 1px solid #888;
+						color: #888;
+						display: inline-block;
+						font-size: 18px;
+						margin-right: 8px;
+						padding: 2px 0;
+						text-align: center;						
+						width: 35px;
+						@include transition(all 0.5s);
+						&:hover{
+							color: #fff;
+							border-color: #fff;
+						}
+					}
+				}
+			}
+		}	
+	}
+	.aa-footer-bottom{
+		border-top: 1px solid #333;
+		display: inline;
+		float: left;
+		padding: 15px 0;
+		width: 100%;
+		.aa-footer-bottom-area{
+			display: inline;
+			float: left;
+			width: 100%;
+			&>p{
+				color: #888;
+				display: inline-block;
+				float: left;
+				font-size: 14px;
+				font-weight: bold;
+				letter-spacing: 1px;
+				margin-bottom: 0;
+				a{
+					color: #888;
+					@include transition(all 0.5s);
+					&:hover,
+					&:focus{
+						color: $theme-color;
+					}
+				}
+			}
+			.aa-footer-payment{
+				float: right;
+				span{
+					color: #888;
+					margin-left: 8px;
+					&:hover{
+						color: #fff;
+					}
+				}
+			}
+		}
+	}
+}

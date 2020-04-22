@@ -1,0 +1,1885 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<HTML>
+<!--
+This document was converted from RTF source: 
+By rtftohtml 4.19
+See http://www.sunpack.com/RTF
+Filename:TIC2Vone.rtf
+Application Directory:C:\TOOLS\RTF2HTML\
+Subject:
+Author:Bruce Eckel
+Operator:Bruce Eckel
+Document Comments:
+Version Comments:
+Comments:
+Keywords:
+Translation Date:09/27/2001
+Translation Time:05:25:53
+Translation Platform:Win32
+Number of Output files:22
+This File:Chapter14.html
+SplitDepth=1
+SkipNavPanel=1
+SkipLeadingToc=1
+SkipTrailingToc=1
+GenContents=1
+GenFrames=1
+GenIndex=1
+-->
+<HEAD lang="en"><META http-equiv="Content-Type" content="text/html">
+<TITLE>14: Inheritance &amp; Composition</TITLE>
+</HEAD>
+
+<BODY  BGCOLOR="#FFFFFF"><DIV ALIGN="CENTER">
+  <a href="http://www.MindView.net">
+  <img src="mindview-head.gif" alt="MindView Inc." BORDER = "0"></a>
+  <CENTER>
+    <FONT FACE="Verdana" size = "-1">
+    [ <a href="README-HTML.txt">Viewing Hints</a> ]
+    [ <a href="http://www.mindview.net/CPPServices/SolutionGuide.html">Exercise Solutions</a> ]
+    [ <a href="http://www.mindview.net/ThinkingInCPP2e.html">Volume 2</a> ]
+    [ <a href="http://www.mindview.net/MailingList.html">Free Newsletter</a> ] <br>
+    [ <a href="http://www.mindview.net/CPPServices/#PublicSeminars">Seminars</a> ]
+    [ <a href="http://www.mindview.net/CPPServices/#SeminarsOnCD">Seminars on CD ROM</a> ]
+    [ <a href="http://www.mindview.net/CPPServices/#ConsultingServices">Consulting</a> ]
+    </FONT>
+  <H2><FONT FACE="Verdana">
+  Thinking in C++, 2nd ed. Volume 1</FONT></H2></FONT>
+  <H3><FONT FACE="Verdana">&copy;2000 by Bruce Eckel</FONT></H3></FONT>
+  
+    <FONT FACE="Verdana" size = "-1">
+     [ <a href="Chapter13.html">Previous Chapter</a> ] 
+    [ <a href="Contents.html">Table of Contents</a> ] 
+    [ <a href="DocIndex.html">Index</a> ]
+     [ <a href="Chapter15.html">Next Chapter</a> ] 
+    </FONT>
+    
+  </CENTER>
+  </P></DIV><A NAME="_Toc472654988"></A><A NAME="Heading404"></A><FONT FACE = "Verdana"><H1 ALIGN="LEFT">
+14: Inheritance &amp; Composition</H1></FONT>
+<DIV ALIGN="LEFT"><P><FONT FACE="Verdana" SIZE=4>One of the most compelling
+features about C++ is </FONT><BR><FONT FACE="Verdana" SIZE=4>code
+reuse<A NAME="Index2272"></A><A NAME="Index2273"></A>. But to be revolutionary,
+you need to be </FONT><BR><FONT FACE="Verdana" SIZE=4>able to do a lot more than
+copy code and change it.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">That&#8217;s the C approach, and it
+hasn&#8217;t worked very well. As with most everything in C++, the solution
+revolves around the class. You reuse code by creating new classes, but instead
+of creating them from scratch, you use existing classes that someone else has
+built and debugged.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">The trick is to use the classes without
+soiling the existing code. In this chapter you&#8217;ll see two ways to
+accomplish this. The first is quite straightforward: You simply create objects
+of your existing class inside the new class. This is called <I>composition</I>
+<A NAME="Index2274"></A>because the new class is composed of objects of existing
+classes.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">The second approach is subtler. You
+create a new class as a <I>type of</I> an existing class. You literally take the
+form of the existing class and add code to it, without modifying the existing
+class. This magical act is called <I>inheritance<A NAME="Index2275"></A></I>,
+and most of the work is done by the compiler. Inheritance is one of the
+cornerstones of object-oriented programming and has additional implications that
+will be explored in Chapter 15.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">It turns out that much of the syntax and
+behavior are similar for both composition and inheritance (which makes sense;
+they are both ways of making new types from existing types). In this chapter,
+you&#8217;ll learn about these code reuse
+mechanisms.</FONT><A NAME="_Toc305593251"></A><A NAME="_Toc305628723"></A><A NAME="_Toc312374014"></A><A NAME="_Toc472654989"></A><BR></P></DIV>
+<A NAME="Heading405"></A><FONT FACE = "Verdana"><H2 ALIGN="LEFT">
+Composition syntax</H2></FONT>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Actually, you&#8217;ve been using
+composition all along to create classes. You&#8217;ve just been composing
+classes primarily with built-in types (and sometimes <B>string</B>s). It turns
+out to be almost as easy to use composition with user-defined
+types.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Consider a class that is valuable for
+some reason:</FONT><BR></P></DIV>
+
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE><font color=#009900>//: C14:Useful.h</font>
+<font color=#009900>// A class to reuse</font>
+#ifndef USEFUL_H
+#define USEFUL_H
+
+<font color=#0000ff>class</font> X {
+  <font color=#0000ff>int</font> i;
+<font color=#0000ff>public</font>:
+  X() { i = 0; }
+  <font color=#0000ff>void</font> set(<font color=#0000ff>int</font> ii) { i = ii; }
+  <font color=#0000ff>int</font> read() <font color=#0000ff>const</font> { <font color=#0000ff>return</font> i; }
+  <font color=#0000ff>int</font> permute() { <font color=#0000ff>return</font> i = i * 47; }
+};
+#endif <font color=#009900>// USEFUL_H ///:~</font></PRE></FONT></BLOCKQUOTE>
+
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">The data members are <B>private</B> in
+this class, so it&#8217;s completely safe to embed an object of type <B>X</B> as
+a <B>public</B> object in a new class, which makes the interface
+straightforward:</FONT><BR></P></DIV>
+
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE><font color=#009900>//: C14:Composition.cpp</font>
+<font color=#009900>// Reuse code with composition</font>
+#include <font color=#004488>"Useful.h"</font>
+
+<font color=#0000ff>class</font> Y {
+  <font color=#0000ff>int</font> i;
+<font color=#0000ff>public</font>:
+  X x; <font color=#009900>// Embedded object</font>
+  Y() { i = 0; }
+  <font color=#0000ff>void</font> f(<font color=#0000ff>int</font> ii) { i = ii; }
+  <font color=#0000ff>int</font> g() <font color=#0000ff>const</font> { <font color=#0000ff>return</font> i; }
+};
+
+<font color=#0000ff>int</font> main() {
+  Y y;
+  y.f(47);
+  y.x.set(37); <font color=#009900>// Access the embedded object</font>
+} <font color=#009900>///:~</font></PRE></FONT></BLOCKQUOTE>
+
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Accessing the member functions of the
+embedded object<A NAME="Index2276"></A> (referred to as a
+<I>subobject<A NAME="Index2277"></A></I>) simply requires another member
+selection.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">It&#8217;s more common to make the
+embedded objects <B>private</B>, so they become part of the underlying
+implementation (which means you can change the implementation if you want). The
+<B>public</B> interface functions for your new class then involve the use of the
+embedded object, but they don&#8217;t necessarily mimic the object&#8217;s
+interface:</FONT><BR></P></DIV>
+
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE><font color=#009900>//: C14:Composition2.cpp</font>
+<font color=#009900>// Private embedded objects</font>
+#include <font color=#004488>"Useful.h"</font>
+
+<font color=#0000ff>class</font> Y {
+  <font color=#0000ff>int</font> i;
+  X x; <font color=#009900>// Embedded object</font>
+<font color=#0000ff>public</font>:
+  Y() { i = 0; }
+  <font color=#0000ff>void</font> f(<font color=#0000ff>int</font> ii) { i = ii; x.set(ii); }
+  <font color=#0000ff>int</font> g() <font color=#0000ff>const</font> { <font color=#0000ff>return</font> i * x.read(); }
+  <font color=#0000ff>void</font> permute() { x.permute(); }
+};
+
+<font color=#0000ff>int</font> main() {
+  Y y;
+  y.f(47);
+  y.permute();
+} <font color=#009900>///:~</font></PRE></FONT></BLOCKQUOTE>
+
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Here, the <B>permute(&#160;)</B> function
+is carried through to the new class interface, but the other member functions of
+<B>X</B> are used within the members of
+<B>Y</B>.</FONT><A NAME="_Toc305593252"></A><A NAME="_Toc305628724"></A><A NAME="_Toc312374015"></A><A NAME="_Toc472654990"></A><BR></P></DIV>
+<A NAME="Heading406"></A><FONT FACE = "Verdana"><H2 ALIGN="LEFT">
+Inheritance syntax</H2></FONT>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">The syntax for composition is obvious,
+but to perform inheritance there&#8217;s a new and different
+form.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">When you inherit, you are saying,
+&#8220;This new class is like that old class.&#8221; You state this in code by
+giving the name of the class as usual, but before the opening brace of the class
+body, you put a colon and the name of the <I>base class</I> (or base
+<I>classes</I>, separated by commas, for
+<A NAME="Index2278"></A><A NAME="Index2279"></A>multiple
+<A NAME="Index2280"></A>inheritance). When you do this, you automatically get
+all the data members and member functions in the base class. Here&#8217;s an
+example:</FONT><BR></P></DIV>
+
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE><font color=#009900>//: C14:Inheritance.cpp</font>
+<font color=#009900>// Simple inheritance</font>
+#include <font color=#004488>"Useful.h"</font>
+#include &lt;iostream&gt;
+<font color=#0000ff>using</font> <font color=#0000ff>namespace</font> std;
+
+<font color=#0000ff>class</font> Y : <font color=#0000ff>public</font> X {
+  <font color=#0000ff>int</font> i; <font color=#009900>// Different from X's i</font>
+<font color=#0000ff>public</font>:
+  Y() { i = 0; }
+  <font color=#0000ff>int</font> change() {
+    i = permute(); <font color=#009900>// Different name call</font>
+    <font color=#0000ff>return</font> i;
+  }
+  <font color=#0000ff>void</font> set(<font color=#0000ff>int</font> ii) {
+    i = ii;
+    X::set(ii); <font color=#009900>// Same-name function call</font>
+  }
+};
+
+<font color=#0000ff>int</font> main() {
+  cout &lt;&lt; <font color=#004488>"sizeof(X) = "</font> &lt;&lt; <font color=#0000ff>sizeof</font>(X) &lt;&lt; endl;
+  cout &lt;&lt; <font color=#004488>"sizeof(Y) = "</font>
+       &lt;&lt; <font color=#0000ff>sizeof</font>(Y) &lt;&lt; endl;
+  Y D;
+  D.change();
+  <font color=#009900>// X function interface comes through:</font>
+  D.read();
+  D.permute();
+  <font color=#009900>// Redefined functions hide base versions:</font>
+  D.set(12);
+} <font color=#009900>///:~</font></PRE></FONT></BLOCKQUOTE>
+
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">You can see <B>Y</B> being inherited from
+<B>X</B>, which means that <B>Y</B> will contain all the data elements in
+<B>X</B> and all the member functions in <B>X</B>. In fact, <B>Y</B> contains a
+subobject of <B>X</B> just as if you had created a member object of <B>X</B>
+inside <B>Y</B> instead of inheriting from <B>X</B>. Both member objects and
+base class storage are referred to as
+subobjects<A NAME="Index2281"></A>.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">All the <B>private</B> elements of
+<B>X</B> are still <B>private</B> in <B>Y</B>; that is, just because <B>Y</B>
+inherits from <B>X</B> doesn&#8217;t mean <B>Y</B> can break the protection
+mechanism. The <B>private</B> elements of <B>X</B> are still there, they take up
+space &#8211; you just can&#8217;t access them directly.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">In <B>main(&#160;)</B> you can see that
+<B>Y</B>&#8217;s<B> </B>data elements are combined with <B>X</B>&#8217;s because
+the <A NAME="Index2282"></A><A NAME="Index2283"></A><B>sizeof(Y)</B> is twice as
+big as <B>sizeof(X)</B>.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">You&#8217;ll notice that the base class
+is preceded by <B>public<A NAME="Index2284"></A><A NAME="Index2285"></A></B>.
+During inheritance, everything defaults to <B>private</B>. If the base class
+were not preceded by <B>public</B>, it would mean that all of the <B>public</B>
+members of the base class would be <B>private</B> in the derived class. This is
+almost never what you
+want</FONT><A NAME="fnB51" HREF="#fn51">[51]</A><A NAME="Index2286"></A><FONT FACE="Georgia">;
+the desired result is to keep all the <B>public</B> members of the base class
+<B>public</B> in the derived class. You do this by using the <B>public</B>
+keyword during inheritance.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">In <B>change(&#160;)</B>, the base-class
+<B>permute(&#160;)</B> function is called. The derived class has direct access
+to all the <B>public </B>base-class functions.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">The <B>set(&#160;)</B> function in the
+derived class <I>redefines</I>
+<A NAME="Index2287"></A><A NAME="Index2288"></A>the <B>set(&#160;)</B> function
+in the base class. That is, if you call the functions <B>read(&#160;)</B> and
+<B>permute(&#160;)</B> for an object of type <B>Y</B>, you&#8217;ll get the
+base-class versions of those functions (you can see this happen inside
+<B>main(&#160;)</B>). But if you call <B>set(&#160;)</B> for a <B>Y</B> object,
+you get the redefined version. This means that if you don&#8217;t like the
+version of a function you get during inheritance, you can change what it does.
+(You can also add completely new functions like
+<B>change(&#160;)</B>.)</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">However, when you&#8217;re redefining a
+function, you may still want to call the base-class version. If, inside
+<B>set(&#160;)</B>, you simply call <B>set(&#160;)</B> you&#8217;ll get the
+local version of the function &#8211; a recursive function call. To call the
+base-class version, you must explicitly name the base class using the scope
+resolution
+operator<A NAME="Index2289"></A><A NAME="Index2290"></A><A NAME="Index2291"></A>.</FONT><A NAME="_Toc305593253"></A><A NAME="_Toc305628725"></A><A NAME="_Toc312374016"></A><A NAME="_Toc472654991"></A><BR></P></DIV>
+<A NAME="Heading407"></A><FONT FACE = "Verdana"><H2 ALIGN="LEFT">
+The constructor initializer list</H2></FONT>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">You&#8217;ve seen how important it is in
+C++ to guarantee proper initialization, and it&#8217;s no different during
+composition and inheritance. When an object is created, the compiler guarantees
+that constructors for all of its subobjects are called. In the examples so far,
+all of the subobjects have default constructors, and that&#8217;s what the
+compiler automatically calls. But what happens if your subobjects
+<A NAME="Index2292"></A>don&#8217;t have default constructors, or if you want to
+change a default argument in a constructor? This is a problem because the new
+class constructor doesn&#8217;t have permission to access the <B>private</B>
+data elements of the subobject, so it can&#8217;t initialize them
+directly.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">The solution is simple: Call the
+constructor for the subobject. C++ provides a special syntax for this, the
+<I>constructor initializer
+list<A NAME="Index2293"></A><A NAME="Index2294"></A><A NAME="Index2295"></A></I>.
+The form of the constructor initializer list echoes the act of inheritance. With
+inheritance, you put the base classes after a colon and before the opening brace
+of the class body. In the constructor initializer list, you put the calls to
+subobject constructors after the constructor argument list and a colon, but
+before the opening brace of the function body. For a class <B>MyType</B>,
+inherited from <B>Bar</B>, this might look like this:</FONT><BR></P></DIV>
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE>MyType::MyType(<font color=#0000ff>int</font> i) : Bar(i) { <font color=#009900>// ...</font></PRE></FONT></BLOCKQUOTE>
+
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">if <B>Bar</B> has a constructor that
+takes a single <B>int</B>
+argument.</FONT><A NAME="_Toc312374017"></A><A NAME="_Toc472654992"></A><BR></P></DIV>
+<A NAME="Heading408"></A><FONT FACE = "Verdana"><H3 ALIGN="LEFT">
+Member object
+initialization<BR><A NAME="Index2296"></A><A NAME="Index2297"></A><A NAME="Index2298"></A></H3></FONT>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">It turns out that you use this very same
+syntax for member object initialization when using composition. For composition,
+you give the names of the objects instead of the class names. If you have more
+than one constructor call in the initializer list, you separate the calls with
+commas:</FONT><BR></P></DIV>
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE>MyType2::MyType2(<font color=#0000ff>int</font> i) : Bar(i), m(i+1) { <font color=#009900>// ...</font></PRE></FONT></BLOCKQUOTE>
+
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">This is the beginning of a constructor
+for class <B>MyType2</B>, which is inherited from <B>Bar </B>and contains a
+member object called <B>m</B>. Note that while you can see the type of the base
+class in the constructor initializer list, you only see the member object
+identifier.</FONT><A NAME="_Toc312374018"></A><A NAME="_Toc472654993"></A><BR></P></DIV>
+<A NAME="Heading409"></A><FONT FACE = "Verdana"><H3 ALIGN="LEFT">
+Built-in types in the initializer
+list<BR><A NAME="Index2299"></A><A NAME="Index2300"></A><A NAME="Index2301"></A></H3></FONT>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">The constructor initializer list allows
+you to explicitly call the constructors for member objects. In fact,
+there&#8217;s no other way to call those constructors. The idea is that the
+constructors are all called before you get into the body of the new
+class&#8217;s constructor. That way, any calls you make to member functions of
+subobjects will always go to initialized objects. There&#8217;s no way to get to
+the opening brace of the constructor without <I>some</I> constructor being
+called for all the member objects and base-class objects, even if the compiler
+must make a hidden call to a default constructor. This is a further enforcement
+of the C++ guarantee that no object (or part of an object) can get out of the
+starting gate without its constructor being called.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">This idea that all of the member objects
+are initialized by the time the opening brace of the constructor is reached is a
+convenient programming aid as well. Once you hit the opening brace, you can
+assume all subobjects are properly initialized and focus on specific tasks you
+want to accomplish in the constructor. However, there&#8217;s a hitch: What
+about member objects of built-in types, which don&#8217;t <I>have</I>
+constructors?</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">To make the syntax consistent, you are
+allowed to treat built-in types as if they have a single constructor, which
+takes a single argument: a variable of the same type as the variable
+you&#8217;re initializing. Thus, you can say</FONT><BR></P></DIV>
+
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE><font color=#009900>//: C14:PseudoConstructor.cpp</font>
+<font color=#0000ff>class</font> X {
+  <font color=#0000ff>int</font> i;
+  <font color=#0000ff>float</font> f;
+  <font color=#0000ff>char</font> c;
+  <font color=#0000ff>char</font>* s;
+<font color=#0000ff>public</font>:
+  X() : i(7), f(1.4), c('x'), s(<font color=#004488>"howdy"</font>) {}
+};
+
+<font color=#0000ff>int</font> main() {
+  X x;
+  <font color=#0000ff>int</font> i(100);  <font color=#009900>// Applied to ordinary definition</font>
+  <font color=#0000ff>int</font>* ip = <font color=#0000ff>new</font> <font color=#0000ff>int</font>(47);
+} <font color=#009900>///:~</font></PRE></FONT></BLOCKQUOTE>
+
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">The action of these
+&#8220;pseudo-constructor calls&#8221; is to perform a simple assignment.
+It&#8217;s a convenient technique and a good coding style, so you&#8217;ll see
+it used often.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">It&#8217;s even possible to use the
+pseudo-constructor syntax when creating a variable of a built-in type outside of
+a class:</FONT><BR></P></DIV>
+
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE><font color=#0000ff>int</font> i(100);
+<font color=#0000ff>int</font>* ip = <font color=#0000ff>new</font> <font color=#0000ff>int</font>(47);</PRE></FONT></BLOCKQUOTE>
+
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">This makes built-in types act a little
+bit more like objects. Remember, though, that these are not real constructors.
+In particular, if you don&#8217;t explicitly make a pseudo-constructor call, no
+initialization is
+performed.</FONT><A NAME="_Toc305593254"></A><A NAME="_Toc305628726"></A><A NAME="_Toc312374019"></A><A NAME="_Toc472654994"></A><BR></P></DIV>
+<A NAME="Heading410"></A><FONT FACE = "Verdana"><H2 ALIGN="LEFT">
+Combining composition &amp;
+inheritance<BR><A NAME="Index2302"></A><A NAME="Index2303"></A></H2></FONT>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Of course, you can use composition &amp;
+inheritance together. The following example shows the creation of a more complex
+class using both of them.</FONT><BR></P></DIV>
+
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE><font color=#009900>//: C14:Combined.cpp</font>
+<font color=#009900>// Inheritance &amp; composition</font>
+
+<font color=#0000ff>class</font> A {
+  <font color=#0000ff>int</font> i;
+<font color=#0000ff>public</font>:
+  A(<font color=#0000ff>int</font> ii) : i(ii) {}
+  ~A() {}
+  <font color=#0000ff>void</font> f() <font color=#0000ff>const</font> {}
+};
+
+<font color=#0000ff>class</font> B {
+  <font color=#0000ff>int</font> i;
+<font color=#0000ff>public</font>:
+  B(<font color=#0000ff>int</font> ii) : i(ii) {}
+  ~B() {}
+  <font color=#0000ff>void</font> f() <font color=#0000ff>const</font> {}
+};
+
+<font color=#0000ff>class</font> C : <font color=#0000ff>public</font> B {
+  A a;
+<font color=#0000ff>public</font>:
+  C(<font color=#0000ff>int</font> ii) : B(ii), a(ii) {}
+  ~C() {} <font color=#009900>// Calls ~A() and ~B()</font>
+  <font color=#0000ff>void</font> f() <font color=#0000ff>const</font> {  <font color=#009900>// Redefinition</font>
+    a.f();
+    B::f();
+  }
+};
+
+<font color=#0000ff>int</font> main() {
+  C c(47);
+} <font color=#009900>///:~</font></PRE></FONT></BLOCKQUOTE>
+
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia"><B>C</B> inherits from <B>B</B> and has a
+member object (&#8220;is composed of&#8221;) of type <B>A</B>. You can see the
+constructor initializer list contains calls to both the base-class constructor
+and the member-object constructor.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">The function <B>C::f(&#160;)</B>
+redefines <B>B::f(&#160;)</B>, which it inherits, and also calls the base-class
+version. In addition, it calls <B>a.f(&#160;)</B>. Notice that the only time you
+can talk about redefinition of functions is during inheritance; with a member
+object you can only manipulate the public interface of the object, not redefine
+it. In addition, calling <B>f(&#160;)</B> for an object of class <B>C</B> would
+not call <B>a.f(&#160;)</B> if <B>C::f(&#160;)</B> had not been defined, whereas
+it <I>would</I> call <B>B::f(&#160;)</B>.</FONT><BR></P></DIV>
+<A NAME="Heading411"></A><FONT FACE = "Verdana"><H4 ALIGN="LEFT">
+Automatic destructor
+calls<BR><A NAME="Index2304"></A><A NAME="Index2305"></A></H4></FONT>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Although you are often required to make
+explicit constructor calls in the initializer list, you never need to make
+explicit destructor calls because there&#8217;s only one destructor for any
+class, and it doesn&#8217;t take any arguments. However, the compiler still
+ensures that all destructors are called, and that means all of the destructors
+in the entire hierarchy, starting with the most-derived destructor and working
+back to the root.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">It&#8217;s worth emphasizing that
+constructors and destructors are quite unusual in that every one in the
+hierarchy is called, whereas with a normal member function only that function is
+called, but not any of the base-class versions. If you also want to call the
+base-class version of a normal member function that you&#8217;re overriding, you
+must do it
+explicitly.</FONT><A NAME="_Toc312374020"></A><A NAME="_Toc472654995"></A><BR></P></DIV>
+<A NAME="Heading412"></A><FONT FACE = "Verdana"><H3 ALIGN="LEFT">
+Order of constructor &amp; destructor calls</H3></FONT>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">It&#8217;s interesting to know the order
+of constructor and destructor calls
+<A NAME="Index2306"></A><A NAME="Index2307"></A><A NAME="Index2308"></A>when an
+object has many subobjects. The following example shows exactly how it
+works:</FONT><BR></P></DIV>
+
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE><font color=#009900>//: C14:Order.cpp</font>
+<font color=#009900>// Constructor/destructor order</font>
+#include &lt;fstream&gt;
+<font color=#0000ff>using</font> <font color=#0000ff>namespace</font> std;
+ofstream out(<font color=#004488>"order.out"</font>);
+
+#define CLASS(ID) <font color=#0000ff>class</font> ID { \
+<font color=#0000ff>public</font>: \
+  ID(<font color=#0000ff>int</font>) { out &lt;&lt; #ID <font color=#004488>" constructor\n"</font>; } \
+  ~ID() { out &lt;&lt; #ID <font color=#004488>" destructor\n"</font>; } \
+};
+
+CLASS(Base1);
+CLASS(Member1);
+CLASS(Member2);
+CLASS(Member3);
+CLASS(Member4);
+
+<font color=#0000ff>class</font> Derived1 : <font color=#0000ff>public</font> Base1 {
+  Member1 m1;
+  Member2 m2;
+<font color=#0000ff>public</font>:
+  Derived1(<font color=#0000ff>int</font>) : m2(1), m1(2), Base1(3) {
+    out &lt;&lt; <font color=#004488>"Derived1 constructor\n"</font>;
+  }
+  ~Derived1() {
+    out &lt;&lt; <font color=#004488>"Derived1 destructor\n"</font>;
+  }
+};
+
+<font color=#0000ff>class</font> Derived2 : <font color=#0000ff>public</font> Derived1 {
+  Member3 m3;
+  Member4 m4;
+<font color=#0000ff>public</font>:
+  Derived2() : m3(1), Derived1(2), m4(3) {
+    out &lt;&lt; <font color=#004488>"Derived2 constructor\n"</font>;
+  }
+  ~Derived2() {
+    out &lt;&lt; <font color=#004488>"Derived2 destructor\n"</font>;
+  }
+};
+
+<font color=#0000ff>int</font> main() {
+  Derived2 d2;
+} <font color=#009900>///:~</font></PRE></FONT></BLOCKQUOTE>
+
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">First, an
+<A NAME="Index2309"></A><B>ofstream</B> object is created to send all the output
+to a file. Then, to save some typing and demonstrate a macro technique that will
+be replaced by a much improved technique in Chapter 16, a
+<A NAME="Index2310"></A><A NAME="Index2311"></A>macro is created to build some
+of the classes, which are then used in inheritance and composition. Each of the
+constructors and destructors report themselves to the trace file. Note that the
+constructors are not default constructors; they each have an <B>int</B>
+argument. The argument itself has no identifier; its only reason for existence
+is to force you to explicitly call the constructors in the initializer list.
+(Eliminating the identifier prevents compiler warning
+messages.)</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">The output of this program
+is</FONT><BR></P></DIV>
+
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE>Base1 constructor
+Member1 constructor
+Member2 constructor
+Derived1 constructor
+Member3 constructor
+Member4 constructor
+Derived2 constructor
+Derived2 destructor
+Member4 destructor
+Member3 destructor
+Derived1 destructor
+Member2 destructor
+Member1 destructor
+Base1 destructor</PRE></FONT></BLOCKQUOTE>
+
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">You can see that construction starts at
+the very root of the class hierarchy, and that at each level the base class
+constructor is called first, followed by the member object constructors. The
+destructors are called in exactly the reverse order of the constructors &#8211;
+this is important because of potential dependencies (in the derived-class
+constructor or destructor, you must be able to assume that the base-class
+subobject is still available for use, and has already been constructed &#8211;
+or not destroyed yet).</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">It&#8217;s also interesting that the
+order of constructor calls for member objects is completely unaffected by the
+order of the calls in the constructor initializer list. The order is determined
+by the order that the member objects are declared in the class. If you could
+change the order of constructor calls via the constructor initializer list, you
+could have two different call sequences in two different constructors, but the
+poor destructor wouldn&#8217;t know how to properly reverse the order of the
+calls for destruction, and you could end up with a dependency
+problem.</FONT><A NAME="_Toc312374021"></A><A NAME="_Toc472654996"></A><BR></P></DIV>
+<A NAME="Heading413"></A><FONT FACE = "Verdana"><H2 ALIGN="LEFT">
+Name hiding<BR><A NAME="Index2312"></A><A NAME="Index2313"></A></H2></FONT>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">If you inherit a class and provide a new
+definition for one of its member functions, there are two possibilities. The
+first is that you provide the exact signature and return type in the derived
+class definition as in the base class definition. This is called
+<A NAME="Index2314"></A><I>redefining </I>for ordinary member functions and
+<A NAME="Index2315"></A><I>overriding</I> when the base class member function is
+a <A NAME="Index2316"></A><A NAME="Index2317"></A><B>virtual</B> function
+(<B>virtual</B> functions are the normal case, and will be covered in detail in
+Chapter 15). But what happens if you change the member function argument list or
+return type in the derived class? Here&#8217;s an example:</FONT><BR></P></DIV>
+
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE><font color=#009900>//: C14:NameHiding.cpp</font>
+<font color=#009900>// Hiding overloaded names during inheritance</font>
+#include &lt;iostream&gt;
+#include &lt;string&gt;
+<font color=#0000ff>using</font> <font color=#0000ff>namespace</font> std;
+
+<font color=#0000ff>class</font> Base {
+<font color=#0000ff>public</font>:
+  <font color=#0000ff>int</font> f() <font color=#0000ff>const</font> { 
+    cout &lt;&lt; <font color=#004488>"Base::f()\n"</font>; 
+    <font color=#0000ff>return</font> 1; 
+  }
+  <font color=#0000ff>int</font> f(string) <font color=#0000ff>const</font> { <font color=#0000ff>return</font> 1; }
+  <font color=#0000ff>void</font> g() {}
+};
+
+<font color=#0000ff>class</font> Derived1 : <font color=#0000ff>public</font> Base {
+<font color=#0000ff>public</font>:
+  <font color=#0000ff>void</font> g() <font color=#0000ff>const</font> {}
+};
+
+<font color=#0000ff>class</font> Derived2 : <font color=#0000ff>public</font> Base {
+<font color=#0000ff>public</font>:
+  <font color=#009900>// Redefinition:</font>
+  <font color=#0000ff>int</font> f() <font color=#0000ff>const</font> { 
+    cout &lt;&lt; <font color=#004488>"Derived2::f()\n"</font>; 
+    <font color=#0000ff>return</font> 2;
+  }
+};
+
+<font color=#0000ff>class</font> Derived3 : <font color=#0000ff>public</font> Base {
+<font color=#0000ff>public</font>:
+  <font color=#009900>// Change return type:</font>
+  <font color=#0000ff>void</font> f() <font color=#0000ff>const</font> { cout &lt;&lt; <font color=#004488>"Derived3::f()\n"</font>; }
+};
+
+<font color=#0000ff>class</font> Derived4 : <font color=#0000ff>public</font> Base {
+<font color=#0000ff>public</font>:
+  <font color=#009900>// Change argument list:</font>
+  <font color=#0000ff>int</font> f(<font color=#0000ff>int</font>) <font color=#0000ff>const</font> { 
+    cout &lt;&lt; <font color=#004488>"Derived4::f()\n"</font>; 
+    <font color=#0000ff>return</font> 4; 
+  }
+};
+
+<font color=#0000ff>int</font> main() {
+  string s(<font color=#004488>"hello"</font>);
+  Derived1 d1;
+  <font color=#0000ff>int</font> x = d1.f();
+  d1.f(s);
+  Derived2 d2;
+  x = d2.f();
+<font color=#009900>//!  d2.f(s); // string version hidden</font>
+  Derived3 d3;
+<font color=#009900>//!  x = d3.f(); // return int version hidden</font>
+  Derived4 d4;
+<font color=#009900>//!  x = d4.f(); // f() version hidden</font>
+  x = d4.f(1);
+} <font color=#009900>///:~</font></PRE></FONT></BLOCKQUOTE>
+
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">In <B>Base</B> you see an overloaded
+function <B>f(&#160;)</B>, and <B>Derived1</B> doesn&#8217;t make any changes to
+<B>f(&#160;)</B> but it does redefine <B>g(&#160;)</B>. In <B>main(&#160;)</B>,
+you can see that both overloaded versions of <B>f(&#160;)</B> are available in
+<B>Derived1</B>. However, <B>Derived2</B> redefines one overloaded version of
+<B>f(&#160;)</B> but not the other, and the result is that the second overloaded
+form is unavailable. In <B>Derived3</B>, changing the return type hides both the
+base class versions, and <B>Derived4</B> shows that changing the argument list
+also hides both the base class versions. In general, we can say that anytime you
+redefine an overloaded function name from the base class, all the other versions
+are automatically hidden in the new class. In Chapter 15, you&#8217;ll see that
+the addition of the <B>virtual</B> keyword affects function overloading a bit
+more.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">If you change the interface of the base
+class by modifying the
+<A NAME="Index2318"></A><A NAME="Index2319"></A><A NAME="Index2320"></A>signature
+and/or
+<A NAME="Index2321"></A><A NAME="Index2322"></A><A NAME="Index2323"></A>return
+type of a member function from the base class, then you&#8217;re using the class
+in a different way than inheritance is normally intended to support. It
+doesn&#8217;t necessarily mean you&#8217;re doing it wrong, it&#8217;s just that
+the ultimate goal of inheritance is to support
+<A NAME="Index2324"></A><I>polymorphism</I>, and if you change the function
+signature or return type then you are actually changing the interface of the
+base class. If this is what you have intended to do then you are using
+inheritance primarily to reuse code, and not to maintain the common interface of
+the base class (which is an essential aspect of polymorphism). In general, when
+you use inheritance this way it means you&#8217;re taking a general-purpose
+class and specializing it for a particular need &#8211; which is usually, but
+not always, considered the realm of
+composition.</FONT><A NAME="BBB"></A><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">For example, consider the <B>Stack</B>
+class from Chapter 9. One of the problems with that class is that you had to
+perform a cast every time you fetched a pointer from the container. This is not
+only tedious, it&#8217;s unsafe &#8211; you could cast the pointer to anything
+you want.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">An approach that seems better at first
+glance is to specialize the general <B>Stack</B> class using inheritance.
+Here&#8217;s an example that uses the class from Chapter 9:
+<A NAME="Index2325"></A></FONT><BR></P></DIV>
+
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE><font color=#009900>//: C14:InheritStack.cpp</font>
+<font color=#009900>// Specializing the Stack class</font>
+#include <font color=#004488>"../C09/Stack4.h"</font>
+#include <font color=#004488>"../require.h"</font>
+#include &lt;iostream&gt;
+#include &lt;fstream&gt;
+#include &lt;string&gt;
+<font color=#0000ff>using</font> <font color=#0000ff>namespace</font> std;
+
+<font color=#0000ff>class</font> StringStack : <font color=#0000ff>public</font> Stack {
+<font color=#0000ff>public</font>:
+  <font color=#0000ff>void</font> push(string* str) {
+    Stack::push(str);
+  }
+  string* peek() <font color=#0000ff>const</font> {
+    <font color=#0000ff>return</font> (string*)Stack::peek();
+  }
+  string* pop() {
+    <font color=#0000ff>return</font> (string*)Stack::pop();
+  }
+  ~StringStack() {
+    string* top = pop();
+    <font color=#0000ff>while</font>(top) {
+      <font color=#0000ff>delete</font> top;
+      top = pop();
+    }
+  }
+};
+
+<font color=#0000ff>int</font> main() {
+  ifstream in(<font color=#004488>"InheritStack.cpp"</font>);
+  assure(in, <font color=#004488>"InheritStack.cpp"</font>);
+  string line;
+  StringStack textlines;
+  <font color=#0000ff>while</font>(getline(in, line))
+    textlines.push(<font color=#0000ff>new</font> string(line));
+  string* s;
+  <font color=#0000ff>while</font>((s = textlines.pop()) != 0) { <font color=#009900>// No cast!</font>
+    cout &lt;&lt; *s &lt;&lt; endl;
+    <font color=#0000ff>delete</font> s;
+  }
+} <font color=#009900>///:~</font></PRE></FONT></BLOCKQUOTE>
+
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Since all of the member functions in
+<B>Stack4.h </B>are inlines, nothing needs to be linked.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia"><B>StringStack</B> specializes
+<B>Stack</B> so that <B>push(&#160;)</B> will accept only <B>String</B>
+pointers. Before, <B>Stack </B>would accept <B>void</B> pointers, so the user
+had no type checking to make sure the proper pointers were inserted. In
+addition, <B>peek(&#160;)</B> and <B>pop(&#160;)</B> now return <B>String</B>
+pointers instead of <B>void</B> pointers, so no cast is necessary to use the
+pointer.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Amazingly enough, this extra
+type-checking safety is free in <B>push(&#160;)</B>, <B>peek(&#160;)</B>, and
+<B>pop(&#160;)</B>! The compiler is being given extra type information that it
+uses at compile-time, but the functions are inlined and no extra code is
+generated.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Name hiding comes into play here because,
+in particular, the <B>push(&#160;)</B> function has a different signature: the
+argument list is different. If you had two versions of <B>push(&#160;)</B> in
+the same class, that would be overloading, but in this case overloading is
+<I>not</I> what we want because that would still allow you to pass any kind of
+pointer into <B>push(&#160;)</B> as a <B>void*</B>. Fortunately, C++ hides the
+<B>push(void*)</B> version in the base class in favor of the new version
+that&#8217;s defined in the derived class, and therefore it only allows us to
+<B>push(&#160;)</B> <B>string</B> pointers onto the <B>StringStack</B>.
+</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Because we can now guarantee that we know
+exactly what kind of objects are in the container, the destructor works
+correctly and the <A NAME="Index2326"></A>ownership problem is solved &#8211; or
+at least, one approach to the ownership problem. Here, if you
+<B>push(&#160;)</B> a <B>string</B> pointer onto the <B>StringStack</B>, then
+(according to the semantics of the <B>StringStack</B>)<B> </B>you&#8217;re also
+passing ownership of that pointer to the <B>StringStack</B>. If you
+<B>pop(&#160;)</B> the pointer, you not only get the pointer, but you also get
+ownership of that pointer. Any pointers that are left on the <B>StringStack</B>
+when its destructor is called are then deleted by that destructor. And since
+these are always <B>string</B> pointers and the <B>delete</B> statement is
+working on <B>string</B> pointers instead of <B>void</B> pointers, the proper
+destruction happens and everything works correctly.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">There is a drawback: this class works
+<I>only</I> for <B>string</B> pointers. If you want a <B>Stack </B>that works
+with some other kind of object, you must write a new version of the class so
+that it works only with your new kind of object. This rapidly becomes tedious,
+and is finally solved using templates, as you will see in Chapter
+16.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">We can make an additional observation
+about this example: it changes the interface of the <B>Stack</B> in the process
+of inheritance. If the interface is different, then a <B>StringStack</B> really
+isn&#8217;t a <B>Stack</B>, and you will never be able to correctly use a
+<B>StringStack</B> as a <B>Stack</B>. This makes the use of inheritance
+questionable here; if you&#8217;re not creating a <B>StringStack</B> that
+<A NAME="Index2327"></A><I>is-a</I> type of <B>Stack</B>, then why are you
+inheriting? A more appropriate version of <B>StringStack</B> will be shown later
+in this
+chapter.</FONT><A NAME="_Toc312374022"></A><A NAME="_Toc472654997"></A><BR></P></DIV>
+<A NAME="Heading414"></A><FONT FACE = "Verdana"><H2 ALIGN="LEFT">
+Functions that don&#8217;t automatically inherit</H2></FONT>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Not all functions are automatically
+inherited from the base class into the derived class. Constructors and
+destructors deal with the creation and destruction of an object, and they can
+know what to do with the aspects of the object only for their particular class,
+so all the constructors <A NAME="Index2328"></A>and destructors
+<A NAME="Index2329"></A>in the hierarchy below them must be called. Thus,
+constructors and destructors don&#8217;t inherit and must be created specially
+for each derived class.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">In addition, the <B>operator=</B>
+<A NAME="Index2330"></A>doesn&#8217;t inherit because it performs a
+constructor-like activity. That is, just because you know how to assign all the
+members of an object on the left-hand side of the <B>=</B> from an object on the
+right-hand side doesn&#8217;t mean that assignment will still have the same
+meaning after inheritance.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">In lieu of inheritance, these functions
+are <A NAME="Index2331"></A>synthesized by the compiler if you don&#8217;t
+create them yourself. (With constructors, you can&#8217;t create <I>any
+</I>constructors in order for the compiler to synthesize the default constructor
+and the copy-constructor.) This was briefly described in Chapter 6. The
+synthesized constructors use
+<A NAME="Index2332"></A><A NAME="Index2333"></A><A NAME="Index2334"></A>memberwise
+initialization and the synthesized <B>operator=</B> uses
+<A NAME="Index2335"></A><A NAME="Index2336"></A><A NAME="Index2337"></A>memberwise
+assignment. Here&#8217;s an example of the functions that are synthesized by the
+compiler:</FONT><BR></P></DIV>
+
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE><font color=#009900>//: C14:SynthesizedFunctions.cpp</font>
+<font color=#009900>// Functions that are synthesized by the compiler</font>
+#include &lt;iostream&gt;
+<font color=#0000ff>using</font> <font color=#0000ff>namespace</font> std;
+
+<font color=#0000ff>class</font> GameBoard {
+<font color=#0000ff>public</font>:
+  GameBoard() { cout &lt;&lt; <font color=#004488>"GameBoard()\n"</font>; }
+  GameBoard(<font color=#0000ff>const</font> GameBoard&amp;) { 
+    cout &lt;&lt; <font color=#004488>"GameBoard(const GameBoard&amp;)\n"</font>; 
+  }
+  GameBoard&amp; <font color=#0000ff>operator</font>=(<font color=#0000ff>const</font> GameBoard&amp;) {
+    cout &lt;&lt; <font color=#004488>"GameBoard::operator=()\n"</font>;
+    <font color=#0000ff>return</font> *<font color=#0000ff>this</font>;
+  }
+  ~GameBoard() { cout &lt;&lt; <font color=#004488>"~GameBoard()\n"</font>; }
+};
+
+<font color=#0000ff>class</font> Game {
+  GameBoard gb; <font color=#009900>// Composition</font>
+<font color=#0000ff>public</font>:
+  <font color=#009900>// Default GameBoard constructor called:</font>
+  Game() { cout &lt;&lt; <font color=#004488>"Game()\n"</font>; }
+  <font color=#009900>// You must explicitly call the GameBoard</font>
+  <font color=#009900>// copy-constructor or the default constructor</font>
+  <font color=#009900>// is automatically called instead:</font>
+  Game(<font color=#0000ff>const</font> Game&amp; g) : gb(g.gb) { 
+    cout &lt;&lt; <font color=#004488>"Game(const Game&amp;)\n"</font>; 
+  }
+  Game(<font color=#0000ff>int</font>) { cout &lt;&lt; <font color=#004488>"Game(int)\n"</font>; }
+  Game&amp; <font color=#0000ff>operator</font>=(<font color=#0000ff>const</font> Game&amp; g) {
+    <font color=#009900>// You must explicitly call the GameBoard</font>
+    <font color=#009900>// assignment operator or no assignment at </font>
+    <font color=#009900>// all happens for gb!</font>
+    gb = g.gb;
+    cout &lt;&lt; <font color=#004488>"Game::operator=()\n"</font>;
+    <font color=#0000ff>return</font> *<font color=#0000ff>this</font>;
+  }
+  <font color=#0000ff>class</font> Other {}; <font color=#009900>// Nested class</font>
+  <font color=#009900>// Automatic type conversion:</font>
+  <font color=#0000ff>operator</font> Other() <font color=#0000ff>const</font> {
+    cout &lt;&lt; <font color=#004488>"Game::operator Other()\n"</font>;
+    <font color=#0000ff>return</font> Other();
+  }
+  ~Game() { cout &lt;&lt; <font color=#004488>"~Game()\n"</font>; }
+};
+
+<font color=#0000ff>class</font> Chess : <font color=#0000ff>public</font> Game {};
+
+<font color=#0000ff>void</font> f(Game::Other) {}
+
+<font color=#0000ff>class</font> Checkers : <font color=#0000ff>public</font> Game {
+<font color=#0000ff>public</font>:
+  <font color=#009900>// Default base-class constructor called:</font>
+  Checkers() { cout &lt;&lt; <font color=#004488>"Checkers()\n"</font>; }
+  <font color=#009900>// You must explicitly call the base-class</font>
+  <font color=#009900>// copy constructor or the default constructor</font>
+  <font color=#009900>// will be automatically called instead:</font>
+  Checkers(<font color=#0000ff>const</font> Checkers&amp; c) : Game(c) {
+    cout &lt;&lt; <font color=#004488>"Checkers(const Checkers&amp; c)\n"</font>;
+  }
+  Checkers&amp; <font color=#0000ff>operator</font>=(<font color=#0000ff>const</font> Checkers&amp; c) {
+    <font color=#009900>// You must explicitly call the base-class</font>
+    <font color=#009900>// version of operator=() or no base-class</font>
+    <font color=#009900>// assignment will happen:</font>
+    Game::<font color=#0000ff>operator</font>=(c);
+    cout &lt;&lt; <font color=#004488>"Checkers::operator=()\n"</font>;
+    <font color=#0000ff>return</font> *<font color=#0000ff>this</font>;
+  }
+};
+
+<font color=#0000ff>int</font> main() {
+  Chess d1;  <font color=#009900>// Default constructor</font>
+  Chess d2(d1); <font color=#009900>// Copy-constructor</font>
+<font color=#009900>//! Chess d3(1); // Error: no int constructor</font>
+  d1 = d2; <font color=#009900>// Operator= synthesized</font>
+  f(d1); <font color=#009900>// Type-conversion IS inherited</font>
+  Game::Other go;
+<font color=#009900>//!  d1 = go; // Operator= not synthesized </font>
+           <font color=#009900>// for differing types</font>
+  Checkers c1, c2(c1);
+  c1 = c2;
+} <font color=#009900>///:~</font></PRE></FONT></BLOCKQUOTE>
+
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">The constructors and the <B>operator=</B>
+for <B>GameBoard </B>and <B>Game </B>announce themselves so you can see when
+they&#8217;re used by the compiler. In addition, the <B>operator
+Other(&#160;)</B> performs automatic type conversion from a <B>Game</B> object
+to an object of the nested class <B>Other</B>. The class <B>Chess</B> simply
+inherits from <B>Game</B> and creates no functions (to see how the compiler
+responds). The function <B>f(&#160;)</B> takes an <B>Other</B> object to test
+the automatic type conversion function.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">In <B>main(&#160;)</B>, the synthesized
+default constructor and copy-constructor for the derived class <B>Chess </B>are
+called. The <B>Game</B> versions of these constructors are called as part of the
+constructor-call hierarchy. Even though it looks like inheritance, new
+constructors are actually synthesized by the compiler. As you might expect, no
+constructors with arguments are automatically created because that&#8217;s too
+much for the compiler to intuit.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">The <B>operator=</B> is also synthesized
+as a new function in <B>Chess</B> using memberwise assignment (thus, the
+base-class version is called) because that function was not explicitly written
+in the new class. And of course the destructor was automatically synthesized by
+the compiler.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Because of all these rules about
+rewriting functions that handle object creation, it may seem a little strange at
+first that the automatic type conversion operator <I>is</I> inherited. But
+it&#8217;s not too unreasonable &#8211; if there are enough pieces in
+<B>Game</B> to make an <B>Other</B> object, those pieces are still there in
+anything derived from <B>Game</B> and the type conversion operator is still
+valid (even though you may in fact want to redefine it).</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia"><B>operator=</B> is synthesized
+<I>only</I> for assigning objects of the same type. If you want to assign one
+type to another you must always write that <B>operator=</B>
+yourself.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">If you look more closely at <B>Game</B>,
+you&#8217;ll see that the copy-constructor and assignment operators have
+explicit calls to the member object copy-constructor and assignment operator.
+You will normally want to do this because otherwise, in the case of the
+copy-constructor, the default member object constructor will be used instead,
+and in the case of the assignment operator, <I>no</I> assignment at all will be
+done for the member objects!</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Lastly, look at <B>Checkers</B>, which
+explicitly writes out the default constructor, copy-constructor, and assignment
+operators. In the case of the default constructor, the default base-class
+constructor is automatically called, and that&#8217;s typically what you want.
+But, and this is an important point, as soon as you decide to write your own
+copy-constructor and assignment operator, the compiler assumes that you know
+what you&#8217;re doing and <I>does not</I> automatically call the base-class
+versions, as it does in the synthesized functions. If you want the base class
+versions called (and you typically do) then you must explicitly call them
+yourself. In the <B>Checkers</B> copy-constructor, this call appears in the
+constructor initializer list:</FONT><BR></P></DIV>
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE>Checkers(<font color=#0000ff>const</font> Checkers&amp; c) : Game(c) {</PRE></FONT></BLOCKQUOTE>
+
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">In the <B>Checkers</B> assignment
+operator, the base class call is the first line in the function
+body:</FONT><BR></P></DIV>
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE>Game::<font color=#0000ff>operator</font>=(c);</PRE></FONT></BLOCKQUOTE>
+
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">These calls should be part of the
+canonical form that you use whenever you inherit a
+class.</FONT><A NAME="_Toc305593255"></A><A NAME="_Toc305628727"></A><A NAME="_Toc312374023"></A><A NAME="_Toc472654998"></A><BR></P></DIV>
+<A NAME="Heading415"></A><FONT FACE = "Verdana"><H3 ALIGN="LEFT">
+Inheritance and static member
+functions<BR><A NAME="Index2338"></A><A NAME="Index2339"></A><A NAME="Index2340"></A><A NAME="Index2341"></A></H3></FONT>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia"><B>static</B> member functions act the
+same as non-<B>static</B> member functions:</FONT><BR></P></DIV>
+<OL>
+<LI><FONT FACE="Verdana">	</FONT><FONT FACE="Georgia">They inherit into the
+derived class.</FONT><LI><FONT FACE="Verdana">	</FONT><FONT FACE="Georgia">If
+you redefine a static member, all the other overloaded functions in the base
+class are hidden.</FONT><LI><FONT FACE="Verdana">	</FONT><FONT FACE="Georgia">If
+you change the signature of a function in the base class, all the base class
+versions with that function name are hidden (this is really a variation of the
+previous point).</FONT></OL><DIV ALIGN="LEFT"><P><FONT FACE="Georgia">However,
+<B>static</B> member functions cannot be <B>virtual</B> (a topic covered
+thoroughly in Chapter 15).</FONT><A NAME="_Toc472654999"></A><BR></P></DIV>
+<A NAME="Heading416"></A><FONT FACE = "Verdana"><H2 ALIGN="LEFT">
+Choosing composition vs.
+inheritance<A NAME="CompileDB"></A><BR><A NAME="Index2342"></A><A NAME="Index2343"></A></H2></FONT>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Both composition and inheritance place
+subobjects<A NAME="Index2344"></A><A NAME="Index2345"></A><A NAME="Index2346"></A>
+inside your new class. Both use the constructor initializer list to construct
+these subobjects. You may now be wondering what the difference is between the
+two, and when to choose one over the other.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Composition is generally used when you
+want the features of an existing class inside your new class, but not its
+interface. That is, you embed an object to implement features of your new class,
+but the user of your new class sees the interface you&#8217;ve defined rather
+than the interface from the original class. To do this, you follow the typical
+path of embedding <B>private</B> objects of existing classes inside your new
+class.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Occasionally, however, it makes sense to
+allow the class user to directly access the composition of your new class, that
+is, to make the member objects <B>public</B>. The member objects use access
+control themselves, so this is a safe thing to do and when the user knows
+you&#8217;re assembling a bunch of parts, it makes the interface easier to
+understand. A <B>Car</B> class is a good example:</FONT><BR></P></DIV>
+
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE><font color=#009900>//: C14:Car.cpp</font>
+<font color=#009900>// Public composition</font>
+
+<font color=#0000ff>class</font> Engine {
+<font color=#0000ff>public</font>:
+  <font color=#0000ff>void</font> start() <font color=#0000ff>const</font> {}
+  <font color=#0000ff>void</font> rev() <font color=#0000ff>const</font> {}
+  <font color=#0000ff>void</font> stop() <font color=#0000ff>const</font> {}
+};
+
+<font color=#0000ff>class</font> Wheel {
+<font color=#0000ff>public</font>:
+  <font color=#0000ff>void</font> inflate(<font color=#0000ff>int</font> psi) <font color=#0000ff>const</font> {}
+};
+
+<font color=#0000ff>class</font> Window {
+<font color=#0000ff>public</font>:
+  <font color=#0000ff>void</font> rollup() <font color=#0000ff>const</font> {}
+  <font color=#0000ff>void</font> rolldown() <font color=#0000ff>const</font> {}
+};
+
+<font color=#0000ff>class</font> Door {
+<font color=#0000ff>public</font>:
+  Window window;
+  <font color=#0000ff>void</font> open() <font color=#0000ff>const</font> {}
+  <font color=#0000ff>void</font> close() <font color=#0000ff>const</font> {}
+};
+
+<font color=#0000ff>class</font> Car {
+<font color=#0000ff>public</font>:
+  Engine engine;
+  Wheel wheel[4];
+  Door left, right; <font color=#009900>// 2-door</font>
+};
+
+<font color=#0000ff>int</font> main() {
+  Car car;
+  car.left.window.rollup();
+  car.wheel[0].inflate(72);
+} <font color=#009900>///:~</font></PRE></FONT></BLOCKQUOTE>
+
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Because the composition of a <B>Car</B>
+is part of the analysis of the problem (and not simply part of the underlying
+design), making the members <B>public</B> assists the client programmer&#8217;s
+understanding of how to use the class and requires less code complexity for the
+creator of the class.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">With a little thought, you&#8217;ll also
+see that it would make no sense to compose a <B>Car</B> using a
+&#8220;vehicle&#8221; object &#8211; a car doesn&#8217;t contain a vehicle, it
+<I>is</I> a vehicle. The <I>is-a</I> relationship is expressed with inheritance,
+and the <I>has-a</I> relationship is expressed with
+composition.</FONT><A NAME="_Toc312374024"></A><A NAME="_Toc472655000"></A><BR></P></DIV>
+<A NAME="Heading417"></A><FONT FACE = "Verdana"><H3 ALIGN="LEFT">
+Subtyping<BR><A NAME="Index2347"></A><A NAME="Index2348"></A></H3></FONT>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Now suppose you want to create a type of
+<B>ifstream</B> <A NAME="Index2349"></A>object that not only opens a file but
+also keeps track of the name of the file. You can use composition and embed both
+an <B>ifstream</B> and a <B>string</B> into the new class:</FONT><BR></P></DIV>
+
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE><font color=#009900>//: C14:FName1.cpp</font>
+<font color=#009900>// An fstream with a file name</font>
+#include <font color=#004488>"../require.h"</font>
+#include &lt;iostream&gt;
+#include &lt;fstream&gt;
+#include &lt;string&gt;
+<font color=#0000ff>using</font> <font color=#0000ff>namespace</font> std;
+
+<font color=#0000ff>class</font> FName1 {
+  ifstream file;
+  string fileName;
+  <font color=#0000ff>bool</font> named;
+<font color=#0000ff>public</font>:
+  FName1() : named(<font color=#0000ff>false</font>) {}
+  FName1(<font color=#0000ff>const</font> string&amp; fname) 
+    : fileName(fname), file(fname.c_str()) {
+    assure(file, fileName);
+    named = <font color=#0000ff>true</font>;
+  }
+  string name() <font color=#0000ff>const</font> { <font color=#0000ff>return</font> fileName; }
+  <font color=#0000ff>void</font> name(<font color=#0000ff>const</font> string&amp; newName) {
+    <font color=#0000ff>if</font>(named) <font color=#0000ff>return</font>; <font color=#009900>// Don't overwrite</font>
+    fileName = newName;
+    named = <font color=#0000ff>true</font>;
+  }
+  <font color=#0000ff>operator</font> ifstream&amp;() { <font color=#0000ff>return</font> file; }
+};
+
+<font color=#0000ff>int</font> main() {
+  FName1 file(<font color=#004488>"FName1.cpp"</font>);
+  cout &lt;&lt; file.name() &lt;&lt; endl;
+  <font color=#009900>// Error: close() not a member:</font>
+<font color=#009900>//!  file.close();</font>
+} <font color=#009900>///:~</font></PRE></FONT></BLOCKQUOTE>
+
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">There&#8217;s a problem here, however. An
+attempt is made to allow the use of the <B>FName1</B> object anywhere an
+<B>ifstream</B> object is used by including an automatic type conversion
+operator from <B>FName1</B> to an <B>ifstream&amp;</B>. But in main, the
+line</FONT><BR></P></DIV>
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE>file.close();</PRE></FONT></BLOCKQUOTE>
+
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">will not compile because automatic type
+conversion happens only in function calls, not during member selection. So this
+approach won&#8217;t work.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">A second approach is to add the
+definition of <B>close(&#160;)</B> to <B>FName1</B>:</FONT><BR></P></DIV>
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE><font color=#0000ff>void</font> close() { file.close(); }</PRE></FONT></BLOCKQUOTE>
+
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">This will work if there are only a few
+functions you want to bring through from the <B>ifstream</B> class. In that case
+you&#8217;re only using part of the class, and composition
+<A NAME="Index2350"></A>is appropriate.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">But what if you want everything in the
+class to come through? This is called <I>subtyping</I> because you&#8217;re
+making a new type from an existing type, and you want your new type to have
+exactly the same interface as the existing type (plus any other member functions
+you want to add), so you can use it everywhere you&#8217;d use the existing
+type. This is where inheritance is essential. You can see that subtyping solves
+the problem in the preceding example perfectly:</FONT><BR></P></DIV>
+
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE><font color=#009900>//: C14:FName2.cpp</font>
+<font color=#009900>// Subtyping solves the problem</font>
+#include <font color=#004488>"../require.h"</font>
+#include &lt;iostream&gt;
+#include &lt;fstream&gt;
+#include &lt;string&gt;
+<font color=#0000ff>using</font> <font color=#0000ff>namespace</font> std;
+
+<font color=#0000ff>class</font> FName2 : <font color=#0000ff>public</font> ifstream {
+  string fileName;
+  <font color=#0000ff>bool</font> named;
+<font color=#0000ff>public</font>:
+  FName2() : named(<font color=#0000ff>false</font>) {}
+  FName2(<font color=#0000ff>const</font> string&amp; fname)
+    : ifstream(fname.c_str()), fileName(fname) {
+    assure(*<font color=#0000ff>this</font>, fileName);
+    named = <font color=#0000ff>true</font>;
+  }
+  string name() <font color=#0000ff>const</font> { <font color=#0000ff>return</font> fileName; }
+  <font color=#0000ff>void</font> name(<font color=#0000ff>const</font> string&amp; newName) {
+    <font color=#0000ff>if</font>(named) <font color=#0000ff>return</font>; <font color=#009900>// Don't overwrite</font>
+    fileName = newName;
+    named = <font color=#0000ff>true</font>;
+  }
+};
+
+<font color=#0000ff>int</font> main() {
+  FName2 file(<font color=#004488>"FName2.cpp"</font>);
+  assure(file, <font color=#004488>"FName2.cpp"</font>);
+  cout &lt;&lt; <font color=#004488>"name: "</font> &lt;&lt; file.name() &lt;&lt; endl;
+  string s;
+  getline(file, s); <font color=#009900>// These work too!</font>
+  file.seekg(-200, ios::end);
+  file.close();
+} <font color=#009900>///:~</font></PRE></FONT></BLOCKQUOTE>
+
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Now any member function available for an
+<B>ifstream</B> object is available for an <B>FName2</B> object. You can also
+see that non-member functions like <B>getline(&#160;) </B>that expect an
+<B>ifstream </B>can also work with an <B>FName2</B>.<B> </B>That&#8217;s because
+an <B>FName2</B> <I>is</I> a type of <B>ifstream</B>; it doesn&#8217;t simply
+contain one. This is a very important issue that will be explored at the end of
+this chapter and in the next
+one.</FONT><A NAME="_Toc312374026"></A><A NAME="_Toc472655001"></A><BR></P></DIV>
+<A NAME="Heading418"></A><FONT FACE = "Verdana"><H3 ALIGN="LEFT">
+private inheritance<BR><A NAME="Index2351"></A><A NAME="Index2352"></A></H3></FONT>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">You can inherit a base class privately by
+leaving off the <B>public</B> in the base-class list, or by explicitly saying
+<B>private</B> (probably a better policy because it is clear to the user that
+you mean it). When you inherit privately, you&#8217;re &#8220;implementing in
+terms of;&#8221; that is, you&#8217;re creating a new class that has all of the
+data and functionality of the base class, but that functionality is hidden, so
+it&#8217;s only part of the underlying implementation. The class user has no
+access to the underlying functionality, and an object cannot be treated as a
+instance of the base class (as it was in <B>FName2.cpp</B>).</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">You may wonder what the purpose of
+<B>private</B> inheritance is, because the alternative of using composition to
+create a <B>private</B> object in the new class seems more appropriate.
+<B>private</B> inheritance is included in the language for completeness, but if
+for no other reason than to reduce confusion, you&#8217;ll usually want to use
+composition rather than <B>private</B> inheritance. However, there may
+occasionally be situations where you want to produce part of the same interface
+as the base class <I>and</I> disallow the treatment of the object as if it were
+a base-class object. <B>private</B> inheritance provides this
+ability.</FONT><BR></P></DIV>
+<A NAME="Heading419"></A><FONT FACE = "Verdana"><H4 ALIGN="LEFT">
+Publicizing privately inherited members</H4></FONT>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">When you inherit privately, all the
+<B>public</B> members of the base class become <B>private</B>. If you want any
+of them to be visible, just say their names (no arguments or return values)
+<U>along with the <B>using </B>keyword </U>in the <B>public</B> section of the
+derived class:</FONT><BR></P></DIV>
+
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE><font color=#009900>//: C14:PrivateInheritance.cpp</font>
+<font color=#0000ff>class</font> Pet {
+<font color=#0000ff>public</font>:
+  <font color=#0000ff>char</font> eat() <font color=#0000ff>const</font> { <font color=#0000ff>return</font> 'a'; }
+  <font color=#0000ff>int</font> speak() <font color=#0000ff>const</font> { <font color=#0000ff>return</font> 2; }
+  <font color=#0000ff>float</font> sleep() <font color=#0000ff>const</font> { <font color=#0000ff>return</font> 3.0; }
+  <font color=#0000ff>float</font> sleep(<font color=#0000ff>int</font>) <font color=#0000ff>const</font> { <font color=#0000ff>return</font> 4.0; }
+};
+
+<font color=#0000ff>class</font> Goldfish : Pet { <font color=#009900>// Private inheritance</font>
+<font color=#0000ff>public</font>:
+  <font color=#0000ff>using</font> Pet::eat; <font color=#009900>// Name publicizes member</font>
+  <font color=#0000ff>using</font> Pet::sleep; <font color=#009900>// Both overloaded members exposed</font>
+};
+
+<font color=#0000ff>int</font> main() {
+  Goldfish bob;
+  bob.eat();
+  bob.sleep();
+  bob.sleep(1);
+<font color=#009900>//! bob.speak();// Error: private member function</font>
+} <font color=#009900>///:~</font></PRE></FONT></BLOCKQUOTE>
+
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Thus, <B>private</B> inheritance is
+useful if you want to hide part of the functionality of the base
+class.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Notice that <STRIKE>giving
+</STRIKE><U>exposing </U>the name of an overloaded function exposes all the
+versions of the overloaded function in the base class.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">You should think carefully before using
+<B>private</B> inheritance instead of composition; <B>private</B> inheritance
+has particular complications when combined with runtime type identification
+(this is the topic of a chapter in Volume 2 of this book, downloadable from
+<I>www.BruceEckel.com</I>).</FONT><A NAME="_Toc305593256"></A><A NAME="_Toc305628728"></A><A NAME="_Toc312374027"></A><A NAME="_Toc472655002"></A><BR></P></DIV>
+<A NAME="Heading420"></A><FONT FACE = "Verdana"><H2 ALIGN="LEFT">
+protected</H2></FONT>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Now that you&#8217;ve been introduced to
+inheritance, the keyword
+<A NAME="Index2353"></A><B>protected<A NAME="Index2354"></A></B> finally has
+meaning. In an ideal world,
+<A NAME="Index2355"></A><A NAME="Index2356"></A><B>private</B> members would
+always be hard-and-fast <B>private</B>, but in real projects there are times
+when you want to make something hidden from the world at large and yet allow
+access for members of derived classes. The <B>protected</B> keyword is a nod to
+pragmatism; it says, &#8220;This is <B>private</B> as far as the class user is
+concerned, but available to anyone who inherits from this
+class.&#8221;</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">The best approach is to leave the data
+members <B>private</B> &#8211; you should always preserve your right to change
+the underlying implementation. You can then allow controlled access to
+inheritors of your class through <B>protected </B>member
+functions:</FONT><BR></P></DIV>
+
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE><font color=#009900>//: C14:Protected.cpp</font>
+<font color=#009900>// The protected keyword</font>
+#include &lt;fstream&gt;
+<font color=#0000ff>using</font> <font color=#0000ff>namespace</font> std;
+
+<font color=#0000ff>class</font> Base {
+  <font color=#0000ff>int</font> i;
+<font color=#0000ff>protected</font>:
+  <font color=#0000ff>int</font> read() <font color=#0000ff>const</font> { <font color=#0000ff>return</font> i; }
+  <font color=#0000ff>void</font> set(<font color=#0000ff>int</font> ii) { i = ii; }
+<font color=#0000ff>public</font>:
+  Base(<font color=#0000ff>int</font> ii = 0) : i(ii) {}
+  <font color=#0000ff>int</font> value(<font color=#0000ff>int</font> m) <font color=#0000ff>const</font> { <font color=#0000ff>return</font> m*i; }
+};
+
+<font color=#0000ff>class</font> Derived : <font color=#0000ff>public</font> Base {
+  <font color=#0000ff>int</font> j;
+<font color=#0000ff>public</font>:
+  Derived(<font color=#0000ff>int</font> jj = 0) : j(jj) {}
+  <font color=#0000ff>void</font> change(<font color=#0000ff>int</font> x) { set(x); }
+}; 
+
+<font color=#0000ff>int</font> main() {
+  Derived d;
+  d.change(10);
+} <font color=#009900>///:~</font></PRE></FONT></BLOCKQUOTE>
+
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">You will find examples of the need for
+<B>protected</B> in examples later in this book, and in Volume
+2.</FONT><A NAME="_Toc312374028"></A><A NAME="_Toc472655003"></A><BR></P></DIV>
+<A NAME="Heading421"></A><FONT FACE = "Verdana"><H3 ALIGN="LEFT">
+protected inheritance<BR><A NAME="Index2357"></A><A NAME="Index2358"></A></H3></FONT>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">When you&#8217;re inheriting, the base
+class defaults to <B>private</B>, which means that all of the public member
+functions are <B>private</B> to the user of the new class. Normally,
+you&#8217;ll make the inheritance <B>public</B> so the interface of the base
+class is also the interface of the derived class. However, you can also use the
+<B>protected</B> keyword during inheritance.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Protected derivation means
+&#8220;implemented-in-terms-of&#8221; to other classes but &#8220;is-a&#8221;
+for derived classes and friends. It&#8217;s something you don&#8217;t use very
+often, but it&#8217;s in the language for
+completeness.</FONT><A NAME="_Toc305593257"></A><A NAME="_Toc305628729"></A><A NAME="_Toc312374029"></A><A NAME="_Toc472655004"></A><BR></P></DIV>
+<A NAME="Heading422"></A><FONT FACE = "Verdana"><H2 ALIGN="LEFT">
+Operator overloading &amp;
+inheritance<BR><A NAME="Index2359"></A><A NAME="Index2360"></A><A NAME="Index2361"></A></H2></FONT>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Except for the assignment operator,
+operators are automatically inherited into a derived class. This can be
+demonstrated by inheriting from <B>C12:Byte.h</B>:</FONT><BR></P></DIV>
+
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE><font color=#009900>//: C14:OperatorInheritance.cpp</font>
+<font color=#009900>// Inheriting overloaded operators</font>
+#include <font color=#004488>"../C12/Byte.h"</font>
+#include &lt;fstream&gt;
+<font color=#0000ff>using</font> <font color=#0000ff>namespace</font> std;
+ofstream out(<font color=#004488>"ByteTest.out"</font>);
+
+<font color=#0000ff>class</font> Byte2 : <font color=#0000ff>public</font> Byte {
+<font color=#0000ff>public</font>:
+  <font color=#009900>// Constructors don't inherit:</font>
+  Byte2(<font color=#0000ff>unsigned</font> <font color=#0000ff>char</font> bb = 0) : Byte(bb) {}  
+  <font color=#009900>// operator= does not inherit, but </font>
+  <font color=#009900>// is synthesized for memberwise assignment.</font>
+  <font color=#009900>// However, only the SameType = SameType</font>
+  <font color=#009900>// operator= is synthesized, so you have to</font>
+  <font color=#009900>// make the others explicitly:</font>
+  Byte2&amp; <font color=#0000ff>operator</font>=(<font color=#0000ff>const</font> Byte&amp; right) {
+    Byte::<font color=#0000ff>operator</font>=(right);
+    <font color=#0000ff>return</font> *<font color=#0000ff>this</font>;
+  }
+  Byte2&amp; <font color=#0000ff>operator</font>=(<font color=#0000ff>int</font> i) { 
+    Byte::<font color=#0000ff>operator</font>=(i);
+    <font color=#0000ff>return</font> *<font color=#0000ff>this</font>;
+  }
+};
+
+<font color=#009900>// Similar test function as in C12:ByteTest.cpp:</font>
+<font color=#0000ff>void</font> k(Byte2&amp; b1, Byte2&amp; b2) {
+  b1 = b1 * b2 + b2 % b1;
+
+  #define TRY2(OP) \
+    out &lt;&lt; <font color=#004488>"b1 = "</font>; b1.print(out); \
+    out &lt;&lt; <font color=#004488>", b2 = "</font>; b2.print(out); \
+    out &lt;&lt; <font color=#004488>";  b1 "</font> #OP <font color=#004488>" b2 produces "</font>; \
+    (b1 OP b2).print(out); \
+    out &lt;&lt; endl;
+
+  b1 = 9; b2 = 47;
+  TRY2(+) TRY2(-) TRY2(*) TRY2(/)
+  TRY2(%) TRY2(^) TRY2(&amp;) TRY2(|)
+  TRY2(&lt;&lt;) TRY2(&gt;&gt;) TRY2(+=) TRY2(-=)
+  TRY2(*=) TRY2(/=) TRY2(%=) TRY2(^=)
+  TRY2(&amp;=) TRY2(|=) TRY2(&gt;&gt;=) TRY2(&lt;&lt;=)
+  TRY2(=) <font color=#009900>// Assignment operator</font>
+
+  <font color=#009900>// Conditionals:</font>
+  #define TRYC2(OP) \
+    out &lt;&lt; <font color=#004488>"b1 = "</font>; b1.print(out); \
+    out &lt;&lt; <font color=#004488>", b2 = "</font>; b2.print(out); \
+    out &lt;&lt; <font color=#004488>";  b1 "</font> #OP <font color=#004488>" b2 produces "</font>; \
+    out &lt;&lt; (b1 OP b2); \
+    out &lt;&lt; endl;
+
+  b1 = 9; b2 = 47;
+  TRYC2(&lt;) TRYC2(&gt;) TRYC2(==) TRYC2(!=) TRYC2(&lt;=)
+  TRYC2(&gt;=) TRYC2(&amp;&amp;) TRYC2(||)
+
+  <font color=#009900>// Chained assignment:</font>
+  Byte2 b3 = 92;
+  b1 = b2 = b3;
+}
+
+<font color=#0000ff>int</font> main() {
+  out &lt;&lt; <font color=#004488>"member functions:"</font> &lt;&lt; endl;
+  Byte2 b1(47), b2(9);
+  k(b1, b2);
+} <font color=#009900>///:~</font></PRE></FONT></BLOCKQUOTE>
+
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">The test code is identical to that in
+<B>C12:ByteTest.cpp</B> except that <B>Byte2</B> is used instead of <B>Byte</B>.
+This way all the operators are verified to work with <B>Byte2</B> via
+inheritance.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">When you examine the class <B>Byte2</B>,
+you&#8217;ll see that the constructor must be explicitly defined, and that only
+the <B>operator=</B> that assigns a <B>Byte2</B> to a <B>Byte2</B> is
+synthesized; any other assignment operators that you need you&#8217;ll have to
+synthesize on your own.</FONT><A NAME="_Toc472655005"></A><BR></P></DIV>
+<A NAME="Heading423"></A><FONT FACE = "Verdana"><H2 ALIGN="LEFT">
+Multiple inheritance<BR><A NAME="Index2362"></A><A NAME="Index2363"></A></H2></FONT>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">You can inherit from one class, so it
+would seem to make sense to inherit from more than one class at a time. Indeed
+you can, but whether it makes sense as part of a design is a subject of
+continuing debate. One thing is generally agreed upon: You shouldn&#8217;t try
+this until you&#8217;ve been programming quite a while and understand the
+language thoroughly. By that time, you&#8217;ll probably realize that no matter
+how much you think you absolutely must use multiple inheritance, you can almost
+always get away with single inheritance. </FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Initially, multiple inheritance seems
+simple enough: You add more classes in the base-class list during inheritance,
+separated by commas. However, multiple inheritance introduces a number of
+possibilities for ambiguity, which is why a chapter in Volume 2 is devoted to
+the
+subject.</FONT><A NAME="_Toc305593258"></A><A NAME="_Toc305628730"></A><A NAME="_Toc312374030"></A><A NAME="_Toc472655006"></A><BR></P></DIV>
+<A NAME="Heading424"></A><FONT FACE = "Verdana"><H2 ALIGN="LEFT">
+Incremental development</H2></FONT>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">One of the advantages of inheritance and
+composition is that these support <I>incremental
+development<A NAME="Index2364"></A><A NAME="Index2365"></A></I> by allowing you
+to introduce new code without causing bugs in existing code. If bugs do appear,
+they are isolated within the new code. By inheriting from (or composing with) an
+existing, functional class and adding data members and member functions (and
+redefining existing member functions during inheritance) you leave the existing
+code &#8211; that someone else may still be using &#8211; untouched and
+unbugged. If a bug happens, you know it&#8217;s in your new code, which is much
+shorter and easier to read than if you had modified the body of existing
+code.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">It&#8217;s rather amazing how cleanly the
+classes are separated. You don&#8217;t even need the source code for the member
+functions in order to reuse the code, just the header file describing the class
+and the object file or library file with the compiled member functions. (This is
+true for both inheritance and composition.)</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">It&#8217;s important to realize that
+program development is an
+<A NAME="Index2366"></A><A NAME="Index2367"></A>incremental process, just like
+human learning. You can do as much analysis as you want, but you still
+won&#8217;t know all the answers when you set out on a project. You&#8217;ll
+have much more success &#8211; and more immediate feedback &#8211; if you start
+out to &#8220;grow&#8221; your project as an organic, evolutionary creature,
+rather than constructing it all at once like a glass-box
+skyscraper</FONT><A NAME="fnB52" HREF="#fn52">[52]</A><A NAME="Index2368"></A><A NAME="Index2369"></A><FONT FACE="Georgia">.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Although
+<A NAME="Index2370"></A>inheritance for experimentation is a useful technique,
+at some point after things stabilize you need to take a new look at your class
+hierarchy with an eye to collapsing it into a sensible
+structure</FONT><A NAME="fnB53" HREF="#fn53">[53]</A><FONT FACE="Georgia">.
+Remember that underneath it all, inheritance is meant to express a relationship
+that says, &#8220;This new class is a <I>type of</I> that old class.&#8221; Your
+program should not be concerned with pushing bits around, but instead with
+creating and manipulating objects of various types to express a model in the
+terms given you from the problem
+space.</FONT><A NAME="_Toc305593259"></A><A NAME="_Toc305628731"></A><A NAME="_Toc312374031"></A><A NAME="_Toc472655007"></A><BR></P></DIV>
+<A NAME="Heading425"></A><FONT FACE = "Verdana"><H2 ALIGN="LEFT">
+Upcasting<BR><A NAME="Index2371"></A></H2></FONT>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Earlier in the chapter, you saw how an
+object of a class derived from <B>ifstream</B> has all the characteristics and
+behaviors of an <B>ifstream</B> object. In <B>FName2.cpp</B>, any <B>ifstream
+</B>member function could be called for an <B>FName2</B>
+object.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><A NAME="Index2372"></A><A NAME="Index2373"></A><A NAME="Index2374"></A><FONT FACE="Georgia">The
+most important aspect of inheritance is not that it provides member functions
+for the new class, however. It&#8217;s the relationship expressed between the
+new class and the base class. This relationship can be summarized by saying,
+&#8220;The new class <I>is a type of</I> the existing class.&#8221;
+</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">This description is not just a fanciful
+way of explaining inheritance &#8211; it&#8217;s supported directly by the
+compiler. As an example, consider a base class called <B>Instrument</B> that
+represents musical instruments and a derived class called <B>Wind</B>. Because
+inheritance means that all the functions in the base class are also available in
+the derived class, any message you can send to the base class can also be sent
+to the derived class. So if the <B>Instrument</B> class has a
+<B>play(&#160;)</B> member function, so will <B>Wind</B> instruments. This means
+we can accurately say that a <B>Wind</B> object is also a type of
+<B>Instrument</B>. The following example shows how the compiler supports this
+notion:</FONT><BR></P></DIV>
+
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE><font color=#009900>//: C14:Instrument.cpp</font>
+<font color=#009900>// Inheritance &amp; upcasting</font>
+<font color=#0000ff>enum</font> note { middleC, Csharp, Cflat }; <font color=#009900>// Etc.</font>
+
+<font color=#0000ff>class</font> Instrument {
+<font color=#0000ff>public</font>:
+  <font color=#0000ff>void</font> play(note) <font color=#0000ff>const</font> {}
+};
+
+<font color=#009900>// Wind objects are Instruments</font>
+<font color=#009900>// because they have the same interface:</font>
+<font color=#0000ff>class</font> Wind : <font color=#0000ff>public</font> Instrument {};
+
+<font color=#0000ff>void</font> tune(Instrument&amp; i) {
+  <font color=#009900>// ...</font>
+  i.play(middleC);
+}
+
+<font color=#0000ff>int</font> main() {
+  Wind flute;
+  tune(flute); <font color=#009900>// Upcasting</font>
+} <font color=#009900>///:~</font></PRE></FONT></BLOCKQUOTE>
+
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">What&#8217;s interesting in this example
+is the <B>tune(&#160;)</B> function, which accepts an <B>Instrument</B>
+reference. However, in <B>main(&#160;)</B> the <B>tune(&#160;)</B> function is
+called by handing it a reference to a <B>Wind</B> object. Given that C++ is very
+particular about type checking, it seems strange that a function that accepts
+one type will readily accept another type, until you realize that a <B>Wind</B>
+object is also an <B>Instrument</B> object, and there&#8217;s no function that
+<B>tune(&#160;)</B> could call for an <B>Instrument</B> that isn&#8217;t also in
+<B>Wind</B> (this is what inheritance guarantees). Inside <B>tune(&#160;)</B>,
+the code works for <B>Instrument</B> and anything derived from
+<B>Instrument</B>, and the act of converting a <B>Wind</B> reference or pointer
+into an <B>Instrument</B> reference or pointer is called
+<I>upcasting</I>.</FONT><A NAME="_Toc312374032"></A><A NAME="_Toc472655008"></A><BR></P></DIV>
+<A NAME="Heading426"></A><FONT FACE = "Verdana"><H3 ALIGN="LEFT">
+Why &#8220;upcasting?&#8221;</H3></FONT>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">The reason for the term is historical and
+is based on the way class inheritance diagrams
+<A NAME="Index2375"></A><A NAME="Index2376"></A><A NAME="Index2377"></A>have
+traditionally been drawn: with the root at the top of the page, growing
+downward. (Of course, you can draw your diagrams any way you find helpful.) The
+inheritance diagram for <B>Instrument.cpp</B> is then:</FONT><BR></P></DIV>
+<DIV ALIGN="CENTER"><FONT FACE="Georgia"><IMG SRC="TIC2Vo15.gif"></FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Casting from derived to base moves
+<I>up</I> on the inheritance diagram, so it&#8217;s commonly referred to as
+upcasting. Upcasting is always safe because you&#8217;re going from a more
+specific type to a more general type &#8211; the only thing that can occur to
+the class interface is that it can lose member functions, not gain them. This is
+why the compiler allows upcasting without any explicit casts or other special
+notation.</FONT><A NAME="_Toc472655009"></A><BR></P></DIV>
+<A NAME="Heading427"></A><FONT FACE = "Verdana"><H3 ALIGN="LEFT">
+Upcasting and the
+copy-constructor<BR><A NAME="Index2378"></A><A NAME="Index2379"></A></H3></FONT>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">If you allow the compiler to synthesize a
+copy-constructor for a derived class, it will automatically call the base-class
+copy-constructor, and then the copy-constructors for all the member objects (or
+perform a bitcopy on built-in types) so you&#8217;ll get the right
+behavior:</FONT><BR></P></DIV>
+
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE><font color=#009900>//: C14:CopyConstructor.cpp</font>
+<font color=#009900>// Correctly creating the copy-constructor</font>
+#include &lt;iostream&gt;
+<font color=#0000ff>using</font> <font color=#0000ff>namespace</font> std;
+
+<font color=#0000ff>class</font> Parent {
+  <font color=#0000ff>int</font> i;
+<font color=#0000ff>public</font>:
+  Parent(<font color=#0000ff>int</font> ii) : i(ii) {
+    cout &lt;&lt; <font color=#004488>"Parent(int ii)\n"</font>;
+  }
+  Parent(<font color=#0000ff>const</font> Parent&amp; b) : i(b.i) {
+    cout &lt;&lt; <font color=#004488>"Parent(const Parent&amp;)\n"</font>;
+  }
+  Parent() : i(0) { cout &lt;&lt; <font color=#004488>"Parent()\n"</font>; }
+  <font color=#0000ff>friend</font> ostream&amp;
+    <font color=#0000ff>operator</font>&lt;&lt;(ostream&amp; os, <font color=#0000ff>const</font> Parent&amp; b) {
+    <font color=#0000ff>return</font> os &lt;&lt; <font color=#004488>"Parent: "</font> &lt;&lt; b.i &lt;&lt; endl;
+  }
+};
+
+<font color=#0000ff>class</font> Member {
+  <font color=#0000ff>int</font> i;
+<font color=#0000ff>public</font>:
+  Member(<font color=#0000ff>int</font> ii) : i(ii) {
+    cout &lt;&lt; <font color=#004488>"Member(int ii)\n"</font>;
+  }
+  Member(<font color=#0000ff>const</font> Member&amp; m) : i(m.i) {
+    cout &lt;&lt; <font color=#004488>"Member(const Member&amp;)\n"</font>;
+  }
+  <font color=#0000ff>friend</font> ostream&amp;
+    <font color=#0000ff>operator</font>&lt;&lt;(ostream&amp; os, <font color=#0000ff>const</font> Member&amp; m) {
+    <font color=#0000ff>return</font> os &lt;&lt; <font color=#004488>"Member: "</font> &lt;&lt; m.i &lt;&lt; endl;
+  }
+};
+
+<font color=#0000ff>class</font> Child : <font color=#0000ff>public</font> Parent {
+  <font color=#0000ff>int</font> i;
+  Member m;
+<font color=#0000ff>public</font>:
+  Child(<font color=#0000ff>int</font> ii) : Parent(ii), i(ii), m(ii) {
+    cout &lt;&lt; <font color=#004488>"Child(int ii)\n"</font>;
+  }
+  <font color=#0000ff>friend</font> ostream&amp;
+    <font color=#0000ff>operator</font>&lt;&lt;(ostream&amp; os, <font color=#0000ff>const</font> Child&amp; c){
+    <font color=#0000ff>return</font> os &lt;&lt; (Parent&amp;)c &lt;&lt; c.m
+              &lt;&lt; <font color=#004488>"Child: "</font> &lt;&lt; c.i &lt;&lt; endl;
+  }
+};
+
+<font color=#0000ff>int</font> main() {
+  Child c(2);
+  cout &lt;&lt; <font color=#004488>"calling copy-constructor: "</font> &lt;&lt; endl;
+  Child c2 = c; <font color=#009900>// Calls copy-constructor</font>
+  cout &lt;&lt; <font color=#004488>"values in c2:\n"</font> &lt;&lt; c2;
+} <font color=#009900>///:~</font></PRE></FONT></BLOCKQUOTE>
+
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">The <B>operator&lt;&lt;</B> for
+<B>Child</B> is interesting because of the way that it calls the
+<B>operator&lt;&lt;</B> for the <B>Parent</B> part within it: by casting the
+<B>Child </B>object to a <B>Parent&amp;</B> (if you cast to a base-class
+<I>object</I> instead of a reference you will usually get undesirable
+results):</FONT><BR></P></DIV>
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE><font color=#0000ff>return</font> os &lt;&lt; (Parent&amp;)c &lt;&lt; c.m</PRE></FONT></BLOCKQUOTE>
+
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Since the compiler then sees it as a
+<B>Parent</B>, it calls the <B>Parent</B> version of
+<B>operator&lt;&lt;</B>.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">You can see that <B>Child</B> has no
+explicitly-defined copy-constructor. The compiler then synthesizes the
+copy-constructor (since that is one of the four functions it will
+<A NAME="Index2380"></A><A NAME="Index2381"></A>synthesize, along with the
+default constructor &#8211; if you don&#8217;t create any constructors &#8211;
+the <B>operator=</B> and the destructor) by calling the <B>Parent</B>
+copy-constructor and the <B>Member</B> copy-constructor. This is shown in the
+output </FONT><BR></P></DIV>
+
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE>Parent(<font color=#0000ff>int</font> ii)
+Member(<font color=#0000ff>int</font> ii)
+Child(<font color=#0000ff>int</font> ii)
+calling copy-constructor:
+Parent(<font color=#0000ff>const</font> Parent&amp;)
+Member(<font color=#0000ff>const</font> Member&amp;)
+values in c2:
+Parent: 2
+Member: 2
+Child: 2</PRE></FONT></BLOCKQUOTE>
+
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">However, if you try to write your own
+copy-constructor for <B>Child </B>and you make an innocent mistake and do it
+badly:</FONT><BR></P></DIV>
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE>Child(<font color=#0000ff>const</font> Child&amp; c) : i(c.i), m(c.m) {}</PRE></FONT></BLOCKQUOTE>
+
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">then the <I>default</I> constructor will
+automatically be called for the base-class part of <B>Child</B>, since
+that&#8217;s what the compiler falls back on when it has no other choice of
+constructor to call (remember that <I>some</I> constructor must always be called
+for every object, regardless of whether it&#8217;s a subobject of another
+class). The output will then be:</FONT><BR></P></DIV>
+
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE>Parent(<font color=#0000ff>int</font> ii)
+Member(<font color=#0000ff>int</font> ii)
+Child(<font color=#0000ff>int</font> ii)
+calling copy-constructor:
+Parent()
+Member(<font color=#0000ff>const</font> Member&amp;)
+values in c2:
+Parent: 0
+Member: 2
+Child: 2</PRE></FONT></BLOCKQUOTE>
+
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">This is probably not what you expect,
+since generally you&#8217;ll want the base-class portion to be copied from the
+existing object to the new object as part of copy-construction.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">To repair the problem you must remember
+to properly call the base-class copy-constructor (as the compiler does) whenever
+you write your own copy-constructor. This can seem a little strange-looking at
+first but it&#8217;s another example of upcasting:</FONT><BR></P></DIV>
+
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE>  Child(<font color=#0000ff>const</font> Child&amp; c)
+    : Parent(c), i(c.i), m(c.m) {
+    cout &lt;&lt; <font color=#004488>"Child(Child&amp;)\n"</font>;
+ }</PRE></FONT></BLOCKQUOTE>
+
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">The strange part is where the
+<B>Parent</B> copy-constructor is called: <B>Parent(c)</B>. What does it mean to
+pass a <B>Child</B> object to a <B>Parent</B> constructor? But <B>Child</B> is
+inherited from <B>Parent</B>, so a <B>Child</B> reference <I>is</I> a
+<B>Parent</B> reference. The base-class copy-constructor call upcasts a
+reference to <B>Child</B> to a reference to <B>Parent</B> and uses it to perform
+the copy-construction. When you write your own copy constructors you&#8217;ll
+almost always want to do the same
+thing.</FONT><A NAME="_Toc312374033"></A><A NAME="_Toc472655010"></A><BR></P></DIV>
+<A NAME="Heading428"></A><FONT FACE = "Verdana"><H3 ALIGN="LEFT">
+Composition vs. inheritance
+(revisited)<BR><A NAME="Index2382"></A><A NAME="Index2383"></A></H3></FONT>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">One of the clearest ways to determine
+whether you should be using composition or inheritance is by asking whether
+you&#8217;ll ever need to upcast from your new class. Earlier in this chapter,
+the <B>Stack</B> class was specialized using inheritance. However, chances are
+the <B>StringStack</B> objects will be used only as <B>string</B> containers and
+never upcast, so a more appropriate alternative is composition:</FONT><BR></P></DIV>
+
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE><font color=#009900>//: C14:InheritStack2.cpp</font>
+<font color=#009900>// Composition vs. inheritance</font>
+#include <font color=#004488>"../C09/Stack4.h"</font>
+#include <font color=#004488>"../require.h"</font>
+#include &lt;iostream&gt;
+#include &lt;fstream&gt;
+#include &lt;string&gt;
+<font color=#0000ff>using</font> <font color=#0000ff>namespace</font> std;
+
+<font color=#0000ff>class</font> StringStack {
+  Stack stack; <font color=#009900>// Embed instead of inherit</font>
+<font color=#0000ff>public</font>:
+  <font color=#0000ff>void</font> push(string* str) {
+    stack.push(str);
+  }
+  string* peek() <font color=#0000ff>const</font> {
+    <font color=#0000ff>return</font> (string*)stack.peek();
+  }
+  string* pop() {
+    <font color=#0000ff>return</font> (string*)stack.pop();
+  }
+};
+
+<font color=#0000ff>int</font> main() {
+  ifstream in(<font color=#004488>"InheritStack2.cpp"</font>);
+  assure(in, <font color=#004488>"InheritStack2.cpp"</font>);
+  string line;
+  StringStack textlines;
+  <font color=#0000ff>while</font>(getline(in, line))
+    textlines.push(<font color=#0000ff>new</font> string(line));
+  string* s;
+  <font color=#0000ff>while</font>((s = textlines.pop()) != 0) <font color=#009900>// No cast!</font>
+    cout &lt;&lt; *s &lt;&lt; endl;
+} <font color=#009900>///:~</font></PRE></FONT></BLOCKQUOTE>
+
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">The file is identical to
+<B>InheritStack.cpp</B>, except that a <B>Stack</B> object is embedded in
+<B>StringStack</B>, and member functions are called for the embedded object.
+There&#8217;s still no time or space overhead because the subobject takes up the
+same amount of space, and all the additional type checking happens at compile
+time.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Although it tends to be more confusing,
+you could also use <B>private</B> inheritance to express &#8220;implemented in
+terms of.&#8221; This would also solve the problem adequately. One place it
+becomes important, however, is when multiple
+inheritance<A NAME="Index2384"></A><A NAME="Index2385"></A> might be warranted.
+In that case, if you see a design in which composition can be used instead of
+inheritance, you may be able to eliminate the need for multiple
+inheritance.</FONT><A NAME="_Toc312374034"></A><A NAME="_Toc472655011"></A><BR></P></DIV>
+<A NAME="Heading429"></A><FONT FACE = "Verdana"><H3 ALIGN="LEFT">
+Pointer &amp; reference
+upcasting<BR><A NAME="Index2386"></A><A NAME="Index2387"></A><A NAME="Index2388"></A></H3></FONT>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">In <B>Instrument.cpp</B>, the upcasting
+occurs during the function call &#8211; a <B>Wind</B> object outside the
+function has its reference taken and becomes an <B>Instrument</B> reference
+inside the function. Upcasting can also occur during a simple assignment to a
+pointer or reference:</FONT><BR></P></DIV>
+
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE>Wind w;
+Instrument* ip = &amp;w; <font color=#009900>// Upcast</font>
+Instrument&amp; ir = w; <font color=#009900>// Upcast</font></PRE></FONT></BLOCKQUOTE>
+
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Like the function call, neither of these
+cases requires an explicit
+cast.</FONT><A NAME="_Toc312374035"></A><A NAME="_Toc472655012"></A><BR></P></DIV>
+<A NAME="Heading430"></A><FONT FACE = "Verdana"><H3 ALIGN="LEFT">
+A crisis</H3></FONT>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Of course, any
+<A NAME="Index2389"></A>upcast loses type information about an object. If you
+say</FONT><BR></P></DIV>
+
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE>Wind w;
+Instrument* ip = &amp;w;</PRE></FONT></BLOCKQUOTE>
+
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">the compiler can deal with <B>ip<I>
+</I></B>only as an <B>Instrument</B> pointer and nothing else. That is, it
+cannot know that <B>ip</B> <I>actually</I> happens to point to a <B>Wind</B>
+object. So when you call the <B>play(&#160;)</B> member function by saying
+</FONT><BR></P></DIV>
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE>ip-&gt;play(middleC);</PRE></FONT></BLOCKQUOTE>
+
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">the compiler can know only that
+it&#8217;s calling <B>play(&#160;)</B> for an <B>Instrument</B> pointer, and
+call the base-class version of <B>Instrument::play(&#160;)</B> instead of what
+it should do, which is call <B>Wind::play(&#160;)</B>. Thus, you won&#8217;t get
+the correct behavior.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">This is a significant problem; it is
+solved in Chapter 15 by introducing the third cornerstone of object-oriented
+programming: polymorphism (implemented in C++ with <B>virtual</B>
+functions).</FONT><A NAME="_Toc305593260"></A><A NAME="_Toc305628732"></A><A NAME="_Toc312374036"></A><A NAME="_Toc472655013"></A><BR></P></DIV>
+<A NAME="Heading431"></A><FONT FACE = "Verdana"><H2 ALIGN="LEFT">
+Summary</H2></FONT>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Both inheritance and composition allow
+you to create a new type from existing types, and both embed subobjects of the
+existing types inside the new type. Typically, however, you use composition to
+reuse existing types as part of the underlying implementation of the new type
+and inheritance when you want to force the new type to be the same type as the
+base class (type equivalence guarantees interface equivalence). Since the
+derived class has the base-class interface, it can be <I>upcast</I> to the base,
+which is critical for polymorphism as you&#8217;ll see in Chapter
+15.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Although code reuse through composition
+and inheritance is very helpful for rapid project development, you&#8217;ll
+generally want to redesign your class hierarchy before allowing other
+programmers to become dependent on it. Your goal is a hierarchy in which each
+class has a specific use and is neither too big (encompassing so much
+functionality that it&#8217;s unwieldy to reuse) nor annoyingly small (you
+can&#8217;t use it by itself or without adding
+functionality).</FONT><A NAME="_Toc312374037"></A><A NAME="_Toc472655014"></A><BR></P></DIV>
+<A NAME="Heading432"></A><FONT FACE = "Verdana"><H2 ALIGN="LEFT">
+Exercises</H2></FONT>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia" SIZE=2>Solutions to selected exercises
+can be found in the electronic document <I>The Thinking in C++ Annotated
+Solution Guide</I>, available for a small fee from www.BruceEckel.com.
+</FONT><BR></P></DIV>
+<OL>
+<LI><FONT FACE="Verdana">	</FONT><FONT FACE="Georgia">Modify <B>Car.cpp</B> so
+that it also inherits from a class called <B>Vehicle</B>, placing appropriate
+member functions in <B>Vehicle</B> (that is, make up some member functions). Add
+a nondefault constructor to <B>Vehicle</B>, which you must call inside
+<B>Car</B>&#8217;s
+constructor.</FONT><LI><FONT FACE="Verdana">	</FONT><FONT FACE="Georgia">Create
+two classes, <B>A </B>and <B>B, </B>with default constructors that announce
+themselves. Inherit a new class called <B>C</B> from <B>A</B>, and create a
+member object of <B>B </B>in <B>C</B>, but do not create a constructor for
+<B>C</B>. Create an object of class <B>C </B>and observe the
+results.</FONT><LI><FONT FACE="Verdana">	</FONT><FONT FACE="Georgia">Create a
+three-level hierarchy of classes with default constructors, along with
+destructors, both of which announce themselves to <B>cout</B>.<B> </B>Verify
+that for an object of the most derived type, all three constructors and
+destructors are automatically called. Explain the order in which the calls are
+made.</FONT><LI><FONT FACE="Verdana">	</FONT><FONT FACE="Georgia">Modify
+<B>Combined.cpp</B> to add another level of inheritance and a new member object.
+Add code to show when the constructors and destructors are being
+called.</FONT><LI><FONT FACE="Verdana">	</FONT><FONT FACE="Georgia">In
+<B>Combined.cpp</B>, create a class <B>D</B> that inherits from <B>B</B> and has
+a member object of class <B>C</B>. Add code to show when the constructors and
+destructors are being
+called.</FONT><LI><FONT FACE="Verdana">	</FONT><FONT FACE="Georgia">Modify
+<B>Order.cpp</B> to add another level of inheritance <B>Derived3</B> with member
+objects of class <B>Member4</B> and <B>Member5</B>. Trace the output of the
+program.</FONT><LI><FONT FACE="Verdana">	</FONT><FONT FACE="Georgia">In
+<B>NameHiding.cpp</B>, verify that in <B>Derived2</B>, <B>Derived3</B>, and
+<B>Derived4</B>, none of the base-class versions of <B>f(&#160;)</B> are
+available.</FONT><LI><FONT FACE="Verdana">	</FONT><FONT FACE="Georgia">Modify
+<B>NameHiding.cpp</B> by adding three overloaded functions named
+<B>h(&#160;)</B> to <B>Base</B>, and show that redefining one of them in a
+derived class hides the
+others.</FONT><LI><FONT FACE="Verdana">	</FONT><FONT FACE="Georgia">Inherit a
+class <B>StringVector</B> from <B>vector&lt;void*&gt;</B> and redefine the
+<B>push_back(&#160;)</B> and <B>operator[]</B> member functions to accept and
+produce <B>string*</B>. What happens if you try to <B>push_back(&#160;)</B> a
+<B>void*</B>?</FONT><LI><FONT FACE="Verdana">	</FONT><FONT FACE="Georgia">Write
+a class containing a <B>long</B> and use the psuedo-constructor call syntax in
+the constructor to initialize the
+<B>long</B>.</FONT><LI><FONT FACE="Verdana">	</FONT><FONT FACE="Georgia">Create
+a class called <B>Asteroid</B>.<B> </B>Use inheritance to specialize the
+<B>PStash</B> class in Chapter 13 (<B>PStash.h</B> &amp; <B>PStash.cpp</B>) so
+that it accepts and returns <B>Asteroid</B> pointers. Also modify
+<B>PStashTest.cpp</B> to test your classes. Change the class so <B>PStash</B> is
+a member
+object.</FONT><LI><FONT FACE="Verdana">	</FONT><FONT FACE="Georgia">Repeat
+Exercise 11 with a <B>vector</B> instead of a
+<B>PStash</B>.</FONT><LI><FONT FACE="Verdana">	</FONT><FONT FACE="Georgia">In
+<B>SynthesizedFunctions.cpp</B>, modify <B>Chess</B> to give it a default
+constructor, copy-constructor, and assignment operator. Demonstrate that
+you&#8217;ve written these
+correctly.</FONT><LI><FONT FACE="Verdana">	</FONT><FONT FACE="Georgia">Create
+two classes called <B>Traveler</B> and <B>Pager</B> without default
+constructors, but with constructors that take an argument of type <B>string</B>,
+which they simply copy to an internal <B>string</B> variable. For each class,
+write the correct copy-constructor and assignment operator. Now inherit a class
+<B>BusinessTraveler</B> from <B>Traveler </B>and give it a member object of type
+<B>Pager</B>. Write the correct default constructor, a constructor that takes a
+<B>string</B> argument, a copy-constructor, and an assignment
+operator.</FONT><LI><FONT FACE="Verdana">	</FONT><FONT FACE="Georgia">Create a
+class with two <B>static</B> member functions. Inherit from this class and
+redefine one of the member functions. Show that the other is hidden in the
+derived class.</FONT><LI><FONT FACE="Verdana">	</FONT><FONT FACE="Georgia">Look
+up more of the member functions for <B>ifstream</B>. In <B>FName2.cpp</B>, try
+them out on the <B>file</B>
+object.</FONT><LI><FONT FACE="Verdana">	</FONT><FONT FACE="Georgia">Use
+<B>private</B> and <B>protected</B> inheritance to create two new classes from a
+base class. Then attempt to upcast objects of the derived class to the base
+class. Explain what
+happens.</FONT><LI><FONT FACE="Verdana">	</FONT><FONT FACE="Georgia">In
+<B>Protected.cpp</B>, add a member function in <B>Derived</B> that calls the
+<B>protected</B> <B>Base</B> member
+<B>read(&#160;)</B>.</FONT><LI><FONT FACE="Verdana">	</FONT><FONT FACE="Georgia">Change
+<B>Protected.cpp</B> so that <B>Derived</B> is using <B>protected</B>
+inheritance. See if you can call <B>value(&#160;)</B> for a <B>Derived</B>
+object.</FONT><LI><FONT FACE="Verdana">	</FONT><FONT FACE="Georgia">Create a
+class called <B>SpaceShip</B> with a <B>fly(&#160;)</B> method. Inherit
+<B>Shuttle</B> from <B>SpaceShip</B> and add a <B>land(&#160;)</B> method.
+Create a new <B>Shuttle</B>, upcast by pointer or reference to a
+<B>SpaceShip</B>, and try to call the <B>land(&#160;)</B> method. Explain the
+results.</FONT><LI><FONT FACE="Verdana">	</FONT><FONT FACE="Georgia">Modify
+<B>Instrument.cpp</B> to add a <B>prepare(&#160;)</B> method to
+<B>Instrument</B>. Call <B>prepare(&#160;)</B> inside
+<B>tune(&#160;)</B>.</FONT><LI><FONT FACE="Verdana">	</FONT><FONT FACE="Georgia">Modify
+<B>Instrument.cpp</B> so that <B>play(&#160;)</B> prints a message to
+<B>cout</B>, and <B>Wind</B> redefines <B>play(&#160;)</B> to print a different
+message to <B>cout</B>. Run the program and explain why you probably
+wouldn&#8217;t want this behavior. Now put the <B>virtual</B> keyword (which you
+will learn about in Chapter 15) in front of the <B>play(&#160;)</B> declaration
+in <B>Instrument</B> and observe the change in the
+behavior.</FONT><LI><FONT FACE="Verdana">	</FONT><FONT FACE="Georgia">In
+<B>CopyConstructor.cpp</B>, inherit a new class from <B>Child</B> and give it a
+<B>Member</B> <B>m</B>. Write a proper <B>constructor</B>,
+<B>copy-constructor</B>, <B>operator=</B>, and <B>operator&lt;&lt;</B> for
+ostreams, and test the class in
+<B>main(&#160;)</B>.</FONT><LI><FONT FACE="Verdana">	</FONT><FONT FACE="Georgia">Take
+the example <B>CopyConstructor.cpp</B> and modify it by adding your own
+copy-constructor to <B>Child</B> <I>without</I> calling the base-class
+copy-constructor and see what happens. Fix the problem by making a proper
+explicit call to the base-class copy constructor in the constructor-initializer
+list of the <B>Child</B>
+copy-constructor.</FONT><LI><FONT FACE="Verdana">	</FONT><FONT FACE="Georgia">Modify
+<B>InheritStack2.cpp</B> to use a <B>vector&lt;string&gt;</B> instead of a
+<B>Stack</B>.</FONT><LI><FONT FACE="Verdana">	</FONT><FONT FACE="Georgia">Create
+a class <B>Rock</B> with a default constructor, a copy-constructor, an
+assignment operator, and a destructor, all of which announce to <B>cout </B>that
+they&#8217;ve been called. In <B>main(&#160;)</B>,<B> </B>create a
+<B>vector&lt;Rock&gt;</B> (that is, hold <B>Rock</B> objects by value) and add
+some <B>Rock</B>s. Run the program and explain the output you get. Note whether
+the destructors are called for the <B>Rock</B> objects in the <B>vector</B>. Now
+repeat the exercise with a <B>vector&lt;Rock*&gt;</B>. Is it possible to create
+a
+<B>vector&lt;Rock&amp;&gt;</B>?</FONT><LI><FONT FACE="Verdana">	</FONT><FONT FACE="Georgia">This
+exercise creates the design pattern called <I>proxy</I>. Start with a base class
+<B>Subject </B>and give it three functions: <B>f(&#160;)</B>, <B>g(&#160;)</B>,
+and <B>h(&#160;)</B>. Now inherit a class <B>Proxy</B> and two classes
+<B>Implementation1</B> and <B>Implementation2</B> from <B>Subject</B>.
+<B>Proxy</B> should contain a pointer to a <B>Subject</B>, and all the member
+functions for <B>Proxy</B> should just turn around and make the same calls
+through the <B>Subject</B> pointer. The <B>Proxy</B> constructor takes a pointer
+to a <B>Subject</B> that is installed in the <B>Proxy </B>(usually by the
+constructor). In <B>main(&#160;)</B>, create two different <B>Proxy</B> objects
+that use the two different implementations. Now modify <B>Proxy</B> so that you
+can dynamically change
+implementations.</FONT><LI><FONT FACE="Verdana">	</FONT><FONT FACE="Georgia">Modify
+<B>ArrayOperatorNew.cpp</B> from Chapter 13 to show that, if you inherit from
+<B>Widget</B>, the allocation still works correctly. Explain why inheritance in
+<B>Framis.cpp</B> from Chapter 13 would <I>not</I> work
+correctly.</FONT><LI><FONT FACE="Verdana">	</FONT><FONT FACE="Georgia">Modify
+<B>Framis.cpp</B> from Chapter 13 by inheriting from <B>Framis</B> and creating
+new versions of <B>new</B> and <B>delete</B> for your derived class. Demonstrate
+that they work
+correctly.</FONT><A NAME="_Toc305593262"></A><A NAME="_Toc305628734"></A><A NAME="_Toc312374038"></A></OL><FONT FACE = "Verdana"><H1 ALIGN="LEFT">
+</H1></FONT>
+<HR><DIV ALIGN="LEFT"><P><A NAME="fn51" HREF="#fnB51">[51]</A><FONT FACE="Georgia" SIZE=2>
+In Java, the compiler won&#8217;t let you decrease the access of a member during
+inheritance.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><A NAME="fn52" HREF="#fnB52">[52]</A><FONT FACE="Georgia" SIZE=2>
+To learn more about this idea, see <I>Extreme Programming Explained</I>, by Kent
+Beck (Addison-Wesley 2000).</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><A NAME="fn53" HREF="#fnB53">[53]</A><FONT FACE="Georgia" SIZE=2>
+See <I>Refactoring: Improving the Design of Existing Code</I> by Martin Fowler
+(Addison-Wesley 1999).</FONT><BR></P></DIV>
+
+<DIV ALIGN="CENTER">
+    <FONT FACE="Verdana" size = "-1">
+     [ <a href="Chapter13.html">Previous Chapter</a> ] 
+    [ <a href="Contents.html">Table of Contents</a> ] 
+    [ <a href="DocIndex.html">Index</a> ]
+     [ <a href="Chapter15.html">Next Chapter</a> ] 
+    </FONT>
+    <BR>
+ Last Update:09/27/2001</P></DIV>
+
+</BODY>
+
+</HTML>

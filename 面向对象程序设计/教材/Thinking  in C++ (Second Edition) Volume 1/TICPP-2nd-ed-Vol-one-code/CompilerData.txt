@@ -1,0 +1,154 @@
+#: :CompilerData.txt
+# Compiler information listings for Thinking in 
+# C++ 2nd Edition By Bruce Eckel. See copyright 
+# notice in Copyright.txt.
+#################################################
+# Please note: the end user does not need to use this
+# file or the ExtractCode program; simply download
+# the zipped source-code file from www.MindView.net,
+# unzip it and type "make" at the command-line. See
+# Chapter 3 of Volume 1 for details about using 'make'.
+#################################################
+# This file contains the compiler information database 
+# which is used by the automatic code extraction 
+# program ExtractCode.cpp (in Volume 2 of this 
+# book) to build makefiles that will work properly 
+# with the various compilers. It is included here
+# for your information.
+#
+# This file is used by ExtractCode.cpp to generate 
+# the makefiles for the book, including the command-
+# line flags for each vendor's compiler and 
+# linker. Following that are the code listings 
+# from the book that will not compile for each 
+# compiler. The listings are, to the best of my 
+# knowledge, correct Standard C++ (According to 
+# the ISO Standard). Please note that the tests 
+# were performed with the most recent compiler 
+# that I had at the time, and may have changed 
+# since this file was created.
+#################################################
+# Compiling all files, for a (theoretical) fully-
+# conformant compiler. This assumes a typical
+# compiler under dos:
+{ all }
+# Object file name extension in parentheses:
+(obj)
+# Executable file extension in square brackets:
+[exe]
+# The leading '&' is for special directives. The
+# dos directive means to replace '/' 
+# with '\' in all directory paths:
+&dos
+# The following lines will be inserted directly
+# into the makefile (sans the leading '@' sign)
+# If your environment variables are set to 
+# establish these you won't need to use arguments
+# on the make command line to set them:
+# CPP: the name of your C++ compiler
+# CPPFLAGS: Compilation flags for your compiler
+# OFLAG: flag to give the final executable name
+#@CPP = yourcompiler
+#@CPPFLAGS =
+#@OFLAG = -e
+@.SUFFIXES : .obj .cpp .c
+@.cpp.obj :
+@   $(CPP) $(CPPFLAGS) -c $<
+@.c.obj :
+@   $(CPP) $(CPPFLAGS) -c $<
+# Assumes all files will compile
+# See later for an example of Unix configuration
+#################################################
+# Borland C++ Builder 4
+# Target name used in makefile:
+{ Borland }
+# Object file name extension in parentheses:
+(obj)
+# Executable file extension in square brackets:
+[exe]
+# The leading '&' is for special directives. The
+# dos directive means to replace '/' 
+# with '\' in all directory paths:
+&dos
+@CPP = Bcc32
+@CPPFLAGS = -w-inl -w-csu -wnak  
+@OFLAG = -e
+@.SUFFIXES : .obj .cpp .c
+@.cpp.obj :
+@   $(CPP) $(CPPFLAGS) -c $<
+@.c.obj :
+@   $(CPP) $(CPPFLAGS) -c $<
+# Supports everything! 
+#################################################
+# Visual C++ 6.0 –- With Service Pack 3!!!
+# Target name used in makefile:
+{ Microsoft }
+# Object file name extension in parentheses:
+(obj)
+# Executable file extension in square brackets:
+[exe]
+# The leading '&' is for special directives. The
+# dos directive means to replace '/' 
+# with '\' in all directory paths:
+&dos
+# Inserted directly into the makefile (without
+# the leading '@' sign):
+@# Note: this requires the service Pack 3 from 
+@# www.Microsoft.com for successful compilation!
+@# Also, you cannot run the "test" makefiles
+@# unless you go through and put 'return 0;' at
+@# the end of every main(), because VC++ does not
+@# follow the C++ Standard for defaulting return
+@# values from main().
+@CPP = cl
+@CPPFLAGS = -GX -GR
+@OFLAG = -o
+@.SUFFIXES : .obj .cpp .c
+@.cpp.obj :
+@   $(CPP) $(CPPFLAGS) -c $<
+@.c.obj :
+@   $(CPP) $(CPPFLAGS) -c $<
+# Mostly namespace bugs
+C02:CallHello.cpp
+C03:Assert.cpp
+C07:MemTest.cpp
+C09:Cpptime.cpp
+C12:OverloadingOperatorComma.cpp
+C13:GlobalOperatorNew.cpp
+C16:TStack2Test.cpp
+# Multiple "for(int i =...:"
+# statements in the same scope (a really old
+# language feature!).
+C02:Intvector.cpp
+# Template scoping bug:
+C16:Drawing.cpp
+# Does not support the variant return type and
+# has problems with pure virtual functions:
+C15:VariantReturn.cpp
+# These do not compile because of the
+# lack of support for 'static const':
+C08:StringStack.cpp 
+C10:StaticArray.cpp 
+#################################################
+# The gcc (Gnu g++) under Linux
+{ gcc }
+(o)
+[]
+# The unix directive controls the way some of the
+# makefile lines are generated:
+&unix
+@CPP = g++
+@OFLAG = -o
+@.SUFFIXES : .o .cpp .c
+@.cpp.o :
+@   $(CPP) $(CPPFLAGS) -c $<
+@.c.o :
+@   $(CPP) $(CPPFLAGS) -c $<
+# Files that won't compile:
+# <sstream> still not implemented:
+C12:IostreamOperatorOverloading.cpp
+# Namespace collision in g++ 3.0.1
+C13:NewHandler.cpp
+# The end tag is required:
+#///:~
+

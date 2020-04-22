@@ -1,0 +1,1294 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<HTML>
+<!--
+This document was converted from RTF source: 
+By rtftohtml 4.19
+See http://www.sunpack.com/RTF
+Filename:C:\TEMP\TicV2\html\TicV2.rtf
+Application Directory:C:\TOOLS\RTF2HTML\
+Subject:
+Author:Bruce Eckel
+Operator:Bruce Eckel
+Document Comments:
+Version Comments:
+Comments:
+Keywords:
+Translation Date:08/19/2001
+Translation Time:14:24:52
+Translation Platform:Win32
+Number of Output files:19
+This File:C:\TEMP\TicV2\html\Chap02.htm
+SplitDepth=1
+SkipNavPanel=1
+SkipLeadingToc=1
+SkipTrailingToc=1
+GenContents=1
+GenFrames=1
+GenIndex=1
+-->
+<HEAD lang="en"><META http-equiv="Content-Type" content="text/html">
+<TITLE>2: Defensive Programming</TITLE>
+</HEAD>
+
+<BODY  BGCOLOR="#FFFFFF"><DIV ALIGN="CENTER">
+  <a href="http://www.MindView.net">
+  <img src="mindview.gif" alt="MindView Inc." BORDER = "0"></a>
+  <CENTER>
+    <FONT FACE="Verdana, Tahoma, Arial, Helvetica, Sans" size = "-1">
+    [ <a href="README.txt">Viewing Hints</a> ]
+    [ <a href="RevisionHistory.htm">Revision History</a> ]
+    [ <a href="http://www.mindview.net/Books/TICPP/ThinkingInCPP2e.html">Book Home Page</a> ]
+    [ <a href="http://www.mindview.net/Etc/MailingList.html">Free Newsletter</a> ] <br>
+    [ <a href="http://www.mindview.net/Seminars">Seminars</a> ]
+    [ <a href="http://www.mindview.net/CDs">Seminars on CD ROM</a> ]
+    [ <a href="http://www.mindview.net/Services">Consulting</a> ]
+    </FONT>
+  <H2><FONT FACE="Verdana, Tahoma, Arial, Helvetica, Sans">
+  Thinking in C++, 2nd edition, Volume 2<br>
+  <small>Revision 4.0</small></FONT></H2>
+  <H3><FONT FACE="Verdana, Tahoma, Arial, Helvetica, Sans">
+  by Bruce Eckel &amp; Chuck Allison<br>&copy;2001 MindView, Inc.</FONT></H3>
+  
+    <FONT FACE="Verdana, Tahoma, Arial, Helvetica, Sans" size = "-1">
+     [ <a href="Chap01.htm">Previous Chapter</a> ] 
+    
+    [ <a href="SimpCont.htm">Short TOC</a> ] 
+    [ <a href="Contents.htm">Table of Contents</a> ] 
+  
+        [ <a href="DocIdx.htm">Index</a> ]
+        
+     [ <a href="Chap03.htm">Next Chapter</a> ] 
+    </FONT>
+    
+  </CENTER>
+  </P></DIV><A NAME="_Toc519041902"></A><A NAME="Heading60"></A><FONT FACE = "Verdana, Tahoma, Arial, Helvetica, Sans"><H1 ALIGN="LEFT">
+2: Defensive Programming</H1></FONT>
+<DIV ALIGN="LEFT"><P><FONT FACE="Verdana" SIZE=4><a NAME="TIC2V2_CHAPTER2_I1"></a>
+Intro
+stuff</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">intro
+stuff.
+[&nbsp;<a HREF="mailto:cda@freshsources.com?subject=[TICV2] TIC2V2_CHAPTER2_I1">Comment</a>&nbsp;]
+
+<a NAME="TIC2V2_CHAPTER2_I2"></a>
+</FONT><A NAME="_Toc519041903"></A><BR></P></DIV>
+<A NAME="Heading61"></A><FONT FACE = "Verdana, Tahoma, Arial, Helvetica, Sans"><H2 ALIGN="LEFT">
+Assertions</H2></FONT>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">The Standard C library
+<B>assert(&#160;)</B> macro is brief, to the point and portable. In addition,
+when you&#8217;re finished debugging you can remove all the code by defining
+<B>NDEBUG</B>, either on the command-line or in
+code.
+[&nbsp;<a HREF="mailto:cda@freshsources.com?subject=[TICV2] TIC2V2_CHAPTER2_I2">Comment</a>&nbsp;]
+
+<a NAME="TIC2V2_CHAPTER2_I3"></a>
+</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Also, <B>assert(&#160;)</B> can be used
+while roughing out the code. Later, the calls to <B>assert(&#160;)</B> that are
+actually providing information to the end user can be replaced with more
+civilized
+messages.
+[&nbsp;<a HREF="mailto:cda@freshsources.com?subject=[TICV2] TIC2V2_CHAPTER2_I3">Comment</a>&nbsp;]
+
+<a NAME="TIC2V2_CHAPTER2_I4"></a>
+</FONT><A NAME="_Toc519041904"></A><BR></P></DIV>
+<A NAME="Heading62"></A><FONT FACE = "Verdana, Tahoma, Arial, Helvetica, Sans"><H2 ALIGN="LEFT">
+Design by Contract</H2></FONT>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">
+[&nbsp;<a HREF="mailto:cda@freshsources.com?subject=[TICV2] TIC2V2_CHAPTER2_I4">Comment</a>&nbsp;]
+
+<a NAME="TIC2V2_CHAPTER2_I5"></a>
+</FONT><A NAME="_Toc519041905"></A><BR></P></DIV>
+<A NAME="Heading63"></A><FONT FACE = "Verdana, Tahoma, Arial, Helvetica, Sans"><H2 ALIGN="LEFT">
+The Simplest Automated Unit Test Framework that could Possibly Work</H2></FONT>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Testing is a necessary evil to many
+programmers, but it doesn't have to be all that
+evil.
+[&nbsp;<a HREF="mailto:cda@freshsources.com?subject=[TICV2] TIC2V2_CHAPTER2_I5">Comment</a>&nbsp;]
+
+<a NAME="TIC2V2_CHAPTER2_I6"></a>
+</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">The title of this section is a variation
+on a theme from <I>Extreme
+Programming</I></FONT><A NAME="fnB5" HREF="#fn5">[5]</A><FONT FACE="Georgia">,
+or XP for short. XP is a code-centric discipline for getting software done
+right, on time, within budget, while having fun along the way.
+
+[&nbsp;<a HREF="mailto:cda@freshsources.com?subject=[TICV2] TIC2V2_CHAPTER2_I6">Comment</a>&nbsp;]
+
+<a NAME="TIC2V2_CHAPTER2_I7"></a>
+</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">The XP approach is to take the best
+software practices to the extreme. For example, if code reviews are good, then
+code should be reviewed constantly, even as it's written. Hence the XP practice
+of <I>pair programming</I>, where all code is written by two developers sharing
+a single workstation. One programmer pilots the keyboard while the other watches
+to catch mistakes and give strategic guidance. Then they switch roles as needed.
+The next day they may pair up with other
+folks.
+[&nbsp;<a HREF="mailto:cda@freshsources.com?subject=[TICV2] TIC2V2_CHAPTER2_I7">Comment</a>&nbsp;]
+
+<a NAME="TIC2V2_CHAPTER2_I8"></a>
+</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Likewise, if testing is good, then all
+tests should be automated and run many times per day. An ever growing suite of
+unit tests should be executed whenever you create or modify any function, to
+ensure that the system is still stable. Furthermore, developers should integrate
+code into the complete, evolving system and run functional tests often (at least
+daily).
+[&nbsp;<a HREF="mailto:cda@freshsources.com?subject=[TICV2] TIC2V2_CHAPTER2_I8">Comment</a>&nbsp;]
+
+<a NAME="TIC2V2_CHAPTER2_I9"></a>
+</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">You've probably seen the old cartoon with
+the caption, "You guys start coding while I go find out what they want." I spent
+a number of years as a developer wondering why users couldn't figure out what
+they wanted before I started coding. I found it very frustrating to attend a
+weekly status meeting only to discover that what I completed the week before
+wasn't quite going to fit the bill because the analysts changed their mind. It's
+hard to reshape concrete while it's drying. Only once in my career have I had
+the luxury of a "finished spec" to code
+from.
+[&nbsp;<a HREF="mailto:cda@freshsources.com?subject=[TICV2] TIC2V2_CHAPTER2_I9">Comment</a>&nbsp;]
+
+<a NAME="TIC2V2_CHAPTER2_I10"></a>
+</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Over the years, however, I've discovered
+that it is unreasonable to expect mere humans to be able to articulate software
+requirements in detail without sampling an evolving, working system. It's much
+better to specify a little, design a little, code a little, test a little. Then,
+after evaluating the outcome, do it all over again. The ability to develop from
+soup to nuts in such an iterative fashion is one of the great advances of this
+object-oriented era in software history. But it requires nimble programmers who
+can craft resilient (i.e., slow-drying) code. Change is
+hard.
+[&nbsp;<a HREF="mailto:cda@freshsources.com?subject=[TICV2] TIC2V2_CHAPTER2_I10">Comment</a>&nbsp;]
+
+<a NAME="TIC2V2_CHAPTER2_I11"></a>
+</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Ironically, another kind of change that
+good programmers want desperately to perform has always been opposed by
+management: improving the physical design of working code. What maintenance
+programmer hasn't had occasion to curse the aging, flagship company product as a
+convoluted patchwork of spaghetti, wholly resistant to modification? The fear of
+tampering with a functioning system, while not totally unfounded, robs code of
+the resilience it needs to endure. "If it ain't broke, don't fix it" eventually
+gives way to "We can't fix it &#8212; rewrite it." Change is
+necessary.
+[&nbsp;<a HREF="mailto:cda@freshsources.com?subject=[TICV2] TIC2V2_CHAPTER2_I11">Comment</a>&nbsp;]
+
+<a NAME="TIC2V2_CHAPTER2_I12"></a>
+</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Fortunately, we are now seeing the rise
+of the new discipline of <I>Refactoring</I>, the art of internally restructuring
+code to improve its design, without changing the functionality visible to the
+user</FONT><A NAME="fnB6" HREF="#fn6">[6]</A><FONT FACE="Georgia">. Such tweaks
+include extracting a new function from another, or its inverse, combining
+methods; replacing a method with an object; parameterizing a method or class; or
+replacing conditionals with polymorphism. Now that this process of improving a
+program's internal structure has a name and the support of industry luminaries,
+we will likely be seeing more of it in the
+workplace.
+[&nbsp;<a HREF="mailto:cda@freshsources.com?subject=[TICV2] TIC2V2_CHAPTER2_I12">Comment</a>&nbsp;]
+
+<a NAME="TIC2V2_CHAPTER2_I13"></a>
+</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">But whether the force for change comes
+from analysts or programmers, there is still the risk that changes today will
+break what worked yesterday. What we're all after is a way to build code that
+withstands the winds of change and actually improves over
+time.
+[&nbsp;<a HREF="mailto:cda@freshsources.com?subject=[TICV2] TIC2V2_CHAPTER2_I13">Comment</a>&nbsp;]
+
+<a NAME="TIC2V2_CHAPTER2_I14"></a>
+</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Many practices purport to support this
+quick-on-your-feet motif, of which XP is only one. In this section I explore
+what I think is the key to making incremental development work: a ridiculously
+easy-to-use automated unit test framework, which I have implemented not only in
+C++, but also in C and Java (although the latter versions are not shown
+here).
+[&nbsp;<a HREF="mailto:cda@freshsources.com?subject=[TICV2] TIC2V2_CHAPTER2_I14">Comment</a>&nbsp;]
+
+<a NAME="TIC2V2_CHAPTER2_I15"></a>
+</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Unit tests are what developers write to
+gain the confidence to say the two most important things that any developer can
+say:
+[&nbsp;<a HREF="mailto:cda@freshsources.com?subject=[TICV2] TIC2V2_CHAPTER2_I15">Comment</a>&nbsp;]
+
+<a NAME="TIC2V2_CHAPTER2_I16"></a>
+</FONT><BR></P></DIV>
+<OL>
+<LI><FONT FACE="Verdana">	</FONT><FONT FACE="Georgia">I understand the
+requirements.</FONT><LI><FONT FACE="Verdana">	</FONT><FONT FACE="Georgia">My
+code meets those
+requirements.</FONT></OL><DIV ALIGN="LEFT"><P><FONT FACE="Georgia">I can't think of
+a better way ensure that you know what the code you're about to write should do
+than to write the unit tests first. This simple exercise helps focus the mind on
+the task ahead, and will likely lead to working code faster than just jumping
+into coding. Or, to express it in XP terms, Testing + Programming is faster than
+just Programming. Writing tests first also puts you on guard up front against
+boundary conditions that might cause your code to break, so your code is more
+robust right out of the
+chute.
+[&nbsp;<a HREF="mailto:cda@freshsources.com?subject=[TICV2] TIC2V2_CHAPTER2_I16">Comment</a>&nbsp;]
+
+<a NAME="TIC2V2_CHAPTER2_I17"></a>
+</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Once you have code that passes all your
+tests, you then have the peace of mind that if the system you contribute to
+isn't working, it's not your fault. The statement, "All my tests pass" is a
+powerful trump card in the workplace that cuts through any amount of politics
+and hand waving.
+[&nbsp;<a HREF="mailto:cda@freshsources.com?subject=[TICV2] TIC2V2_CHAPTER2_I17">Comment</a>&nbsp;]
+
+<a NAME="TIC2V2_CHAPTER2_I18"></a>
+</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Writing good unit tests is so important
+that I'm amazed I didn't discover its value earlier in my career. Let me
+rephrase that. I'm not really amazed, just disappointed. I still remember what
+turned me off to formal testing at my first job right out of school. The testing
+manager (yes, we had one in 1978!) asked me to write a unit-test plan, whatever
+that was. Being an impatient youth I thought it was silly to waste time writing
+a plan &#8212; why not just write the test? That encounter soured me on the idea
+of formal test plans for years
+thereafter.
+[&nbsp;<a HREF="mailto:cda@freshsources.com?subject=[TICV2] TIC2V2_CHAPTER2_I18">Comment</a>&nbsp;]
+
+<a NAME="TIC2V2_CHAPTER2_I19"></a>
+</FONT><A NAME="_Toc519041906"></A><BR></P></DIV>
+<A NAME="Heading64"></A><FONT FACE = "Verdana, Tahoma, Arial, Helvetica, Sans"><H3 ALIGN="LEFT">
+Automated Testing</H3></FONT>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">I think that most developers, like
+myself, would rather write code than write about code. But what does a unit test
+look like? Quite often developers just verify that some well behaved input
+produces the expected output, which they inspect visually. Two dangers exist in
+this approach. First, programs don't always receive just well behaved input. We
+all know that we should test the boundaries of program input, but it's hard to
+think about it when you're trying to just get things working. If you write the
+test for a function first before you start coding, you can wear your QA hat and
+ask yourself, "What could possibly make this break?" Code up a test that will
+prove the function you'll write isn't broken, then put on your developer hat and
+make it happen. You'll write better code than if you hadn't written the test
+first.
+[&nbsp;<a HREF="mailto:cda@freshsources.com?subject=[TICV2] TIC2V2_CHAPTER2_I19">Comment</a>&nbsp;]
+
+<a NAME="TIC2V2_CHAPTER2_I20"></a>
+</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">The second danger is inspecting output
+visually to see if things work. It's fine for toy programs, but production
+software is too complex for that kind of activity. It is tedious and error prone
+to visually inspect program output to see if a test passed. Most any such thing
+a human can do a computer can do, but without error. It's better to formulate
+tests as collections of Boolean expressions and have the test program report any
+failures.
+[&nbsp;<a HREF="mailto:cda@freshsources.com?subject=[TICV2] TIC2V2_CHAPTER2_I20">Comment</a>&nbsp;]
+
+<a NAME="TIC2V2_CHAPTER2_I21"></a>
+</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">As an example, suppose you need to build
+a Date class in C++ that has the following
+properties:
+[&nbsp;<a HREF="mailto:cda@freshsources.com?subject=[TICV2] TIC2V2_CHAPTER2_I21">Comment</a>&nbsp;]
+
+<a NAME="TIC2V2_CHAPTER2_I22"></a>
+</FONT><BR></P></DIV>
+<UL>
+<LI><FONT FACE="Symbol">	</FONT><FONT FACE="Georgia">A date can be initialized
+with a string (YYYY-MM-DD), three integers (Y, M, D), or nothing (today's date).
+</FONT><LI><FONT FACE="Symbol">	</FONT><FONT FACE="Georgia">A date object can
+yield its year, month, and day or a string of the form
+"YYYY-MM-DD".</FONT><LI><FONT FACE="Symbol">	</FONT><FONT FACE="Georgia">All
+relational comparisons are available, as well as computing the duration between
+two dates (in years, months, and days), and adding or subtracting a
+duration.</FONT><LI><FONT FACE="Symbol">	</FONT><FONT FACE="Georgia">Dates need
+to span an arbitrary number of centuries (e.g.,
+1600-2200).</FONT></UL><DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Your class could
+store three integers representing the year, month, and day. (Just be sure the
+year is 16 bits or more to satisfy the last bullet above.) The interface for
+your Date class might look like
+this:
+[&nbsp;<a HREF="mailto:cda@freshsources.com?subject=[TICV2] TIC2V2_CHAPTER2_I22">Comment</a>&nbsp;]
+
+<a NAME="TIC2V2_CHAPTER2_I23"></a>
+</FONT><BR></P></DIV>
+
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE><font color=#009900>//: C02:Date.h</font>
+#ifndef DATE_H
+#define DATE_H
+#include &lt;string&gt;
+
+<font color=#0000ff>struct</font> Duration {
+  <font color=#0000ff>int</font> years;
+  <font color=#0000ff>int</font> months;
+  <font color=#0000ff>int</font> days;
+  Duration(<font color=#0000ff>int</font> y, <font color=#0000ff>int</font> m, <font color=#0000ff>int</font> d)
+    : years(y), months(m), days(d) {}
+};
+
+<font color=#0000ff>class</font> Date {
+<font color=#0000ff>public</font>:
+  Date();
+  Date(<font color=#0000ff>int</font> year, <font color=#0000ff>int</font> month, <font color=#0000ff>int</font> day);
+  Date(<font color=#0000ff>const</font> std::string&amp;);
+  <font color=#0000ff>int</font> getYear() <font color=#0000ff>const</font>;
+  <font color=#0000ff>int</font> getMonth() <font color=#0000ff>const</font>;
+  <font color=#0000ff>int</font> getDay() <font color=#0000ff>const</font>;
+  std::string toString() <font color=#0000ff>const</font>;
+  <font color=#0000ff>friend</font> Duration 
+  duration(<font color=#0000ff>const</font> Date&amp;, <font color=#0000ff>const</font> Date&amp;);
+  <font color=#0000ff>friend</font> <font color=#0000ff>bool</font> 
+  <font color=#0000ff>operator</font>&lt;(<font color=#0000ff>const</font> Date&amp;, <font color=#0000ff>const</font> Date&amp;);
+  <font color=#0000ff>friend</font> <font color=#0000ff>bool</font> 
+  <font color=#0000ff>operator</font>&lt;=(<font color=#0000ff>const</font> Date&amp;, <font color=#0000ff>const</font> Date&amp;);
+  <font color=#0000ff>friend</font> <font color=#0000ff>bool</font> 
+  <font color=#0000ff>operator</font>&gt;(<font color=#0000ff>const</font> Date&amp;, <font color=#0000ff>const</font> Date&amp;);
+  <font color=#0000ff>friend</font> <font color=#0000ff>bool</font> 
+  <font color=#0000ff>operator</font>&gt;=(<font color=#0000ff>const</font> Date&amp;, <font color=#0000ff>const</font> Date&amp;);
+  <font color=#0000ff>friend</font> <font color=#0000ff>bool</font> 
+  <font color=#0000ff>operator</font>==(<font color=#0000ff>const</font> Date&amp;, <font color=#0000ff>const</font> Date&amp;);
+  <font color=#0000ff>friend</font> <font color=#0000ff>bool</font> 
+  <font color=#0000ff>operator</font>!=(<font color=#0000ff>const</font> Date&amp;, <font color=#0000ff>const</font> Date&amp;);
+<font color=#0000ff>private</font>:
+  <font color=#0000ff>int</font> year;
+  <font color=#0000ff>int</font> month;
+  <font color=#0000ff>int</font> day;
+  <font color=#0000ff>int</font> compare(<font color=#0000ff>const</font> Date&amp;) <font color=#0000ff>const</font>;
+  <font color=#0000ff>static</font> <font color=#0000ff>int</font> daysInPrevMonth(<font color=#0000ff>int</font> year,<font color=#0000ff>int</font> mon);
+};
+#endif <font color=#009900>///:~</font></PRE></FONT></BLOCKQUOTE>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">The implementation for this class looks
+like this:
+[&nbsp;<a HREF="mailto:cda@freshsources.com?subject=[TICV2] TIC2V2_CHAPTER2_I23">Comment</a>&nbsp;]
+
+<a NAME="TIC2V2_CHAPTER2_I24"></a>
+</FONT><BR></P></DIV>
+
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE><font color=#009900>//: C02:Date.cpp {O}</font>
+#include <font color=#004488>"Date.h"</font>
+#include &lt;string&gt;
+#include &lt;algorithm&gt; <font color=#009900>// for swap()</font>
+#include &lt;ctime&gt;
+#include &lt;cassert&gt;
+#include &lt;sstream&gt;
+#include &lt;iomanip&gt;
+<font color=#0000ff>using</font> <font color=#0000ff>namespace</font> std;
+
+<font color=#0000ff>namespace</font> {
+  <font color=#0000ff>const</font> <font color=#0000ff>int</font> daysInMonth[][13] = {
+    {0,31,28,31,30,31,30,31,31,30,31,30,31},
+    {0,31,29,31,30,31,30,31,31,30,31,30,31}};
+  <font color=#0000ff>inline</font> <font color=#0000ff>bool</font> isleap(<font color=#0000ff>int</font> y) {
+    <font color=#0000ff>return</font> y%4 == 0 &amp;&amp; y%100 != 0 || y%400 == 0;
+  }
+}
+
+Date::Date() {
+  <font color=#009900>// Get current date</font>
+  time_t tval = time(0);
+  <font color=#0000ff>struct</font> tm *now = localtime(&amp;tval);
+  year = now-&gt;tm_year + 1900;
+  month = now-&gt;tm_mon + 1;
+  day = now-&gt;tm_mday;
+}
+
+Date::Date(<font color=#0000ff>int</font> yr, <font color=#0000ff>int</font> mon, <font color=#0000ff>int</font> dy) {
+  assert(1 &lt;= mon &amp;&amp; mon &lt;= 12);
+  assert(1 &lt;= dy &amp;&amp; 
+    dy &lt;= daysInMonth[isleap(year)][mon]);
+  year = yr;
+  month = mon;
+  day = dy;
+}
+
+Date::Date(<font color=#0000ff>const</font> std::string&amp; s) {
+  <font color=#009900>// Assume YYYYMMDD format</font>
+  istringstream is(s);
+  is &gt;&gt; setw(4) &gt;&gt; year;
+  is &gt;&gt; setw(2) &gt;&gt; month;
+  is &gt;&gt; setw(2) &gt;&gt; day;
+}
+
+<font color=#0000ff>int</font> Date::getYear() <font color=#0000ff>const</font> {
+  <font color=#0000ff>return</font> year;
+}
+
+<font color=#0000ff>int</font> Date::getMonth() <font color=#0000ff>const</font> {
+  <font color=#0000ff>return</font> month;
+}
+
+<font color=#0000ff>int</font> Date::getDay() <font color=#0000ff>const</font> {
+  <font color=#0000ff>return</font> day;
+}
+
+string Date::toString() <font color=#0000ff>const</font> {
+  ostringstream os;
+  os &lt;&lt; setw(4) &lt;&lt; year
+   &lt;&lt; setw(2) &lt;&lt; month
+   &lt;&lt; setw(2) &lt;&lt; day;
+  <font color=#0000ff>return</font> os.str();
+}
+
+<font color=#0000ff>int</font> Date::compare(<font color=#0000ff>const</font> Date&amp; d2) <font color=#0000ff>const</font> {
+  <font color=#0000ff>int</font> result = year - d2.year;
+  <font color=#0000ff>if</font> (result == 0) {
+    result = month - d2.month;
+    <font color=#0000ff>if</font> (result == 0)
+      result = day - d2.day;
+  }
+  <font color=#0000ff>return</font> result;   
+}
+
+<font color=#0000ff>int</font> Date::daysInPrevMonth(<font color=#0000ff>int</font> year, <font color=#0000ff>int</font> month) {
+  <font color=#0000ff>if</font> (month == 1) {
+    --year;
+    month = 12;
+  }
+  <font color=#0000ff>else</font>
+    --month;
+  <font color=#0000ff>return</font> daysInMonth[isleap(year)][month];
+}
+
+<font color=#0000ff>bool</font> <font color=#0000ff>operator</font>&lt;(<font color=#0000ff>const</font> Date&amp; d1, <font color=#0000ff>const</font> Date&amp; d2) {
+  <font color=#0000ff>return</font> d1.compare(d2) &lt; 0;
+}
+<font color=#0000ff>bool</font> <font color=#0000ff>operator</font>&lt;=(<font color=#0000ff>const</font> Date&amp; d1, <font color=#0000ff>const</font> Date&amp; d2) {
+  <font color=#0000ff>return</font> d1.compare(d2) &lt;= 0;
+}
+<font color=#0000ff>bool</font> <font color=#0000ff>operator</font>&gt;(<font color=#0000ff>const</font> Date&amp; d1, <font color=#0000ff>const</font> Date&amp; d2) {
+  <font color=#0000ff>return</font> d1.compare(d2) &gt;= 0;
+}
+<font color=#0000ff>bool</font> <font color=#0000ff>operator</font>&gt;=(<font color=#0000ff>const</font> Date&amp; d1, <font color=#0000ff>const</font> Date&amp; d2) {
+  <font color=#0000ff>return</font> d1.compare(d2) &gt;= 0;
+}
+<font color=#0000ff>bool</font> <font color=#0000ff>operator</font>==(<font color=#0000ff>const</font> Date&amp; d1, <font color=#0000ff>const</font> Date&amp; d2) {
+  <font color=#0000ff>return</font> d1.compare(d2) == 0;
+}
+<font color=#0000ff>bool</font> <font color=#0000ff>operator</font>!=(<font color=#0000ff>const</font> Date&amp; d1, <font color=#0000ff>const</font> Date&amp; d2) {
+  <font color=#0000ff>return</font> d1.compare(d2) != 0;
+}
+
+Duration 
+duration(<font color=#0000ff>const</font> Date&amp; date1, <font color=#0000ff>const</font> Date&amp; date2) {
+  <font color=#0000ff>int</font> y1 = date1.year;
+  <font color=#0000ff>int</font> y2 = date2.year;
+  <font color=#0000ff>int</font> m1 = date1.month;
+  <font color=#0000ff>int</font> m2 = date2.month;
+  <font color=#0000ff>int</font> d1 = date1.day;
+  <font color=#0000ff>int</font> d2 = date2.day;
+
+  <font color=#009900>// Compute the compare</font>
+  <font color=#0000ff>int</font> order = date1.compare(date2);
+  <font color=#0000ff>if</font> (order == 0)
+    <font color=#0000ff>return</font> Duration(0,0,0);
+  <font color=#0000ff>else</font> <font color=#0000ff>if</font> (order &gt; 0) {
+    <font color=#009900>// Make date1 precede date2 locally</font>
+    <font color=#0000ff>using</font> std::swap;
+    swap(y1, y2);
+    swap(m1, m2);
+    swap(d1, d2);
+  }
+
+  <font color=#0000ff>int</font> years = y2 - y1;
+  <font color=#0000ff>int</font> months = m2 - m1;
+  <font color=#0000ff>int</font> days = d2 - d1;
+  assert(years &gt; 0 ||
+     years == 0 &amp;&amp; months &gt; 0 ||
+     years == 0 &amp;&amp; months == 0 &amp;&amp; days &gt; 0);
+
+  <font color=#009900>// Do the obvious corrections (must adjust days</font>
+  <font color=#009900>// before months!) - This is a loop in case the</font>
+  <font color=#009900>// previous month is February, and days &lt; -28.</font>
+  <font color=#0000ff>int</font> lastMonth = m2;
+  <font color=#0000ff>int</font> lastYear = y2;
+  <font color=#0000ff>while</font> (days &lt; 0) {
+    <font color=#009900>// Borrow from month</font>
+    assert(months &gt; 0);
+    days += Date::daysInPrevMonth(
+      lastYear, lastMonth--);
+    --months;
+  }
+
+  <font color=#0000ff>if</font> (months &lt; 0) {
+    <font color=#009900>// Borrow from year</font>
+    assert(years &gt; 0);
+    months += 12;
+    --years;
+  }
+  <font color=#0000ff>return</font> Duration(years, months, days);
+} <font color=#009900>///:~</font></PRE></FONT></BLOCKQUOTE>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">You can now write tests for the functions
+you want to implement first, something like the
+following:
+[&nbsp;<a HREF="mailto:cda@freshsources.com?subject=[TICV2] TIC2V2_CHAPTER2_I24">Comment</a>&nbsp;]
+
+<a NAME="TIC2V2_CHAPTER2_I25"></a>
+</FONT><BR></P></DIV>
+
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE><font color=#009900>//: C02:SimpleDateTest.cpp</font>
+<font color=#009900>//{L} Date</font>
+#include <font color=#004488>"Date.h"</font>
+#include &lt;iostream&gt;
+<font color=#0000ff>using</font> <font color=#0000ff>namespace</font> std;
+
+<font color=#0000ff>int</font> nPass = 0, nFail = 0;
+<font color=#0000ff>void</font> test(<font color=#0000ff>bool</font> t) {
+  <font color=#0000ff>if</font>(t) nPass++; <font color=#0000ff>else</font> nFail++;
+}
+
+<font color=#0000ff>int</font> main() {
+  Date mybday(1951, 10, 1);
+  test(mybday.getYear() == 1951);
+  test(mybday.getMonth() == 10);
+  test(mybday.getDay() == 1);
+  cout &lt;&lt; <font color=#004488>"Passed: "</font> &lt;&lt; nPass &lt;&lt; <font color=#004488>", Failed: "</font>
+       &lt;&lt; nFail &lt;&lt; endl;
+}
+<font color=#009900>/* Output:
+Passed: 3, Failed: 0
+*/</font> <font color=#009900>///:~</font></PRE></FONT></BLOCKQUOTE>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">In this trivial case, the function
+<B>test(&#160;)</B> maintains the global variables <B>nPass</B> and
+<B>nFail</B>. The only visual inspection you do is to read the final score. If a
+test failed, then a more sophisticated <B>test(&#160;)</B> would print out an
+appropriate message. The framework described below has such a
+<B>test(&#160;)</B> function, among other
+things.
+[&nbsp;<a HREF="mailto:cda@freshsources.com?subject=[TICV2] TIC2V2_CHAPTER2_I25">Comment</a>&nbsp;]
+
+<a NAME="TIC2V2_CHAPTER2_I26"></a>
+</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">As you continue in the test-and-code
+cycle you'll want to build a suite of tests that are always available to keep
+all your related classes in good shape through any future maintenance. As
+requirements change, you add or modify tests
+accordingly.
+[&nbsp;<a HREF="mailto:cda@freshsources.com?subject=[TICV2] TIC2V2_CHAPTER2_I26">Comment</a>&nbsp;]
+
+<a NAME="TIC2V2_CHAPTER2_I27"></a>
+</FONT><A NAME="_Toc519041907"></A><BR></P></DIV>
+<A NAME="Heading65"></A><FONT FACE = "Verdana, Tahoma, Arial, Helvetica, Sans"><H3 ALIGN="LEFT">
+The TestSuite Framework</H3></FONT>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">As you learn more about XP you'll
+discover that there are some automated unit test tools available for download,
+such as JUnit for Java and CppUnit for C++. These are brilliantly designed and
+implemented, but I want something even simpler. I want something that I can not
+only easily use but also understand internally and even tweak if necessary. And
+I can live without a GUI. So, in the spirit of
+TheSimplestThingThatCouldPossiblyWork, I present the <I>TestSuite Framework</I>,
+as I call it, which consists of two classes: <B>Test</B> and <B>Suite</B>. You
+derive from <B>Test</B> (an abstract class) to override the <B>run(&#160;)</B>
+method, which should in turn call <B>test_</B> for each Boolean test condition
+you define. For the <B>Date</B> class above you could do something like the
+following:
+[&nbsp;<a HREF="mailto:cda@freshsources.com?subject=[TICV2] TIC2V2_CHAPTER2_I27">Comment</a>&nbsp;]
+
+<a NAME="TIC2V2_CHAPTER2_I28"></a>
+</FONT><BR></P></DIV>
+
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE><font color=#009900>//: C02:DateTest.h</font>
+#include <font color=#004488>"..</font><font color=#004488>/TestSuite</font><font color=#004488>/Test.h"</font>
+#include <font color=#004488>"Date.h"</font>
+
+<font color=#0000ff>class</font> DateTest : <font color=#0000ff>public</font> Test {
+  Date mybday;
+  Date today;
+<font color=#0000ff>public</font>:
+  DateTest()
+    : mybday(1951, 10,1) {}
+  <font color=#0000ff>void</font> run() {
+    testOps();
+    testDuration();
+  }
+  <font color=#0000ff>void</font> testOps() {
+    test_(mybday &lt; today);
+    test_(mybday &lt;= today);
+    test_(mybday != today);
+    test_(mybday == mybday);
+  }
+  <font color=#0000ff>void</font> testDuration() {
+    Date d2(2001, 7, 4);
+    Duration dur = duration(mybday, d2);
+    test_(dur.years == 49);
+    test_(dur.months == 9);
+    test_(dur.days == 3);
+  }
+}; <font color=#009900>///:~</font></PRE></FONT></BLOCKQUOTE>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">You can now run the test very easily,
+like this:
+[&nbsp;<a HREF="mailto:cda@freshsources.com?subject=[TICV2] TIC2V2_CHAPTER2_I28">Comment</a>&nbsp;]
+
+<a NAME="TIC2V2_CHAPTER2_I29"></a>
+</FONT><BR></P></DIV>
+
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE><font color=#009900>//: C02:DateTest.cpp</font>
+<font color=#009900>// Automated Testing (with a Framework)</font>
+<font color=#009900>//{L} Date ../TestSuite/Test</font>
+#include &lt;iostream&gt;
+#include <font color=#004488>"DateTest.h"</font>
+<font color=#0000ff>using</font> <font color=#0000ff>namespace</font> std;
+
+<font color=#0000ff>int</font> main() {
+  DateTest test;
+  test.run();
+  test.report();
+  <font color=#0000ff>return</font> test.getNumFailed();
+}
+<font color=#009900>/* Output:
+Passed: 7, Failed: 0
+*/</font> <font color=#009900>///:~</font></PRE></FONT></BLOCKQUOTE>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">As development continues on the
+<B>Date</B> class, you'll add other tests called from
+<B>DateTest::run(&#160;)</B>, and then execute the main program to see if they
+all pass.
+[&nbsp;<a HREF="mailto:cda@freshsources.com?subject=[TICV2] TIC2V2_CHAPTER2_I29">Comment</a>&nbsp;]
+
+<a NAME="TIC2V2_CHAPTER2_I30"></a>
+</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">The <B>Test</B> class uses RTTI to get
+the name of your class (e.g., <B>DateTest</B>) for the
+report</FONT><A NAME="fnB7" HREF="#fn7">[7]</A><FONT FACE="Georgia">. The
+<B>setStream(&#160;)</B> method lets you specify where the output will go, and
+report sends output to that stream. <B>Test</B> is implemented later in this
+section. 
+[&nbsp;<a HREF="mailto:cda@freshsources.com?subject=[TICV2] TIC2V2_CHAPTER2_I30">Comment</a>&nbsp;]
+
+<a NAME="TIC2V2_CHAPTER2_I31"></a>
+</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">In addition to <B>test_</B>, the
+framework includes the functions <B>succeed_</B> and <B>fail_</B>, for cases
+where a Boolean test won't do. For example, a simple <B>Stack</B> class template
+might look like this:
+[&nbsp;<a HREF="mailto:cda@freshsources.com?subject=[TICV2] TIC2V2_CHAPTER2_I31">Comment</a>&nbsp;]
+
+<a NAME="TIC2V2_CHAPTER2_I32"></a>
+</FONT><BR></P></DIV>
+
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE><font color=#009900>//: C02:Stack.h</font>
+#include &lt;cassert&gt;
+#include &lt;cstddef&gt;
+#include &lt;stdexcept&gt;
+#include &lt;string&gt;
+#include &lt;<font color=#0000ff>new</font>&gt;
+
+<font color=#0000ff>using</font> std::logic_error;
+<font color=#0000ff>using</font> std::string;
+<font color=#0000ff>using</font> std::bad_alloc;
+
+<font color=#009900>// MS std namespace work-around</font>
+#ifndef _MSC_VER
+<font color=#0000ff>using</font> std::size_t;
+#endif
+
+<font color=#0000ff>class</font> StackError : <font color=#0000ff>public</font> logic_error {
+<font color=#0000ff>public</font>:
+  StackError(<font color=#0000ff>const</font> string&amp; s) : logic_error(s) {}
+};
+
+<font color=#0000ff>template</font>&lt;<font color=#0000ff>typename</font> T&gt;
+<font color=#0000ff>class</font> Stack {
+<font color=#0000ff>public</font>:
+  Stack(size_t) <font color=#0000ff>throw</font>(StackError, bad_alloc);
+  ~Stack();
+  <font color=#0000ff>void</font> push(<font color=#0000ff>const</font> T&amp;) <font color=#0000ff>throw</font>(StackError);
+  T pop() <font color=#0000ff>throw</font>(StackError);
+  T top() <font color=#0000ff>const</font> <font color=#0000ff>throw</font>(StackError);
+  size_t size() <font color=#0000ff>const</font>;
+<font color=#0000ff>private</font>:
+  T* data;
+  size_t max;
+  size_t ptr;
+};
+
+<font color=#0000ff>template</font>&lt;<font color=#0000ff>typename</font> T&gt;
+<font color=#0000ff>inline</font> Stack&lt;T&gt;::~Stack() {
+  <font color=#0000ff>delete</font> [] data;
+  max = ptr = 0;
+}
+
+<font color=#0000ff>template</font>&lt;<font color=#0000ff>typename</font> T&gt;
+<font color=#0000ff>inline</font> size_t Stack&lt;T&gt;::size() <font color=#0000ff>const</font> {
+  <font color=#0000ff>return</font> ptr;
+}
+
+<font color=#0000ff>template</font>&lt;<font color=#0000ff>typename</font> T&gt;
+Stack&lt;T&gt;::Stack(size_t siz) 
+  <font color=#0000ff>throw</font>(StackError, bad_alloc) {
+  <font color=#0000ff>if</font> (siz == 0)
+    <font color=#0000ff>throw</font> StackError(<font color=#004488>"bad size in Stack(size_t)"</font>);
+  data = <font color=#0000ff>new</font> T[siz];
+  max = siz;
+  ptr = 0;
+}
+
+<font color=#0000ff>template</font>&lt;<font color=#0000ff>typename</font> T&gt;
+<font color=#0000ff>void</font> Stack&lt;T&gt;::push(<font color=#0000ff>const</font> T&amp; x) 
+  <font color=#0000ff>throw</font>(StackError) {
+  <font color=#0000ff>if</font> (ptr == max)
+    <font color=#0000ff>throw</font> StackError(<font color=#004488>"stack overflow"</font>);
+
+  assert(ptr &lt; max);
+  data[ptr++] = x;
+}
+
+<font color=#0000ff>template</font>&lt;<font color=#0000ff>typename</font> T&gt;
+T Stack&lt;T&gt;::pop() <font color=#0000ff>throw</font>(StackError) {
+  <font color=#0000ff>if</font> (ptr == 0)
+    <font color=#0000ff>throw</font> StackError(<font color=#004488>"stack underflow"</font>);
+  <font color=#0000ff>return</font> data[--ptr];
+}
+
+<font color=#0000ff>template</font>&lt;<font color=#0000ff>typename</font> T&gt;
+T Stack&lt;T&gt;::top() <font color=#0000ff>const</font> <font color=#0000ff>throw</font>(StackError) {
+  <font color=#0000ff>if</font> (ptr == 0)
+    <font color=#0000ff>throw</font> StackError(<font color=#004488>"stack underflow"</font>);
+  <font color=#0000ff>return</font> data[ptr - 1];
+} <font color=#009900>///:~</font></PRE></FONT></BLOCKQUOTE>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">It's easy to come up with general
+categories of tests for this class. Here&#8217;s the class that defines the
+tests:
+[&nbsp;<a HREF="mailto:cda@freshsources.com?subject=[TICV2] TIC2V2_CHAPTER2_I32">Comment</a>&nbsp;]
+
+<a NAME="TIC2V2_CHAPTER2_I33"></a>
+</FONT><BR></P></DIV>
+
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE><font color=#009900>//: C02:StackTest.h</font>
+#ifndef STACKTEST_H
+#define STACKTEST_H
+#include <font color=#004488>"Stack.h"</font>
+#include <font color=#004488>"..</font><font color=#004488>/TestSuite</font><font color=#004488>/Test.h"</font>
+#include &lt;iostream&gt;
+<font color=#0000ff>using</font> <font color=#0000ff>namespace</font> std;
+
+<font color=#0000ff>class</font> StackTest : <font color=#0000ff>public</font> Test {
+  <font color=#0000ff>enum</font> {SIZE = 5};
+  Stack&lt;<font color=#0000ff>int</font>&gt; stk;
+<font color=#0000ff>public</font>:
+  StackTest() : stk(SIZE){}
+  <font color=#0000ff>void</font> run(){
+    testUnderflow();
+    testPopulate();
+    testOverflow();
+    testPop();
+    testBadSize();
+  }
+  <font color=#0000ff>void</font> testBadSize(){
+    <font color=#0000ff>try</font> {
+      Stack&lt;<font color=#0000ff>int</font>&gt; s(0);
+      fail_(<font color=#004488>"Bad Size"</font>);
+    }
+    <font color=#0000ff>catch</font> (StackError&amp;) {
+      succeed_();
+    }
+  }
+  <font color=#0000ff>void</font> testUnderflow(){
+    test_(stk.size() == 0);
+    <font color=#0000ff>try</font> {
+      stk.top();
+      fail_(<font color=#004488>"Underflow"</font>);
+    }
+    <font color=#0000ff>catch</font> (StackError&amp;) {
+      succeed_();
+    }
+    <font color=#0000ff>try</font> {
+      stk.pop();
+      fail_(<font color=#004488>"Underflow"</font>);
+    }
+    <font color=#0000ff>catch</font> (StackError&amp;) {
+      succeed_();
+    }
+  }
+  <font color=#0000ff>void</font> testPopulate(){
+    <font color=#0000ff>try</font> {
+      <font color=#0000ff>for</font> (<font color=#0000ff>int</font> i = 0; i &lt; SIZE; ++i)
+        stk.push(i);
+      succeed_();
+    }
+    <font color=#0000ff>catch</font> (StackError&amp;) {
+      fail_(<font color=#004488>"Populate"</font>);
+    }
+    test_(stk.size() == SIZE);
+    test_(stk.top() == SIZE-1);
+  }
+  <font color=#0000ff>void</font> testOverflow(){
+    <font color=#0000ff>try</font> {
+      stk.push(SIZE);
+      fail_(<font color=#004488>"Overflow"</font>);
+    }
+    <font color=#0000ff>catch</font> (StackError&amp;) {
+      succeed_();
+    }
+  }
+  <font color=#0000ff>void</font> testPop(){
+    <font color=#0000ff>for</font> (<font color=#0000ff>int</font> i = 0; i &lt; SIZE; ++i)
+      test_(stk.pop() == SIZE-i-1);
+    test_(stk.size() == 0);
+  }
+}; 
+#endif <font color=#009900>// STACKTEST_H ///:~</font></PRE></FONT></BLOCKQUOTE>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Here&#8217;s a <B>main(&#160;)</B> that
+exercises the tests:
+[&nbsp;<a HREF="mailto:cda@freshsources.com?subject=[TICV2] TIC2V2_CHAPTER2_I33">Comment</a>&nbsp;]
+
+<a NAME="TIC2V2_CHAPTER2_I34"></a>
+</FONT><BR></P></DIV>
+
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE><font color=#009900>//: C02:StackTest.cpp</font>
+<font color=#009900>//{L} ../TestSuite/Test</font>
+#include &lt;iostream&gt;
+#include <font color=#004488>"StackTest.h"</font>
+<font color=#0000ff>using</font> <font color=#0000ff>namespace</font> std;
+
+<font color=#0000ff>int</font> main() {
+  StackTest t;
+  t.run();
+  t.report();
+  <font color=#0000ff>return</font> t.getNumFailed();
+} <font color=#009900>///:~</font></PRE></FONT></BLOCKQUOTE>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">To test whether exceptions are working
+correctly, you have to generate an exception and call <B>succeed_</B> or
+<B>fail_</B> explicitly, as <B>StackTest::testBadSize(&#160;)</B> class
+illustrates, above. Since a stack of size zero is prohibited, "success" in this
+case means that a <B>StackError</B> exception was caught, so I have to call
+<B>succeed_</B>
+explicitly.
+[&nbsp;<a HREF="mailto:cda@freshsources.com?subject=[TICV2] TIC2V2_CHAPTER2_I34">Comment</a>&nbsp;]
+
+<a NAME="TIC2V2_CHAPTER2_I35"></a>
+</FONT><A NAME="_Toc519041908"></A><BR></P></DIV>
+<A NAME="Heading66"></A><FONT FACE = "Verdana, Tahoma, Arial, Helvetica, Sans"><H3 ALIGN="LEFT">
+Test Suites</H3></FONT>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Real projects usually contain many
+classes, so there needs to be a way to group tests together so you can just push
+a single button to test the entire project. The <B>Suite</B> class allows you to
+collect tests into a functional unit. You add a derived <B>Test</B> object to a
+<B>Suite</B> with the <B>addTest(&#160;)</B> method, or you can swallow an
+entire existing Suite with <B>addSuite(&#160;)</B>. To illustrate, the following
+example combines the foregoing <B>DateTest</B> and <B>StackTest</B> into a
+suite. Here's an actual test
+run:
+[&nbsp;<a HREF="mailto:cda@freshsources.com?subject=[TICV2] TIC2V2_CHAPTER2_I35">Comment</a>&nbsp;]
+
+<a NAME="TIC2V2_CHAPTER2_I36"></a>
+</FONT><BR></P></DIV>
+
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE><font color=#009900>//: C02:SuiteExample.cpp</font>
+<font color=#009900>//{L} ../TestSuite/Test ../TestSuite/Suite Date</font>
+#include &lt;iostream&gt;
+#include <font color=#004488>"..</font><font color=#004488>/TestSuite</font><font color=#004488>/Suite.h"</font>
+#include <font color=#004488>"DateTest.h"</font>
+#include <font color=#004488>"StackTest.h"</font>
+<font color=#0000ff>using</font> <font color=#0000ff>namespace</font> std;
+
+<font color=#0000ff>int</font> main() {
+  Suite s(<font color=#004488>"Date and Stack Tests"</font>);
+  s.addTest(<font color=#0000ff>new</font> DateTest);
+  s.addTest(<font color=#0000ff>new</font> StackTest);
+  s.run();
+  <font color=#0000ff>long</font> nFail = s.report();
+  s.free();
+  cout &lt;&lt; <font color=#004488>"\nTotal failures: "</font> &lt;&lt; nFail &lt;&lt; endl;
+  <font color=#0000ff>return</font> nFail;
+}
+
+<font color=#009900>/* Output:
+Suite "Date and Stack Tests"
+============================
+Test "DateTest":
+	Passed: 7	Failed: 0
+Test "StackTest":
+	Passed: 14	Failed: 0
+============================
+
+Total failures: 0
+*/</font> <font color=#009900>///:~</font></PRE></FONT></BLOCKQUOTE>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Suite::run calls Test::run for each of
+its contained tests. Much the same thing happens for Suite::report. Individual
+test results can be written to separate streams, if desired. If the test passed
+to addSuite has a stream pointer assigned already, it keeps it. Otherwise it
+gets its stream from the Suite object. The code for Suite is in listing 5 and 6.
+As you can see, Suite just holds a vector of pointers to Test. When it's time to
+run each test, it just loops through the tests in the vector calling their run
+method.
+[&nbsp;<a HREF="mailto:cda@freshsources.com?subject=[TICV2] TIC2V2_CHAPTER2_I36">Comment</a>&nbsp;]
+
+<a NAME="TIC2V2_CHAPTER2_I37"></a>
+</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">It takes some discipline to write unit
+tests before you code, but if you have an automated tool, it makes it a lot
+easier. I just add a project in my IDE for a test suite for each project, and
+switch back and forth between the test and the real code as needed. There's no
+conceptual baggage, no extra test scripting language to learn, no worries
+&#8212; just point, click, and
+test!
+[&nbsp;<a HREF="mailto:cda@freshsources.com?subject=[TICV2] TIC2V2_CHAPTER2_I37">Comment</a>&nbsp;]
+
+<a NAME="TIC2V2_CHAPTER2_I38"></a>
+</FONT><A NAME="_Toc519041909"></A><BR></P></DIV>
+<A NAME="Heading67"></A><FONT FACE = "Verdana, Tahoma, Arial, Helvetica, Sans"><H3 ALIGN="LEFT">
+The Test Framework Code</H3></FONT>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">The test framework code library will be
+placed in a subdirectory called <B>TestSuite</B>. To use it, therefore, you must
+have the <B>TestSuite</B> subdirectory in your header include search path, and
+you must link the object files, and thus it must also be included in the library
+search path (?? or compiled into a library
+??).
+[&nbsp;<a HREF="mailto:cda@freshsources.com?subject=[TICV2] TIC2V2_CHAPTER2_I38">Comment</a>&nbsp;]
+
+<a NAME="TIC2V2_CHAPTER2_I39"></a>
+</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Here is the header for
+Test.h:
+[&nbsp;<a HREF="mailto:cda@freshsources.com?subject=[TICV2] TIC2V2_CHAPTER2_I39">Comment</a>&nbsp;]
+
+<a NAME="TIC2V2_CHAPTER2_I40"></a>
+</FONT><BR></P></DIV>
+
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE><font color=#009900>//: TestSuite:Test.h</font>
+#ifndef TEST_H
+#define TEST_H
+#include &lt;string&gt;
+#include &lt;iostream&gt;
+#include &lt;cassert&gt;
+<font color=#0000ff>using</font> std::string;
+<font color=#0000ff>using</font> std::ostream;
+<font color=#0000ff>using</font> std::cout;
+
+<font color=#009900>// The following have underscores because they </font>
+<font color=#009900>// are macros (and it's impolite to usurp other </font>
+<font color=#009900>// users' functions!). For consistency, </font>
+<font color=#009900>// succeed_() also has an underscore.</font>
+
+#define test_(cond) \
+  do_test(cond, #cond, __FILE__, __LINE__)
+#define fail_(str) \
+  do_fail(str, __FILE__, __LINE__)
+
+<font color=#0000ff>class</font> Test {
+<font color=#0000ff>public</font>:
+  Test(ostream* osptr = &amp;cout);
+  <font color=#0000ff>virtual</font> ~Test(){}
+  <font color=#0000ff>virtual</font> <font color=#0000ff>void</font> run() = 0;
+  <font color=#0000ff>long</font> getNumPassed() <font color=#0000ff>const</font>;
+  <font color=#0000ff>long</font> getNumFailed() <font color=#0000ff>const</font>;
+  <font color=#0000ff>const</font> ostream* getStream() <font color=#0000ff>const</font>;
+  <font color=#0000ff>void</font> setStream(ostream* osptr);
+  <font color=#0000ff>void</font> succeed_();
+  <font color=#0000ff>long</font> report() <font color=#0000ff>const</font>;
+  <font color=#0000ff>virtual</font> <font color=#0000ff>void</font> reset();
+<font color=#0000ff>protected</font>:
+  <font color=#0000ff>void</font> do_test(<font color=#0000ff>bool</font> cond, <font color=#0000ff>const</font> string&amp; lbl,
+               <font color=#0000ff>const</font> <font color=#0000ff>char</font>* fname, <font color=#0000ff>long</font> lineno);
+  <font color=#0000ff>void</font> do_fail(<font color=#0000ff>const</font> string&amp; lbl,
+               <font color=#0000ff>const</font> <font color=#0000ff>char</font>* fname, <font color=#0000ff>long</font> lineno);
+<font color=#0000ff>private</font>:
+  ostream* osptr;
+  <font color=#0000ff>long</font> nPass;
+  <font color=#0000ff>long</font> nFail;
+  <font color=#009900>// Disallowed:</font>
+  Test(<font color=#0000ff>const</font> Test&amp;);
+  Test&amp; <font color=#0000ff>operator</font>=(<font color=#0000ff>const</font> Test&amp;);
+};
+
+<font color=#0000ff>inline</font> Test::Test(ostream* osptr) {
+  <font color=#0000ff>this</font>-&gt;osptr = osptr;
+  assert(osptr);
+  nPass = nFail = 0;
+}
+
+<font color=#0000ff>inline</font> <font color=#0000ff>long</font> Test::getNumPassed() <font color=#0000ff>const</font> {
+  <font color=#0000ff>return</font> nPass;
+}
+
+<font color=#0000ff>inline</font> <font color=#0000ff>long</font> Test::getNumFailed() <font color=#0000ff>const</font> {
+  <font color=#0000ff>return</font> nFail;
+}
+
+<font color=#0000ff>inline</font> <font color=#0000ff>const</font> ostream* Test::getStream() <font color=#0000ff>const</font> {
+  <font color=#0000ff>return</font> osptr;
+}
+
+<font color=#0000ff>inline</font> <font color=#0000ff>void</font> Test::setStream(ostream* osptr) {
+  <font color=#0000ff>this</font>-&gt;osptr = osptr;
+}
+
+<font color=#0000ff>inline</font> <font color=#0000ff>void</font> Test::succeed_() {
+  ++nPass;
+}
+
+<font color=#0000ff>inline</font> <font color=#0000ff>void</font> Test::reset() {
+  nPass = nFail = 0;
+}
+#endif <font color=#009900>// TEST_H ///:~</font></PRE></FONT></BLOCKQUOTE>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Explanation of code here</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Here is the implmentation of
+<B>Test</B>:
+[&nbsp;<a HREF="mailto:cda@freshsources.com?subject=[TICV2] TIC2V2_CHAPTER2_I40">Comment</a>&nbsp;]
+
+<a NAME="TIC2V2_CHAPTER2_I41"></a>
+</FONT><BR></P></DIV>
+
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE><font color=#009900>//: TestSuite:Test.cpp {O}</font>
+#include <font color=#004488>"Test.h"</font>
+#include &lt;iostream&gt;
+#include &lt;typeinfo&gt; <font color=#009900>// Visual C++ requires /GR""</font>
+<font color=#0000ff>using</font> <font color=#0000ff>namespace</font> std;
+
+<font color=#0000ff>void</font> Test::do_test(<font color=#0000ff>bool</font> cond, 
+                   <font color=#0000ff>const</font> std::string&amp; lbl,
+                   <font color=#0000ff>const</font> <font color=#0000ff>char</font>* fname, 
+                   <font color=#0000ff>long</font> lineno){
+  <font color=#0000ff>if</font> (!cond)
+    do_fail(lbl, fname, lineno);
+  <font color=#0000ff>else</font>
+    succeed_();
+}
+
+<font color=#0000ff>void</font> Test::do_fail(<font color=#0000ff>const</font> std::string&amp; lbl,
+                   <font color=#0000ff>const</font> <font color=#0000ff>char</font>* fname, 
+                   <font color=#0000ff>long</font> lineno){
+  ++nFail;
+  <font color=#0000ff>if</font> (osptr){
+    *osptr &lt;&lt; <font color=#0000ff>typeid</font>(*<font color=#0000ff>this</font>).name()
+             &lt;&lt; <font color=#004488>"failure: ("</font> &lt;&lt; lbl &lt;&lt; <font color=#004488>") , "</font>
+             &lt;&lt; fname
+             &lt;&lt; <font color=#004488>" (line "</font> &lt;&lt; lineno &lt;&lt; <font color=#004488>")\n"</font>;
+  }
+}
+
+<font color=#0000ff>long</font> Test::report() <font color=#0000ff>const</font> {
+  <font color=#0000ff>if</font> (osptr){
+    *osptr &lt;&lt; <font color=#004488>"Test \"</font>" &lt;&lt; <font color=#0000ff>typeid</font>(*<font color=#0000ff>this</font>).name()
+             &lt;&lt; <font color=#004488>"\"</font>:\n\tPassed: " &lt;&lt; nPass
+             &lt;&lt; <font color=#004488>"\tFailed: "</font> &lt;&lt; nFail
+             &lt;&lt; endl;
+  }
+  <font color=#0000ff>return</font> nFail;
+} <font color=#009900>///:~</font></PRE></FONT></BLOCKQUOTE>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">No rocket science here. <B>Test</B> just
+keeps track of the number of successes and failures as well as the stream where
+you want <B>Test::report(&#160;)</B> to print the results. <B>test_</B> and
+<B>fail_</B> are macros so that they can include filename and line number
+information available from the
+preprocessor.
+[&nbsp;<a HREF="mailto:cda@freshsources.com?subject=[TICV2] TIC2V2_CHAPTER2_I41">Comment</a>&nbsp;]
+
+<a NAME="TIC2V2_CHAPTER2_I42"></a>
+</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Here is the header file for
+<B>Suite</B>:</FONT><BR></P></DIV>
+
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE><font color=#009900>//: TestSuite:Suite.h</font>
+#ifndef SUITE_H
+#define SUITE_H
+#include <font color=#004488>"..</font><font color=#004488>/TestSuite</font><font color=#004488>/Test.h"</font>
+#include &lt;vector&gt;
+#include &lt;stdexcept&gt;
+<font color=#0000ff>using</font> std::vector;
+<font color=#0000ff>using</font> std::logic_error;
+
+<font color=#0000ff>class</font> TestSuiteError : <font color=#0000ff>public</font> logic_error {
+<font color=#0000ff>public</font>:
+  TestSuiteError(<font color=#0000ff>const</font> string&amp; s = <font color=#004488>""</font>)
+    : logic_error(s) {}
+};
+
+<font color=#0000ff>class</font> Suite {
+<font color=#0000ff>public</font>:
+  Suite(<font color=#0000ff>const</font> string&amp; name, ostream* osptr = &amp;cout);
+  string getName() <font color=#0000ff>const</font>;
+  <font color=#0000ff>long</font> getNumPassed() <font color=#0000ff>const</font>;
+  <font color=#0000ff>long</font> getNumFailed() <font color=#0000ff>const</font>;
+  <font color=#0000ff>const</font> ostream* getStream() <font color=#0000ff>const</font>;
+  <font color=#0000ff>void</font> setStream(ostream* osptr);
+  <font color=#0000ff>void</font> addTest(Test* t) <font color=#0000ff>throw</font> (TestSuiteError);
+  <font color=#0000ff>void</font> addSuite(<font color=#0000ff>const</font> Suite&amp;) 
+    <font color=#0000ff>throw</font>(TestSuiteError);
+  <font color=#0000ff>void</font> run();  <font color=#009900>// Calls Test::run() repeatedly</font>
+  <font color=#0000ff>long</font> report() <font color=#0000ff>const</font>;
+  <font color=#0000ff>void</font> free(); <font color=#009900>// Deletes tests</font>
+<font color=#0000ff>private</font>:
+  string name;
+  ostream* osptr;
+  vector&lt;Test*&gt; tests;
+  <font color=#0000ff>void</font> reset();
+  <font color=#009900>// Disallowed ops:</font>
+  Suite(<font color=#0000ff>const</font> Suite&amp;);
+  Suite&amp; <font color=#0000ff>operator</font>=(<font color=#0000ff>const</font> Suite&amp;);
+};
+
+<font color=#0000ff>inline</font>
+Suite::Suite(<font color=#0000ff>const</font> string&amp; name, ostream* osptr)
+   : name(name) {
+  <font color=#0000ff>this</font>-&gt;osptr = osptr;
+}
+
+<font color=#0000ff>inline</font> string Suite::getName() <font color=#0000ff>const</font> {
+  <font color=#0000ff>return</font> name;
+}
+
+<font color=#0000ff>inline</font> <font color=#0000ff>const</font> ostream* Suite::getStream() <font color=#0000ff>const</font> {
+  <font color=#0000ff>return</font> osptr;
+}
+
+<font color=#0000ff>inline</font> <font color=#0000ff>void</font> Suite::setStream(ostream* osptr) {
+  <font color=#0000ff>this</font>-&gt;osptr = osptr;
+}
+#endif <font color=#009900>// SUITE_H ///:~</font></PRE></FONT></BLOCKQUOTE>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Explanation of code
+here
+[&nbsp;<a HREF="mailto:cda@freshsources.com?subject=[TICV2] TIC2V2_CHAPTER2_I42">Comment</a>&nbsp;]
+
+<a NAME="TIC2V2_CHAPTER2_I43"></a>
+</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Here is the implementation of
+<B>Suite</B>:</FONT><BR></P></DIV>
+
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE><font color=#009900>//: TestSuite:Suite.cpp {O}</font>
+#include <font color=#004488>"Suite.h"</font>
+#include &lt;iostream&gt;
+#include &lt;cassert&gt;
+<font color=#0000ff>using</font> <font color=#0000ff>namespace</font> std;
+
+<font color=#0000ff>void</font> Suite::addTest(Test* t) 
+  <font color=#0000ff>throw</font>(TestSuiteError) {
+  <font color=#009900>// Make sure test has a stream:</font>
+  <font color=#0000ff>if</font> (t == 0)
+    <font color=#0000ff>throw</font> TestSuiteError(
+      <font color=#004488>"Null test in Suite::addTest"</font>);
+  <font color=#0000ff>else</font> <font color=#0000ff>if</font> (osptr != 0 &amp;&amp; t-&gt;getStream() == 0)
+    t-&gt;setStream(osptr);
+  tests.push_back(t);
+  t-&gt;reset();
+}
+
+<font color=#0000ff>void</font> Suite::addSuite(<font color=#0000ff>const</font> Suite&amp; s) 
+  <font color=#0000ff>throw</font>(TestSuiteError) {
+  <font color=#0000ff>for</font> (size_t i = 0; i &lt; s.tests.size(); ++i)
+    addTest(s.tests[i]);
+}
+
+<font color=#0000ff>void</font> Suite::free() {
+  <font color=#009900>// This is not a destructor because tests</font>
+  <font color=#009900>// don't have to be on the heap.</font>
+  <font color=#0000ff>for</font> (size_t i = 0; i &lt; tests.size(); ++i) {
+    <font color=#0000ff>delete</font> tests[i];
+    tests[i] = 0;
+  }
+}
+
+<font color=#0000ff>void</font> Suite::run() {
+  reset();
+  <font color=#0000ff>for</font> (size_t i = 0; i &lt; tests.size(); ++i) {
+    assert(tests[i]);
+    tests[i]-&gt;run();
+  }
+}
+
+<font color=#0000ff>long</font> Suite::report() <font color=#0000ff>const</font> {
+  <font color=#0000ff>if</font> (osptr) {
+    <font color=#0000ff>long</font> totFail = 0;
+    *osptr &lt;&lt; <font color=#004488>"Suite \"</font>" &lt;&lt; name 
+             &lt;&lt; <font color=#004488>"\"</font>\n=======";
+    size_t i;
+    <font color=#0000ff>for</font> (i = 0; i &lt; name.size(); ++i)
+      *osptr &lt;&lt; '=';
+    *osptr &lt;&lt; <font color=#004488>"=\n"</font>;
+    <font color=#0000ff>for</font> (i = 0; i &lt; tests.size(); ++i) {
+      assert(tests[i]);
+      totFail += tests[i]-&gt;report();
+    }
+    *osptr &lt;&lt; <font color=#004488>"======="</font>;
+    <font color=#0000ff>for</font> (i = 0; i &lt; name.size(); ++i)
+      *osptr &lt;&lt; '=';
+    *osptr &lt;&lt; <font color=#004488>"=\n"</font>;
+    <font color=#0000ff>return</font> totFail;
+  }
+  <font color=#0000ff>else</font>
+    <font color=#0000ff>return</font> getNumFailed();
+}
+
+<font color=#0000ff>long</font> Suite::getNumPassed() <font color=#0000ff>const</font> {
+  <font color=#0000ff>long</font> totPass = 0;
+  <font color=#0000ff>for</font> (size_t i = 0; i &lt; tests.size(); ++i) {
+    assert(tests[i]);
+    totPass += tests[i]-&gt;getNumPassed();
+  }
+  <font color=#0000ff>return</font> totPass;
+}
+
+<font color=#0000ff>long</font> Suite::getNumFailed() <font color=#0000ff>const</font> {
+  <font color=#0000ff>long</font> totFail = 0;
+  <font color=#0000ff>for</font> (size_t i = 0; i &lt; tests.size(); ++i) {
+    assert(tests[i]);
+    totFail += tests[i]-&gt;getNumFailed();
+  }
+  <font color=#0000ff>return</font> totFail;
+}
+
+<font color=#0000ff>void</font> Suite::reset() {
+  <font color=#0000ff>for</font> (size_t i = 0; i &lt; tests.size(); ++i) {
+    assert(tests[i]);
+    tests[i]-&gt;reset();
+  }
+} <font color=#009900>///:~</font></PRE></FONT></BLOCKQUOTE>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Explanation of code
+here
+[&nbsp;<a HREF="mailto:cda@freshsources.com?subject=[TICV2] TIC2V2_CHAPTER2_I43">Comment</a>&nbsp;]
+
+<a NAME="TIC2V2_CHAPTER2_I44"></a>
+</FONT><BR></P></DIV>
+<A NAME="Heading68"></A><FONT FACE = "Verdana, Tahoma, Arial, Helvetica, Sans"><H2 ALIGN="LEFT">
+Exercises</H2></FONT>
+<OL>
+<LI><FONT FACE="Verdana">	</FONT><FONT FACE="Georgia">Exercise
+1
+[&nbsp;<a HREF="mailto:cda@freshsources.com?subject=[TICV2] TIC2V2_CHAPTER2_I44">Comment</a>&nbsp;]
+
+<a NAME="TIC2V2_CHAPTER2_I45"></a>
+</FONT><LI><FONT FACE="Verdana">	</FONT><FONT FACE="Georgia">Exercise
+2
+[&nbsp;<a HREF="mailto:cda@freshsources.com?subject=[TICV2] TIC2V2_CHAPTER2_I45">Comment</a>&nbsp;]
+
+<a NAME="TIC2V2_CHAPTER2_I46"></a>
+</FONT><LI><FONT FACE="Verdana">	</FONT><FONT FACE="Georgia">Exercise
+3
+[&nbsp;<a HREF="mailto:cda@freshsources.com?subject=[TICV2] TIC2V2_CHAPTER2_I46">Comment</a>&nbsp;]
+
+<a NAME="TIC2V2_CHAPTER2_I47"></a>
+</FONT><LI><FONT FACE="Verdana">	</FONT><FONT FACE="Georgia">Etc.
+[&nbsp;<a HREF="mailto:cda@freshsources.com?subject=[TICV2] TIC2V2_CHAPTER2_I47">Comment</a>&nbsp;]
+
+</FONT></OL>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia"> </FONT><BR></P></DIV>
+<HR><DIV ALIGN="LEFT"><P><A NAME="fn5" HREF="#fnB5">[5]</A><FONT FACE="Georgia" SIZE=2>
+See Kent Beck's book, <I>eXtreme Programming Explained: Embrace Change</I>
+(Addison-Wesley, 2000, ISBN 0-201-61641-6), or visit www.Xprogramming.com for
+more information on XP. The XP theme from which this section derives its title
+is DoTheSimplestThingThatCouldPossiblyWork.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><A NAME="fn6" HREF="#fnB6">[6]</A><FONT FACE="Georgia" SIZE=2>
+The seminal work on this subject is Martin Fowler's <I>Refactoring: Improving
+the Design of Existing Code</I> (Addison-Wesley, 2000, ISBN 0-201-48567-2). See
+www.refactoring.com.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><A NAME="fn7" HREF="#fnB7">[7]</A><FONT FACE="Georgia" SIZE=2>
+If you're using Microsoft Visual C++, you need to specify the compile option
+/GR. If you don't, you'll get an access violation at run time.</FONT><BR></P></DIV>
+
+<DIV ALIGN="CENTER">
+    <FONT FACE="Verdana, Tahoma, Arial, Helvetica, Sans" size = "-1">
+     [ <a href="Chap01.htm">Previous Chapter</a> ] 
+    
+    [ <a href="SimpCont.htm">Short TOC</a> ] 
+    [ <a href="Contents.htm">Table of Contents</a> ] 
+  
+        [ <a href="DocIdx.htm">Index</a> ]
+        
+     [ <a href="Chap03.htm">Next Chapter</a> ] 
+    </FONT>
+    <BR>
+ Last Update:08/19/2001</P></DIV>
+
+</BODY>
+
+</HTML>

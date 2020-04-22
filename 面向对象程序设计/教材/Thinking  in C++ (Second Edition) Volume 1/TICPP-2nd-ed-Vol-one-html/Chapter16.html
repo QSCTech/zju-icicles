@@ -1,0 +1,2464 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<HTML>
+<!--
+This document was converted from RTF source: 
+By rtftohtml 4.19
+See http://www.sunpack.com/RTF
+Filename:TIC2Vone.rtf
+Application Directory:C:\TOOLS\RTF2HTML\
+Subject:
+Author:Bruce Eckel
+Operator:Bruce Eckel
+Document Comments:
+Version Comments:
+Comments:
+Keywords:
+Translation Date:09/27/2001
+Translation Time:05:26:00
+Translation Platform:Win32
+Number of Output files:22
+This File:Chapter16.html
+SplitDepth=1
+SkipNavPanel=1
+SkipLeadingToc=1
+SkipTrailingToc=1
+GenContents=1
+GenFrames=1
+GenIndex=1
+-->
+<HEAD lang="en"><META http-equiv="Content-Type" content="text/html">
+<TITLE>16: Introduction to Templates</TITLE>
+</HEAD>
+
+<BODY  BGCOLOR="#FFFFFF"><DIV ALIGN="CENTER">
+  <a href="http://www.MindView.net">
+  <img src="mindview-head.gif" alt="MindView Inc." BORDER = "0"></a>
+  <CENTER>
+    <FONT FACE="Verdana" size = "-1">
+    [ <a href="README-HTML.txt">Viewing Hints</a> ]
+    [ <a href="http://www.mindview.net/CPPServices/SolutionGuide.html">Exercise Solutions</a> ]
+    [ <a href="http://www.mindview.net/ThinkingInCPP2e.html">Volume 2</a> ]
+    [ <a href="http://www.mindview.net/MailingList.html">Free Newsletter</a> ] <br>
+    [ <a href="http://www.mindview.net/CPPServices/#PublicSeminars">Seminars</a> ]
+    [ <a href="http://www.mindview.net/CPPServices/#SeminarsOnCD">Seminars on CD ROM</a> ]
+    [ <a href="http://www.mindview.net/CPPServices/#ConsultingServices">Consulting</a> ]
+    </FONT>
+  <H2><FONT FACE="Verdana">
+  Thinking in C++, 2nd ed. Volume 1</FONT></H2></FONT>
+  <H3><FONT FACE="Verdana">&copy;2000 by Bruce Eckel</FONT></H3></FONT>
+  
+    <FONT FACE="Verdana" size = "-1">
+     [ <a href="Chapter15.html">Previous Chapter</a> ] 
+    [ <a href="Contents.html">Table of Contents</a> ] 
+    [ <a href="DocIndex.html">Index</a> ]
+     [ <a href="AppendixA.html">Next Chapter</a> ] 
+    </FONT>
+    
+  </CENTER>
+  </P></DIV><A NAME="_Toc472655046"></A><FONT FACE = "Verdana"><H1 ALIGN="LEFT">
+16: Introduction to Templates</H1></FONT>
+<A NAME="Heading464"></A><FONT FACE = "Verdana"><H1 ALIGN="LEFT">
+</H1></FONT>
+<DIV ALIGN="LEFT"><P><FONT FACE="Verdana" SIZE=4>Inheritance and composition
+provide a way to <A NAME="Index2588"></A>reuse object code. The
+<A NAME="Index2589"></A><A NAME="Index2590"></A><I>template</I> feature in C++
+provides </FONT><BR><FONT FACE="Verdana" SIZE=4>a way to reuse <I>source</I>
+code.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Although C++ templates are a
+general-purpose programming tool, when they were introduced in the language,
+they seemed to discourage the use of object-based container-class hierarchies
+(demonstrated at the end of Chapter 15). For example, the Standard C++
+containers and algorithms (explained in two chapters of Volume 2 of this book,
+downloadable from <I>www.BruceEckel.com</I>) are built exclusively with
+templates and are relatively easy for the programmer to use.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">This chapter not only demonstrates the
+basics of templates, it is also an introduction to containers, which are
+fundamental components of object-oriented programming and are almost completely
+realized through the containers in the Standard C++ Library. You&#8217;ll see
+that this book has been using container examples &#8211; the <B>Stash </B>and
+<B>Stack </B>&#8211; throughout, precisely to get you comfortable with
+containers; in this chapter the concept of the <I>iterator</I> will also be
+added. Although containers are ideal examples for use with templates, in Volume
+2 (which has an advanced templates chapter) you&#8217;ll learn that there are
+many other uses for templates as
+well.</FONT><A NAME="_Toc305593275"></A><A NAME="_Toc305628747"></A><A NAME="_Toc312374063"></A><A NAME="_Toc472655047"></A><BR></P></DIV>
+<A NAME="Heading465"></A><FONT FACE = "Verdana"><H2 ALIGN="LEFT">
+Containers<BR><A NAME="Index2591"></A><A NAME="Index2592"></A></H2></FONT>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Suppose you want to create a
+<A NAME="Index2593"></A>stack, as we have been doing throughout the book. This
+stack class will hold <B>int</B>s, to keep it simple:</FONT><BR></P></DIV>
+
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE><font color=#009900>//: C16:IntStack.cpp</font>
+<font color=#009900>// Simple integer stack</font>
+<font color=#009900>//{L} fibonacci</font>
+#include <font color=#004488>"fibonacci.h"</font>
+#include <font color=#004488>"../require.h"</font>
+#include &lt;iostream&gt;
+<font color=#0000ff>using</font> <font color=#0000ff>namespace</font> std;
+
+<font color=#0000ff>class</font> IntStack {
+  <font color=#0000ff>enum</font> { ssize = 100 };
+  <font color=#0000ff>int</font> stack[ssize];
+  <font color=#0000ff>int</font> top;
+<font color=#0000ff>public</font>:
+  IntStack() : top(0) {}
+  <font color=#0000ff>void</font> push(<font color=#0000ff>int</font> i) {
+    require(top &lt; ssize, <font color=#004488>"Too many push()es"</font>);
+    stack[top++] = i;
+  }
+  <font color=#0000ff>int</font> pop() {
+    require(top &gt; 0, <font color=#004488>"Too many pop()s"</font>);
+    <font color=#0000ff>return</font> stack[--top];
+  }
+};
+
+<font color=#0000ff>int</font> main() {
+  IntStack is;
+  <font color=#009900>// Add some Fibonacci numbers, for interest:</font>
+  <font color=#0000ff>for</font>(<font color=#0000ff>int</font> i = 0; i &lt; 20; i++)
+    is.push(fibonacci(i));
+  <font color=#009900>// Pop &amp; print them:</font>
+  <font color=#0000ff>for</font>(<font color=#0000ff>int</font> k = 0; k &lt; 20; k++)
+    cout &lt;&lt; is.pop() &lt;&lt; endl;
+} <font color=#009900>///:~</font></PRE></FONT></BLOCKQUOTE>
+
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">The class <B>IntStack</B> is a trivial
+example of a push-down stack. For simplicity it has been created here with a
+fixed size, but you can also modify it to automatically expand by allocating
+memory off the heap, as in the <B>Stack</B> class that has been examined
+throughout the book.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia"><B>main(&#160;)</B> adds some integers to
+the stack, and pops them off again. To make the example more interesting, the
+integers are created with the <B>fibonacci(&#160;)<A NAME="Index2594"></A></B>
+function, which generates the traditional rabbit-reproduction numbers. Here is
+the header file that declares the function:</FONT><BR></P></DIV>
+
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE><font color=#009900>//: C16:fibonacci.h</font>
+<font color=#009900>// Fibonacci number generator</font>
+<font color=#0000ff>int</font> fibonacci(<font color=#0000ff>int</font> n); <font color=#009900>///:~</font></PRE></FONT></BLOCKQUOTE>
+
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Here&#8217;s the
+implementation:</FONT><BR></P></DIV>
+
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE><font color=#009900>//: C16:fibonacci.cpp {O}</font>
+#include <font color=#004488>"../require.h"</font>
+
+<font color=#0000ff>int</font> fibonacci(<font color=#0000ff>int</font> n) {
+  <font color=#0000ff>const</font> <font color=#0000ff>int</font> sz = 100;
+  require(n &lt; sz);
+  <font color=#0000ff>static</font> <font color=#0000ff>int</font> f[sz]; <font color=#009900>// Initialized to zero</font>
+  f[0] = f[1] = 1;
+  <font color=#009900>// Scan for unfilled array elements:</font>
+  <font color=#0000ff>int</font> i;
+  <font color=#0000ff>for</font>(i = 0; i &lt; sz; i++)
+    <font color=#0000ff>if</font>(f[i] == 0) <font color=#0000ff>break</font>;
+  <font color=#0000ff>while</font>(i &lt;= n) {
+    f[i] = f[i-1] + f[i-2];
+    i++;
+  }
+  <font color=#0000ff>return</font> f[n];
+} <font color=#009900>///:~</font></PRE></FONT></BLOCKQUOTE>
+
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">This is a fairly efficient
+implementation, because it never generates the numbers more than once. It uses a
+<A NAME="Index2595"></A><A NAME="Index2596"></A><B>static</B> array of
+<B>int</B>, and relies on the fact that the compiler will initialize a
+<B>static</B> array to zero. The first <B>for</B> loop moves the index <B>i</B>
+to where the first array element is zero, then a <B>while </B>loop adds
+Fibonacci numbers to the array until the desired element is reached. But notice
+that if the Fibonacci numbers through element <B>n</B> are already initialized,
+it skips the <B>while</B> loop
+altogether.</FONT><A NAME="_Toc312374064"></A><A NAME="_Toc472655048"></A><BR></P></DIV>
+<A NAME="Heading466"></A><FONT FACE = "Verdana"><H3 ALIGN="LEFT">
+The need for containers</H3></FONT>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Obviously, an integer stack isn&#8217;t a
+crucial tool. The real need for containers comes when you start making objects
+on the heap using <B>new</B> and destroying them with <B>delete</B>. In the
+general programming problem, you don&#8217;t know how many objects you&#8217;re
+going to need while you&#8217;re writing the program. For example, in an
+air-traffic control system you don&#8217;t want to limit the number of planes
+your system can handle. You don&#8217;t want the program to abort just because
+you exceed some number. In a computer-aided design system, you&#8217;re dealing
+with lots of shapes, but only the user determines (at runtime) exactly how many
+shapes you&#8217;re going to need. Once you notice this tendency, you&#8217;ll
+discover lots of examples in your own programming situations.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">C programmers who rely on virtual memory
+to handle their &#8220;memory management&#8221; often find the idea of
+<A NAME="Index2597"></A><A NAME="Index2598"></A><A NAME="Index2599"></A><B>new</B>,
+<B>delete,</B> and container classes disturbing. Apparently, one practice in C
+is to create a huge global array, larger than anything the program would appear
+to need. This may not require much thought (or awareness of
+<B>malloc(&#160;)</B> and <B>free(&#160;)</B>), but it produces programs that
+don&#8217;t port well and that hide subtle bugs.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">In addition, if you create a huge global
+array of objects in C++, the constructor and destructor overhead can slow things
+down significantly. The C++ approach works much better: When you need an object,
+create it with <B>new,</B> and put its pointer in a container. Later on, fish it
+out and do something to it. This way, you create only the objects you absolutely
+need. And usually you don&#8217;t have all the initialization conditions
+available at the start-up of the program. <B>new</B> allows you to wait until
+something happens in the environment before you can actually create the
+object.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">So in the most common situation,
+you&#8217;ll make a container that holds pointers to some objects of interest.
+You will create those objects using <B>new</B> and put the resulting pointer in
+the container (potentially upcasting it in the process), pulling it out later
+when you want to do something with the object. This technique produces the most
+flexible, general sort of
+program.</FONT><A NAME="_Toc305593276"></A><A NAME="_Toc305628748"></A><A NAME="_Toc312374065"></A><A NAME="_Toc472655049"></A><BR></P></DIV>
+<A NAME="Heading467"></A><FONT FACE = "Verdana"><H2 ALIGN="LEFT">
+Overview of templates</H2></FONT>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Now a problem arises. You have an
+<B>IntStack</B>, which holds integers. But you want a stack that holds shapes or
+aircraft or plants or something else. Reinventing your source code every time
+doesn&#8217;t seem like a very intelligent approach with a language that touts
+reusability. There must be a better way.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">There are three techniques for source
+code reuse in this situation: the C way, presented here for contrast; the
+Smalltalk approach, which significantly affected C++; and the C++ approach:
+templates.</FONT><A NAME="_Toc312374066"></A><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia"><B>The C solution</B>. Of course
+you&#8217;re trying to get away from the C approach because it&#8217;s messy and
+error prone and completely inelegant. In this approach, you copy the source code
+for a <B>Stack</B> and make modifications by hand, introducing new errors in the
+process. This is certainly not a very productive
+technique.</FONT><A NAME="_Toc312374067"></A><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia"><B>The Smalltalk solution</B>. Smalltalk
+(and <A NAME="Index2600"></A>Java, following its example)
+<A NAME="Index2601"></A>took a simple and straightforward approach: You want to
+reuse code, so use inheritance.
+<A NAME="Index2602"></A><A NAME="Index2603"></A><A NAME="Index2604"></A>To
+implement this, each container class holds items of the generic base class
+<B>Object</B> (similar to the example at the end of Chapter 15). But because the
+library in Smalltalk is of such fundamental importance, you don&#8217;t ever
+create a class from scratch. Instead, you must always inherit it from an
+existing class. You find a class as close as possible to the one you want,
+inherit from it, and make a few changes. Obviously, this is a benefit because it
+minimizes your effort (and explains why you spend a lot of time learning the
+class library before becoming an effective Smalltalk
+programmer).</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">But it also means that all classes in
+Smalltalk end up being part of a single inheritance tree. You must inherit from
+a branch of this tree when creating a new class. Most of the tree is already
+there (it&#8217;s the Smalltalk class library), and at the root of the tree is a
+class called <B>Object</B> &#8211; the same class that each Smalltalk container
+holds.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">This is a neat trick because it means
+that every class in the Smalltalk (and
+Java</FONT><A NAME="fnB59" HREF="#fn59">[59]</A><A NAME="Index2605"></A><FONT FACE="Georgia">)
+class hierarchy is derived from <B>Object</B>, so every class can be held in
+every container (including that container itself). This type of single-tree
+hierarchy based on a fundamental generic type (often named <B>Object</B>, which
+is also the case in Java) is referred to as an &#8220;object-based
+hierarchy.&#8221; You may have heard this term and assumed it was some new
+fundamental concept in OOP, like polymorphism. It simply refers to a class
+hierarchy with <B>Object</B> (or some similar name) at its root and container
+classes that hold <B>Object</B>.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Because the Smalltalk class library had a
+much longer history and experience behind it than did C++, and because the
+original C++ compilers had <I>no</I> container class libraries, it seemed like a
+good idea to duplicate the Smalltalk library in C++. This was done as an
+experiment with an early C++
+implementation</FONT><A NAME="fnB60" HREF="#fn60">[60]</A><A NAME="Index2606"></A><FONT FACE="Georgia">,
+and because it represented a significant body of code, many people began using
+it. In the process of trying to use the container classes, they discovered a
+problem.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">The problem was that in Smalltalk (and
+most other OOP languages that I know of), all classes are automatically derived
+from a single hierarchy, but this isn&#8217;t true in C++. You might have your
+nice object-based hierarchy with its container classes, but then you might buy a
+set of shape classes or aircraft classes from another vendor who didn&#8217;t
+use that hierarchy. (For one thing, using that hierarchy imposes overhead, which
+C programmers eschew.) How do you insert a separate class tree into the
+container class in your object-based hierarchy? Here&#8217;s what the problem
+looks like:</FONT><BR></P></DIV>
+<DIV ALIGN="CENTER"><FONT FACE="Georgia"><IMG SRC="TIC2Vo21.gif"></FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Because C++ supports multiple independent
+hierarchies, Smalltalk&#8217;s object-based hierarchy does not work so
+well.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">The solution seemed obvious. If you can
+have many inheritance hierarchies, then you should be able to inherit from more
+than one class: <A NAME="Index2607"></A><A NAME="Index2608"></A>Multiple
+inheritance will solve the problem. So you do the following (a similar example
+was given at the end of Chapter 15):</FONT><BR></P></DIV>
+<DIV ALIGN="CENTER"><FONT FACE="Georgia"><IMG SRC="TIC2Vo22.gif"></FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Now <B>OShape</B> has
+<B>Shape</B>&#8217;s characteristics and behaviors, but because it is also
+derived from <B>Object</B> it can be placed in <B>Container</B>. The extra
+inheritance into <B>OCircle</B>, <B>OSquare</B>, etc. is necessary so that those
+classes can be upcast into <B>OShape </B>and thus retain the correct behavior.
+You can see that things are rapidly getting messy.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Compiler vendors invented and included
+their own object-based container-class hierarchies, most of which have since
+been replaced by template versions. You can argue that multiple inheritance is
+needed for solving general programming problems, but you&#8217;ll see in Volume
+2 of this book that its complexity is best avoided except in special
+cases.</FONT><A NAME="_Toc312374068"></A><A NAME="_Toc472655050"></A><BR></P></DIV>
+<A NAME="Heading468"></A><FONT FACE = "Verdana"><H3 ALIGN="LEFT">
+The template solution</H3></FONT>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Although an object-based hierarchy with
+multiple inheritance is conceptually straightforward, it turns out to be painful
+to use. In his original
+book</FONT><A NAME="fnB61" HREF="#fn61">[61]</A><A NAME="Index2609"></A><FONT FACE="Georgia">
+Stroustrup demonstrated what he considered a preferable alternative to the
+object-based hierarchy. Container classes were created as large preprocessor
+macros<A NAME="Index2610"></A><A NAME="Index2611"></A> with arguments that could
+be substituted with your desired type. When you wanted to create a container to
+hold a particular type, you made a couple of macro calls.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Unfortunately, this approach was confused
+by all the existing Smalltalk literature and programming experience, and it was
+a bit unwieldy. Basically, nobody got it.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">In the meantime, Stroustrup and the C++
+team at Bell Labs had modified his original macro approach, simplifying it and
+moving it from the domain of the preprocessor into the compiler. This new
+code-substitution device is called a
+<A NAME="Index2612"></A><A NAME="Index2613"></A><B>template</B></FONT><A NAME="fnB62" HREF="#fn62">[62]</A><FONT FACE="Georgia">,
+and it represents a completely different way to reuse code. Instead of reusing
+object code, as with inheritance and composition, a template reuses <I>source
+code<A NAME="Index2614"></A></I>. The container no longer holds a generic base
+class called <B>Object</B>, but instead it holds an unspecified parameter. When
+you use a template, the parameter is substituted <I>by the compiler</I>, much
+like the old macro approach, but cleaner and easier to use.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Now, instead of worrying about
+inheritance or composition when you want to use a container class, you take the
+template version of the container and stamp out a specific version for your
+particular problem, like this:</FONT><BR></P></DIV>
+<DIV ALIGN="CENTER"><FONT FACE="Georgia"><IMG SRC="TIC2Vo23.gif"></FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">The compiler does the work for you, and
+you end up with exactly the container you need to do your job, rather than an
+unwieldy inheritance hierarchy. In C++, the template implements the concept of a
+<I>parameterized type</I>. Another benefit of the template approach is that the
+novice programmer who may be unfamiliar or uncomfortable with inheritance can
+still use canned container classes right away (as we&#8217;ve been doing with
+<B>vector</B> throughout the
+book).</FONT><A NAME="_Toc305593277"></A><A NAME="_Toc305628749"></A><A NAME="_Toc312374069"></A><A NAME="_Toc472655051"></A><BR></P></DIV>
+<A NAME="Heading469"></A><FONT FACE = "Verdana"><H2 ALIGN="LEFT">
+Template syntax</H2></FONT>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">The <B>template</B> keyword tells the
+compiler that the class definition that follows will manipulate one or more
+unspecified types. At the time the actual class code is generated from the
+template, those types must be specified so that the compiler can substitute
+them.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">To demonstrate the syntax, here&#8217;s a
+small example that produces a
+<A NAME="Index2615"></A><A NAME="Index2616"></A>bounds-checked
+array:</FONT><BR></P></DIV>
+
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE><font color=#009900>//: C16:Array.cpp</font>
+#include <font color=#004488>"../require.h"</font>
+#include &lt;iostream&gt;
+<font color=#0000ff>using</font> <font color=#0000ff>namespace</font> std;
+
+<font color=#0000ff>template</font>&lt;<font color=#0000ff>class</font> T&gt;
+<font color=#0000ff>class</font> Array {
+  <font color=#0000ff>enum</font> { size = 100 };
+  T A[size];
+<font color=#0000ff>public</font>:
+  T&amp; <font color=#0000ff>operator</font>[](<font color=#0000ff>int</font> index) {
+    require(index &gt;= 0 &amp;&amp; index &lt; size,
+      <font color=#004488>"Index out of range"</font>);
+    <font color=#0000ff>return</font> A[index];
+  }
+};
+
+<font color=#0000ff>int</font> main() {
+  Array&lt;<font color=#0000ff>int</font>&gt; ia;
+  Array&lt;<font color=#0000ff>float</font>&gt; fa;
+  <font color=#0000ff>for</font>(<font color=#0000ff>int</font> i = 0; i &lt; 20; i++) {
+    ia[i] = i * i;
+    fa[i] = <font color=#0000ff>float</font>(i) * 1.414;
+  }
+  <font color=#0000ff>for</font>(<font color=#0000ff>int</font> j = 0; j &lt; 20; j++)
+    cout &lt;&lt; j &lt;&lt; <font color=#004488>": "</font> &lt;&lt; ia[j]
+         &lt;&lt; <font color=#004488>", "</font> &lt;&lt; fa[j] &lt;&lt; endl;
+} <font color=#009900>///:~</font></PRE></FONT></BLOCKQUOTE>
+
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">You can see that it looks like a normal
+class except for the line</FONT><BR></P></DIV>
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE><font color=#0000ff>template</font>&lt;<font color=#0000ff>class</font> T&gt; </PRE></FONT></BLOCKQUOTE>
+
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">which says that <B>T</B> is the
+substitution parameter, and that it represents a type name. Also, you see
+<B>T</B> used everywhere in the class where you would normally see the specific
+type the container holds.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">In <B>Array</B>, elements are inserted
+<I>and</I> extracted with the same function: the overloaded <B>operator [ ]
+<A NAME="Index2617"></A><A NAME="Index2618"></A><A NAME="Index2619"></A></B>. It
+returns a reference, so it can be used on both sides of an equal sign (that is,
+as both an <A NAME="Index2620"></A><I>lvalue</I> and an
+<A NAME="Index2621"></A><I>rvalue</I>). Notice that if the index is out of
+bounds, the <A NAME="Index2622"></A><B>require(&#160;)</B> function is used to
+print a message. Since <B>operator[] </B>is an <B>inline</B>,<B> </B>you could
+use this approach to guarantee that no array-bounds violations occur, then
+remove the <B>require(&#160;)</B> for the shipping code.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">In <B>main(&#160;)</B>, you can see how
+easy it is to create <B>Array</B>s that hold different types of objects. When
+you say</FONT><BR></P></DIV>
+
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE>Array&lt;<font color=#0000ff>int</font>&gt; ia;
+Array&lt;<font color=#0000ff>float</font>&gt; fa;</PRE></FONT></BLOCKQUOTE>
+
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">the compiler expands the <B>Array</B>
+template (this is called
+<I>instantiation<A NAME="Index2623"></A><A NAME="Index2624"></A></I>) twice, to
+create two new <I>generated
+classes<A NAME="Index2625"></A><A NAME="Index2626"></A></I>, which you can think
+of as <B>Array_int</B> and <B>Array_float</B>. (Different compilers may decorate
+the names in different ways.) These are classes just like the ones you would
+have produced if you had performed the substitution by hand, except that the
+compiler creates them for you as you define the objects <B>ia</B> and <B>fa</B>.
+Also note that duplicate class
+definitions<A NAME="Index2627"></A><A NAME="Index2628"></A><A NAME="Index2629"></A>
+are either avoided by the compiler or merged by the
+linker.</FONT><A NAME="_Toc312374070"></A><A NAME="_Toc472655052"></A><BR></P></DIV>
+<A NAME="Heading470"></A><FONT FACE = "Verdana"><H3 ALIGN="LEFT">
+Non-inline function definitions</H3></FONT>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Of course, there are times when
+you&#8217;ll want to have
+<A NAME="Index2630"></A><A NAME="Index2631"></A><A NAME="Index2632"></A><A NAME="Index2633"></A>non-inline
+member function definitions. In this case, the compiler needs to see the
+<B>template</B> declaration before the member function definition. Here&#8217;s
+the example above, modified to show the non-inline member
+definition:</FONT><BR></P></DIV>
+
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE><font color=#009900>//: C16:Array2.cpp</font>
+<font color=#009900>// Non-inline template definition</font>
+#include <font color=#004488>"../require.h"</font>
+
+<font color=#0000ff>template</font>&lt;<font color=#0000ff>class</font> T&gt;
+<font color=#0000ff>class</font> Array {
+  <font color=#0000ff>enum</font> { size = 100 };
+  T A[size];
+<font color=#0000ff>public</font>:
+  T&amp; <font color=#0000ff>operator</font>[](<font color=#0000ff>int</font> index);
+};
+
+<font color=#0000ff>template</font>&lt;<font color=#0000ff>class</font> T&gt;
+T&amp; Array&lt;T&gt;::<font color=#0000ff>operator</font>[](<font color=#0000ff>int</font> index) {
+  require(index &gt;= 0 &amp;&amp; index &lt; size,
+    <font color=#004488>"Index out of range"</font>);
+  <font color=#0000ff>return</font> A[index];
+}
+
+<font color=#0000ff>int</font> main() {
+  Array&lt;<font color=#0000ff>float</font>&gt; fa;
+  fa[0] = 1.414;
+} <font color=#009900>///:~</font></PRE></FONT></BLOCKQUOTE>
+
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Any reference to a template&#8217;s class
+name must be accompanied by its template argument list<A NAME="Index2634"></A>,
+as in <B>Array&lt;T&gt;::operator[]</B>. You can imagine that internally, the
+class name is being decorated with the arguments in the template argument list
+to produce a unique class name identifier for each template
+instantiation.</FONT><BR></P></DIV>
+<A NAME="Heading471"></A><FONT FACE = "Verdana"><H4 ALIGN="LEFT">
+Header files<BR><A NAME="Index2635"></A><A NAME="Index2636"></A></H4></FONT>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Even if you create non-inline function
+definitions, you&#8217;ll usually want to put all declarations <I>and</I>
+definitions for a template into a header file. This may seem to violate the
+normal header file rule of &#8220;Don&#8217;t put in anything that allocates
+storage,&#8221; (which prevents multiple definition errors at link time), but
+template definitions are special. Anything preceded by
+<B>template&lt;...&gt;</B> means the compiler won&#8217;t allocate storage for
+it at that point, but will instead wait until it&#8217;s told to (by a template
+instantiation), and that somewhere in the compiler and linker there&#8217;s a
+mechanism for removing multiple definitions<A NAME="Index2637"></A> of an
+identical template. So you&#8217;ll almost always put the entire template
+declaration <I>and</I> definition in the header file, for ease of
+use.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">There are times when you may need to
+place the template definitions in a separate <B>cpp</B> file to satisfy special
+needs (for example, forcing template instantiations to exist in only a single
+Windows <B>dll</B> file). Most compilers have some mechanism to allow this;
+you&#8217;ll have to investigate your particular compiler&#8217;s documentation
+to use it.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Some people feel that putting all of the
+source code for your implementation in a header file makes it possible for
+people to steal and modify your code if they buy a library from you. This might
+be an issue, but it probably depends on the way you look at the problem: Are
+they buying a product or a service? If it&#8217;s a product, then you have to do
+everything you can to protect it, and probably you don&#8217;t want to give
+source code, just compiled code. But many people see software as a service, and
+even more than that, a subscription service. The customer wants your expertise,
+they want you to continue maintaining this piece of reusable code so that they
+don&#8217;t have to &#8211; so they can focus on getting <I>their</I> job done.
+I personally think most customers will treat you as a valuable resource and will
+not want to jeopardize their relationship with you. As for the few who want to
+steal rather than buy or do original work, they probably can&#8217;t keep up
+with you
+anyway.</FONT><A NAME="_Toc312374071"></A><A NAME="_Toc472655053"></A><BR></P></DIV>
+<A NAME="Heading472"></A><FONT FACE = "Verdana"><H3 ALIGN="LEFT">
+IntStack as a template</H3></FONT>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Here is the container and iterator from
+<B>IntStack.cpp</B>, implemented as a generic container class using
+templates:</FONT><BR></P></DIV>
+
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE><font color=#009900>//: C16:StackTemplate.h</font>
+<font color=#009900>// Simple stack template</font>
+#ifndef STACKTEMPLATE_H
+#define STACKTEMPLATE_H
+#include <font color=#004488>"../require.h"</font>
+
+<font color=#0000ff>template</font>&lt;<font color=#0000ff>class</font> T&gt;
+<font color=#0000ff>class</font> StackTemplate {
+  <font color=#0000ff>enum</font> { ssize = 100 };
+  T stack[ssize];
+  <font color=#0000ff>int</font> top;
+<font color=#0000ff>public</font>:
+  StackTemplate() : top(0) {}
+  <font color=#0000ff>void</font> push(<font color=#0000ff>const</font> T&amp; i) {
+    require(top &lt; ssize, <font color=#004488>"Too many push()es"</font>);
+    stack[top++] = i;
+  }
+  T pop() {
+    require(top &gt; 0, <font color=#004488>"Too many pop()s"</font>);
+    <font color=#0000ff>return</font> stack[--top];
+  }
+  <font color=#0000ff>int</font> size() { <font color=#0000ff>return</font> top; }
+};
+#endif <font color=#009900>// STACKTEMPLATE_H ///:~</font></PRE></FONT></BLOCKQUOTE>
+
+<DIV ALIGN="LEFT"><P><A NAME="Index2638"></A><A NAME="Index2639"></A><FONT FACE="Georgia">Notice
+that a template makes certain assumptions about the objects it is holding. For
+example, <B>StackTemplate</B> assumes there is some sort of assignment operation
+for <B>T</B> inside the <B>push(&#160;)</B> function. You could say that a
+template &#8220;implies an interface&#8221; for the types it is capable of
+holding.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><A NAME="Index2640"></A><A NAME="Index2641"></A><A NAME="Index2642"></A><FONT FACE="Georgia">Another
+way to say this is that templates provide a kind of <I>weak typing</I> mechanism
+for C++, which is ordinarily a strongly-typed language. Instead of insisting
+that an object be of some exact type in order to be acceptable, weak typing
+requires only that the member functions that it wants to call are
+<I>available</I> for a particular object. Thus, weakly-typed code can be applied
+to any object that can accept those member function calls, and is thus much more
+flexible</FONT><A NAME="fnB63" HREF="#fn63">[63]</A><A NAME="Index2643"></A><A NAME="Index2644"></A><A NAME="Index2645"></A><A NAME="Index2646"></A><FONT FACE="Georgia">.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Here&#8217;s the revised example to test
+the template:</FONT><BR></P></DIV>
+
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE><font color=#009900>//: C16:StackTemplateTest.cpp</font>
+<font color=#009900>// Test simple stack template</font>
+<font color=#009900>//{L} fibonacci</font>
+#include <font color=#004488>"fibonacci.h"</font>
+#include <font color=#004488>"StackTemplate.h"</font>
+#include &lt;iostream&gt;
+#include &lt;fstream&gt;
+#include &lt;string&gt;
+<font color=#0000ff>using</font> <font color=#0000ff>namespace</font> std;
+
+<font color=#0000ff>int</font> main() {
+  StackTemplate&lt;<font color=#0000ff>int</font>&gt; is;
+  <font color=#0000ff>for</font>(<font color=#0000ff>int</font> i = 0; i &lt; 20; i++)
+    is.push(fibonacci(i));
+  <font color=#0000ff>for</font>(<font color=#0000ff>int</font> k = 0; k &lt; 20; k++)
+    cout &lt;&lt; is.pop() &lt;&lt; endl;
+  ifstream in(<font color=#004488>"StackTemplateTest.cpp"</font>);
+  assure(in, <font color=#004488>"StackTemplateTest.cpp"</font>);
+  string line;
+  StackTemplate&lt;string&gt; strings;
+  <font color=#0000ff>while</font>(getline(in, line))
+    strings.push(line);
+  <font color=#0000ff>while</font>(strings.size() &gt; 0)
+    cout &lt;&lt; strings.pop() &lt;&lt; endl;
+} <font color=#009900>///:~</font></PRE></FONT></BLOCKQUOTE>
+
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">The only difference is in the creation of
+<B>is</B>. Inside the template argument list you specify the type of object the
+stack and iterator should hold. To demonstrate the genericness of the template,
+a <B>StackTemplate</B> is also created to hold <B>string</B>. This is tested by
+reading in lines from the source-code
+file.</FONT><A NAME="_Toc312374072"></A><A NAME="_Toc472655054"></A><BR></P></DIV>
+<A NAME="Heading473"></A><FONT FACE = "Verdana"><H3 ALIGN="LEFT">
+Constants in
+templates<BR><A NAME="Index2647"></A><A NAME="Index2648"></A><A NAME="Index2649"></A></H3></FONT>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Template arguments are not restricted to
+class types; you can also use built-in types. The values of these arguments then
+become compile-time constants for that particular instantiation of the template.
+You can even use default values for these arguments. The following example
+allows you to set the size of the <B>Array</B> class during instantiation, but
+also provides a default value:</FONT><BR></P></DIV>
+
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE><font color=#009900>//: C16:Array3.cpp</font>
+<font color=#009900>// Built-in types as template arguments</font>
+#include <font color=#004488>"../require.h"</font>
+#include &lt;iostream&gt;
+<font color=#0000ff>using</font> <font color=#0000ff>namespace</font> std;
+
+<font color=#0000ff>template</font>&lt;<font color=#0000ff>class</font> T, <font color=#0000ff>int</font> size = 100&gt;
+<font color=#0000ff>class</font> Array {
+  T array[size];
+<font color=#0000ff>public</font>:
+  T&amp; <font color=#0000ff>operator</font>[](<font color=#0000ff>int</font> index) {
+    require(index &gt;= 0 &amp;&amp; index &lt; size,
+      <font color=#004488>"Index out of range"</font>);
+    <font color=#0000ff>return</font> array[index];
+  }
+  <font color=#0000ff>int</font> length() <font color=#0000ff>const</font> { <font color=#0000ff>return</font> size; }
+};
+
+<font color=#0000ff>class</font> Number {
+  <font color=#0000ff>float</font> f;
+<font color=#0000ff>public</font>:
+  Number(<font color=#0000ff>float</font> ff = 0.0f) : f(ff) {}
+  Number&amp; <font color=#0000ff>operator</font>=(<font color=#0000ff>const</font> Number&amp; n) {
+    f = n.f;
+    <font color=#0000ff>return</font> *<font color=#0000ff>this</font>;
+  }
+  <font color=#0000ff>operator</font> <font color=#0000ff>float</font>() <font color=#0000ff>const</font> { <font color=#0000ff>return</font> f; }
+  <font color=#0000ff>friend</font> ostream&amp;
+    <font color=#0000ff>operator</font>&lt;&lt;(ostream&amp; os, <font color=#0000ff>const</font> Number&amp; x) {
+      <font color=#0000ff>return</font> os &lt;&lt; x.f;
+  }
+};
+
+<font color=#0000ff>template</font>&lt;<font color=#0000ff>class</font> T, <font color=#0000ff>int</font> size = 20&gt;
+<font color=#0000ff>class</font> Holder {
+  Array&lt;T, size&gt;* np;
+<font color=#0000ff>public</font>:
+  Holder() : np(0) {}
+  T&amp; <font color=#0000ff>operator</font>[](<font color=#0000ff>int</font> i) {
+    require(0 &lt;= i &amp;&amp; i &lt; size);
+    <font color=#0000ff>if</font>(!np) np = <font color=#0000ff>new</font> Array&lt;T, size&gt;;
+    <font color=#0000ff>return</font> np-&gt;<font color=#0000ff>operator</font>[](i);
+  }
+  <font color=#0000ff>int</font> length() <font color=#0000ff>const</font> { <font color=#0000ff>return</font> size; }
+  ~Holder() { <font color=#0000ff>delete</font> np; }
+};
+
+<font color=#0000ff>int</font> main() {
+  Holder&lt;Number&gt; h;
+  <font color=#0000ff>for</font>(<font color=#0000ff>int</font> i = 0; i &lt; 20; i++)
+    h[i] = i;
+  <font color=#0000ff>for</font>(<font color=#0000ff>int</font> j = 0; j &lt; 20; j++)
+    cout &lt;&lt; h[j] &lt;&lt; endl;
+} <font color=#009900>///:~</font></PRE></FONT></BLOCKQUOTE>
+
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">As before, <B>Array</B> is a checked
+array of objects and prevents you from indexing out of bounds. The class
+<B>Holder</B> is much like <B>Array</B> except that it has a pointer to an
+<B>Array</B> instead of an embedded object of type <B>Array</B>. This pointer is
+not initialized in the constructor; the initialization is delayed until the
+first access. This is called
+<A NAME="Index2650"></A><A NAME="Index2651"></A><I>lazy initialization</I>; you
+might use a technique like this if you are creating a lot of objects, but not
+accessing them all, and want to save storage.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">You&#8217;ll notice that the <B>size</B>
+value in both templates is never stored internally in the class, but it is used
+as if it were a data member inside the member
+functions.</FONT><A NAME="_Toc305593278"></A><A NAME="_Toc305628750"></A><A NAME="_Toc312374073"></A><A NAME="_Toc472655055"></A><BR></P></DIV>
+<A NAME="Heading474"></A><FONT FACE = "Verdana"><H2 ALIGN="LEFT">
+Stack and Stash<BR>as
+templates<BR><A NAME="Index2652"></A><A NAME="Index2653"></A></H2></FONT>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">The recurring <A NAME="Index2654"></A>
+&#8220;ownership&#8221; problems with the <B>Stash</B> and <B>Stack</B>
+container classes that have been revisited throughout this book come from the
+fact that these containers haven&#8217;t been able to know exactly what types
+they hold. The nearest they&#8217;ve come is the <B>Stack</B> &#8220;container
+of <B>Object</B>&#8221; that was seen at the end of Chapter 15 in
+<B>OStackTest.cpp</B>.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">If the client programmer doesn&#8217;t
+explicitly remove all the pointers to objects that are held in the container,
+then the container should be able to correctly delete those pointers. That is to
+say, the container &#8220;owns&#8221; any objects that haven&#8217;t been
+removed, and is thus responsible for cleaning them up. The snag has been that
+cleanup requires knowing the type of the object, and creating a generic
+container class requires <I>not</I> knowing the type of the object. With
+templates, however, we can write code that doesn&#8217;t know the type of the
+object, and easily instantiate a new version of that container for every type
+that we want to contain. The individual instantiated containers <I>do</I> know
+the type of objects they hold and can thus call the correct destructor
+(assuming, in the typical case where polymorphism is involved, that a virtual
+destructor has been provided).</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">For the <B>Stack</B> this turns out to be
+quite simple since all of the member functions can be reasonably
+inlined:</FONT><BR></P></DIV>
+
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE><font color=#009900>//: C16:TStack.h</font>
+<font color=#009900>// The Stack as a template</font>
+#ifndef TSTACK_H
+#define TSTACK_H
+
+<font color=#0000ff>template</font>&lt;<font color=#0000ff>class</font> T&gt;
+<font color=#0000ff>class</font> Stack {
+  <font color=#0000ff>struct</font> Link {
+    T* data;
+    Link* next;
+    Link(T* dat, Link* nxt): 
+      data(dat), next(nxt) {}
+  }* head;
+<font color=#0000ff>public</font>:
+  Stack() : head(0) {}
+  ~Stack(){ 
+    <font color=#0000ff>while</font>(head)
+      <font color=#0000ff>delete</font> pop();
+  }
+  <font color=#0000ff>void</font> push(T* dat) {
+    head = <font color=#0000ff>new</font> Link(dat, head);
+  }
+  T* peek() <font color=#0000ff>const</font> {
+    <font color=#0000ff>return</font> head ? head-&gt;data : 0; 
+  }
+  T* pop(){
+    <font color=#0000ff>if</font>(head == 0) <font color=#0000ff>return</font> 0;
+    T* result = head-&gt;data;
+    Link* oldHead = head;
+    head = head-&gt;next;
+    <font color=#0000ff>delete</font> oldHead;
+    <font color=#0000ff>return</font> result;
+  }
+};
+#endif <font color=#009900>// TSTACK_H ///:~</font></PRE></FONT></BLOCKQUOTE>
+
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">If you compare this to the
+<B>OStack.h</B> example at the end of Chapter 15, you will see that <B>Stack</B>
+is virtually identical, except that <B>Object</B> has been replaced with
+<B>T</B>. The test program is also nearly identical, except that the necessity
+for multiply-inheriting from <B>string</B> and <B>Object</B> (and even the need
+for <B>Object </B>itself) has been eliminated. Now there is no <B>MyString</B>
+class to announce its destruction, so a small new class is added to show a
+<B>Stack </B>container cleaning up its objects:</FONT><BR></P></DIV>
+
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE><font color=#009900>//: C16:TStackTest.cpp</font>
+<font color=#009900>//{T} TStackTest.cpp</font>
+#include <font color=#004488>"TStack.h"</font>
+#include <font color=#004488>"../require.h"</font>
+#include &lt;fstream&gt;
+#include &lt;iostream&gt;
+#include &lt;string&gt;
+<font color=#0000ff>using</font> <font color=#0000ff>namespace</font> std;
+
+<font color=#0000ff>class</font> X {
+<font color=#0000ff>public</font>:
+  <font color=#0000ff>virtual</font> ~X() { cout &lt;&lt; <font color=#004488>"~X "</font> &lt;&lt; endl; }
+};
+
+<font color=#0000ff>int</font> main(<font color=#0000ff>int</font> argc, <font color=#0000ff>char</font>* argv[]) {
+  requireArgs(argc, 1); <font color=#009900>// File name is argument</font>
+  ifstream in(argv[1]);
+  assure(in, argv[1]);
+  Stack&lt;string&gt; textlines;
+  string line;
+  <font color=#009900>// Read file and store lines in the Stack:</font>
+  <font color=#0000ff>while</font>(getline(in, line))
+    textlines.push(<font color=#0000ff>new</font> string(line));
+  <font color=#009900>// Pop some lines from the stack:</font>
+  string* s;
+  <font color=#0000ff>for</font>(<font color=#0000ff>int</font> i = 0; i &lt; 10; i++) {
+    <font color=#0000ff>if</font>((s = (string*)textlines.pop())==0) <font color=#0000ff>break</font>;
+    cout &lt;&lt; *s &lt;&lt; endl;
+    <font color=#0000ff>delete</font> s; 
+  } <font color=#009900>// The destructor deletes the other strings.</font>
+  <font color=#009900>// Show that correct destruction happens:</font>
+  Stack&lt;X&gt; xx;
+  <font color=#0000ff>for</font>(<font color=#0000ff>int</font> j = 0; j &lt; 10; j++)
+    xx.push(<font color=#0000ff>new</font> X);
+} <font color=#009900>///:~</font></PRE></FONT></BLOCKQUOTE>
+
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">The
+<A NAME="Index2655"></A><A NAME="Index2656"></A>destructor for <B>X</B> is
+virtual, not because it&#8217;s necessary here, but because <B>xx</B> could
+later be used to hold objects derived from <B>X</B>.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Notice how easy it is to create different
+kinds of <B>Stack</B>s for <B>string</B> and for <B>X</B>.<B> </B>Because of the
+template, you get the best of both worlds: the ease of use of the <B>Stack</B>
+class along with proper cleanup.</FONT><A NAME="_Toc472655056"></A><BR></P></DIV>
+<A NAME="Heading475"></A><FONT FACE = "Verdana"><H3 ALIGN="LEFT">
+Templatized pointer Stash<BR><A NAME="Index2657"></A></H3></FONT>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Reorganizing the <B>PStash</B> code into
+a template isn&#8217;t quite so simple because there are a number of member
+functions that should not be
+<A NAME="Index2658"></A><A NAME="Index2659"></A>inlined. However, as a template
+those function definitions still belong in the
+<A NAME="Index2660"></A><A NAME="Index2661"></A>header file (the compiler and
+linker take care of any multiple definition problems). The code looks quite
+similar to the ordinary <B>PStash</B> except that you&#8217;ll notice the size
+of the increment (used by <B>inflate(&#160;)</B>) has been templatized as a
+non-class parameter with a default value, so that the increment size can be
+modified at the point of instantiation (notice that this means that the
+increment size is fixed; you may also argue that the increment size should be
+changeable throughout the lifetime of the object):</FONT><BR></P></DIV>
+
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE><font color=#009900>//: C16:TPStash.h</font>
+#ifndef TPSTASH_H
+#define TPSTASH_H
+
+<font color=#0000ff>template</font>&lt;<font color=#0000ff>class</font> T, <font color=#0000ff>int</font> incr = 10&gt;
+<font color=#0000ff>class</font> PStash {
+  <font color=#0000ff>int</font> quantity; <font color=#009900>// Number of storage spaces</font>
+  <font color=#0000ff>int</font> next; <font color=#009900>// Next empty space</font>
+  T** storage;
+  <font color=#0000ff>void</font> inflate(<font color=#0000ff>int</font> increase = incr);
+<font color=#0000ff>public</font>:
+  PStash() : quantity(0), next(0), storage(0) {}
+  ~PStash();
+  <font color=#0000ff>int</font> add(T* element);
+  T* <font color=#0000ff>operator</font>[](<font color=#0000ff>int</font> index) <font color=#0000ff>const</font>; <font color=#009900>// Fetch</font>
+  <font color=#009900>// Remove the reference from this PStash:</font>
+  T* remove(<font color=#0000ff>int</font> index);
+  <font color=#009900>// Number of elements in Stash:</font>
+  <font color=#0000ff>int</font> count() <font color=#0000ff>const</font> { <font color=#0000ff>return</font> next; }
+};
+
+<font color=#0000ff>template</font>&lt;<font color=#0000ff>class</font> T, <font color=#0000ff>int</font> incr&gt;
+<font color=#0000ff>int</font> PStash&lt;T, incr&gt;::add(T* element) {
+  <font color=#0000ff>if</font>(next &gt;= quantity)
+    inflate(incr);
+  storage[next++] = element;
+  <font color=#0000ff>return</font>(next - 1); <font color=#009900>// Index number</font>
+}
+
+<font color=#009900>// Ownership of remaining pointers:</font>
+<font color=#0000ff>template</font>&lt;<font color=#0000ff>class</font> T, <font color=#0000ff>int</font> incr&gt;
+PStash&lt;T, incr&gt;::~PStash() {
+  <font color=#0000ff>for</font>(<font color=#0000ff>int</font> i = 0; i &lt; next; i++) {
+    <font color=#0000ff>delete</font> storage[i]; <font color=#009900>// Null pointers OK</font>
+    storage[i] = 0; <font color=#009900>// Just to be safe</font>
+  }
+  <font color=#0000ff>delete</font> []storage;
+}
+
+<font color=#0000ff>template</font>&lt;<font color=#0000ff>class</font> T, <font color=#0000ff>int</font> incr&gt;
+T* PStash&lt;T, incr&gt;::<font color=#0000ff>operator</font>[](<font color=#0000ff>int</font> index) <font color=#0000ff>const</font> {
+  require(index &gt;= 0,
+    <font color=#004488>"PStash::operator[] index negative"</font>);
+  <font color=#0000ff>if</font>(index &gt;= next)
+    <font color=#0000ff>return</font> 0; <font color=#009900>// To indicate the end</font>
+  require(storage[index] != 0, 
+    <font color=#004488>"PStash::operator[] returned null pointer"</font>);
+  <font color=#009900>// Produce pointer to desired element:</font>
+  <font color=#0000ff>return</font> storage[index];
+}
+
+<font color=#0000ff>template</font>&lt;<font color=#0000ff>class</font> T, <font color=#0000ff>int</font> incr&gt;
+T* PStash&lt;T, incr&gt;::remove(<font color=#0000ff>int</font> index) {
+  <font color=#009900>// operator[] performs validity checks:</font>
+  T* v = <font color=#0000ff>operator</font>[](index);
+  <font color=#009900>// "Remove" the pointer:</font>
+  <font color=#0000ff>if</font>(v != 0) storage[index] = 0;
+  <font color=#0000ff>return</font> v;
+}
+
+<font color=#0000ff>template</font>&lt;<font color=#0000ff>class</font> T, <font color=#0000ff>int</font> incr&gt;
+<font color=#0000ff>void</font> PStash&lt;T, incr&gt;::inflate(<font color=#0000ff>int</font> increase) {
+  <font color=#0000ff>const</font> <font color=#0000ff>int</font> psz = <font color=#0000ff>sizeof</font>(T*);
+  T** st = <font color=#0000ff>new</font> T*[quantity + increase];
+  memset(st, 0, (quantity + increase) * psz);
+  memcpy(st, storage, quantity * psz);
+  quantity += increase;
+  <font color=#0000ff>delete</font> []storage; <font color=#009900>// Old storage</font>
+  storage = st; <font color=#009900>// Point to new memory</font>
+}
+#endif <font color=#009900>// TPSTASH_H ///:~</font></PRE></FONT></BLOCKQUOTE>
+
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">The default increment size used here is
+small to guarantee that calls to <B>inflate(&#160;) </B>occur. This way we can
+make sure it works correctly.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">To test the
+<A NAME="Index2662"></A>ownership control of the templatized <B>PStash</B>, the
+following class will report
+<A NAME="Index2663"></A><A NAME="Index2664"></A>creations and destructions of
+itself, and also guarantee that all objects that have been created were also
+destroyed. <B>AutoCounter</B> will allow only objects of its type to be created
+on the
+stack<A NAME="Index2665"></A><A NAME="Index2666"></A><A NAME="Index2667"></A><A NAME="Index2668"></A>:</FONT><BR></P></DIV>
+
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE><font color=#009900>//: C16:AutoCounter.h</font>
+#ifndef AUTOCOUNTER_H
+#define AUTOCOUNTER_H
+#include <font color=#004488>"../require.h"</font>
+#include &lt;iostream&gt;
+#include &lt;set&gt; <font color=#009900>// Standard C++ Library container</font>
+#include &lt;string&gt;
+
+<font color=#0000ff>class</font> AutoCounter {
+  <font color=#0000ff>static</font> <font color=#0000ff>int</font> count;
+  <font color=#0000ff>int</font> id;
+  <font color=#0000ff>class</font> CleanupCheck {
+    std::set&lt;AutoCounter*&gt; trace;
+  <font color=#0000ff>public</font>:
+    <font color=#0000ff>void</font> add(AutoCounter* ap) {
+      trace.insert(ap);
+    }
+    <font color=#0000ff>void</font> remove(AutoCounter* ap) {
+      require(trace.erase(ap) == 1,
+        <font color=#004488>"Attempt to delete AutoCounter twice"</font>);
+    }
+    ~CleanupCheck() {
+      std::cout &lt;&lt; <font color=#004488>"~CleanupCheck()"</font>&lt;&lt; std::endl;
+      require(trace.size() == 0,
+       <font color=#004488>"All AutoCounter objects not cleaned up"</font>);
+    }
+  };
+  <font color=#0000ff>static</font> CleanupCheck verifier;
+  AutoCounter() : id(count++) {
+    verifier.add(<font color=#0000ff>this</font>); <font color=#009900>// Register itself</font>
+    std::cout &lt;&lt; <font color=#004488>"created["</font> &lt;&lt; id &lt;&lt; <font color=#004488>"]"</font> 
+              &lt;&lt; std::endl;
+  }
+  <font color=#009900>// Prevent assignment and copy-construction:</font>
+  AutoCounter(<font color=#0000ff>const</font> AutoCounter&amp;);
+  <font color=#0000ff>void</font> <font color=#0000ff>operator</font>=(<font color=#0000ff>const</font> AutoCounter&amp;);
+<font color=#0000ff>public</font>:
+  <font color=#009900>// You can only create objects with this:</font>
+  <font color=#0000ff>static</font> AutoCounter* create() { 
+    <font color=#0000ff>return</font> <font color=#0000ff>new</font> AutoCounter();
+  }
+  ~AutoCounter() {
+    std::cout &lt;&lt; <font color=#004488>"destroying["</font> &lt;&lt; id 
+              &lt;&lt; <font color=#004488>"]"</font> &lt;&lt; std::endl;
+    verifier.remove(<font color=#0000ff>this</font>);
+  }
+  <font color=#009900>// Print both objects and pointers:</font>
+  <font color=#0000ff>friend</font> std::ostream&amp; <font color=#0000ff>operator</font>&lt;&lt;(
+    std::ostream&amp; os, <font color=#0000ff>const</font> AutoCounter&amp; ac){
+    <font color=#0000ff>return</font> os &lt;&lt; <font color=#004488>"AutoCounter "</font> &lt;&lt; ac.id;
+  }
+  <font color=#0000ff>friend</font> std::ostream&amp; <font color=#0000ff>operator</font>&lt;&lt;(
+    std::ostream&amp; os, <font color=#0000ff>const</font> AutoCounter* ac){
+    <font color=#0000ff>return</font> os &lt;&lt; <font color=#004488>"AutoCounter "</font> &lt;&lt; ac-&gt;id;
+  }
+}; 
+#endif <font color=#009900>// AUTOCOUNTER_H ///:~</font></PRE></FONT></BLOCKQUOTE>
+
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">The <B>AutoCounter</B> class does two
+things. First, it sequentially numbers each instance of <B>AutoCounter</B>: the
+value of this number is kept in <B>id</B>, and the number is generated using the
+<B>static</B> data member <B>count</B>.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Second, and more complex, a
+<A NAME="Index2669"></A><B>static</B> instance (called <B>verifier</B>) of
+the<B> </B>nested class <B>CleanupCheck</B> keeps track of all of the
+<B>AutoCounter</B> objects that are created and destroyed, and reports back to
+you if you don&#8217;t clean all of them up (i.e. if there is a memory leak).
+This behavior is accomplished using a
+<A NAME="Index2670"></A><A NAME="Index2671"></A><A NAME="Index2672"></A><B>set</B>
+class from the Standard C++ Library, which is a wonderful example of how
+well-designed templates can make life easy (you can learn about all the
+containers in the Standard C++ Library in Volume 2 of this book, available
+online).</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">The <B>set</B> class is templatized on
+the type that it holds; here it is instantiated to hold <B>AutoCounter</B>
+pointers. A <B>set</B> will allow only one instance of each distinct object to
+be added; in <B>add(&#160;)</B> you can see this take place with the
+<B>set::insert(&#160;)</B> function. <B>insert(&#160;)</B> actually informs you
+with its return value if you&#8217;re trying to add something that&#8217;s
+already been added; however, since object addresses are being added we can rely
+on C++&#8217;s guarantee that all objects have unique
+addresses.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">In <B>remove(&#160;)</B>,
+<B>set::erase(&#160;)</B> is used to remove an <B>AutoCounter</B> pointer from
+the <B>set</B>. The return value tells you how many instances of the element
+were removed; in our case we only expect zero or one. If the value is zero,
+however, it means this object was already deleted from the <B>set</B> and
+you&#8217;re trying to delete it a second time, which is a programming error
+that will be reported through
+<A NAME="Index2673"></A><B>require(&#160;)</B>.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">The destructor for <B>CleanupCheck</B>
+does a final check by making sure that the size of the <B>set</B> is zero
+&#8211; this means that all of the objects have been properly cleaned up. If
+it&#8217;s not zero, you have a memory leak, which is reported through
+<B>require(&#160;)</B>.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">The constructor and destructor for
+<B>AutoCounter</B> register and unregister themselves with the <B>verifier</B>
+object. Notice that the constructor, copy-constructor, and assignment operator
+are <B>private</B>, so the only way for you to create an object is with the
+<B>static create(&#160;)</B> member function &#8211; this is a simple example of
+a <A NAME="Index2674"></A><I>factory</I>, and it
+<A NAME="Index2675"></A>guarantees that all objects are created on the heap, so
+<B>verifier</B> will not get confused over assignments and
+copy-constructions.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Since all of the member functions have
+been inlined, the only reason for the implementation file is to contain the
+static data member definitions:</FONT><BR></P></DIV>
+
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE><font color=#009900>//: C16:AutoCounter.cpp {O}</font>
+<font color=#009900>// Definition of static class members</font>
+#include <font color=#004488>"AutoCounter.h"</font>
+AutoCounter::CleanupCheck AutoCounter::verifier;
+<font color=#0000ff>int</font> AutoCounter::count = 0;
+<font color=#009900>///:~ </font></PRE></FONT></BLOCKQUOTE>
+
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">With <B>AutoCounter</B> in hand, we can
+now test the facilities of the <B>PStash</B>. The following example not only
+shows that the <B>PStash </B>destructor cleans up all the objects that it
+currently owns, but it also demonstrates how the <B>AutoCounter</B> class
+detects objects that haven&#8217;t been cleaned up:</FONT><BR></P></DIV>
+
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE><font color=#009900>//: C16:TPStashTest.cpp</font>
+<font color=#009900>//{L} AutoCounter</font>
+#include <font color=#004488>"AutoCounter.h"</font>
+#include <font color=#004488>"TPStash.h"</font>
+#include &lt;iostream&gt;
+#include &lt;fstream&gt;
+<font color=#0000ff>using</font> <font color=#0000ff>namespace</font> std;
+
+<font color=#0000ff>int</font> main() {
+  PStash&lt;AutoCounter&gt; acStash;
+  <font color=#0000ff>for</font>(<font color=#0000ff>int</font> i = 0; i &lt; 10; i++)
+    acStash.add(AutoCounter::create());
+  cout &lt;&lt; <font color=#004488>"Removing 5 manually:"</font> &lt;&lt; endl;
+  <font color=#0000ff>for</font>(<font color=#0000ff>int</font> j = 0; j &lt; 5; j++)
+    <font color=#0000ff>delete</font> acStash.remove(j);
+  cout &lt;&lt; <font color=#004488>"Remove two without deleting them:"</font>
+       &lt;&lt; endl;
+  <font color=#009900>// ... to generate the cleanup error message.</font>
+  cout &lt;&lt; acStash.remove(5) &lt;&lt; endl;
+  cout &lt;&lt; acStash.remove(6) &lt;&lt; endl;
+  cout &lt;&lt; <font color=#004488>"The destructor cleans up the rest:"</font>
+       &lt;&lt; endl;
+  <font color=#009900>// Repeat the test from earlier chapters: </font>
+  ifstream in(<font color=#004488>"TPStashTest.cpp"</font>);
+  assure(in, <font color=#004488>"TPStashTest.cpp"</font>);
+  PStash&lt;string&gt; stringStash;
+  string line;
+  <font color=#0000ff>while</font>(getline(in, line))
+    stringStash.add(<font color=#0000ff>new</font> string(line));
+  <font color=#009900>// Print out the strings:</font>
+  <font color=#0000ff>for</font>(<font color=#0000ff>int</font> u = 0; stringStash[u]; u++)
+    cout &lt;&lt; <font color=#004488>"stringStash["</font> &lt;&lt; u &lt;&lt; <font color=#004488>"] = "</font>
+         &lt;&lt; *stringStash[u] &lt;&lt; endl;
+} <font color=#009900>///:~</font></PRE></FONT></BLOCKQUOTE>
+
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">When <B>AutoCounter </B>elements 5 and 6
+are removed from the <B>PStash</B>, they become the responsibility of the
+caller, but since the caller never cleans them up they cause memory leaks, which
+are then detected by <B>AutoCounter</B> at run time.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">When you run the program, you&#8217;ll
+see that the error message isn&#8217;t as specific as it could be. If you use
+the scheme presented in <B>AutoCounter</B> to discover memory leaks in your own
+system, you will probably want to have it print out more detailed information
+about the objects that haven&#8217;t been cleaned up. Volume 2 of this book
+shows more sophisticated ways to do
+this.</FONT><A NAME="_Toc472655057"></A><BR></P></DIV>
+<A NAME="Heading476"></A><FONT FACE = "Verdana"><H2 ALIGN="LEFT">
+Turning ownership on and off</H2></FONT>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Let&#8217;s return to the ownership
+problem<A NAME="Index2676"></A><A NAME="Index2677"></A>. Containers that hold
+objects by value don&#8217;t usually worry about ownership because they clearly
+own the objects they contain. But if your container holds pointers (which is
+more common with C++, especially with <A NAME="Index2678"></A>polymorphism),
+then it&#8217;s very likely those pointers may also be used somewhere else in
+the program, and you don&#8217;t necessarily want to delete the object because
+then the other pointers in the program would be referencing a destroyed object.
+To prevent this from happening, you must consider ownership when designing and
+using a container.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Many programs are much simpler than this,
+and don&#8217;t encounter the ownership problem: One container holds pointers to
+objects that are used only by that container. In this case ownership is very
+straightforward: The container owns its objects.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">The best approach to handling the
+ownership problem is to give the client programmer a choice. This is often
+accomplished by a constructor argument that defaults to indicating ownership
+(the simplest case). In addition there may be &#8220;get&#8221; and
+&#8220;set&#8221; functions to view and modify the ownership of the container.
+If the container has functions to remove an object, the ownership state usually
+affects that removal, so you may also find options to control destruction in the
+removal function. You could conceivably add ownership data for every element in
+the container, so each position would know whether it needed to be destroyed;
+this is a variant of reference counting, <A NAME="Index2679"></A> except that
+the container and not the object knows the number of references pointing to an
+object.</FONT><BR></P></DIV>
+
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE><font color=#009900>//: C16:OwnerStack.h</font>
+<font color=#009900>// Stack with runtime conrollable ownership</font>
+#ifndef OWNERSTACK_H
+#define OWNERSTACK_H
+
+<font color=#0000ff>template</font>&lt;<font color=#0000ff>class</font> T&gt; <font color=#0000ff>class</font> Stack {
+  <font color=#0000ff>struct</font> Link {
+    T* data;
+    Link* next;
+    Link(T* dat, Link* nxt) 
+      : data(dat), next(nxt) {}
+  }* head;
+  <font color=#0000ff>bool</font> own;
+<font color=#0000ff>public</font>:
+  Stack(<font color=#0000ff>bool</font> own = <font color=#0000ff>true</font>) : head(0), own(own) {}
+  ~Stack();
+  <font color=#0000ff>void</font> push(T* dat) {
+    head = <font color=#0000ff>new</font> Link(dat,head);
+  }
+  T* peek() <font color=#0000ff>const</font> { 
+    <font color=#0000ff>return</font> head ? head-&gt;data : 0; 
+  }
+  T* pop();
+  <font color=#0000ff>bool</font> owns() <font color=#0000ff>const</font> { <font color=#0000ff>return</font> own; }
+  <font color=#0000ff>void</font> owns(<font color=#0000ff>bool</font> newownership) {
+    own = newownership;
+  }
+  <font color=#009900>// Auto-type conversion: true if not empty:</font>
+  <font color=#0000ff>operator</font> <font color=#0000ff>bool</font>() <font color=#0000ff>const</font> { <font color=#0000ff>return</font> head != 0; }
+};
+
+<font color=#0000ff>template</font>&lt;<font color=#0000ff>class</font> T&gt; T* Stack&lt;T&gt;::pop() {
+  <font color=#0000ff>if</font>(head == 0) <font color=#0000ff>return</font> 0;
+  T* result = head-&gt;data;
+  Link* oldHead = head;
+  head = head-&gt;next;
+  <font color=#0000ff>delete</font> oldHead;
+  <font color=#0000ff>return</font> result;
+}
+
+<font color=#0000ff>template</font>&lt;<font color=#0000ff>class</font> T&gt; Stack&lt;T&gt;::~Stack() {
+  <font color=#0000ff>if</font>(!own) <font color=#0000ff>return</font>;
+  <font color=#0000ff>while</font>(head)
+    <font color=#0000ff>delete</font> pop();
+}
+#endif <font color=#009900>// OWNERSTACK_H ///:~</font></PRE></FONT></BLOCKQUOTE>
+
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">The default behavior is for the container
+to destroy its objects but you can change this by either modifying the
+constructor argument or using the <B>owns(&#160;)</B> read/write member
+functions.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">As with most templates you&#8217;re
+likely to see, the entire implementation is contained in the header file.
+Here&#8217;s a small test that exercises the ownership
+abilities:</FONT><BR></P></DIV>
+
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE><font color=#009900>//: C16:OwnerStackTest.cpp</font>
+<font color=#009900>//{L} AutoCounter </font>
+#include <font color=#004488>"AutoCounter.h"</font>
+#include <font color=#004488>"OwnerStack.h"</font>
+#include <font color=#004488>"../require.h"</font>
+#include &lt;iostream&gt;
+#include &lt;fstream&gt;
+#include &lt;string&gt;
+<font color=#0000ff>using</font> <font color=#0000ff>namespace</font> std;
+
+<font color=#0000ff>int</font> main() {
+  Stack&lt;AutoCounter&gt; ac; <font color=#009900>// Ownership on</font>
+  Stack&lt;AutoCounter&gt; ac2(<font color=#0000ff>false</font>); <font color=#009900>// Turn it off</font>
+  AutoCounter* ap;
+  <font color=#0000ff>for</font>(<font color=#0000ff>int</font> i = 0; i &lt; 10; i++) {
+    ap = AutoCounter::create();
+    ac.push(ap);
+    <font color=#0000ff>if</font>(i % 2 == 0)
+      ac2.push(ap);
+  }
+  <font color=#0000ff>while</font>(ac2)
+    cout &lt;&lt; ac2.pop() &lt;&lt; endl;
+  <font color=#009900>// No destruction necessary since</font>
+  <font color=#009900>// ac "owns" all the objects</font>
+} <font color=#009900>///:~</font></PRE></FONT></BLOCKQUOTE>
+
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">The <B>ac2</B> object doesn&#8217;t own
+the objects you put into it, thus <B>ac</B> is the &#8220;master&#8221;
+container which takes responsibility for ownership. If, partway through the
+lifetime of a container, you want to change whether a container owns its
+objects, you can do so using <B>owns(&#160;)</B>.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">It would also be possible to change the
+granularity of the ownership so that it is on an object-by-object basis, but
+that will probably make the solution to the ownership problem more complex than
+the
+problem.</FONT><A NAME="_Toc305593280"></A><A NAME="_Toc305628752"></A><A NAME="_Toc312374087"></A><A NAME="_Toc472655058"></A><BR></P></DIV>
+<A NAME="Heading477"></A><FONT FACE = "Verdana"><H2 ALIGN="LEFT">
+Holding objects by value</H2></FONT>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Actually creating a copy of the objects
+inside a generic container is a complex problem if you don&#8217;t have
+templates. With templates, things are relatively simple &#8211; you just say
+that you are holding objects rather than pointers:</FONT><BR></P></DIV>
+
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE><font color=#009900>//: C16:ValueStack.h</font>
+<font color=#009900>// Holding objects by value in a Stack</font>
+#ifndef VALUESTACK_H
+#define VALUESTACK_H
+#include <font color=#004488>"../require.h"</font>
+
+<font color=#0000ff>template</font>&lt;<font color=#0000ff>class</font> T, <font color=#0000ff>int</font> ssize = 100&gt;
+<font color=#0000ff>class</font> Stack {
+  <font color=#009900>// Default constructor performs object</font>
+  <font color=#009900>// initialization for each element in array:</font>
+  T stack[ssize];
+  <font color=#0000ff>int</font> top;
+<font color=#0000ff>public</font>:
+  Stack() : top(0) {}
+  <font color=#009900>// Copy-constructor copies object into array:</font>
+  <font color=#0000ff>void</font> push(<font color=#0000ff>const</font> T&amp; x) {
+    require(top &lt; ssize, <font color=#004488>"Too many push()es"</font>);
+    stack[top++] = x;
+  }
+  T peek() <font color=#0000ff>const</font> { <font color=#0000ff>return</font> stack[top]; }
+  <font color=#009900>// Object still exists when you pop it; </font>
+  <font color=#009900>// it just isn't available anymore:</font>
+  T pop() {
+    require(top &gt; 0, <font color=#004488>"Too many pop()s"</font>);
+    <font color=#0000ff>return</font> stack[--top];
+  }
+};
+#endif <font color=#009900>// VALUESTACK_H ///:~</font></PRE></FONT></BLOCKQUOTE>
+
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">The copy constructor for the contained
+objects does most of the work by passing and returning the objects by value.
+Inside <B>push(&#160;)</B>, storage of the object onto the <B>Stack</B> array is
+accomplished with <B>T::operator=</B>. To guarantee that it works, a class
+called <B>SelfCounter</B> keeps track of object creations and
+copy-constructions:</FONT><BR></P></DIV>
+
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE><font color=#009900>//: C16:SelfCounter.h</font>
+#ifndef SELFCOUNTER_H
+#define SELFCOUNTER_H
+#include <font color=#004488>"ValueStack.h"</font>
+#include &lt;iostream&gt;
+
+<font color=#0000ff>class</font> SelfCounter {
+  <font color=#0000ff>static</font> <font color=#0000ff>int</font> counter;
+  <font color=#0000ff>int</font> id;
+<font color=#0000ff>public</font>:
+  SelfCounter() : id(counter++) {
+    std::cout &lt;&lt; <font color=#004488>"Created: "</font> &lt;&lt; id &lt;&lt; std::endl;
+  }
+  SelfCounter(<font color=#0000ff>const</font> SelfCounter&amp; rv) : id(rv.id){
+    std::cout &lt;&lt; <font color=#004488>"Copied: "</font> &lt;&lt; id &lt;&lt; std::endl;
+  }
+  SelfCounter <font color=#0000ff>operator</font>=(<font color=#0000ff>const</font> SelfCounter&amp; rv) {
+    std::cout &lt;&lt; <font color=#004488>"Assigned "</font> &lt;&lt; rv.id &lt;&lt; <font color=#004488>" to "</font> 
+              &lt;&lt; id &lt;&lt; std::endl;
+    <font color=#0000ff>return</font> *<font color=#0000ff>this</font>;
+  }
+  ~SelfCounter() {
+    std::cout &lt;&lt; <font color=#004488>"Destroyed: "</font>&lt;&lt; id &lt;&lt; std::endl;
+  }
+  <font color=#0000ff>friend</font> std::ostream&amp; <font color=#0000ff>operator</font>&lt;&lt;( 
+    std::ostream&amp; os, <font color=#0000ff>const</font> SelfCounter&amp; sc){
+    <font color=#0000ff>return</font> os &lt;&lt; <font color=#004488>"SelfCounter: "</font> &lt;&lt; sc.id;
+  }
+};
+#endif <font color=#009900>// SELFCOUNTER_H ///:~</font>
+
+<font color=#009900>//: C16:SelfCounter.cpp {O}</font>
+#include <font color=#004488>"SelfCounter.h"</font>
+<font color=#0000ff>int</font> SelfCounter::counter = 0; <font color=#009900>///:~</font>
+
+<font color=#009900>//: C16:ValueStackTest.cpp</font>
+<font color=#009900>//{L} SelfCounter</font>
+#include <font color=#004488>"ValueStack.h"</font>
+#include <font color=#004488>"SelfCounter.h"</font>
+#include &lt;iostream&gt;
+<font color=#0000ff>using</font> <font color=#0000ff>namespace</font> std;
+
+<font color=#0000ff>int</font> main() {
+  Stack&lt;SelfCounter&gt; sc;
+  <font color=#0000ff>for</font>(<font color=#0000ff>int</font> i = 0; i &lt; 10; i++)
+    sc.push(SelfCounter());
+  <font color=#009900>// OK to peek(), result is a temporary:</font>
+  cout &lt;&lt; sc.peek() &lt;&lt; endl;
+  <font color=#0000ff>for</font>(<font color=#0000ff>int</font> k = 0; k &lt; 10; k++)
+    cout &lt;&lt; sc.pop() &lt;&lt; endl;
+} <font color=#009900>///:~</font></PRE></FONT></BLOCKQUOTE>
+
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">When a <B>Stack</B> container is created,
+the default constructor of the contained object is called for each object in the
+array. You&#8217;ll initially see 100 <B>SelfCounter</B> objects created for no
+apparent reason, but this is just the array initialization. This can be a bit
+expensive, but there&#8217;s no way around it in a simple design like this. An
+even more complex situation arises if you make the <B>Stack</B> more general by
+allowing the size to grow dynamically, because in the implementation shown above
+this would involve creating a new (larger) array, copying the old array to the
+new, and destroying the old array (this is, in fact, what the Standard C++
+Library <B>vector</B> class does).</FONT><A NAME="_Toc472655059"></A><BR></P></DIV>
+<A NAME="Heading478"></A><FONT FACE = "Verdana"><H2 ALIGN="LEFT">
+Introducing
+iterators<BR><A NAME="Index2680"></A><A NAME="Index2681"></A><A NAME="Index2682"></A></H2></FONT>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">An <I>iterator</I> is an object that
+moves through a container of other objects and selects them one at a time,
+without providing direct access to the implementation of that container.
+Iterators provide a standard way to access elements, whether or not a container
+provides a way to access the elements directly. You will see iterators used most
+often in association with container classes, and iterators are a fundamental
+concept in the design and use of the Standard C++ containers, which are fully
+described in Volume 2 of this book (downloadable from
+<I>www.BruceEckel.com</I>). An iterator is also a kind of
+<A NAME="Index2683"></A><A NAME="Index2684"></A><I>design pattern</I>, which is
+the subject of a chapter in Volume 2.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">In many ways, an iterator is a
+&#8220;smart pointer,&#8221; and in fact you&#8217;ll notice that iterators
+usually mimic most pointer operations. Unlike a pointer, however, the iterator
+is designed to be safe, so you&#8217;re much less likely to do the equivalent of
+walking off the end of an array (or if you do, you find out about it more
+easily).</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Consider the first example in this
+chapter. Here it is with a simple iterator added:</FONT><BR></P></DIV>
+
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE><font color=#009900>//: C16:IterIntStack.cpp</font>
+<font color=#009900>// Simple integer stack with iterators</font>
+<font color=#009900>//{L} fibonacci</font>
+#include <font color=#004488>"fibonacci.h"</font>
+#include <font color=#004488>"../require.h"</font>
+#include &lt;iostream&gt;
+<font color=#0000ff>using</font> <font color=#0000ff>namespace</font> std;
+
+<font color=#0000ff>class</font> IntStack {
+  <font color=#0000ff>enum</font> { ssize = 100 };
+  <font color=#0000ff>int</font> stack[ssize];
+  <font color=#0000ff>int</font> top;
+<font color=#0000ff>public</font>:
+  IntStack() : top(0) {}
+  <font color=#0000ff>void</font> push(<font color=#0000ff>int</font> i) {
+    require(top &lt; ssize, <font color=#004488>"Too many push()es"</font>);
+    stack[top++] = i;
+  }
+  <font color=#0000ff>int</font> pop() {
+    require(top &gt; 0, <font color=#004488>"Too many pop()s"</font>);
+    <font color=#0000ff>return</font> stack[--top];
+  }
+  <font color=#0000ff>friend</font> <font color=#0000ff>class</font> IntStackIter;
+};
+
+<font color=#009900>// An iterator is like a "smart" pointer:</font>
+<font color=#0000ff>class</font> IntStackIter {
+  IntStack&amp; s;
+  <font color=#0000ff>int</font> index;
+<font color=#0000ff>public</font>:
+  IntStackIter(IntStack&amp; is) : s(is), index(0) {}
+  <font color=#0000ff>int</font> <font color=#0000ff>operator</font>++() { <font color=#009900>// Prefix</font>
+    require(index &lt; s.top, 
+      <font color=#004488>"iterator moved out of range"</font>);
+    <font color=#0000ff>return</font> s.stack[++index];
+  }
+  <font color=#0000ff>int</font> <font color=#0000ff>operator</font>++(<font color=#0000ff>int</font>) { <font color=#009900>// Postfix</font>
+    require(index &lt; s.top, 
+      <font color=#004488>"iterator moved out of range"</font>);
+    <font color=#0000ff>return</font> s.stack[index++];
+  }
+};
+
+<font color=#0000ff>int</font> main() {
+  IntStack is;
+  <font color=#0000ff>for</font>(<font color=#0000ff>int</font> i = 0; i &lt; 20; i++)
+    is.push(fibonacci(i));
+  <font color=#009900>// Traverse with an iterator:</font>
+  IntStackIter it(is);
+  <font color=#0000ff>for</font>(<font color=#0000ff>int</font> j = 0; j &lt; 20; j++)
+    cout &lt;&lt; it++ &lt;&lt; endl;
+} <font color=#009900>///:~</font></PRE></FONT></BLOCKQUOTE>
+
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">The <B>IntStackIter</B> has been created
+to work only with an <B>IntStack</B>. Notice that <B>IntStackIter</B> is a
+<B>friend</B> of <B>IntStack</B>, which gives it access to all the
+<B>private</B> elements of <B>IntStack</B>.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Like a pointer,
+<B>IntStackIter</B>&#8217;s job is to move through an <B>IntStack</B> and
+retrieve values. In this simple example, the <B>IntStackIter</B> can move only
+forward (using both the pre- and postfix forms of the <B>operator++</B>).
+However, there is no boundary to the way an iterator can be defined, other than
+those imposed by the constraints of the container it works with. It is perfectly
+acceptable (within the limits of the underlying container) for an iterator to
+move around in any way within its associated container and to cause the
+contained values to be modified.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">It is customary that an iterator is
+created with a constructor that attaches it to a single container object, and
+that the iterator is not attached to a different container during its lifetime.
+(Iterators are usually small and cheap, so you can easily make another
+one.)</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">With the iterator, you can traverse the
+elements of the stack without popping them, just as a pointer can move through
+the elements of an array. However, the iterator knows the underlying structure
+of the stack and how to traverse the elements, so even though you are moving
+through them by pretending to &#8220;increment a pointer,&#8221; what&#8217;s
+going on underneath is more involved. That&#8217;s the key to the iterator: It
+is abstracting the complicated process of moving from one container element to
+the next into something that looks like a pointer. The goal is for <I>every</I>
+iterator in your program to have the same interface so that any code that uses
+the iterator doesn&#8217;t care what it&#8217;s pointing to &#8211; it just
+knows that it can reposition all iterators the same way, so the container that
+the iterator points to is unimportant. In this way you can write more generic
+code. All of the containers and algorithms in the Standard C++ Library are based
+on this principle of iterators.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">To aid in making things more generic, it
+would be nice to be able to say &#8220;every container has an associated class
+called <B>iterator</B>,&#8221; but this will typically cause naming problems.
+The solution is to add a <A NAME="Index2685"></A><A NAME="Index2686"></A>nested
+<B>iterator</B> class to each container (notice that in this case,
+&#8220;<B>iterator</B>&#8221; begins with a lowercase letter so that it conforms
+to the style of the Standard C++ Library). Here is <B>IterIntStack.cpp</B> with
+a nested <B>iterator</B>:</FONT><BR></P></DIV>
+
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE><font color=#009900>//: C16:NestedIterator.cpp</font>
+<font color=#009900>// Nesting an iterator inside the container</font>
+<font color=#009900>//{L} fibonacci</font>
+#include <font color=#004488>"fibonacci.h"</font>
+#include <font color=#004488>"../require.h"</font>
+#include &lt;iostream&gt;
+#include &lt;string&gt;
+<font color=#0000ff>using</font> <font color=#0000ff>namespace</font> std;
+
+<font color=#0000ff>class</font> IntStack {
+  <font color=#0000ff>enum</font> { ssize = 100 };
+  <font color=#0000ff>int</font> stack[ssize];
+  <font color=#0000ff>int</font> top;
+<font color=#0000ff>public</font>:
+  IntStack() : top(0) {}
+  <font color=#0000ff>void</font> push(<font color=#0000ff>int</font> i) {
+    require(top &lt; ssize, <font color=#004488>"Too many push()es"</font>);
+    stack[top++] = i;
+  }
+  <font color=#0000ff>int</font> pop() {
+    require(top &gt; 0, <font color=#004488>"Too many pop()s"</font>);
+    <font color=#0000ff>return</font> stack[--top];
+  }
+  <font color=#0000ff>class</font> iterator;
+  <font color=#0000ff>friend</font> <font color=#0000ff>class</font> iterator;
+  <font color=#0000ff>class</font> iterator {
+    IntStack&amp; s;
+    <font color=#0000ff>int</font> index;
+  <font color=#0000ff>public</font>:
+    iterator(IntStack&amp; is) : s(is), index(0) {}
+    <font color=#009900>// To create the "end sentinel" iterator:</font>
+    iterator(IntStack&amp; is, <font color=#0000ff>bool</font>) 
+      : s(is), index(s.top) {}
+    <font color=#0000ff>int</font> current() <font color=#0000ff>const</font> { <font color=#0000ff>return</font> s.stack[index]; }
+    <font color=#0000ff>int</font> <font color=#0000ff>operator</font>++() { <font color=#009900>// Prefix</font>
+      require(index &lt; s.top, 
+        <font color=#004488>"iterator moved out of range"</font>);
+      <font color=#0000ff>return</font> s.stack[++index];
+    }
+    <font color=#0000ff>int</font> <font color=#0000ff>operator</font>++(<font color=#0000ff>int</font>) { <font color=#009900>// Postfix</font>
+      require(index &lt; s.top, 
+        <font color=#004488>"iterator moved out of range"</font>);
+      <font color=#0000ff>return</font> s.stack[index++];
+    }
+    <font color=#009900>// Jump an iterator forward</font>
+    iterator&amp; <font color=#0000ff>operator</font>+=(<font color=#0000ff>int</font> amount) {
+      require(index + amount &lt; s.top,
+        <font color=#004488>"IntStack::iterator::operator+=() "</font>
+        <font color=#004488>"tried to move out of bounds"</font>);
+      index += amount;
+      <font color=#0000ff>return</font> *<font color=#0000ff>this</font>;
+    }
+    <font color=#009900>// To see if you're at the end:</font>
+    <font color=#0000ff>bool</font> <font color=#0000ff>operator</font>==(<font color=#0000ff>const</font> iterator&amp; rv) <font color=#0000ff>const</font> {
+      <font color=#0000ff>return</font> index == rv.index;
+    }
+    <font color=#0000ff>bool</font> <font color=#0000ff>operator</font>!=(<font color=#0000ff>const</font> iterator&amp; rv) <font color=#0000ff>const</font> {
+      <font color=#0000ff>return</font> index != rv.index;
+    }
+    <font color=#0000ff>friend</font> ostream&amp; 
+    <font color=#0000ff>operator</font>&lt;&lt;(ostream&amp; os, <font color=#0000ff>const</font> iterator&amp; it) {
+      <font color=#0000ff>return</font> os &lt;&lt; it.current();
+    }
+  };
+  iterator begin() { <font color=#0000ff>return</font> iterator(*<font color=#0000ff>this</font>); }
+  <font color=#009900>// Create the "end sentinel":</font>
+  iterator end() { <font color=#0000ff>return</font> iterator(*<font color=#0000ff>this</font>, <font color=#0000ff>true</font>);}
+};
+
+<font color=#0000ff>int</font> main() {
+  IntStack is;
+  <font color=#0000ff>for</font>(<font color=#0000ff>int</font> i = 0; i &lt; 20; i++)
+    is.push(fibonacci(i));
+  cout &lt;&lt; <font color=#004488>"Traverse the whole IntStack\n"</font>;
+  IntStack::iterator it = is.begin();
+  <font color=#0000ff>while</font>(it != is.end())
+    cout &lt;&lt; it++ &lt;&lt; endl;
+  cout &lt;&lt; <font color=#004488>"Traverse a portion of the IntStack\n"</font>;
+  IntStack::iterator 
+    start = is.begin(), end = is.begin();
+  start += 5, end += 15;
+  cout &lt;&lt; <font color=#004488>"start = "</font> &lt;&lt; start &lt;&lt; endl;
+  cout &lt;&lt; <font color=#004488>"end = "</font> &lt;&lt; end &lt;&lt; endl;
+  <font color=#0000ff>while</font>(start != end)
+    cout &lt;&lt; start++ &lt;&lt; endl;
+} <font color=#009900>///:~</font></PRE></FONT></BLOCKQUOTE>
+
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">When making a nested <B>friend</B> class,
+you must go through the process of first declaring the name of the class, then
+declaring it as a <B>friend</B>, then defining the class. Otherwise, the
+compiler will get confused.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Some new twists have been added to the
+iterator. The <B>current(&#160;)</B> member function produces the element in the
+container that the iterator is currently selecting. You can &#8220;jump&#8221;
+an iterator forward by an arbitrary number of elements using <B>operator+=</B>.
+Also, you&#8217;ll see two overloaded operators: <B>==</B> and <B>!=</B> that
+will compare one iterator with another. These can compare any two
+<B>IntStack::iterator</B>s, but they<B> </B>are primarily intended as a test to
+see if the iterator is at the end of a sequence in the same way that the
+&#8220;real&#8221; <A NAME="Index2687"></A>Standard C++ Library iterators do.
+The idea is that two iterators define a range, including the first element
+pointed to by the first iterator and up to but <I>not</I> including the last
+element pointed to by the second iterator. So if you want to move through the
+range defined by the two iterators, you say something like
+this:</FONT><BR></P></DIV>
+
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE>  <font color=#0000ff>while</font>(start != end)
+  cout &lt;&lt; start++ &lt;&lt; endl;</PRE></FONT></BLOCKQUOTE>
+
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">where <B>start</B> and <B>end</B> are the
+two iterators in the range. Note that the <B>end</B> iterator, which we often
+refer to as the <A NAME="Index2688"></A><I>end sentinel</I>, is not dereferenced
+and is there only to tell you that you&#8217;re at the end of the sequence. Thus
+it represents &#8220;one past the end.&#8221;</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Much of the time you&#8217;ll want to
+move through the entire sequence in a container, so the container needs some way
+to produce the iterators indicating the beginning of the sequence and the end
+sentinel. Here, as in the Standard C++ Library, these iterators are produced by
+the container member functions <B>begin(&#160;)</B> and <B>end(&#160;)</B>.
+<B>begin(&#160;) </B>uses the first <B>iterator</B> constructor that defaults to
+pointing at the beginning of the container (this is the first element pushed on
+the stack). However, a second constructor, used by <B>end(&#160;)</B>, is
+necessary to create the end sentinel <B>iterator</B>. Being &#8220;at the
+end&#8221; means pointing to the top of the stack, because <B>top</B> always
+indicates the next available &#8211; but unused &#8211; space on the stack. This
+<B>iterator</B> constructor takes a second argument of type <B>bool</B>, which
+is a dummy to distinguish the two constructors.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">The <A NAME="Index2689"></A>Fibonacci
+numbers are used again to fill the <B>IntStack</B> in <B>main(&#160;)</B>, and
+<B>iterator</B>s are used to move through the whole <B>IntStack</B> and also
+within a narrowed range of the sequence.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">The next step, of course, is to make the
+code general by templatizing it on the type that it holds, so that instead of
+being forced to hold only <B>int</B>s you can hold any type:</FONT><BR></P></DIV>
+
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE><font color=#009900>//: C16:IterStackTemplate.h</font>
+<font color=#009900>// Simple stack template with nested iterator</font>
+#ifndef ITERSTACKTEMPLATE_H
+#define ITERSTACKTEMPLATE_H
+#include <font color=#004488>"../require.h"</font>
+#include &lt;iostream&gt;
+
+<font color=#0000ff>template</font>&lt;<font color=#0000ff>class</font> T, <font color=#0000ff>int</font> ssize = 100&gt;
+<font color=#0000ff>class</font> StackTemplate {
+  T stack[ssize];
+  <font color=#0000ff>int</font> top;
+<font color=#0000ff>public</font>:
+  StackTemplate() : top(0) {}
+  <font color=#0000ff>void</font> push(<font color=#0000ff>const</font> T&amp; i) {
+    require(top &lt; ssize, <font color=#004488>"Too many push()es"</font>);
+    stack[top++] = i;
+  }
+  T pop() {
+    require(top &gt; 0, <font color=#004488>"Too many pop()s"</font>);
+    <font color=#0000ff>return</font> stack[--top];
+  }
+  <font color=#0000ff>class</font> iterator; <font color=#009900>// Declaration required</font>
+  <font color=#0000ff>friend</font> <font color=#0000ff>class</font> iterator; <font color=#009900>// Make it a friend</font>
+  <font color=#0000ff>class</font> iterator { <font color=#009900>// Now define it</font>
+    StackTemplate&amp; s;
+    <font color=#0000ff>int</font> index;
+  <font color=#0000ff>public</font>:
+    iterator(StackTemplate&amp; st): s(st),index(0){}
+    <font color=#009900>// To create the "end sentinel" iterator:</font>
+    iterator(StackTemplate&amp; st, <font color=#0000ff>bool</font>) 
+      : s(st), index(s.top) {}
+    T <font color=#0000ff>operator</font>*() <font color=#0000ff>const</font> { <font color=#0000ff>return</font> s.stack[index];}
+    T <font color=#0000ff>operator</font>++() { <font color=#009900>// Prefix form</font>
+      require(index &lt; s.top, 
+        <font color=#004488>"iterator moved out of range"</font>);
+      <font color=#0000ff>return</font> s.stack[++index];
+    }
+    T <font color=#0000ff>operator</font>++(<font color=#0000ff>int</font>) { <font color=#009900>// Postfix form</font>
+      require(index &lt; s.top, 
+        <font color=#004488>"iterator moved out of range"</font>);
+      <font color=#0000ff>return</font> s.stack[index++];
+    }
+    <font color=#009900>// Jump an iterator forward</font>
+    iterator&amp; <font color=#0000ff>operator</font>+=(<font color=#0000ff>int</font> amount) {
+      require(index + amount &lt; s.top,
+        <font color=#004488>" StackTemplate::iterator::operator+=() "</font>
+        <font color=#004488>"tried to move out of bounds"</font>);
+      index += amount;
+      <font color=#0000ff>return</font> *<font color=#0000ff>this</font>;
+    }
+    <font color=#009900>// To see if you're at the end:</font>
+    <font color=#0000ff>bool</font> <font color=#0000ff>operator</font>==(<font color=#0000ff>const</font> iterator&amp; rv) <font color=#0000ff>const</font> {
+      <font color=#0000ff>return</font> index == rv.index;
+    }
+    <font color=#0000ff>bool</font> <font color=#0000ff>operator</font>!=(<font color=#0000ff>const</font> iterator&amp; rv) <font color=#0000ff>const</font> {
+      <font color=#0000ff>return</font> index != rv.index;
+    }
+    <font color=#0000ff>friend</font> std::ostream&amp; <font color=#0000ff>operator</font>&lt;&lt;(
+      std::ostream&amp; os, <font color=#0000ff>const</font> iterator&amp; it) {
+      <font color=#0000ff>return</font> os &lt;&lt; *it;
+    }
+  };
+  iterator begin() { <font color=#0000ff>return</font> iterator(*<font color=#0000ff>this</font>); }
+  <font color=#009900>// Create the "end sentinel":</font>
+  iterator end() { <font color=#0000ff>return</font> iterator(*<font color=#0000ff>this</font>, <font color=#0000ff>true</font>);}
+};
+#endif <font color=#009900>// ITERSTACKTEMPLATE_H ///:~</font></PRE></FONT></BLOCKQUOTE>
+
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">You can see that the transformation from
+a regular class to a <B>template</B> is reasonably transparent. This approach of
+first creating and debugging an ordinary class, then making it into a template,
+is generally considered to be easier than creating the template from
+scratch.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Notice that instead of just
+saying:</FONT><BR></P></DIV>
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE><font color=#0000ff>friend</font> iterator; <font color=#009900>// Make it a friend</font></PRE></FONT></BLOCKQUOTE>
+
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">This code has:</FONT><BR></P></DIV>
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE><font color=#0000ff>friend</font> <font color=#0000ff>class</font> iterator; <font color=#009900>// Make it a friend</font></PRE></FONT></BLOCKQUOTE>
+
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">This is important because the name
+&#8220;iterator&#8221; is already in scope, from an included
+file.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><A NAME="Index2690"></A><A NAME="Index2691"></A><FONT FACE="Georgia">Instead
+of the <B>current(&#160;)</B> member function, the <B>iterator</B> has an
+<B>operator*</B> to select the current element, which makes the <B>iterator</B>
+look more like a pointer and is a common practice.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Here&#8217;s the revised example to test
+the template:</FONT><BR></P></DIV>
+
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE><font color=#009900>//: C16:IterStackTemplateTest.cpp</font>
+<font color=#009900>//{L} fibonacci</font>
+#include <font color=#004488>"fibonacci.h"</font>
+#include <font color=#004488>"IterStackTemplate.h"</font>
+#include &lt;iostream&gt;
+#include &lt;fstream&gt;
+#include &lt;string&gt;
+<font color=#0000ff>using</font> <font color=#0000ff>namespace</font> std;
+
+<font color=#0000ff>int</font> main() {
+  StackTemplate&lt;<font color=#0000ff>int</font>&gt; is;
+  <font color=#0000ff>for</font>(<font color=#0000ff>int</font> i = 0; i &lt; 20; i++)
+    is.push(fibonacci(i));
+  <font color=#009900>// Traverse with an iterator:</font>
+  cout &lt;&lt; <font color=#004488>"Traverse the whole StackTemplate\n"</font>;
+  StackTemplate&lt;<font color=#0000ff>int</font>&gt;::iterator it = is.begin();
+  <font color=#0000ff>while</font>(it != is.end())
+    cout &lt;&lt; it++ &lt;&lt; endl;
+  cout &lt;&lt; <font color=#004488>"Traverse a portion\n"</font>;
+  StackTemplate&lt;<font color=#0000ff>int</font>&gt;::iterator 
+    start = is.begin(), end = is.begin();
+  start += 5, end += 15;
+  cout &lt;&lt; <font color=#004488>"start = "</font> &lt;&lt; start &lt;&lt; endl;
+  cout &lt;&lt; <font color=#004488>"end = "</font> &lt;&lt; end &lt;&lt; endl;
+  <font color=#0000ff>while</font>(start != end)
+    cout &lt;&lt; start++ &lt;&lt; endl;
+  ifstream in(<font color=#004488>"IterStackTemplateTest.cpp"</font>);
+  assure(in, <font color=#004488>"IterStackTemplateTest.cpp"</font>);
+  string line;
+  StackTemplate&lt;string&gt; strings;
+  <font color=#0000ff>while</font>(getline(in, line))
+    strings.push(line);
+  StackTemplate&lt;string&gt;::iterator 
+    sb = strings.begin(), se = strings.end();
+  <font color=#0000ff>while</font>(sb != se)
+    cout &lt;&lt; sb++ &lt;&lt; endl;
+} <font color=#009900>///:~</font></PRE></FONT></BLOCKQUOTE>
+
+<DIV ALIGN="LEFT"><P><A NAME="Index2692"></A><A NAME="Index2693"></A><A NAME="Index2694"></A><A NAME="Index2695"></A><FONT FACE="Georgia">The
+first use of the iterator just marches it from beginning to end (and shows that
+the end sentinel works properly). In the second usage, you can see how iterators
+allow you to easily specify a range of elements (the containers and iterators in
+the Standard C++ Library use this concept of ranges almost everywhere). The
+overloaded <B>operator+=</B> moves the <B>start</B> and <B>end</B> iterators to
+positions in the middle of the range of the elements in <B>is</B>, and these
+elements are printed out. Notice in the output that the end sentinel is
+<I>not</I> included in the range, thus it can be one past the end of the range
+to let you know you&#8217;ve passed the end &#8211; but you don&#8217;t
+dereference the end sentinel, or else you can end up dereferencing a null
+pointer. (I&#8217;ve put guarding in the <B>StackTemplate::iterator</B>, but in
+the Standard C++ Library containers and iterators there is no such code &#8211;
+for efficiency reasons &#8211; so you must pay attention.)</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Lastly, to verify that the
+<B>StackTemplate</B> works with class objects, one is instantiated for
+<B>string</B> and filled with the lines from the source-code file, which are
+then printed
+out.</FONT><A NAME="_Toc312374076"></A><A NAME="_Toc312374075"></A><A NAME="_Toc472655060"></A><BR></P></DIV>
+<A NAME="Heading479"></A><FONT FACE = "Verdana"><H3 ALIGN="LEFT">
+Stack with iterators<BR><A NAME="Index2696"></A></H3></FONT>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">We can repeat the process with the
+dynamically-sized <B>Stack </B>class that has been used as an example throughout
+the book. Here&#8217;s the <B>Stack</B> class with a nested iterator folded into
+the mix:</FONT><BR></P></DIV>
+
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE><font color=#009900>//: C16:TStack2.h</font>
+<font color=#009900>// Templatized Stack with nested iterator</font>
+#ifndef TSTACK2_H
+#define TSTACK2_H
+
+<font color=#0000ff>template</font>&lt;<font color=#0000ff>class</font> T&gt; <font color=#0000ff>class</font> Stack {
+  <font color=#0000ff>struct</font> Link {
+    T* data;
+    Link* next;
+    Link(T* dat, Link* nxt)
+      : data(dat), next(nxt) {}
+  }* head;
+<font color=#0000ff>public</font>:
+  Stack() : head(0) {}
+  ~Stack();
+  <font color=#0000ff>void</font> push(T* dat) {
+    head = <font color=#0000ff>new</font> Link(dat, head);
+  }
+  T* peek() <font color=#0000ff>const</font> { 
+    <font color=#0000ff>return</font> head ? head-&gt;data : 0;
+  }
+  T* pop();
+  <font color=#009900>// Nested iterator class:</font>
+  <font color=#0000ff>class</font> iterator; <font color=#009900>// Declaration required</font>
+  <font color=#0000ff>friend</font> <font color=#0000ff>class</font> iterator; <font color=#009900>// Make it a friend</font>
+  <font color=#0000ff>class</font> iterator { <font color=#009900>// Now define it</font>
+    Stack::Link* p;
+  <font color=#0000ff>public</font>:
+    iterator(<font color=#0000ff>const</font> Stack&lt;T&gt;&amp; tl) : p(tl.head) {}
+    <font color=#009900>// Copy-constructor:</font>
+    iterator(<font color=#0000ff>const</font> iterator&amp; tl) : p(tl.p) {}
+    <font color=#009900>// The end sentinel iterator:</font>
+    iterator() : p(0) {}
+    <font color=#009900>// operator++ returns boolean indicating end:</font>
+    <font color=#0000ff>bool</font> <font color=#0000ff>operator</font>++() {
+      <font color=#0000ff>if</font>(p-&gt;next)
+        p = p-&gt;next;
+      <font color=#0000ff>else</font> p = 0; <font color=#009900>// Indicates end of list</font>
+      <font color=#0000ff>return</font> <font color=#0000ff>bool</font>(p);
+    }
+    <font color=#0000ff>bool</font> <font color=#0000ff>operator</font>++(<font color=#0000ff>int</font>) { <font color=#0000ff>return</font> <font color=#0000ff>operator</font>++(); }
+    T* current() <font color=#0000ff>const</font> {
+      <font color=#0000ff>if</font>(!p) <font color=#0000ff>return</font> 0;
+      <font color=#0000ff>return</font> p-&gt;data;
+    }
+    <font color=#009900>// Pointer dereference operator:</font>
+    T* <font color=#0000ff>operator</font>-&gt;() <font color=#0000ff>const</font> { 
+      require(p != 0, 
+        <font color=#004488>"PStack::iterator::operator-&gt;returns 0"</font>);
+      <font color=#0000ff>return</font> current(); 
+    }
+    T* <font color=#0000ff>operator</font>*() <font color=#0000ff>const</font> { <font color=#0000ff>return</font> current(); }
+    <font color=#009900>// bool conversion for conditional test:</font>
+    <font color=#0000ff>operator</font> <font color=#0000ff>bool</font>() <font color=#0000ff>const</font> { <font color=#0000ff>return</font> <font color=#0000ff>bool</font>(p); }
+    <font color=#009900>// Comparison to test for end:</font>
+    <font color=#0000ff>bool</font> <font color=#0000ff>operator</font>==(<font color=#0000ff>const</font> iterator&amp;) <font color=#0000ff>const</font> {
+      <font color=#0000ff>return</font> p == 0;
+    }
+    <font color=#0000ff>bool</font> <font color=#0000ff>operator</font>!=(<font color=#0000ff>const</font> iterator&amp;) <font color=#0000ff>const</font> {
+      <font color=#0000ff>return</font> p != 0;
+    }
+  };
+  iterator begin() <font color=#0000ff>const</font> { 
+    <font color=#0000ff>return</font> iterator(*<font color=#0000ff>this</font>); 
+  }
+  iterator end() <font color=#0000ff>const</font> { <font color=#0000ff>return</font> iterator(); }
+};
+
+<font color=#0000ff>template</font>&lt;<font color=#0000ff>class</font> T&gt; Stack&lt;T&gt;::~Stack() {
+  <font color=#0000ff>while</font>(head)
+    <font color=#0000ff>delete</font> pop();
+}
+
+<font color=#0000ff>template</font>&lt;<font color=#0000ff>class</font> T&gt; T* Stack&lt;T&gt;::pop() {
+  <font color=#0000ff>if</font>(head == 0) <font color=#0000ff>return</font> 0;
+  T* result = head-&gt;data;
+  Link* oldHead = head;
+  head = head-&gt;next;
+  <font color=#0000ff>delete</font> oldHead;
+  <font color=#0000ff>return</font> result;
+}
+#endif <font color=#009900>// TSTACK2_H ///:~</font></PRE></FONT></BLOCKQUOTE>
+
+<DIV ALIGN="LEFT"><P><A NAME="Index2697"></A><FONT FACE="Georgia">You&#8217;ll also
+notice the class has been changed to support ownership, which works now because
+the class knows the exact type (or at least the base type, which will work
+assuming virtual destructors are used). The default is for the container to
+destroy its objects but you are responsible for any pointers that you
+<B>pop(&#160;)</B>.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><A NAME="Index2698"></A><FONT FACE="Georgia">The iterator is
+simple, and physically very small &#8211; the size of a single pointer. When you
+create an <B>iterator</B>, it&#8217;s initialized to the head of the linked
+list, and you can only increment it forward through the list. If you want to
+start over at the beginning, you create a new iterator, and if you want to
+remember a spot in the list, you create a new iterator from the existing
+iterator pointing at that spot (using the iterator&#8217;s
+copy-constructor<A NAME="Index2699"></A>).</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">To call functions for the object referred
+to by the iterator, you can use the <B>current(&#160;)</B> function, the
+<A NAME="Index2700"></A><A NAME="Index2701"></A><B>operator*</B>,<B> </B>or the
+pointer dereference
+<B>operator-&gt;<A NAME="Index2702"></A><A NAME="Index2703"></A></B> (a common
+sight in iterators). The latter has an implementation that <I>looks</I>
+identical to <B>current(&#160;)</B> because it returns a pointer to the current
+object, but is different because the pointer dereference operator performs the
+extra levels of dereferencing (see Chapter 12).</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">The <B>iterator</B> class follows the
+form you saw in the prior example. <B>class iterator</B> is nested inside the
+container class, it contains constructors to create both an iterator pointing at
+an element in the container and an &#8220;end sentinel&#8221; iterator, and the
+container class has the <B>begin(&#160;)</B> and <B>end(&#160;)</B> methods to
+produce these iterators. (When you learn the more about the Standard C++
+Library, you&#8217;ll see that the names <B>iterator</B>, <B>begin(&#160;)</B>,
+and <B>end(&#160;)</B> that are used here were clearly lifted standard container
+classes. At the end of this chapter, you&#8217;ll see that this enables these
+container classes to be used as if they were Standard C++ Library container
+classes.)</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">The entire implementation is contained in
+the header file, so there&#8217;s no separate <B>cpp</B> file. Here&#8217;s a
+small test that exercises the iterator:</FONT><BR></P></DIV>
+
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE><font color=#009900>//: C16:TStack2Test.cpp</font>
+#include <font color=#004488>"TStack2.h"</font>
+#include <font color=#004488>"../require.h"</font>
+#include &lt;iostream&gt;
+#include &lt;fstream&gt;
+#include &lt;string&gt;
+<font color=#0000ff>using</font> <font color=#0000ff>namespace</font> std;
+
+<font color=#0000ff>int</font> main() {
+  ifstream file(<font color=#004488>"TStack2Test.cpp"</font>);
+  assure(file, <font color=#004488>"TStack2Test.cpp"</font>);
+  Stack&lt;string&gt; textlines;
+  <font color=#009900>// Read file and store lines in the Stack:</font>
+  string line;
+  <font color=#0000ff>while</font>(getline(file, line))
+    textlines.push(<font color=#0000ff>new</font> string(line));
+  <font color=#0000ff>int</font> i = 0;
+  <font color=#009900>// Use iterator to print lines from the list:</font>
+  Stack&lt;string&gt;::iterator it = textlines.begin();
+  Stack&lt;string&gt;::iterator* it2 = 0;
+  <font color=#0000ff>while</font>(it != textlines.end()) {
+    cout &lt;&lt; it-&gt;c_str() &lt;&lt; endl;
+    it++;
+    <font color=#0000ff>if</font>(++i == 10) <font color=#009900>// Remember 10th line</font>
+      it2 = <font color=#0000ff>new</font> Stack&lt;string&gt;::iterator(it);
+  }
+  cout &lt;&lt; (*it2)-&gt;c_str() &lt;&lt; endl;
+  <font color=#0000ff>delete</font> it2;
+} <font color=#009900>///:~</font></PRE></FONT></BLOCKQUOTE>
+
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">A <B>Stack</B> is instantiated to hold
+<B>string</B> objects and filled with lines from a file. Then an iterator is
+created and used to move through the sequence. The tenth line is remembered by
+copy-constructing a second iterator from the first; later this line is printed
+and the iterator &#8211; created dynamically &#8211; is destroyed. Here, dynamic
+object creation<A NAME="Index2704"></A> is used to control the lifetime of the
+object.</FONT><A NAME="_Toc472655061"></A><BR></P></DIV>
+<A NAME="Heading480"></A><FONT FACE = "Verdana"><H3 ALIGN="LEFT">
+PStash with iterators<BR><A NAME="Index2705"></A></H3></FONT>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">For most container classes it makes sense
+to have an iterator. Here&#8217;s an iterator added to the <B>PStash
+</B>class:</FONT><BR></P></DIV>
+
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE><font color=#009900>//: C16:TPStash2.h</font>
+<font color=#009900>// Templatized PStash with nested iterator</font>
+#ifndef TPSTASH2_H
+#define TPSTASH2_H
+#include <font color=#004488>"../require.h"</font>
+#include &lt;cstdlib&gt;
+
+<font color=#0000ff>template</font>&lt;<font color=#0000ff>class</font> T, <font color=#0000ff>int</font> incr = 20&gt;
+<font color=#0000ff>class</font> PStash {
+  <font color=#0000ff>int</font> quantity;
+  <font color=#0000ff>int</font> next;
+  T** storage;
+  <font color=#0000ff>void</font> inflate(<font color=#0000ff>int</font> increase = incr);
+<font color=#0000ff>public</font>:
+  PStash() : quantity(0), storage(0), next(0) {}
+  ~PStash();
+  <font color=#0000ff>int</font> add(T* element);
+  T* <font color=#0000ff>operator</font>[](<font color=#0000ff>int</font> index) <font color=#0000ff>const</font>;
+  T* remove(<font color=#0000ff>int</font> index);
+  <font color=#0000ff>int</font> count() <font color=#0000ff>const</font> { <font color=#0000ff>return</font> next; }
+  <font color=#009900>// Nested iterator class:</font>
+  <font color=#0000ff>class</font> iterator; <font color=#009900>// Declaration required</font>
+  <font color=#0000ff>friend</font> <font color=#0000ff>class</font> iterator; <font color=#009900>// Make it a friend</font>
+  <font color=#0000ff>class</font> iterator { <font color=#009900>// Now define it</font>
+    PStash&amp; ps;
+    <font color=#0000ff>int</font> index;
+  <font color=#0000ff>public</font>:
+    iterator(PStash&amp; pStash)
+      : ps(pStash), index(0) {}
+    <font color=#009900>// To create the end sentinel:</font>
+    iterator(PStash&amp; pStash, <font color=#0000ff>bool</font>)
+      : ps(pStash), index(ps.next) {}
+    <font color=#009900>// Copy-constructor:</font>
+    iterator(<font color=#0000ff>const</font> iterator&amp; rv)
+      : ps(rv.ps), index(rv.index) {}
+    iterator&amp; <font color=#0000ff>operator</font>=(<font color=#0000ff>const</font> iterator&amp; rv) {
+      ps = rv.ps;
+      index = rv.index;
+      <font color=#0000ff>return</font> *<font color=#0000ff>this</font>;
+    }
+    iterator&amp; <font color=#0000ff>operator</font>++() {
+      require(++index &lt;= ps.next,
+        <font color=#004488>"PStash::iterator::operator++ "</font>
+        <font color=#004488>"moves index out of bounds"</font>);
+      <font color=#0000ff>return</font> *<font color=#0000ff>this</font>;
+    }
+    iterator&amp; <font color=#0000ff>operator</font>++(<font color=#0000ff>int</font>) {
+      <font color=#0000ff>return</font> <font color=#0000ff>operator</font>++();
+    }
+    iterator&amp; <font color=#0000ff>operator</font>--() {
+      require(--index &gt;= 0,
+        <font color=#004488>"PStash::iterator::operator-- "</font>
+        <font color=#004488>"moves index out of bounds"</font>);
+      <font color=#0000ff>return</font> *<font color=#0000ff>this</font>;
+    }
+    iterator&amp; <font color=#0000ff>operator</font>--(<font color=#0000ff>int</font>) { 
+      <font color=#0000ff>return</font> <font color=#0000ff>operator</font>--();
+    }
+    <font color=#009900>// Jump interator forward or backward:</font>
+    iterator&amp; <font color=#0000ff>operator</font>+=(<font color=#0000ff>int</font> amount) {
+      require(index + amount &lt; ps.next &amp;&amp; 
+        index + amount &gt;= 0, 
+        <font color=#004488>"PStash::iterator::operator+= "</font>
+        <font color=#004488>"attempt to index out of bounds"</font>);
+      index += amount;
+      <font color=#0000ff>return</font> *<font color=#0000ff>this</font>;
+    }
+    iterator&amp; <font color=#0000ff>operator</font>-=(<font color=#0000ff>int</font> amount) {
+      require(index - amount &lt; ps.next &amp;&amp; 
+        index - amount &gt;= 0, 
+        <font color=#004488>"PStash::iterator::operator-= "</font>
+        <font color=#004488>"attempt to index out of bounds"</font>);
+      index -= amount;
+      <font color=#0000ff>return</font> *<font color=#0000ff>this</font>;
+    }
+    <font color=#009900>// Create a new iterator that's moved forward</font>
+    iterator <font color=#0000ff>operator</font>+(<font color=#0000ff>int</font> amount) <font color=#0000ff>const</font> {
+      iterator ret(*<font color=#0000ff>this</font>);
+      ret += amount; <font color=#009900>// op+= does bounds check</font>
+      <font color=#0000ff>return</font> ret;
+    }
+    T* current() <font color=#0000ff>const</font> {
+      <font color=#0000ff>return</font> ps.storage[index];
+    }
+    T* <font color=#0000ff>operator</font>*() <font color=#0000ff>const</font> { <font color=#0000ff>return</font> current(); }
+    T* <font color=#0000ff>operator</font>-&gt;() <font color=#0000ff>const</font> { 
+      require(ps.storage[index] != 0, 
+        <font color=#004488>"PStash::iterator::operator-&gt;returns 0"</font>);
+      <font color=#0000ff>return</font> current(); 
+    }
+    <font color=#009900>// Remove the current element:</font>
+    T* remove(){
+      <font color=#0000ff>return</font> ps.remove(index);
+    }
+    <font color=#009900>// Comparison tests for end:</font>
+    <font color=#0000ff>bool</font> <font color=#0000ff>operator</font>==(<font color=#0000ff>const</font> iterator&amp; rv) <font color=#0000ff>const</font> {
+      <font color=#0000ff>return</font> index == rv.index;
+    }
+    <font color=#0000ff>bool</font> <font color=#0000ff>operator</font>!=(<font color=#0000ff>const</font> iterator&amp; rv) <font color=#0000ff>const</font> {
+      <font color=#0000ff>return</font> index != rv.index;
+    }
+  };
+  iterator begin() { <font color=#0000ff>return</font> iterator(*<font color=#0000ff>this</font>); }
+  iterator end() { <font color=#0000ff>return</font> iterator(*<font color=#0000ff>this</font>, <font color=#0000ff>true</font>);}
+};
+
+<font color=#009900>// Destruction of contained objects:</font>
+<font color=#0000ff>template</font>&lt;<font color=#0000ff>class</font> T, <font color=#0000ff>int</font> incr&gt;
+PStash&lt;T, incr&gt;::~PStash() {
+  <font color=#0000ff>for</font>(<font color=#0000ff>int</font> i = 0; i &lt; next; i++) {
+    <font color=#0000ff>delete</font> storage[i]; <font color=#009900>// Null pointers OK</font>
+    storage[i] = 0; <font color=#009900>// Just to be safe</font>
+  }
+  <font color=#0000ff>delete</font> []storage;
+}
+
+<font color=#0000ff>template</font>&lt;<font color=#0000ff>class</font> T, <font color=#0000ff>int</font> incr&gt;
+<font color=#0000ff>int</font> PStash&lt;T, incr&gt;::add(T* element) {
+  <font color=#0000ff>if</font>(next &gt;= quantity)
+    inflate();
+  storage[next++] = element;
+  <font color=#0000ff>return</font>(next - 1); <font color=#009900>// Index number</font>
+}
+
+<font color=#0000ff>template</font>&lt;<font color=#0000ff>class</font> T, <font color=#0000ff>int</font> incr&gt; <font color=#0000ff>inline</font>
+T* PStash&lt;T, incr&gt;::<font color=#0000ff>operator</font>[](<font color=#0000ff>int</font> index) <font color=#0000ff>const</font> {
+  require(index &gt;= 0,
+    <font color=#004488>"PStash::operator[] index negative"</font>);
+  <font color=#0000ff>if</font>(index &gt;= next)
+    <font color=#0000ff>return</font> 0; <font color=#009900>// To indicate the end</font>
+  require(storage[index] != 0, 
+    <font color=#004488>"PStash::operator[] returned null pointer"</font>);
+  <font color=#0000ff>return</font> storage[index];
+}
+
+<font color=#0000ff>template</font>&lt;<font color=#0000ff>class</font> T, <font color=#0000ff>int</font> incr&gt;
+T* PStash&lt;T, incr&gt;::remove(<font color=#0000ff>int</font> index) {
+  <font color=#009900>// operator[] performs validity checks:</font>
+  T* v = <font color=#0000ff>operator</font>[](index);
+  <font color=#009900>// "Remove" the pointer:</font>
+  storage[index] = 0;
+  <font color=#0000ff>return</font> v;
+}
+
+<font color=#0000ff>template</font>&lt;<font color=#0000ff>class</font> T, <font color=#0000ff>int</font> incr&gt;
+<font color=#0000ff>void</font> PStash&lt;T, incr&gt;::inflate(<font color=#0000ff>int</font> increase) {
+  <font color=#0000ff>const</font> <font color=#0000ff>int</font> tsz = <font color=#0000ff>sizeof</font>(T*);
+  T** st = <font color=#0000ff>new</font> T*[quantity + increase];
+  memset(st, 0, (quantity + increase) * tsz);
+  memcpy(st, storage, quantity * tsz);
+  quantity += increase;
+  <font color=#0000ff>delete</font> []storage; <font color=#009900>// Old storage</font>
+  storage = st; <font color=#009900>// Point to new memory</font>
+}
+#endif <font color=#009900>// TPSTASH2_H ///:~</font></PRE></FONT></BLOCKQUOTE>
+
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Most of this file is a fairly
+straightforward translation of both the previous <B>PStash</B> and the nested
+<B>iterator</B> into a template. This time, however, the operators return
+references to the current iterator, which is the more typical and flexible
+approach to take.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">The destructor calls <B>delete </B>for
+all contained pointers, and because the type is captured by the template,<B>
+</B>proper destruction will take place. You should be aware that if the
+container holds pointers to a base-class type, that type should have a
+<B>virtual</B> destructor<A NAME="Index2706"></A><A NAME="Index2707"></A> to
+ensure proper cleanup of derived objects whose addresses have been upcast when
+placing them in the container.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">The <B>PStash::iterator</B> follows the
+iterator model of bonding to a single container object for its lifetime. In
+addition, the copy-constructor allows you to make a new iterator pointing at the
+same location as the existing iterator that you create it from, effectively
+making a bookmark into the container. The <B>operator+=</B> and
+<B>operator-=</B> member functions allow you to move an iterator by a number of
+spots, while respecting the boundaries of the container. The overloaded
+increment and decrement operators move the iterator by one place. The
+<B>operator+ </B>produces a new iterator that&#8217;s moved forward by the
+amount of the addend. As in the previous example, the pointer dereference
+operators are used to operate on the element the iterator is referring to, and
+<B>remove(&#160;)</B> destroys the current object by calling the
+container&#8217;s <B>remove(&#160;)</B>.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">The same kind of code as before (<I>a
+la</I> the Standard C++ Library containers) is used for creating the
+<A NAME="Index2708"></A><A NAME="Index2709"></A>end sentinel: a second
+constructor, the container&#8217;s <B>end(&#160;)</B> member function, and
+<B>operator== </B>and <B>operator!=</B> for comparison.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">The following example creates and tests
+two different kinds of <B>Stash</B> objects, one for a new class called
+<B>Int</B> that announces its construction and destruction and one that holds
+objects of the Standard library <B>string</B> class.</FONT><BR></P></DIV>
+
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE><font color=#009900>//: C16:TPStash2Test.cpp</font>
+#include <font color=#004488>"TPStash2.h"</font>
+#include <font color=#004488>"../require.h"</font>
+#include &lt;iostream&gt;
+#include &lt;vector&gt;
+#include &lt;string&gt;
+<font color=#0000ff>using</font> <font color=#0000ff>namespace</font> std;
+
+<font color=#0000ff>class</font> Int {
+  <font color=#0000ff>int</font> i;
+<font color=#0000ff>public</font>:
+  Int(<font color=#0000ff>int</font> ii = 0) : i(ii) {
+    cout &lt;&lt; <font color=#004488>"&gt;"</font> &lt;&lt; i &lt;&lt; ' ';
+  }
+  ~Int() { cout &lt;&lt; <font color=#004488>"~"</font> &lt;&lt; i &lt;&lt; ' '; }
+  <font color=#0000ff>operator</font> <font color=#0000ff>int</font>() <font color=#0000ff>const</font> { <font color=#0000ff>return</font> i; }
+  <font color=#0000ff>friend</font> ostream&amp;
+    <font color=#0000ff>operator</font>&lt;&lt;(ostream&amp; os, <font color=#0000ff>const</font> Int&amp; x) {
+      <font color=#0000ff>return</font> os &lt;&lt; <font color=#004488>"Int: "</font> &lt;&lt; x.i;
+  }
+  <font color=#0000ff>friend</font> ostream&amp;
+    <font color=#0000ff>operator</font>&lt;&lt;(ostream&amp; os, <font color=#0000ff>const</font> Int* x) {
+      <font color=#0000ff>return</font> os &lt;&lt; <font color=#004488>"Int: "</font> &lt;&lt; x-&gt;i;
+  }
+};
+
+<font color=#0000ff>int</font> main() {
+  { <font color=#009900>// To force destructor call</font>
+    PStash&lt;Int&gt; ints;
+    <font color=#0000ff>for</font>(<font color=#0000ff>int</font> i = 0; i &lt; 30; i++)
+      ints.add(<font color=#0000ff>new</font> Int(i));
+    cout &lt;&lt; endl;
+    PStash&lt;Int&gt;::iterator it = ints.begin();
+    it += 5;
+    PStash&lt;Int&gt;::iterator it2 = it + 10;
+    <font color=#0000ff>for</font>(; it != it2; it++)
+      <font color=#0000ff>delete</font> it.remove(); <font color=#009900>// Default removal</font>
+    cout &lt;&lt; endl;
+    <font color=#0000ff>for</font>(it = ints.begin();it != ints.end();it++)
+      <font color=#0000ff>if</font>(*it) <font color=#009900>// Remove() causes "holes"</font>
+        cout &lt;&lt; *it &lt;&lt; endl;
+  } <font color=#009900>// "ints" destructor called here</font>
+  cout &lt;&lt; <font color=#004488>"\n-------------------\n"</font>;  
+  ifstream in(<font color=#004488>"TPStash2Test.cpp"</font>);
+  assure(in, <font color=#004488>"TPStash2Test.cpp"</font>);
+  <font color=#009900>// Instantiate for String:</font>
+  PStash&lt;string&gt; strings;
+  string line;
+  <font color=#0000ff>while</font>(getline(in, line))
+    strings.add(<font color=#0000ff>new</font> string(line));
+  PStash&lt;string&gt;::iterator sit = strings.begin();
+  <font color=#0000ff>for</font>(; sit != strings.end(); sit++)
+    cout &lt;&lt; **sit &lt;&lt; endl;
+  sit = strings.begin();
+  <font color=#0000ff>int</font> n = 26;
+  sit += n;
+  <font color=#0000ff>for</font>(; sit != strings.end(); sit++)
+    cout &lt;&lt; n++ &lt;&lt; <font color=#004488>": "</font> &lt;&lt; **sit &lt;&lt; endl;
+} <font color=#009900>///:~</font></PRE></FONT></BLOCKQUOTE>
+
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">For convenience, <B>Int</B> has an
+associated <B>ostream operator&lt;&lt;</B> for both an <B>Int&amp;</B> and an
+<B>Int*</B>.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">The first block of code in
+<B>main(&#160;)</B> is surrounded by braces to force the destruction of the
+<B>PStash&lt;Int&gt;</B> and thus the automatic cleanup by that destructor. A
+range of elements is removed and deleted by hand to show that the <B>PStash</B>
+cleans up the rest.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">For both instances of <B>PStash</B>,<B>
+</B>an iterator is created and used to move through the container. Notice the
+elegance produced by using these constructs; you aren&#8217;t assailed with the
+implementation details of using an array. You tell the container and iterator
+objects <I>what</I> to do, not how. This makes the solution easier to
+conceptualize, to build, and to
+modify.</FONT><A NAME="_Toc472655062"></A><BR></P></DIV>
+<A NAME="Heading481"></A><FONT FACE = "Verdana"><H2 ALIGN="LEFT">
+Why iterators?<BR><A NAME="Index2710"></A></H2></FONT>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Up until now you&#8217;ve seen the
+mechanics of iterators, but understanding why they are so important takes a more
+complex example.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><A NAME="Index2711"></A><A NAME="Index2712"></A><FONT FACE="Georgia">It&#8217;s
+common to see polymorphism,
+<A NAME="Index2713"></A><A NAME="Index2714"></A>dynamic object creation, and
+containers used together in a true object-oriented program. Containers and
+dynamic object creation solve the problem of not knowing how many or what type
+of objects you&#8217;ll need. And if the container is configured to hold
+pointers to base-class objects, an <A NAME="Index2715"></A>upcast occurs every
+time you put a derived-class pointer into the container (with the associated
+code organization and extensibility benefits). As the final code in Volume 1 of
+this book, this example will also pull together various aspects of everything
+you&#8217;ve learned so far &#8211; if you can follow this example, then
+you&#8217;re ready for Volume 2.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Suppose you are creating a program that
+allows the user to edit and produce different kinds of drawings. Each drawing is
+an object that contains a collection of <B>Shape</B> objects:</FONT><BR></P></DIV>
+
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE><font color=#009900>//: C16:Shape.h</font>
+#ifndef SHAPE_H
+#define SHAPE_H
+#include &lt;iostream&gt;
+#include &lt;string&gt;
+
+<font color=#0000ff>class</font> Shape {
+<font color=#0000ff>public</font>:
+  <font color=#0000ff>virtual</font> <font color=#0000ff>void</font> draw() = 0;
+  <font color=#0000ff>virtual</font> <font color=#0000ff>void</font> erase() = 0;
+  <font color=#0000ff>virtual</font> ~Shape() {}
+};
+
+<font color=#0000ff>class</font> Circle : <font color=#0000ff>public</font> Shape {
+<font color=#0000ff>public</font>:
+  Circle() {}
+  ~Circle() { std::cout &lt;&lt; <font color=#004488>"Circle::~Circle\n"</font>; }
+  <font color=#0000ff>void</font> draw() { std::cout &lt;&lt; <font color=#004488>"Circle::draw\n"</font>;}
+  <font color=#0000ff>void</font> erase() { std::cout &lt;&lt; <font color=#004488>"Circle::erase\n"</font>;}
+};
+
+<font color=#0000ff>class</font> Square : <font color=#0000ff>public</font> Shape {
+<font color=#0000ff>public</font>:
+  Square() {}
+  ~Square() { std::cout &lt;&lt; <font color=#004488>"Square::~Square\n"</font>; }
+  <font color=#0000ff>void</font> draw() { std::cout &lt;&lt; <font color=#004488>"Square::draw\n"</font>;}
+  <font color=#0000ff>void</font> erase() { std::cout &lt;&lt; <font color=#004488>"Square::erase\n"</font>;}
+};
+
+<font color=#0000ff>class</font> Line : <font color=#0000ff>public</font> Shape {
+<font color=#0000ff>public</font>:
+  Line() {}
+  ~Line() { std::cout &lt;&lt; <font color=#004488>"Line::~Line\n"</font>; }
+  <font color=#0000ff>void</font> draw() { std::cout &lt;&lt; <font color=#004488>"Line::draw\n"</font>;}
+  <font color=#0000ff>void</font> erase() { std::cout &lt;&lt; <font color=#004488>"Line::erase\n"</font>;}
+};
+#endif <font color=#009900>// SHAPE_H ///:~</font></PRE></FONT></BLOCKQUOTE>
+
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">This uses the classic structure of
+virtual functions in the base class that are overridden in the derived class.
+Notice that the <B>Shape</B> class includes a <B>virtual</B>
+destructor<A NAME="Index2716"></A><A NAME="Index2717"></A>, something you should
+automatically add to any class with <B>virtual</B> functions. If a container
+holds pointers or references to <B>Shape</B> objects, then when the
+<B>virtual</B> destructors are called for those objects everything will be
+properly cleaned up.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Each different type of drawing in the
+following example makes use of a different kind of templatized container class:
+the <B>PStash</B> and <B>Stack</B> that have been defined in this chapter, and
+the <A NAME="Index2718"></A><B>vector</B> class from the Standard C++ Library.
+The &#8220;use&#8221;&#8217; of the containers is extremely simple, and in
+general <A NAME="Index2719"></A><A NAME="Index2720"></A>inheritance might not be
+the best approach (composition could make more sense), but in this case
+inheritance is a simple approach and it doesn&#8217;t detract from the point
+made in the example.</FONT><BR></P></DIV>
+
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE><font color=#009900>//: C16:Drawing.cpp</font>
+#include &lt;vector&gt; <font color=#009900>// Uses Standard vector too!</font>
+#include <font color=#004488>"TPStash2.h"</font>
+#include <font color=#004488>"TStack2.h"</font>
+#include <font color=#004488>"Shape.h"</font>
+<font color=#0000ff>using</font> <font color=#0000ff>namespace</font> std;
+
+<font color=#009900>// A Drawing is primarily a container of Shapes:</font>
+<font color=#0000ff>class</font> Drawing : <font color=#0000ff>public</font> PStash&lt;Shape&gt; {
+<font color=#0000ff>public</font>:
+  ~Drawing() { cout &lt;&lt; <font color=#004488>"~Drawing"</font> &lt;&lt; endl; }
+};
+
+<font color=#009900>// A Plan is a different container of Shapes:</font>
+<font color=#0000ff>class</font> Plan : <font color=#0000ff>public</font> Stack&lt;Shape&gt; {
+<font color=#0000ff>public</font>:
+  ~Plan() { cout &lt;&lt; <font color=#004488>"~Plan"</font> &lt;&lt; endl; }
+};
+
+<font color=#009900>// A Schematic is a different container of Shapes:</font>
+<font color=#0000ff>class</font> Schematic : <font color=#0000ff>public</font> vector&lt;Shape*&gt; {
+<font color=#0000ff>public</font>:
+  ~Schematic() { cout &lt;&lt; <font color=#004488>"~Schematic"</font> &lt;&lt; endl; }
+};
+
+<font color=#009900>// A function template:</font>
+<font color=#0000ff>template</font>&lt;<font color=#0000ff>class</font> Iter&gt;
+<font color=#0000ff>void</font> drawAll(Iter start, Iter end) {
+  <font color=#0000ff>while</font>(start != end) {
+    (*start)-&gt;draw();
+    start++;
+  }
+}
+
+<font color=#0000ff>int</font> main() {
+  <font color=#009900>// Each type of container has </font>
+  <font color=#009900>// a different interface:</font>
+  Drawing d;
+  d.add(<font color=#0000ff>new</font> Circle);
+  d.add(<font color=#0000ff>new</font> Square);
+  d.add(<font color=#0000ff>new</font> Line);
+  Plan p;
+  p.push(<font color=#0000ff>new</font> Line);
+  p.push(<font color=#0000ff>new</font> Square);
+  p.push(<font color=#0000ff>new</font> Circle);
+  Schematic s;
+  s.push_back(<font color=#0000ff>new</font> Square);
+  s.push_back(<font color=#0000ff>new</font> Circle);
+  s.push_back(<font color=#0000ff>new</font> Line);
+  Shape* sarray[] = { 
+    <font color=#0000ff>new</font> Circle, <font color=#0000ff>new</font> Square, <font color=#0000ff>new</font> Line 
+  };
+  <font color=#009900>// The iterators and the template function</font>
+  <font color=#009900>// allow them to be treated generically:</font>
+  cout &lt;&lt; <font color=#004488>"Drawing d:"</font> &lt;&lt; endl;
+  drawAll(d.begin(), d.end());
+  cout &lt;&lt; <font color=#004488>"Plan p:"</font> &lt;&lt; endl;
+  drawAll(p.begin(), p.end());
+  cout &lt;&lt; <font color=#004488>"Schematic s:"</font> &lt;&lt; endl;
+  drawAll(s.begin(), s.end());
+  cout &lt;&lt; <font color=#004488>"Array sarray:"</font> &lt;&lt; endl;
+  <font color=#009900>// Even works with array pointers:</font>
+  drawAll(sarray, 
+    sarray + <font color=#0000ff>sizeof</font>(sarray)/<font color=#0000ff>sizeof</font>(*sarray));
+  cout &lt;&lt; <font color=#004488>"End of main"</font> &lt;&lt; endl;
+} <font color=#009900>///:~</font></PRE></FONT></BLOCKQUOTE>
+
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">The different types of containers all
+hold pointers to <B>Shape</B> and pointers to upcast objects of classes derived
+from <B>Shape</B>. However, because of polymorphism, <A NAME="Index2721"></A>the
+proper behavior still occurs when the virtual functions<A NAME="Index2722"></A>
+are called.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Note that <B>sarray</B>,<B> </B>the array
+of <B>Shape*</B>, can also be thought of as a
+container.</FONT><A NAME="_Toc472655063"></A><BR></P></DIV>
+<A NAME="Heading482"></A><FONT FACE = "Verdana"><H3 ALIGN="LEFT">
+Function templates</H3></FONT>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">In <B>drawAll(&#160;)</B> you see
+something new. So far in this chapter, we have been using only
+<A NAME="Index2723"></A><A NAME="Index2724"></A><I>class templates</I>, which
+instantiate new classes based on one or more type parameters. However, you can
+as easily create <A NAME="Index2725"></A><A NAME="Index2726"></A><I>function
+templates</I>, which create new functions based on type parameters. The reason
+you create a function template is the same reason you use for a class template:
+You&#8217;re trying to create generic code, and you do this by delaying the
+specification of one or more types. You just want to say that these type
+parameters support certain operations, not exactly what types they
+are.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><A NAME="Index2727"></A><A NAME="Index2728"></A><FONT FACE="Georgia">The
+function template <B>drawAll(&#160;)</B> can be thought of as an
+<I>algorithm</I> (and this is what most of the function templates in the
+Standard C++ Library are called). It just says how to do something given
+iterators describing a range of elements, as long as these iterators can be
+dereferenced, incremented, and compared. These are exactly the kind of iterators
+we have been developing in this chapter, and also &#8211; not coincidentally
+&#8211; the kind of iterators that are produced by the containers in the
+Standard C++ Library, evidenced by the use of <B>vector</B> in this example.
+</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">We&#8217;d also like
+<B>drawAll(&#160;)</B> to be a <A NAME="Index2729"></A><I>generic algorithm</I>,
+so that the containers can be any type at all and we don&#8217;t have to write a
+new version of the algorithm for each different type of container. Here&#8217;s
+where function templates are essential, because they automatically generate the
+specific code for each different type of container. But without the extra
+indirection provided by the iterators, this genericness wouldn&#8217;t be
+possible. That&#8217;s why iterators are important; they allow you to write
+general-purpose code that involves containers without knowing the underlying
+structure of the container. (Notice that, in C++, iterators and generic
+algorithms require function templates in order to work.)</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">You can see the proof of this in
+<B>main(&#160;)</B>, since <B>drawAll(&#160;)</B> works unchanged with each
+different type of container. And even more interesting, <B>drawAll(&#160;)</B>
+also works with pointers to the beginning and end of the array <B>sarray</B>.
+This ability to treat arrays as containers is integral to the design of the
+Standard C++ Library, whose algorithms look much like
+<B>drawAll(&#160;)</B>.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Because container class
+templates<A NAME="Index2730"></A><A NAME="Index2731"></A><A NAME="Index2732"></A>
+are rarely subject to the inheritance and upcasting you see with
+&#8220;ordinary&#8221; classes, you&#8217;ll almost never see <B>virtual</B>
+functions in container classes. Container class reuse is implemented with
+templates, not with
+inheritance.</FONT><A NAME="_Toc305593283"></A><A NAME="_Toc305628755"></A><A NAME="_Toc312374094"></A><A NAME="_Toc472655064"></A><BR></P></DIV>
+<A NAME="Heading483"></A><FONT FACE = "Verdana"><H2 ALIGN="LEFT">
+Summary</H2></FONT>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Container classes are an essential part
+of object-oriented programming. They are another way to simplify and hide the
+details of a program and to speed the process of program development. In
+addition, they provide a great deal of safety and flexibility by replacing the
+primitive arrays and relatively crude data structure techniques found in
+C.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Because the client programmer needs
+containers, it&#8217;s essential that they be easy to use. This is where the
+<B>template</B> comes in. With templates the syntax for source-code reuse (as
+opposed to object-code reuse provided by inheritance and composition) becomes
+trivial enough for the novice user. In fact, reusing code with templates is
+notably easier than inheritance and composition.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Although you&#8217;ve learned about
+creating container and iterator classes in this book, in practice it&#8217;s
+much more expedient to learn the containers and iterators in the Standard C++
+Library, since you can expect them to be available with every compiler. As you
+will see in Volume 2 of this book (downloadable from <I>www.BruceEckel.com</I>),
+the containers and algorithms in the Standard C++ Library will virtually always
+fulfill your needs so you don&#8217;t have to create new ones
+yourself.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">The issues involved with container-class
+design have been touched upon in this chapter, but you may have gathered that
+they can go much further. A complicated container-class library may cover all
+sorts of additional issues, including multithreading, persistence and garbage
+collection.</FONT><A NAME="_Toc312374095"></A><A NAME="_Toc472655065"></A><BR></P></DIV>
+<A NAME="Heading484"></A><FONT FACE = "Verdana"><H2 ALIGN="LEFT">
+Exercises</H2></FONT>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia" SIZE=2>Solutions to selected exercises
+can be found in the electronic document <I>The Thinking in C++ Annotated
+Solution Guide</I>, available for a small fee from
+www.BruceEckel.com.</FONT><A NAME="Chapter16Exercises"></A><A NAME="B"></A><BR></P></DIV>
+<OL>
+<LI><FONT FACE="Verdana">	</FONT><FONT FACE="Georgia">Implement the inheritance
+hierarchy in the <B>OShape</B> diagram in this
+chapter.</FONT><LI><FONT FACE="Verdana">	</FONT><FONT FACE="Georgia">Modify the
+result of Exercise 1 from Chapter 15 to use the  <B>Stack</B> and <B>iterator
+</B>in <B>TStack2.h</B> instead of an array of <B>Shape</B> pointers. Add
+destructors to the class hierarchy so you can see that the <B>Shape</B> objects
+are destroyed when the <B>Stack</B> goes out of
+scope.</FONT><LI><FONT FACE="Verdana">	</FONT><FONT FACE="Georgia">Modify
+<B>TPStash.h</B> so that the increment value used by <B>inflate(&#160;)</B> can
+be changed throughout the lifetime of a particular container
+object.</FONT><LI><FONT FACE="Verdana">	</FONT><FONT FACE="Georgia">Modify
+<B>TPStash.h </B>so that the increment value used by <B>inflate(&#160;)</B>
+automatically resizes itself to reduce the number of times it needs to be
+called. For example, each time it is called it could double the increment value
+for use in the next call. Demonstrate this functionality by reporting whenever
+an <B>inflate(&#160;)</B> is called, and write test code in
+<B>main(&#160;)</B>.</FONT><LI><FONT FACE="Verdana">	</FONT><FONT FACE="Georgia">Templatize
+the <B>fibonacci(&#160;)</B> function on the type of value that it produces (so
+it can produce <B>long</B>, <B>float</B>, etc. instead of just
+<B>int</B>).</FONT><LI><FONT FACE="Verdana">	</FONT><FONT FACE="Georgia">Using
+the Standard C++ Library <B>vector</B> as an underlying implementation, create a
+<B>Set</B> template class that accepts only one of each type of object that you
+put into it. Make a nested <B>iterator </B>class that supports the &#8220;end
+sentinel&#8221; concept in this chapter. Write test code for your <B>Set</B> in
+<B>main(&#160;)</B>, and then substitute the Standard C++ Library <B>set</B>
+template to verify that the behavior is
+correct.</FONT><LI><FONT FACE="Verdana">	</FONT><FONT FACE="Georgia">Modify
+<B>AutoCounter.h</B> so that it can be used as a member object inside any class
+whose creation and destruction you want to trace. Add a <B>string</B> member to
+hold the name of the class. Test this tool inside a class of your
+own.</FONT><LI><FONT FACE="Verdana">	</FONT><FONT FACE="Georgia">Create a
+version of <B>OwnerStack.h</B> that uses a Standard C++ Library <B>vector</B> as
+its underlying implementation. You may need to look up some of the member
+functions of <B>vector</B> in order to do this (or just look at the
+<B>&lt;vector&gt;</B> header
+file).</FONT><LI><FONT FACE="Verdana">	</FONT><FONT FACE="Georgia">Modify
+<B>ValueStack.h</B> so that it dynamically expands as you <B>push(&#160;)</B>
+more objects and it runs out of space. Change <B>ValueStackTest.cpp</B> to test
+the new
+functionality.</FONT><LI><FONT FACE="Verdana">	</FONT><FONT FACE="Georgia">Repeat
+Exercise 9 but use a Standard C++ Library <B>vector</B> as the internal
+implementation of the <B>ValueStack</B>. Notice how much easier this is.
+</FONT><LI><FONT FACE="Verdana">	</FONT><FONT FACE="Georgia">Modify
+<B>ValueStackTest.cpp</B> so that it uses a Standard C++ Library <B>vector</B>
+instead of a <B>Stack</B> in <B>main( )</B>. Notice the run-time behavior: Does
+the <B>vector</B> automatically create a bunch of default objects when it is
+created?</FONT><LI><FONT FACE="Verdana">	</FONT><FONT FACE="Georgia">Modify
+<B>TStack2.h </B>so that it uses a Standard C++ Library <B>vector</B> as its
+underlying implementation. Make sure that you don&#8217;t change the interface,
+so that <B>TStack2Test.cpp</B> works
+unchanged.</FONT><LI><FONT FACE="Verdana">	</FONT><FONT FACE="Georgia">Repeat
+Exercise 12 using a Standard C++ Library <B>stack</B> instead of a <B>vector</B>
+(you may need to look up information about the <B>stack</B>, or hunt through the
+<B>&lt;stack&gt; </B>header
+file).</FONT><LI><FONT FACE="Verdana">	</FONT><FONT FACE="Georgia">Modify
+<B>TPStash2.h</B> so that it uses a Standard C++ Library <B>vector</B> as its
+underlying implementation. Make sure that you don&#8217;t change the interface,
+so that <B>TPStash2Test.cpp</B> works
+unchanged.</FONT><LI><FONT FACE="Verdana">	</FONT><FONT FACE="Georgia">In
+<B>IterIntStack.cpp</B>, modify <B>IntStackIter</B> to give it an &#8220;end
+sentinel&#8221; constructor, and add <B>operator==</B> and <B>operator!=</B>. In
+<B>main(&#160;)</B>, use an iterator to move through the elements of the
+container until you reach the end
+sentinel.</FONT><LI><FONT FACE="Verdana">	</FONT><FONT FACE="Georgia">Using
+<B>TStack2.h</B>, <B>TPStash2.h</B>, and <B>Shape.h</B>, instantiate
+<B>Stack</B> and <B>PStash</B> containers for <B>Shape*</B>, fill them each with
+an assortment of upcast <B>Shape</B> pointers, then use iterators to move
+through each container and call <B>draw(&#160;)</B> for each
+object.</FONT><LI><FONT FACE="Verdana">	</FONT><FONT FACE="Georgia">Templatize
+the <B>Int</B> class in <B>TPStash2Test.cpp</B> so that it holds any type of
+object (feel free to change the name of the class to something more
+appropriate).</FONT><LI><FONT FACE="Verdana">	</FONT><FONT FACE="Georgia">Templatize
+the <B>IntArray</B> class in <B>IostreamOperatorOverloading.cpp</B> from Chapter
+12, templatizing both the type of object that is contained and the size of the
+internal array.</FONT><LI><FONT FACE="Verdana">	</FONT><FONT FACE="Georgia">Turn
+<B>ObjContainer </B>in<B> NestedSmartPointer.cpp</B> from Chapter 12 into a
+template. Test it with two different
+classes.</FONT><LI><FONT FACE="Verdana">	</FONT><FONT FACE="Georgia">Modify
+<B>C15:OStack.h</B> and <B>C15:OStackTest.cpp</B> by
+templatizing<A NAME="C"></A> <B>class Stack</B> so that it automatically
+multiply inherits from the contained class and from <B>Object</B>. The generated
+<B>Stack</B> should accept and produce only pointers of the contained
+type.</FONT><LI><FONT FACE="Verdana">	</FONT><FONT FACE="Georgia">Repeat
+Exercise 20 using <B>vector</B> instead of
+<B>Stack</B>.</FONT><LI><FONT FACE="Verdana">	</FONT><FONT FACE="Georgia">Inherit
+a class <B>StringVector</B> from <B>vector&lt;void*&gt;</B> and redefine the
+<B>push_back(&#160;)</B> and <B>operator[]</B> member functions to accept and
+produce only <B>string* </B>(and perform the proper casting). Now create a
+template that will automatically make a container class to do the same thing for
+pointers to any type. This technique is often used to reduce code bloat from too
+many template
+instantiations.</FONT><LI><FONT FACE="Verdana">	</FONT><FONT FACE="Georgia">In
+<B>TPStash2.h</B>, add and test an <B>operator-</B> to <B>PStash::iterator</B>,
+following the logic of
+<B>operator+</B>.</FONT><LI><FONT FACE="Verdana">	</FONT><FONT FACE="Georgia">In
+<B>Drawing.cpp</B>, add and test a function template to call
+<B>erase(&#160;)</B> member
+functions.</FONT><LI><FONT FACE="Verdana">	</FONT><FONT FACE="Georgia">(Advanced)
+Modify the <B>Stack</B> class in <B>TStack2.h</B> to allow full granularity of
+ownership: Add a flag to each link indicating whether that link owns the object
+it points to, and support this information in the <B>push(&#160;)</B> function
+and destructor. Add member functions to read and change the ownership for each
+link.</FONT><LI><FONT FACE="Verdana">	</FONT><FONT FACE="Georgia">(Advanced)
+Modify <B>PointerToMemberOperator.cpp</B> from Chapter 12 so that the
+<B>FunctionObject</B> and <B>operator-&gt;*</B> are templatized to work with any
+return type (for <B>operator-&gt;*</B>, you&#8217;ll have to use <I>member
+templates</I>, described in Volume 2). Add and test support for zero, one and
+two arguments in <B>Dog</B> member
+functions.</FONT><A NAME="_Toc312374163"></A></OL><FONT FACE = "Verdana"><H1 ALIGN="LEFT">
+</H1></FONT>
+<HR><DIV ALIGN="LEFT"><P><A NAME="fn59" HREF="#fnB59">[59]</A><FONT FACE="Georgia" SIZE=2>
+With the exception, in Java, of the primitive data types. These were made
+non-<B>Object</B>s for efficiency.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><A NAME="fn60" HREF="#fnB60">[60]</A><FONT FACE="Georgia" SIZE=2>
+The OOPS library, by Keith Gorlen while he was at NIH. </FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><A NAME="fn61" HREF="#fnB61">[61]</A><FONT FACE="Georgia" SIZE=2>
+<I>The C++ Programming Language</I> by Bjarne Stroustrup (1st edition,
+Addison-Wesley, 1986).</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><A NAME="fn62" HREF="#fnB62">[62]</A><FONT FACE="Georgia" SIZE=2>
+The inspiration for templates appears to be ADA generics.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><A NAME="fn63" HREF="#fnB63">[63]</A><FONT FACE="Georgia" SIZE=2>
+All methods in both Smalltalk and Python are weakly typed, and so those
+languages do not need a template mechanism. In effect, you get templates without
+templates.</FONT><BR></P></DIV>
+
+<DIV ALIGN="CENTER">
+    <FONT FACE="Verdana" size = "-1">
+     [ <a href="Chapter15.html">Previous Chapter</a> ] 
+    [ <a href="Contents.html">Table of Contents</a> ] 
+    [ <a href="DocIndex.html">Index</a> ]
+     [ <a href="AppendixA.html">Next Chapter</a> ] 
+    </FONT>
+    <BR>
+ Last Update:09/27/2001</P></DIV>
+
+</BODY>
+
+</HTML>

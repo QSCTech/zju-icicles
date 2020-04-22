@@ -1,0 +1,1536 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<HTML>
+<!--
+This document was converted from RTF source: 
+By rtftohtml 4.19
+See http://www.sunpack.com/RTF
+Filename:C:\TEMP\TicV2\html\TicV2.rtf
+Application Directory:C:\TOOLS\RTF2HTML\
+Subject:
+Author:Bruce Eckel
+Operator:Bruce Eckel
+Document Comments:
+Version Comments:
+Comments:
+Keywords:
+Translation Date:08/19/2001
+Translation Time:14:24:57
+Translation Platform:Win32
+Number of Output files:19
+This File:C:\TEMP\TicV2\html\Chap06.htm
+SplitDepth=1
+SkipNavPanel=1
+SkipLeadingToc=1
+SkipTrailingToc=1
+GenContents=1
+GenFrames=1
+GenIndex=1
+-->
+<HEAD lang="en"><META http-equiv="Content-Type" content="text/html">
+<TITLE>6: Templates in depth</TITLE>
+</HEAD>
+
+<BODY  BGCOLOR="#FFFFFF"><DIV ALIGN="CENTER">
+  <a href="http://www.MindView.net">
+  <img src="mindview.gif" alt="MindView Inc." BORDER = "0"></a>
+  <CENTER>
+    <FONT FACE="Verdana, Tahoma, Arial, Helvetica, Sans" size = "-1">
+    [ <a href="README.txt">Viewing Hints</a> ]
+    [ <a href="RevisionHistory.htm">Revision History</a> ]
+    [ <a href="http://www.mindview.net/Books/TICPP/ThinkingInCPP2e.html">Book Home Page</a> ]
+    [ <a href="http://www.mindview.net/Etc/MailingList.html">Free Newsletter</a> ] <br>
+    [ <a href="http://www.mindview.net/Seminars">Seminars</a> ]
+    [ <a href="http://www.mindview.net/CDs">Seminars on CD ROM</a> ]
+    [ <a href="http://www.mindview.net/Services">Consulting</a> ]
+    </FONT>
+  <H2><FONT FACE="Verdana, Tahoma, Arial, Helvetica, Sans">
+  Thinking in C++, 2nd edition, Volume 2<br>
+  <small>Revision 4.0</small></FONT></H2>
+  <H3><FONT FACE="Verdana, Tahoma, Arial, Helvetica, Sans">
+  by Bruce Eckel &amp; Chuck Allison<br>&copy;2001 MindView, Inc.</FONT></H3>
+  
+    <FONT FACE="Verdana, Tahoma, Arial, Helvetica, Sans" size = "-1">
+     [ <a href="Chap05.htm">Previous Chapter</a> ] 
+    
+    [ <a href="SimpCont.htm">Short TOC</a> ] 
+    [ <a href="Contents.htm">Table of Contents</a> ] 
+  
+        [ <a href="DocIdx.htm">Index</a> ]
+        
+     [ <a href="Chap07.htm">Next Chapter</a> ] 
+    </FONT>
+    
+  </CENTER>
+  </P></DIV><A NAME="_Toc305593285"></A><A NAME="_Toc305628757"></A><A NAME="_Toc312374096"></A><A NAME="_Toc519041974"></A><A NAME="Heading151"></A><FONT FACE = "Verdana, Tahoma, Arial, Helvetica, Sans"><H1 ALIGN="LEFT">
+6: Templates in depth</H1></FONT>
+<DIV ALIGN="LEFT"><P><FONT FACE="Verdana" SIZE=4><a NAME="TIC2V2_CHAPTER6_I1"></a>
+Intro
+stuff</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">intro
+stuff
+[&nbsp;<a HREF="mailto:cda@freshsources.com?subject=[TICV2] TIC2V2_CHAPTER6_I1">Comment</a>&nbsp;]
+
+<a NAME="TIC2V2_CHAPTER6_I2"></a>
+</FONT><A NAME="AdvancedTemplatesChapter"></A><A NAME="_Toc519041975"></A><BR></P></DIV>
+<A NAME="Heading152"></A><FONT FACE = "Verdana, Tahoma, Arial, Helvetica, Sans"><H2 ALIGN="LEFT">
+Nontype template arguments</H2></FONT>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Here is a random number generator class
+that always produces a unique number and overloads <B>operator(&#160;)</B> to
+produce a familiar function-call
+syntax:
+[&nbsp;<a HREF="mailto:cda@freshsources.com?subject=[TICV2] TIC2V2_CHAPTER6_I2">Comment</a>&nbsp;]
+
+<a NAME="TIC2V2_CHAPTER6_I3"></a>
+</FONT><BR></P></DIV>
+
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE><font color=#009900>//: C06:Urand.h</font>
+<font color=#009900>// Unique random number generator</font>
+#ifndef URAND_H
+#define URAND_H
+#include &lt;cstdlib&gt;
+#include &lt;ctime&gt;
+
+<font color=#0000ff>template</font>&lt;<font color=#0000ff>int</font> upperBound&gt;
+<font color=#0000ff>class</font> Urand {
+  <font color=#0000ff>int</font> used[upperBound];
+  <font color=#0000ff>bool</font> recycle;
+<font color=#0000ff>public</font>:
+  Urand(<font color=#0000ff>bool</font> recycle = <font color=#0000ff>false</font>);
+  <font color=#0000ff>int</font> <font color=#0000ff>operator</font>()(); <font color=#009900>// The "generator" function</font>
+};
+
+<font color=#0000ff>template</font>&lt;<font color=#0000ff>int</font> upperBound&gt;
+Urand&lt;upperBound&gt;::Urand(<font color=#0000ff>bool</font> recyc) 
+  : recycle(recyc) {
+  memset(used, 0, upperBound * <font color=#0000ff>sizeof</font>(<font color=#0000ff>int</font>));
+  srand(time(0)); <font color=#009900>// Seed random number generator</font>
+}
+
+<font color=#0000ff>template</font>&lt;<font color=#0000ff>int</font> upperBound&gt;
+<font color=#0000ff>int</font> Urand&lt;upperBound&gt;::<font color=#0000ff>operator</font>()() {
+  <font color=#0000ff>if</font>(!memchr(used, 0, upperBound)) {
+    <font color=#0000ff>if</font>(recycle)
+      memset(used,0,<font color=#0000ff>sizeof</font>(used) * <font color=#0000ff>sizeof</font>(<font color=#0000ff>int</font>));
+    <font color=#0000ff>else</font>
+      <font color=#0000ff>return</font> -1; <font color=#009900>// No more spaces left</font>
+  }
+  <font color=#0000ff>int</font> newval;
+  <font color=#0000ff>while</font>(used[newval = rand() % upperBound])
+    ; <font color=#009900>// Until unique value is found</font>
+  used[newval]++; <font color=#009900>// Set flag</font>
+  <font color=#0000ff>return</font> newval;
+}
+#endif <font color=#009900>// URAND_H ///:~</font></PRE></FONT></BLOCKQUOTE>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">The uniqueness of <B>Urand</B> is
+produced by keeping a map of all the numbers possible in the random space (the
+upper bound is set with the template argument) and marking each one off as
+it&#8217;s used. The optional constructor argument allows you to reuse the
+numbers once they&#8217;re all used up. Notice that this implementation is
+optimized for speed by allocating the entire map, regardless of how many numbers
+you&#8217;re going to need. If you want to optimize for size, you can change the
+underlying implementation so it allocates storage for the map dynamically and
+puts the random numbers themselves in the map rather than flags. Notice that
+this change in implementation will not affect any client
+code.
+[&nbsp;<a HREF="mailto:cda@freshsources.com?subject=[TICV2] TIC2V2_CHAPTER6_I3">Comment</a>&nbsp;]
+
+<a NAME="TIC2V2_CHAPTER6_I4"></a>
+</FONT><A NAME="_Toc519041976"></A><BR></P></DIV>
+<A NAME="Heading153"></A><FONT FACE = "Verdana, Tahoma, Arial, Helvetica, Sans"><H2 ALIGN="LEFT">
+Default template arguments<A NAME="_Toc519041977"></A></H2></FONT>
+<A NAME="Heading154"></A><FONT FACE = "Verdana, Tahoma, Arial, Helvetica, Sans"><H2 ALIGN="LEFT">
+The typename keyword</H2></FONT>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Consider the
+following:
+[&nbsp;<a HREF="mailto:cda@freshsources.com?subject=[TICV2] TIC2V2_CHAPTER6_I4">Comment</a>&nbsp;]
+
+<a NAME="TIC2V2_CHAPTER6_I5"></a>
+</FONT><BR></P></DIV>
+
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE><font color=#009900>//: C06:TypenamedID.cpp</font>
+<font color=#009900>// Using 'typename' to say it's a type, </font>
+<font color=#009900>// and not something other than a type</font>
+<font color=#009900>//{L} ../TestSuite/Test</font>
+
+<font color=#0000ff>template</font>&lt;<font color=#0000ff>class</font> T&gt; <font color=#0000ff>class</font> X {
+  <font color=#009900>// Without typename, you should get an error:</font>
+  <font color=#0000ff>typename</font> T::id i;
+<font color=#0000ff>public</font>:
+  <font color=#0000ff>void</font> f() { i.g(); }
+};
+
+<font color=#0000ff>class</font> Y {
+<font color=#0000ff>public</font>:
+  <font color=#0000ff>class</font> id {
+  <font color=#0000ff>public</font>:
+    <font color=#0000ff>void</font> g() {}
+  };
+};
+
+<font color=#0000ff>int</font> main() {
+  Y y;
+  X&lt;Y&gt; xy;
+  xy.f();
+} <font color=#009900>///:~</font></PRE></FONT></BLOCKQUOTE>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">The template definition assumes that the
+class <B>T</B> that you hand it must have a nested identifier of some kind
+called <B>id</B>. But <B>id</B> could be a member object of <B>T</B>, in which
+case you can perform operations on <B>id </B>directly, but you couldn&#8217;t
+&#8220;create an object&#8221; of &#8220;the type <B>id</B>.&#8221; However,
+that&#8217;s exactly what is happening here: the identifier <B>id </B>is being
+treated as if it were actually a nested type inside <B>T</B>. In the case of
+class <B>Y</B>, <B>id</B> is in fact a nested type, but (without the <B>typename
+</B>keyword) the compiler can&#8217;t know that when it&#8217;s compiling
+<B>X</B>.
+[&nbsp;<a HREF="mailto:cda@freshsources.com?subject=[TICV2] TIC2V2_CHAPTER6_I5">Comment</a>&nbsp;]
+
+<a NAME="TIC2V2_CHAPTER6_I6"></a>
+</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">If, when it sees an identifier in a
+template, the compiler has the option of treating that identifier as a type or
+as something other than a type, then it will assume that the identifier refers
+to something other than a type. That is, it will assume that the identifier
+refers to an object (including variables of primitive types), an enumeration or
+something similar. However, it will not &#8211; cannot &#8211; just assume that
+it is a type. Thus, the compiler gets confused when we pretend it&#8217;s a
+type.
+[&nbsp;<a HREF="mailto:cda@freshsources.com?subject=[TICV2] TIC2V2_CHAPTER6_I6">Comment</a>&nbsp;]
+
+<a NAME="TIC2V2_CHAPTER6_I7"></a>
+</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">The <B>typename</B> keyword tells the
+compiler to interpret a particular name as a type. It must be used for a name
+that:
+[&nbsp;<a HREF="mailto:cda@freshsources.com?subject=[TICV2] TIC2V2_CHAPTER6_I7">Comment</a>&nbsp;]
+
+<a NAME="TIC2V2_CHAPTER6_I8"></a>
+</FONT><BR></P></DIV>
+<OL>
+<LI><FONT FACE="Verdana">	</FONT><FONT FACE="Georgia">Is a qualified name, one
+that is nested within another
+type.</FONT><LI><FONT FACE="Verdana">	</FONT><FONT FACE="Georgia">Depends on a
+template argument. That is, a template argument is somehow involved in the name.
+The template argument causes the ambiguity when the compiler makes the simplest
+assumption: that the name refers to something other than a
+type.</FONT></OL><DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Because the default
+behavior of the compiler is to assume that a name that fits the above two points
+is not a type, you must use <B>typename</B> even in places where you think that
+the compiler ought to be able to figure out the right way to interpret the name
+on its own. In the above example, when the compiler sees <B>T::id</B>, it knows
+(because of the <B>typename</B> keyword) that <B>id</B> refers to a nested type
+and thus it can create an object of that
+type.
+[&nbsp;<a HREF="mailto:cda@freshsources.com?subject=[TICV2] TIC2V2_CHAPTER6_I8">Comment</a>&nbsp;]
+
+<a NAME="TIC2V2_CHAPTER6_I9"></a>
+</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">The short version of the rule is: if your
+type is a qualified name that involves a template argument, you must use
+<B>typename</B>.
+[&nbsp;<a HREF="mailto:cda@freshsources.com?subject=[TICV2] TIC2V2_CHAPTER6_I9">Comment</a>&nbsp;]
+
+<a NAME="TIC2V2_CHAPTER6_I10"></a>
+</FONT><A NAME="_Toc519041978"></A><BR></P></DIV>
+<A NAME="Heading155"></A><FONT FACE = "Verdana, Tahoma, Arial, Helvetica, Sans"><H3 ALIGN="LEFT">
+Typedefing a typename</H3></FONT>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">The <B>typename</B> keyword does not
+automatically create a <B>typedef</B>. A line which
+reads:
+[&nbsp;<a HREF="mailto:cda@freshsources.com?subject=[TICV2] TIC2V2_CHAPTER6_I10">Comment</a>&nbsp;]
+
+<a NAME="TIC2V2_CHAPTER6_I11"></a>
+</FONT><BR></P></DIV>
+
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE><font color=#0000ff>typename</font> Seq::iterator It;</PRE></FONT></BLOCKQUOTE>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">causes a variable to be declared of type
+<B>Seq::iterator</B>. If you mean to make a <B>typedef</B>, you must
+say:
+[&nbsp;<a HREF="mailto:cda@freshsources.com?subject=[TICV2] TIC2V2_CHAPTER6_I11">Comment</a>&nbsp;]
+
+<a NAME="TIC2V2_CHAPTER6_I12"></a>
+</FONT><BR></P></DIV>
+
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE><font color=#0000ff>typedef</font> <font color=#0000ff>typename</font> Seq::iterator It;</PRE></FONT></BLOCKQUOTE><DIV ALIGN="LEFT"><P><A NAME="_Toc519041979"></A><BR></P></DIV>
+<A NAME="Heading156"></A><FONT FACE = "Verdana, Tahoma, Arial, Helvetica, Sans"><H3 ALIGN="LEFT">
+Using typename instead of class</H3></FONT>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">With the introduction of the
+<B>typename</B> keyword, you now have the option of using <B>typename</B>
+instead of <B>class</B> in the template argument list of a template definition.
+This may produce code which is
+clearer:
+[&nbsp;<a HREF="mailto:cda@freshsources.com?subject=[TICV2] TIC2V2_CHAPTER6_I12">Comment</a>&nbsp;]
+
+<a NAME="TIC2V2_CHAPTER6_I13"></a>
+</FONT><BR></P></DIV>
+
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE><font color=#009900>//: C06:UsingTypename.cpp</font>
+<font color=#009900>// Using 'typename' in the template argument list</font>
+<font color=#009900>//{L} ../TestSuite/Test</font>
+
+<font color=#0000ff>template</font>&lt;<font color=#0000ff>typename</font> T&gt; <font color=#0000ff>class</font> X { }; 
+
+<font color=#0000ff>int</font> main() {
+  X&lt;<font color=#0000ff>int</font>&gt; x;
+} <font color=#009900>///:~</font></PRE></FONT></BLOCKQUOTE>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">You&#8217;ll probably see a great deal of
+code which does not use <B>typename</B> in this fashion, since the keyword was
+added to the language a relatively long time after templates were
+introduced.
+[&nbsp;<a HREF="mailto:cda@freshsources.com?subject=[TICV2] TIC2V2_CHAPTER6_I13">Comment</a>&nbsp;]
+
+<a NAME="TIC2V2_CHAPTER6_I14"></a>
+</FONT><A NAME="_Toc305593282"></A><A NAME="_Toc305628754"></A><A NAME="_Toc312374089"></A><A NAME="_Toc519041980"></A><BR></P></DIV>
+<A NAME="Heading157"></A><FONT FACE = "Verdana, Tahoma, Arial, Helvetica, Sans"><H2 ALIGN="LEFT">
+Function templates<BR><A NAME="Index466"></A><A NAME="Index467"></A></H2></FONT>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">A class template describes an infinite
+set of classes, and the most common place you&#8217;ll see templates is with
+classes. However, C++ also supports the concept of an infinite set of functions,
+which is sometimes useful. The syntax is virtually identical, except that you
+create a function instead of a
+class.
+[&nbsp;<a HREF="mailto:cda@freshsources.com?subject=[TICV2] TIC2V2_CHAPTER6_I14">Comment</a>&nbsp;]
+
+<a NAME="TIC2V2_CHAPTER6_I15"></a>
+</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">The clue that you should create a
+function template is, as you might suspect, if you find you&#8217;re creating a
+number of functions that look identical except that they are dealing with
+different types. The classic example of a function template is a sorting
+function.</FONT><A NAME="fnB15" HREF="#fn15">[15]</A><FONT FACE="Georgia">
+However, a function template is useful in all sorts of places, as demonstrated
+in the first example that follows. The second example shows a function template
+used with containers and iterators.
+
+[&nbsp;<a HREF="mailto:cda@freshsources.com?subject=[TICV2] TIC2V2_CHAPTER6_I15">Comment</a>&nbsp;]
+
+<a NAME="TIC2V2_CHAPTER6_I16"></a>
+</FONT><A NAME="_Toc312374090"></A><A NAME="_Toc519041981"></A><BR></P></DIV>
+<A NAME="Heading158"></A><FONT FACE = "Verdana, Tahoma, Arial, Helvetica, Sans"><H3 ALIGN="LEFT">
+A string conversion system</H3></FONT>
+
+
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE><font color=#009900>//: C06:stringConv.h</font>
+<font color=#009900>// Chuck Allison's string converter</font>
+#ifndef STRINGCONV_H
+#define STRINGCONV_H
+#include &lt;string&gt;
+#include &lt;sstream&gt;
+
+<font color=#0000ff>template</font>&lt;<font color=#0000ff>typename</font> T&gt;
+T fromString(<font color=#0000ff>const</font> std::string&amp; s) {
+  std::istringstream is(s);
+  T t;
+  is &gt;&gt; t;
+  <font color=#0000ff>return</font> t;
+}
+
+<font color=#0000ff>template</font>&lt;<font color=#0000ff>typename</font> T&gt;
+std::string toString(<font color=#0000ff>const</font> T&amp; t) {
+  std::ostringstream s;
+  s &lt;&lt; t;
+  <font color=#0000ff>return</font> s.str();
+}
+#endif <font color=#009900>// STRINGCONV_H ///:~</font></PRE></FONT></BLOCKQUOTE>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Here&#8217;s a test program, that
+includes the use of the Standard Library <B>complex</B> number
+type:
+[&nbsp;<a HREF="mailto:cda@freshsources.com?subject=[TICV2] TIC2V2_CHAPTER6_I16">Comment</a>&nbsp;]
+
+<a NAME="TIC2V2_CHAPTER6_I17"></a>
+</FONT><BR></P></DIV>
+
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE><font color=#009900>//: C06:stringConvTest.cpp</font>
+<font color=#009900>//{L} ../TestSuite/Test</font>
+<font color=#009900>//{-bor} Core dumps on execution</font>
+<font color=#009900>//{-msc} Core dumps on execution</font>
+#include <font color=#004488>"stringConv.h"</font>
+#include &lt;iostream&gt;
+#include &lt;complex&gt;
+<font color=#0000ff>using</font> <font color=#0000ff>namespace</font> std;
+
+<font color=#0000ff>int</font> main() {
+  <font color=#0000ff>int</font> i = 1234;
+  cout &lt;&lt; <font color=#004488>"i == \"</font><font color=#004488>" &lt;&lt; toString(i) &lt;&lt; "</font>\<font color=#004488>"\n"</font>;
+  <font color=#0000ff>float</font> x = 567.89;
+  cout &lt;&lt; <font color=#004488>"x == \"</font><font color=#004488>" &lt;&lt; toString(x) &lt;&lt; "</font>\<font color=#004488>"\n"</font>;
+  complex&lt;<font color=#0000ff>float</font>&gt; c(1.0, 2.0);
+  cout &lt;&lt; <font color=#004488>"c == \"</font><font color=#004488>" &lt;&lt; toString(c) &lt;&lt; "</font>\<font color=#004488>"\n"</font>;
+  cout &lt;&lt; endl;
+  
+  i = fromString&lt;<font color=#0000ff>int</font>&gt;(string(<font color=#004488>"1234"</font>));
+  cout &lt;&lt; <font color=#004488>"i == "</font> &lt;&lt; i &lt;&lt; endl;
+  x = fromString&lt;<font color=#0000ff>float</font>&gt;(string(<font color=#004488>"567.89"</font>));
+  cout &lt;&lt; <font color=#004488>"x == "</font> &lt;&lt; x &lt;&lt; endl;
+  c = fromString&lt; complex&lt;<font color=#0000ff>float</font>&gt; &gt;(string(<font color=#004488>"(1.0,2.0)"</font>));
+  cout &lt;&lt; <font color=#004488>"c == "</font> &lt;&lt; c &lt;&lt; endl;
+} <font color=#009900>///:~</font></PRE></FONT></BLOCKQUOTE>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">The output is what you&#8217;d
+expect:
+[&nbsp;<a HREF="mailto:cda@freshsources.com?subject=[TICV2] TIC2V2_CHAPTER6_I17">Comment</a>&nbsp;]
+
+<a NAME="TIC2V2_CHAPTER6_I18"></a>
+</FONT><BR></P></DIV>
+
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE>i == <font color=#004488>"1234"</font>
+x == <font color=#004488>"567.89"</font>
+c == <font color=#004488>"(1,2)"</font>
+
+i == 1234
+x == 567.89
+c == (1,2)</PRE></FONT></BLOCKQUOTE>
+<DIV ALIGN="LEFT"><P><A NAME="_Toc519041982"></A><BR></P></DIV>
+<A NAME="Heading159"></A><FONT FACE = "Verdana, Tahoma, Arial, Helvetica, Sans"><H3 ALIGN="LEFT">
+A memory allocation system<BR><A NAME="Index468"></A></H3></FONT>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">There are a few things you can do to make
+the raw memory allocation routines <B>malloc(&#160;)<A NAME="Index469"></A></B>,
+<B>calloc(&#160;)<A NAME="Index470"></A></B> and
+<B>realloc(&#160;)<A NAME="Index471"></A></B> safer. The following function
+template produces one function <B>getmem(&#160;)</B> that either allocates a new
+piece of memory or resizes an existing piece (like <B>realloc(&#160;)</B>). In
+addition, it zeroes only the new memory, and it checks to see that the memory is
+successfully allocated. Also, you only tell it the number of elements of the
+type you want, not the number of bytes, so the possibility of a programmer error
+is reduced. Here&#8217;s the header
+file:
+[&nbsp;<a HREF="mailto:cda@freshsources.com?subject=[TICV2] TIC2V2_CHAPTER6_I18">Comment</a>&nbsp;]
+
+<a NAME="TIC2V2_CHAPTER6_I19"></a>
+</FONT><BR></P></DIV>
+
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE><font color=#009900>//: C06:Getmem.h</font>
+<font color=#009900>// Function template for memory</font>
+#ifndef GETMEM_H
+#define GETMEM_H
+#include <font color=#004488>"..</font><font color=#004488>/require.h"</font>
+#include &lt;cstdlib&gt;
+#include &lt;cstring&gt;
+
+<font color=#0000ff>template</font>&lt;<font color=#0000ff>class</font> T&gt;
+<font color=#0000ff>void</font> getmem(T*&amp; oldmem, <font color=#0000ff>int</font> elems) {
+  <font color=#0000ff>typedef</font> <font color=#0000ff>int</font> cntr; <font color=#009900>// Type of element counter</font>
+  <font color=#0000ff>const</font> <font color=#0000ff>int</font> csz = <font color=#0000ff>sizeof</font>(cntr); <font color=#009900>// And size</font>
+  <font color=#0000ff>const</font> <font color=#0000ff>int</font> tsz = <font color=#0000ff>sizeof</font>(T);
+  <font color=#0000ff>if</font>(elems == 0) {
+    free(&amp;(((cntr*)oldmem)[-1]));
+    <font color=#0000ff>return</font>;
+  }
+  T* p = oldmem;
+  cntr oldcount = 0;
+  <font color=#0000ff>if</font>(p) { <font color=#009900>// Previously allocated memory</font>
+    <font color=#009900>// Old style:</font>
+    <font color=#009900>// ((cntr*)p)--; // Back up by one cntr</font>
+    <font color=#009900>// New style:</font>
+    cntr* tmp = <font color=#0000ff>reinterpret_cast</font>&lt;cntr*&gt;(p);
+    p = <font color=#0000ff>reinterpret_cast</font>&lt;T*&gt;(--tmp);
+    oldcount = *(cntr*)p; <font color=#009900>// Previous # elems</font>
+  }
+  T* m = (T*)realloc(p, elems * tsz + csz);
+  require(m != 0);
+  *((cntr*)m) = elems; <font color=#009900>// Keep track of count</font>
+  <font color=#0000ff>const</font> cntr increment = elems - oldcount;
+  <font color=#0000ff>if</font>(increment &gt; 0) {
+    <font color=#009900>// Starting address of data:</font>
+    <font color=#0000ff>long</font> startadr = (<font color=#0000ff>long</font>)&amp;(m[oldcount]);
+    startadr += csz;
+    <font color=#009900>// Zero the additional new memory:</font>
+    memset((<font color=#0000ff>void</font>*)startadr, 0, increment * tsz);
+  }
+  <font color=#009900>// Return the address beyond the count:</font>
+  oldmem = (T*)&amp;(((cntr*)m)[1]);
+}
+
+<font color=#0000ff>template</font>&lt;<font color=#0000ff>class</font> T&gt;
+<font color=#0000ff>inline</font> <font color=#0000ff>void</font> freemem(T * m) { getmem(m, 0); }
+
+#endif <font color=#009900>// GETMEM_H ///:~</font></PRE></FONT></BLOCKQUOTE>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">To be able to zero only the new memory, a
+counter indicating the number of elements allocated is attached to the beginning
+of each block of memory. The <B>typedef cntr</B> is the type of this counter; it
+allows you to change from <B>int</B> to <B>long</B> if you need to handle larger
+chunks (other issues come up when using <B>long</B>, however &#8211; these are
+seen in compiler
+warnings).
+[&nbsp;<a HREF="mailto:cda@freshsources.com?subject=[TICV2] TIC2V2_CHAPTER6_I19">Comment</a>&nbsp;]
+
+<a NAME="TIC2V2_CHAPTER6_I20"></a>
+</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">A pointer reference is used for the
+argument <B>oldmem</B> because the outside variable (a pointer) must be changed
+to point to the new block of memory. <B>oldmem</B> must point to zero (to
+allocate new memory) or to an existing block of memory <I>that was created with
+</I><B>getmem(&#160;)</B>. This function assumes you&#8217;re using it properly,
+but for debugging you could add an additional tag next to the counter containing
+an identifier, and check that identifier in <B>getmem(&#160;)</B> to help
+discover incorrect calls.
+[&nbsp;<a HREF="mailto:cda@freshsources.com?subject=[TICV2] TIC2V2_CHAPTER6_I20">Comment</a>&nbsp;]
+
+<a NAME="TIC2V2_CHAPTER6_I21"></a>
+</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">If the number of elements requested is
+zero, the storage is freed. There&#8217;s an additional function template
+<B>freemem(&#160;)</B> that aliases this
+behavior.
+[&nbsp;<a HREF="mailto:cda@freshsources.com?subject=[TICV2] TIC2V2_CHAPTER6_I21">Comment</a>&nbsp;]
+
+<a NAME="TIC2V2_CHAPTER6_I22"></a>
+</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">You&#8217;ll notice that
+<B>getmem(&#160;)</B> is very low-level &#8211; there are lots of casts and byte
+manipulations. For example, the <B>oldmem</B> pointer doesn&#8217;t point to the
+true beginning of the memory block, but just <I>past</I> the beginning to allow
+for the counter. So to <B>free(&#160;)</B> the memory block,
+<B>getmem(&#160;)</B> must back up the pointer by the amount of space occupied
+by <B>cntr</B>. Because <B>oldmem</B> is a <B>T*</B>, it must first be cast to a
+<B>cntr*</B>, then indexed backwards one place. Finally the address of that
+location is produced for <B>free(&#160;)</B> in the
+expression:
+[&nbsp;<a HREF="mailto:cda@freshsources.com?subject=[TICV2] TIC2V2_CHAPTER6_I22">Comment</a>&nbsp;]
+
+<a NAME="TIC2V2_CHAPTER6_I23"></a>
+</FONT><BR></P></DIV>
+
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE>free(&amp;(((cntr*)oldmem)[-1]));</PRE></FONT></BLOCKQUOTE>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Similarly, if this is previously
+allocated memory, <B>getmem(&#160;)</B> must back up by one <B>cntr</B> size to
+get the true starting address of the memory, and then extract the previous
+number of elements. The true starting address is required inside
+<B>realloc(&#160;)</B>. If the storage size is being increased, then the
+difference between the new number of elements and the old number is used to
+calculate the starting address and the amount of memory to zero in
+<B>memset(&#160;)</B>. Finally, the address beyond the count is produced to
+assign to <B>oldmem</B> in the
+statement:
+[&nbsp;<a HREF="mailto:cda@freshsources.com?subject=[TICV2] TIC2V2_CHAPTER6_I23">Comment</a>&nbsp;]
+
+<a NAME="TIC2V2_CHAPTER6_I24"></a>
+</FONT><BR></P></DIV>
+
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE>oldmem = (T*)&amp;(((cntr*)m)[1]);</PRE></FONT></BLOCKQUOTE>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Again, because <B>oldmem</B> is a
+reference to a pointer, this has the effect of changing the outside argument
+passed to
+<B>getmem(&#160;)</B>.
+[&nbsp;<a HREF="mailto:cda@freshsources.com?subject=[TICV2] TIC2V2_CHAPTER6_I24">Comment</a>&nbsp;]
+
+<a NAME="TIC2V2_CHAPTER6_I25"></a>
+</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Here&#8217;s a program to test
+<B>getmem(&#160;)</B>. It allocates storage and fills it up with values, then
+increases that amount of
+storage:
+[&nbsp;<a HREF="mailto:cda@freshsources.com?subject=[TICV2] TIC2V2_CHAPTER6_I25">Comment</a>&nbsp;]
+
+<a NAME="TIC2V2_CHAPTER6_I26"></a>
+</FONT><BR></P></DIV>
+
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE><font color=#009900>//: C06:Getmem.cpp</font>
+<font color=#009900>// Test memory function template</font>
+<font color=#009900>//{L} ../TestSuite/Test</font>
+#include <font color=#004488>"Getmem.h"</font>
+#include &lt;iostream&gt;
+<font color=#0000ff>using</font> <font color=#0000ff>namespace</font> std;
+
+<font color=#0000ff>int</font> main() {
+  <font color=#0000ff>int</font>* p = 0;
+  getmem(p, 10);
+  <font color=#0000ff>for</font>(<font color=#0000ff>int</font> i = 0; i &lt; 10; i++) {
+    cout &lt;&lt; p[i] &lt;&lt; ' ';
+    p[i] = i;
+  }
+  cout &lt;&lt; '\n';
+  getmem(p, 20);
+  <font color=#0000ff>for</font>(<font color=#0000ff>int</font> j = 0; j &lt; 20; j++) {
+    cout &lt;&lt; p[j] &lt;&lt; ' ';
+    p[j] = j;
+  }
+  cout &lt;&lt; '\n';
+  getmem(p, 25);
+  <font color=#0000ff>for</font>(<font color=#0000ff>int</font> k = 0; k &lt; 25; k++)
+    cout &lt;&lt; p[k] &lt;&lt; ' ';
+  freemem(p);
+  cout &lt;&lt; '\n';
+
+  <font color=#0000ff>float</font>* f = 0;
+  getmem(f, 3);
+  <font color=#0000ff>for</font>(<font color=#0000ff>int</font> u = 0; u &lt; 3; u++) {
+    cout &lt;&lt; f[u] &lt;&lt; ' ';
+    f[u] = u + 3.14159;
+  }
+  cout &lt;&lt; '\n';
+  getmem(f, 6);
+  <font color=#0000ff>for</font>(<font color=#0000ff>int</font> v = 0; v &lt; 6; v++)
+    cout &lt;&lt; f[v] &lt;&lt; ' ';
+  freemem(f);
+} <font color=#009900>///:~</font></PRE></FONT></BLOCKQUOTE>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">After each <B>getmem(&#160;)</B>, the
+values in memory are printed out to show that the new ones have been zeroed.
+
+[&nbsp;<a HREF="mailto:cda@freshsources.com?subject=[TICV2] TIC2V2_CHAPTER6_I26">Comment</a>&nbsp;]
+
+<a NAME="TIC2V2_CHAPTER6_I27"></a>
+</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Notice that a different version of
+<B>getmem(&#160;)</B> is instantiated for the <B>int</B> and <B>float</B>
+pointers. You might think that because all the manipulations are so low-level
+you could get away with a single non-template function and pass a
+<B>void*&amp;</B> as <B>oldmem</B>. This doesn&#8217;t work because then the
+compiler must do a conversion from your type to a <B>void*</B>. To take the
+reference, it makes a temporary. This produces an error because then
+you&#8217;re modifying the temporary pointer, not the pointer you want to
+change. So the function template is necessary to produce the exact type for the
+argument.
+[&nbsp;<a HREF="mailto:cda@freshsources.com?subject=[TICV2] TIC2V2_CHAPTER6_I27">Comment</a>&nbsp;]
+
+<a NAME="TIC2V2_CHAPTER6_I28"></a>
+</FONT><A NAME="_Toc519041983"></A><BR></P></DIV>
+<A NAME="Heading160"></A><FONT FACE = "Verdana, Tahoma, Arial, Helvetica, Sans"><H2 ALIGN="LEFT">
+Type induction in function templates </H2></FONT>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">As a simple but very useful example,
+consider the following:
+[&nbsp;<a HREF="mailto:cda@freshsources.com?subject=[TICV2] TIC2V2_CHAPTER6_I28">Comment</a>&nbsp;]
+
+<a NAME="TIC2V2_CHAPTER6_I29"></a>
+</FONT><BR></P></DIV>
+
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE><font color=#009900>//: :arraySize.h</font>
+<font color=#009900>// Uses template type induction to </font>
+<font color=#009900>// discover the size of an array</font>
+#ifndef ARRAYSIZE_H
+#define ARRAYSIZE_H
+
+<font color=#0000ff>template</font>&lt;<font color=#0000ff>typename</font> T, <font color=#0000ff>int</font> size&gt;
+<font color=#0000ff>int</font> asz(T (&amp;)[size]) { <font color=#0000ff>return</font> size; }
+
+#endif <font color=#009900>// ARRAYSIZE_H ///:~</font></PRE></FONT></BLOCKQUOTE>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">This actually figures out the size of an
+array as a compile-time constant value, without using any <B>sizeof(&#160;)</B>
+operations! Thus you can have a much more succinct way to calculate the size of
+an array at compile time:
+[&nbsp;<a HREF="mailto:cda@freshsources.com?subject=[TICV2] TIC2V2_CHAPTER6_I29">Comment</a>&nbsp;]
+
+<a NAME="TIC2V2_CHAPTER6_I30"></a>
+</FONT><BR></P></DIV>
+
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE><font color=#009900>//: C06:ArraySize.cpp</font>
+<font color=#009900>//{L} ../TestSuite/Test</font>
+<font color=#009900>//{-msc}</font>
+<font color=#009900>//{-bor}</font>
+<font color=#009900>// The return value of the template function</font>
+<font color=#009900>// asz() is a compile-time constant</font>
+#include <font color=#004488>"..</font><font color=#004488>/arraySize.h"</font>
+
+<font color=#0000ff>int</font> main() {
+  <font color=#0000ff>int</font> a[12], b[20];
+  <font color=#0000ff>const</font> <font color=#0000ff>int</font> sz1 = asz(a);
+  <font color=#0000ff>const</font> <font color=#0000ff>int</font> sz2 = asz(b);
+  <font color=#0000ff>int</font> c[sz1], d[sz2];
+} <font color=#009900>///:~</font></PRE></FONT></BLOCKQUOTE>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Of course, just making a variable of a
+built-in type a <B>const</B> does not guarantee it&#8217;s actually a
+compile-time constant, but if it&#8217;s used to define the size of an array (as
+it is in the last line of <B>main(&#160;)</B>), then it <I>must</I> be a
+compile-time
+constant.
+[&nbsp;<a HREF="mailto:cda@freshsources.com?subject=[TICV2] TIC2V2_CHAPTER6_I30">Comment</a>&nbsp;]
+
+<a NAME="TIC2V2_CHAPTER6_I31"></a>
+</FONT><A NAME="_Toc519041984"></A><BR></P></DIV>
+<A NAME="Heading161"></A><FONT FACE = "Verdana, Tahoma, Arial, Helvetica, Sans"><H2 ALIGN="LEFT">
+Taking the address of a generated function template </H2></FONT>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">There are a number of situations where
+you need to take the address of a function. For example, you may have a function
+that takes an argument of a pointer to another function. Of course it&#8217;s
+possible that this other function might be generated from a template function so
+you need some way to take that kind of
+address</FONT><A NAME="fnB16" HREF="#fn16">[16]</A><FONT FACE="Georgia">:
+[&nbsp;<a HREF="mailto:cda@freshsources.com?subject=[TICV2] TIC2V2_CHAPTER6_I31">Comment</a>&nbsp;]
+
+<a NAME="TIC2V2_CHAPTER6_I32"></a>
+</FONT><BR></P></DIV>
+
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE><font color=#009900>//: C06:TemplateFunctionAddress.cpp</font>
+<font color=#009900>// Taking the address of a function generated</font>
+<font color=#009900>// from a template.</font>
+<font color=#009900>//{L} ../TestSuite/Test</font>
+
+<font color=#0000ff>template</font> &lt;<font color=#0000ff>typename</font> T&gt; <font color=#0000ff>void</font> f(T*) {}
+
+<font color=#0000ff>void</font> h(<font color=#0000ff>void</font> (*pf)(<font color=#0000ff>int</font>*)) {}
+
+<font color=#0000ff>template</font> &lt;<font color=#0000ff>class</font> T&gt; 
+  <font color=#0000ff>void</font> g(<font color=#0000ff>void</font> (*pf)(T*)) {}
+
+<font color=#0000ff>int</font> main() {
+  <font color=#009900>// Full type exposition:</font>
+  h(&amp;f&lt;<font color=#0000ff>int</font>&gt;);
+  <font color=#009900>// Type induction:</font>
+  h(&amp;f);
+  <font color=#009900>// Full type exposition:</font>
+  g&lt;<font color=#0000ff>int</font>&gt;(&amp;f&lt;<font color=#0000ff>int</font>&gt;);
+  <font color=#009900>// Type inductions:</font>
+  g(&amp;f&lt;<font color=#0000ff>int</font>&gt;);
+  g&lt;<font color=#0000ff>int</font>&gt;(&amp;f);
+} <font color=#009900>///:~</font></PRE></FONT></BLOCKQUOTE>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">This example demonstrates a number of
+different issues. First, even though you&#8217;re using templates, the
+signatures must match &#8211; the function <B>h(&#160;)</B> takes a pointer to a
+function that takes an <B>int*</B> and returns <B>void</B>, and that&#8217;s
+what the template <B>f</B> produces. Second, the function that wants the
+function pointer as an argument can itself be a template, as in the case of the
+template <B>g</B>.
+[&nbsp;<a HREF="mailto:cda@freshsources.com?subject=[TICV2] TIC2V2_CHAPTER6_I32">Comment</a>&nbsp;]
+
+<a NAME="TIC2V2_CHAPTER6_I33"></a>
+</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">In <B>main(&#160;)</B> you can see that
+type induction works here, too. The first call to <B>h(&#160;)</B> explicitly
+gives the template argument for <B>f</B>, but since <B>h(&#160;)</B> says that
+it will only take the address of a function that takes an <B>int*</B>, that part
+can be induced by the compiler. With <B>g(&#160;)</B> the situation is even more
+interesting because there are two templates involved. The compiler cannot induce
+the type with nothing to go on, but if either <B>f</B> or <B>g</B> is given
+<B>int</B>, then the rest can be
+induced.
+[&nbsp;<a HREF="mailto:cda@freshsources.com?subject=[TICV2] TIC2V2_CHAPTER6_I33">Comment</a>&nbsp;]
+
+<a NAME="TIC2V2_CHAPTER6_I34"></a>
+</FONT><A NAME="_Toc312374091"></A><A NAME="_Toc519041985"></A><BR></P></DIV>
+<A NAME="Heading162"></A><FONT FACE = "Verdana, Tahoma, Arial, Helvetica, Sans"><H2 ALIGN="LEFT">
+Local classes in templates<A NAME="_Toc519041986"></A></H2></FONT>
+<A NAME="Heading163"></A><FONT FACE = "Verdana, Tahoma, Arial, Helvetica, Sans"><H2 ALIGN="LEFT">
+Applying a function to an STL
+sequence<BR><A NAME="Index472"></A><A NAME="Index473"></A></H2></FONT>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Suppose you want to take an STL sequence
+container (which you&#8217;ll learn more about in subsequent chapters; for now
+we can just use the familiar <B>vector</B>) and apply a function to all the
+objects it contains. Because a <B>vector</B> can contain any type of object, you
+need a function that works with any type of <B>vector</B> and any type of object
+it contains:
+[&nbsp;<a HREF="mailto:cda@freshsources.com?subject=[TICV2] TIC2V2_CHAPTER6_I34">Comment</a>&nbsp;]
+
+<a NAME="TIC2V2_CHAPTER6_I35"></a>
+</FONT><BR></P></DIV>
+
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE><font color=#009900>//: C06:applySequence.h</font>
+<font color=#009900>// Apply a function to an STL sequence container</font>
+
+<font color=#009900>// 0 arguments, any type of return value:</font>
+<font color=#0000ff>template</font>&lt;<font color=#0000ff>class</font> Seq, <font color=#0000ff>class</font> T, <font color=#0000ff>class</font> R&gt;
+<font color=#0000ff>void</font> apply(Seq&amp; sq, R (T::*f)()) {
+  <font color=#0000ff>typename</font> Seq::iterator it = sq.begin();
+  <font color=#0000ff>while</font>(it != sq.end()) {
+    ((*it)-&gt;*f)();
+    it++;
+  }
+}
+
+<font color=#009900>// 1 argument, any type of return value:</font>
+<font color=#0000ff>template</font>&lt;<font color=#0000ff>class</font> Seq, <font color=#0000ff>class</font> T, <font color=#0000ff>class</font> R, <font color=#0000ff>class</font> A&gt;
+<font color=#0000ff>void</font> apply(Seq&amp; sq, R(T::*f)(A), A a) {
+  <font color=#0000ff>typename</font> Seq::iterator it = sq.begin();
+  <font color=#0000ff>while</font>(it != sq.end()) {
+    ((*it)-&gt;*f)(a);
+    it++;
+  }
+}
+
+<font color=#009900>// 2 arguments, any type of return value:</font>
+<font color=#0000ff>template</font>&lt;<font color=#0000ff>class</font> Seq, <font color=#0000ff>class</font> T, <font color=#0000ff>class</font> R, 
+         <font color=#0000ff>class</font> A1, <font color=#0000ff>class</font> A2&gt;
+<font color=#0000ff>void</font> apply(Seq&amp; sq, R(T::*f)(A1, A2),
+    A1 a1, A2 a2) {
+  <font color=#0000ff>typename</font> Seq::iterator it = sq.begin();
+  <font color=#0000ff>while</font>(it != sq.end()) {
+    ((*it)-&gt;*f)(a1, a2);
+    it++;
+  }
+}
+<font color=#009900>// Etc., to handle maximum likely arguments ///:~</font></PRE></FONT></BLOCKQUOTE>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">The <B>apply(&#160;) </B>function
+template takes a reference to the container class and a pointer-to-member for a
+member function of the objects contained in the class. It uses an iterator to
+move through the <B>Stack</B> and apply the function to every object. If
+you&#8217;ve (understandably) forgotten the
+pointer-to-member<A NAME="Index474"></A> syntax, you can refresh your memory at
+the end of Chapter XX.
+[&nbsp;<a HREF="mailto:cda@freshsources.com?subject=[TICV2] TIC2V2_CHAPTER6_I35">Comment</a>&nbsp;]
+
+<a NAME="TIC2V2_CHAPTER6_I36"></a>
+</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Notice that there are no STL header files
+(or any header files, for that matter) included in <B>applySequence.h</B>, so it
+is actually not limited to use with an STL sequence. However, it does make
+assumptions (primarily, the name and behavior of the <B>iterator</B>) that apply
+to STL sequences.
+[&nbsp;<a HREF="mailto:cda@freshsources.com?subject=[TICV2] TIC2V2_CHAPTER6_I36">Comment</a>&nbsp;]
+
+<a NAME="TIC2V2_CHAPTER6_I37"></a>
+</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">You can see there is more than one
+version of <B>apply(&#160;)</B>, so it&#8217;s possible to overload function
+templates. Although they all take any type of return value (which is ignored,
+but the type information is required to match the pointer-to-member), each
+version takes a different number of arguments, and because it&#8217;s a
+template, those arguments can be of any type. The only limitation here is that
+there&#8217;s no &#8220;super template&#8221; to create templates for you; thus
+you must decide how many arguments will ever be
+required.
+[&nbsp;<a HREF="mailto:cda@freshsources.com?subject=[TICV2] TIC2V2_CHAPTER6_I37">Comment</a>&nbsp;]
+
+<a NAME="TIC2V2_CHAPTER6_I38"></a>
+</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">To test the various overloaded versions
+of <B>apply(&#160;)</B>, the class
+<B>Gromit</B></FONT><A NAME="fnB17" HREF="#fn17">[17]</A><A NAME="Index475"></A><FONT FACE="Georgia">
+is created containing functions with different numbers of
+arguments:
+[&nbsp;<a HREF="mailto:cda@freshsources.com?subject=[TICV2] TIC2V2_CHAPTER6_I38">Comment</a>&nbsp;]
+
+<a NAME="TIC2V2_CHAPTER6_I39"></a>
+</FONT><BR></P></DIV>
+
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE><font color=#009900>//: C06:Gromit.h</font>
+<font color=#009900>// The techno-dog. Has member functions </font>
+<font color=#009900>// with various numbers of arguments.</font>
+#include &lt;iostream&gt;
+
+<font color=#0000ff>class</font> Gromit { 
+  <font color=#0000ff>int</font> arf;
+<font color=#0000ff>public</font>:
+  Gromit(<font color=#0000ff>int</font> arf = 1) : arf(arf + 1) {}
+  <font color=#0000ff>void</font> speak(<font color=#0000ff>int</font>) {
+    <font color=#0000ff>for</font>(<font color=#0000ff>int</font> i = 0; i &lt; arf; i++)
+      std::cout &lt;&lt; <font color=#004488>"arf! "</font>;
+    std::cout &lt;&lt; std::endl;
+  }
+  <font color=#0000ff>char</font> eat(<font color=#0000ff>float</font>) {
+    std::cout &lt;&lt; <font color=#004488>"chomp!"</font> &lt;&lt; std::endl;
+    <font color=#0000ff>return</font> 'z';
+  }
+  <font color=#0000ff>int</font> sleep(<font color=#0000ff>char</font>, <font color=#0000ff>double</font>) {
+    std::cout &lt;&lt; <font color=#004488>"zzz..."</font> &lt;&lt; std::endl;
+    <font color=#0000ff>return</font> 0;
+  }
+  <font color=#0000ff>void</font> sit(<font color=#0000ff>void</font>) {}
+}; <font color=#009900>///:~</font></PRE></FONT></BLOCKQUOTE>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Now the <B>apply(&#160;)</B> template
+functions can be combined with a <B>vector&lt;Gromit*&gt;</B> to make a
+container that will call member functions of the contained objects, like
+this:
+[&nbsp;<a HREF="mailto:cda@freshsources.com?subject=[TICV2] TIC2V2_CHAPTER6_I39">Comment</a>&nbsp;]
+
+<a NAME="TIC2V2_CHAPTER6_I40"></a>
+</FONT><BR></P></DIV>
+
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE><font color=#009900>//: C06:applyGromit.cpp</font>
+<font color=#009900>// Test applySequence.h</font>
+<font color=#009900>//{L} ../TestSuite/Test</font>
+#include <font color=#004488>"Gromit.h"</font>
+#include <font color=#004488>"applySequence.h"</font>
+#include &lt;vector&gt;
+#include &lt;iostream&gt;
+<font color=#0000ff>using</font> <font color=#0000ff>namespace</font> std;
+
+<font color=#0000ff>int</font> main() {
+  vector&lt;Gromit*&gt; dogs;
+  <font color=#0000ff>for</font>(<font color=#0000ff>int</font> i = 0; i &lt; 5; i++)
+    dogs.push_back(<font color=#0000ff>new</font> Gromit(i));
+  apply(dogs, &amp;Gromit::speak, 1);
+  apply(dogs, &amp;Gromit::eat, 2.0f);
+  apply(dogs, &amp;Gromit::sleep, 'z', 3.0);
+  apply(dogs, &amp;Gromit::sit);
+} <font color=#009900>///:~</font></PRE></FONT></BLOCKQUOTE>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Although the definition of
+<B>apply(&#160;)</B> is somewhat complex and not something you&#8217;d ever
+expect a novice to understand, its use is remarkably clean and simple, and a
+novice could easily use it knowing only<I> what</I> it is intended to
+accomplish, not <I>how</I>. This is the type of division you should strive for
+in all of your program components: The tough details are all isolated on the
+designer&#8217;s side of the wall, and users are concerned only with
+accomplishing their goals, and don&#8217;t see, know about, or depend on details
+of the underlying
+implementation
+[&nbsp;<a HREF="mailto:cda@freshsources.com?subject=[TICV2] TIC2V2_CHAPTER6_I40">Comment</a>&nbsp;]
+
+<a NAME="TIC2V2_CHAPTER6_I41"></a>
+</FONT><A NAME="_Toc312374092"></A><A NAME="_Toc519041987"></A><BR></P></DIV>
+<A NAME="Heading164"></A><FONT FACE = "Verdana, Tahoma, Arial, Helvetica, Sans"><H2 ALIGN="LEFT">
+Expression templates<A NAME="_Toc519041988"></A></H2></FONT>
+<A NAME="Heading165"></A><FONT FACE = "Verdana, Tahoma, Arial, Helvetica, Sans"><H2 ALIGN="LEFT">
+Template-templates</H2></FONT>
+
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE><font color=#009900>//: C06:TemplateTemplate.cpp</font>
+<font color=#009900>//{L} ../TestSuite/Test</font>
+<font color=#009900>//{-msc}</font>
+#include &lt;vector&gt;
+#include &lt;iostream&gt;
+#include &lt;string&gt;
+<font color=#0000ff>using</font> <font color=#0000ff>namespace</font> std;
+
+<font color=#009900>// As long as things are simple, </font>
+<font color=#009900>// this approach works fine:</font>
+<font color=#0000ff>template</font>&lt;<font color=#0000ff>typename</font> C&gt;
+<font color=#0000ff>void</font> print1(C&amp; c) {
+  <font color=#0000ff>typename</font> C::iterator it;
+  <font color=#0000ff>for</font>(it = c.begin(); it != c.end(); it++)
+    cout &lt;&lt; *it &lt;&lt; <font color=#004488>" "</font>;
+  cout &lt;&lt; endl;
+}
+
+<font color=#009900>// Template-template argument must </font>
+<font color=#009900>// be a class; cannot use typename:</font>
+<font color=#0000ff>template</font>&lt;<font color=#0000ff>typename</font> T, <font color=#0000ff>template</font>&lt;<font color=#0000ff>typename</font>&gt; <font color=#0000ff>class</font> C&gt;
+<font color=#0000ff>void</font> print2(C&lt;T&gt;&amp; c) {
+  copy(c.begin(), c.end(), 
+    ostream_iterator&lt;T&gt;(cout, <font color=#004488>" "</font>));
+  cout &lt;&lt; endl;
+}
+
+<font color=#0000ff>int</font> main() {
+  vector&lt;string&gt; v(5, <font color=#004488>"Yow!"</font>);
+  print1(v);
+  print2(v);
+} <font color=#009900>///:~</font></PRE></FONT></BLOCKQUOTE>
+<DIV ALIGN="LEFT"><P><A NAME="_Toc519041989"></A><BR></P></DIV>
+<A NAME="Heading166"></A><FONT FACE = "Verdana, Tahoma, Arial, Helvetica, Sans"><H2 ALIGN="LEFT">
+Member function templates</H2></FONT>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">It&#8217;s also possible to make
+<B>apply(&#160;)</B> a <I>member function
+template<A NAME="Index476"></A><A NAME="Index477"></A><A NAME="Index478"></A></I>
+of the class. That is, a separate template definition from the class&#8217;
+template, and yet a member of the class. This may produce a cleaner
+syntax:
+[&nbsp;<a HREF="mailto:cda@freshsources.com?subject=[TICV2] TIC2V2_CHAPTER6_I41">Comment</a>&nbsp;]
+
+<a NAME="TIC2V2_CHAPTER6_I42"></a>
+</FONT><BR></P></DIV>
+
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE>dogs.apply(&amp;Gromit::sit);</PRE></FONT></BLOCKQUOTE>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">This is analogous to the act (in Chapter
+XX) of bringing ordinary functions inside a
+class.</FONT><A NAME="fnB18" HREF="#fn18">[18]</A><FONT FACE="Georgia">
+[&nbsp;<a HREF="mailto:cda@freshsources.com?subject=[TICV2] TIC2V2_CHAPTER6_I42">Comment</a>&nbsp;]
+
+<a NAME="TIC2V2_CHAPTER6_I43"></a>
+</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">The definition of the
+<B>apply(&#160;)</B> functions turn out to be cleaner, as well, because they are
+members of the container. To accomplish this, a new container is inherited from
+one of the existing STL sequence containers and the member function templates
+are added to the new type. However, for maximum flexibility we&#8217;d like to
+be able to use any of the STL sequence containers, and for this to work a
+<I>template-template</I> must be used, to tell the compiler that a template
+argument is actually a template, itself, and can thus take a type argument and
+be instantiated. Here is what it looks like after bringing the
+<B>apply(&#160;)</B> functions into the new type as member
+functions:
+[&nbsp;<a HREF="mailto:cda@freshsources.com?subject=[TICV2] TIC2V2_CHAPTER6_I43">Comment</a>&nbsp;]
+
+<a NAME="TIC2V2_CHAPTER6_I44"></a>
+</FONT><BR></P></DIV>
+
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE><font color=#009900>//: C06:applyMember.h</font>
+<font color=#009900>// applySequence.h modified to use </font>
+<font color=#009900>// member function templates</font>
+
+<font color=#0000ff>template</font>&lt;<font color=#0000ff>class</font> T, <font color=#0000ff>template</font>&lt;<font color=#0000ff>typename</font>&gt; <font color=#0000ff>class</font> Seq&gt;
+<font color=#0000ff>class</font> SequenceWithApply : <font color=#0000ff>public</font> Seq&lt;T*&gt; {
+<font color=#0000ff>public</font>:
+  <font color=#009900>// 0 arguments, any type of return value:</font>
+  <font color=#0000ff>template</font>&lt;<font color=#0000ff>class</font> R&gt;
+  <font color=#0000ff>void</font> apply(R (T::*f)()) {
+    iterator it = begin();
+    <font color=#0000ff>while</font>(it != end()) {
+      ((*it)-&gt;*f)();
+      it++;
+    }
+  }
+  <font color=#009900>// 1 argument, any type of return value:</font>
+  <font color=#0000ff>template</font>&lt;<font color=#0000ff>class</font> R, <font color=#0000ff>class</font> A&gt;
+  <font color=#0000ff>void</font> apply(R(T::*f)(A), A a) {
+    iterator it = begin();
+    <font color=#0000ff>while</font>(it != end()) {
+      ((*it)-&gt;*f)(a);
+      it++;
+    }
+  }
+  <font color=#009900>// 2 arguments, any type of return value:</font>
+  <font color=#0000ff>template</font>&lt;<font color=#0000ff>class</font> R, <font color=#0000ff>class</font> A1, <font color=#0000ff>class</font> A2&gt;
+  <font color=#0000ff>void</font> apply(R(T::*f)(A1, A2), 
+    A1 a1, A2 a2) {
+    iterator it = begin();
+    <font color=#0000ff>while</font>(it != end()) {
+      ((*it)-&gt;*f)(a1, a2);
+      it++;
+    }
+  }
+}; <font color=#009900>///:~</font></PRE></FONT></BLOCKQUOTE>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Because they are members, the
+<B>apply(&#160;)</B> functions don&#8217;t need as many arguments, and the
+<B>iterator</B> class doesn&#8217;t need to be qualified. Also,
+<B>begin(&#160;)</B> and <B>end(&#160;)</B> are now member functions of the new
+type and so look cleaner as well. However, the basic code is still the
+same.
+[&nbsp;<a HREF="mailto:cda@freshsources.com?subject=[TICV2] TIC2V2_CHAPTER6_I44">Comment</a>&nbsp;]
+
+<a NAME="TIC2V2_CHAPTER6_I45"></a>
+</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">You can see how the function calls are
+also simpler for the client
+programmer:
+[&nbsp;<a HREF="mailto:cda@freshsources.com?subject=[TICV2] TIC2V2_CHAPTER6_I45">Comment</a>&nbsp;]
+
+<a NAME="TIC2V2_CHAPTER6_I46"></a>
+</FONT><BR></P></DIV>
+
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE><font color=#009900>//: C06:applyGromit2.cpp</font>
+<font color=#009900>// Test applyMember.h</font>
+<font color=#009900>//{L} ../TestSuite/Test</font>
+<font color=#009900>//{-g++295}</font>
+<font color=#009900>//{-g++3}</font>
+<font color=#009900>//{-msc}</font>
+#include <font color=#004488>"Gromit.h"</font>
+#include <font color=#004488>"applyMember.h"</font>
+#include &lt;vector&gt;
+#include &lt;iostream&gt;
+<font color=#0000ff>using</font> <font color=#0000ff>namespace</font> std;
+
+<font color=#0000ff>int</font> main() {
+  SequenceWithApply&lt;Gromit, vector&gt; dogs;
+  <font color=#0000ff>for</font>(<font color=#0000ff>int</font> i = 0; i &lt; 5; i++)
+    dogs.push_back(<font color=#0000ff>new</font> Gromit(i));
+  dogs.apply(&amp;Gromit::speak, 1);
+  dogs.apply(&amp;Gromit::eat, 2.0f);
+  dogs.apply(&amp;Gromit::sleep, 'z', 3.0);
+  dogs.apply(&amp;Gromit::sit);
+} <font color=#009900>///:~</font></PRE></FONT></BLOCKQUOTE>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Conceptually, it reads more sensibly to
+say that you&#8217;re calling <B>apply(&#160;)</B> for the <B>dogs</B>
+container.
+[&nbsp;<a HREF="mailto:cda@freshsources.com?subject=[TICV2] TIC2V2_CHAPTER6_I46">Comment</a>&nbsp;]
+
+<a NAME="TIC2V2_CHAPTER6_I47"></a>
+</FONT><A NAME="_Toc519041990"></A><BR></P></DIV>
+<A NAME="Heading167"></A><FONT FACE = "Verdana, Tahoma, Arial, Helvetica, Sans"><H3 ALIGN="LEFT">
+Why virtual member template functions are
+disallowed<A NAME="_Toc519041991"></A></H3></FONT>
+<A NAME="Heading168"></A><FONT FACE = "Verdana, Tahoma, Arial, Helvetica, Sans"><H3 ALIGN="LEFT">
+Nested template
+classes<A NAME="_Toc312374093"></A><A NAME="_Toc519041992"></A></H3></FONT>
+<A NAME="Heading169"></A><FONT FACE = "Verdana, Tahoma, Arial, Helvetica, Sans"><H2 ALIGN="LEFT">
+Template specializations<A NAME="_Toc519041993"></A></H2></FONT>
+<A NAME="Heading170"></A><FONT FACE = "Verdana, Tahoma, Arial, Helvetica, Sans"><H3 ALIGN="LEFT">
+Full specialization<A NAME="_Toc519041994"></A></H3></FONT>
+<A NAME="Heading171"></A><FONT FACE = "Verdana, Tahoma, Arial, Helvetica, Sans"><H3 ALIGN="LEFT">
+Partial Specialization<A NAME="_Toc519041995"></A></H3></FONT>
+<A NAME="Heading172"></A><FONT FACE = "Verdana, Tahoma, Arial, Helvetica, Sans"><H3 ALIGN="LEFT">
+A practical example<BR><A NAME="Index479"></A><A NAME="Index480"></A></H3></FONT>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">There&#8217;s nothing to prevent you from
+using a class template in any way you&#8217;d use an ordinary class. For
+example, you can easily inherit from a template, and you can create a new
+template that instantiates and inherits from an existing template. If the
+<B>vector </B>class does everything you want, but you&#8217;d also like it to
+sort itself, you can easily reuse the code and add value to
+it:
+[&nbsp;<a HREF="mailto:cda@freshsources.com?subject=[TICV2] TIC2V2_CHAPTER6_I47">Comment</a>&nbsp;]
+
+<a NAME="TIC2V2_CHAPTER6_I48"></a>
+</FONT><BR></P></DIV>
+
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE><font color=#009900>//: C06:Sorted.h</font>
+<font color=#009900>// Template specialization</font>
+#ifndef SORTED_H
+#define SORTED_H
+#include &lt;vector&gt;
+
+<font color=#0000ff>template</font>&lt;<font color=#0000ff>class</font> T&gt;
+<font color=#0000ff>class</font> Sorted : <font color=#0000ff>public</font> std::vector&lt;T&gt; {
+<font color=#0000ff>public</font>:
+  <font color=#0000ff>void</font> sort();
+};
+
+<font color=#0000ff>template</font>&lt;<font color=#0000ff>class</font> T&gt;
+<font color=#0000ff>void</font> Sorted&lt;T&gt;::sort() { <font color=#009900>// A bubble sort</font>
+  <font color=#0000ff>for</font>(<font color=#0000ff>int</font> i = size(); i &gt; 0; i--)
+    <font color=#0000ff>for</font>(<font color=#0000ff>int</font> j = 1; j &lt; i; j++)
+      <font color=#0000ff>if</font>(at(j-1) &gt; at(j)) {
+        <font color=#009900>// Swap the two elements:</font>
+        T t = at(j-1);
+        at(j-1) = at(j);
+        at(j) = t;
+      }
+}
+
+<font color=#009900>// Partial specialization for pointers:</font>
+<font color=#0000ff>template</font>&lt;<font color=#0000ff>class</font> T&gt;
+<font color=#0000ff>class</font> Sorted&lt;T*&gt; : <font color=#0000ff>public</font> std::vector&lt;T*&gt; {
+<font color=#0000ff>public</font>:
+  <font color=#0000ff>void</font> sort();
+};
+
+<font color=#0000ff>template</font>&lt;<font color=#0000ff>class</font> T&gt;
+<font color=#0000ff>void</font> Sorted&lt;T*&gt;::sort() {
+  <font color=#0000ff>for</font>(<font color=#0000ff>int</font> i = size(); i &gt; 0; i--)
+    <font color=#0000ff>for</font>(<font color=#0000ff>int</font> j = 1; j &lt; i; j++)
+      <font color=#0000ff>if</font>(*at(j-1) &gt; *at(j)) {
+        <font color=#009900>// Swap the two elements:</font>
+        T* t = at(j-1);
+        at(j-1) = at(j);
+        at(j) = t;
+      }
+}
+
+<font color=#009900>// Full specialization for char*:</font>
+<font color=#0000ff>template</font>&lt;&gt;
+<font color=#0000ff>void</font> Sorted&lt;<font color=#0000ff>char</font>*&gt;::sort() {
+  <font color=#0000ff>for</font>(<font color=#0000ff>int</font> i = size(); i &gt; 0; i--)
+    <font color=#0000ff>for</font>(<font color=#0000ff>int</font> j = 1; j &lt; i; j++)
+      <font color=#0000ff>if</font>(strcmp(at(j-1), at(j)) &gt; 0) {
+        <font color=#009900>// Swap the two elements:</font>
+        <font color=#0000ff>char</font>* t = at(j-1);
+        at(j-1) = at(j);
+        at(j) = t;
+      }
+}
+#endif <font color=#009900>// SORTED_H ///:~</font></PRE></FONT></BLOCKQUOTE>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">The <B>Sorted</B> template imposes a
+restriction on all classes it is instantiated for: They must contain a
+<B>&gt;</B> operator. In <B>SString</B> this is added explicitly, but in
+<B>Integer</B> the automatic type conversion <B>operator int</B> provides a path
+to the built-in <B>&gt;</B> operator. When a template
+<A NAME="Index481"></A>provides more functionality for you, the trade-off is
+usually that it puts more requirements on your class. Sometimes you&#8217;ll
+have to inherit the contained class to add the required functionality. Notice
+the value of using an overloaded operator here &#8211; the <B>Integer</B> class
+can rely on its underlying implementation to provide the
+functionality.
+[&nbsp;<a HREF="mailto:cda@freshsources.com?subject=[TICV2] TIC2V2_CHAPTER6_I48">Comment</a>&nbsp;]
+
+<a NAME="TIC2V2_CHAPTER6_I49"></a>
+</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">The default <B>Sorted</B> template only
+works with objects (including objects of built-in types). However, it
+won&#8217;t sort pointers to objects so the partial specialization is necessary.
+Even then, the code generated by the partial specialization won&#8217;t sort an
+array of <B>char*</B>. To solve this, the full specialization compares the
+<B>char*</B> elements using <B>strcmp(&#160;)</B> to produce the proper
+behavior.
+[&nbsp;<a HREF="mailto:cda@freshsources.com?subject=[TICV2] TIC2V2_CHAPTER6_I49">Comment</a>&nbsp;]
+
+<a NAME="TIC2V2_CHAPTER6_I50"></a>
+</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Here&#8217;s a test for <B>Sorted.h</B>
+that uses the unique random number generator introduced earlier in the
+chapter:
+[&nbsp;<a HREF="mailto:cda@freshsources.com?subject=[TICV2] TIC2V2_CHAPTER6_I50">Comment</a>&nbsp;]
+
+<a NAME="TIC2V2_CHAPTER6_I51"></a>
+</FONT><BR></P></DIV>
+
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE><font color=#009900>//: C06:Sorted.cpp</font>
+<font color=#009900>// Testing template specialization</font>
+<font color=#009900>//{L} ../TestSuite/Test</font>
+<font color=#009900>//{-g++295}</font>
+<font color=#009900>//{-msc}</font>
+#include <font color=#004488>"Sorted.h"</font>
+#include <font color=#004488>"Urand.h"</font>
+#include <font color=#004488>"..</font><font color=#004488>/arraySize.h"</font>
+#include &lt;iostream&gt;
+#include &lt;string&gt;
+<font color=#0000ff>using</font> <font color=#0000ff>namespace</font> std;
+
+<font color=#0000ff>char</font>* words[] = {
+  <font color=#004488>"is"</font>, <font color=#004488>"running"</font>, <font color=#004488>"big"</font>, <font color=#004488>"dog"</font>, <font color=#004488>"a"</font>,
+};
+<font color=#0000ff>char</font>* words2[] = {
+  <font color=#004488>"this"</font>, <font color=#004488>"that"</font>, <font color=#004488>"theother"</font>,
+};
+
+<font color=#0000ff>int</font> main() {
+  Sorted&lt;<font color=#0000ff>int</font>&gt; is;
+  Urand&lt;47&gt; rand;
+  <font color=#0000ff>for</font>(<font color=#0000ff>int</font> i = 0; i &lt; 15; i++)
+    is.push_back(rand());
+  <font color=#0000ff>for</font>(<font color=#0000ff>int</font> l = 0; l &lt; is.size(); l++)
+    cout &lt;&lt; is[l] &lt;&lt; ' ';
+  cout &lt;&lt; endl;
+  is.sort();
+  <font color=#0000ff>for</font>(<font color=#0000ff>int</font> l = 0; l &lt; is.size(); l++)
+    cout &lt;&lt; is[l] &lt;&lt; ' ';
+  cout &lt;&lt; endl;
+
+  <font color=#009900>// Uses the template partial specialization:</font>
+  Sorted&lt;string*&gt; ss;
+  <font color=#0000ff>for</font>(<font color=#0000ff>int</font> i = 0; i &lt; asz(words); i++)
+    ss.push_back(<font color=#0000ff>new</font> string(words[i]));
+  <font color=#0000ff>for</font>(<font color=#0000ff>int</font> i = 0; i &lt; ss.size(); i++)
+    cout &lt;&lt; *ss[i] &lt;&lt; ' ';
+  cout &lt;&lt; endl;
+  ss.sort();
+  <font color=#0000ff>for</font>(<font color=#0000ff>int</font> i = 0; i &lt; ss.size(); i++)
+    cout &lt;&lt; *ss[i] &lt;&lt; ' ';
+  cout &lt;&lt; endl;
+  
+  <font color=#009900>// Uses the full char* specialization:</font>
+  Sorted&lt;<font color=#0000ff>char</font>*&gt; scp;
+  <font color=#0000ff>for</font>(<font color=#0000ff>int</font> i = 0; i &lt; asz(words2); i++)
+    scp.push_back(words2[i]);
+  <font color=#0000ff>for</font>(<font color=#0000ff>int</font> i = 0; i &lt; scp.size(); i++)
+    cout &lt;&lt; scp[i] &lt;&lt; ' ';
+  cout &lt;&lt; endl;
+  scp.sort();
+  <font color=#0000ff>for</font>(<font color=#0000ff>int</font> i = 0; i &lt; scp.size(); i++)
+    cout &lt;&lt; scp[i] &lt;&lt; ' ';
+  cout &lt;&lt; endl;
+} <font color=#009900>///:~</font></PRE></FONT></BLOCKQUOTE>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Each of the template instantiations uses
+a different version of the template. <B>Sorted&lt;int&gt;</B> uses the
+&#8220;ordinary,&#8221; non-specialized template. <B>Sorted&lt;string*&gt;</B>
+uses the partial specialization for pointers. Lastly, <B>Sorted&lt;char*&gt;</B>
+uses the full specialization for <B>char*</B>. Note that without this full
+specialization, you could be fooled into thinking that things were working
+correctly because the <B>words</B> array would still sort out to &#8220;a big
+dog is running&#8221; since the partial specialization would end up comparing
+the first character of each array. However, <B>words2</B> would not sort out
+correctly, and for the desired behavior the full specialization is
+necessary.
+[&nbsp;<a HREF="mailto:cda@freshsources.com?subject=[TICV2] TIC2V2_CHAPTER6_I51">Comment</a>&nbsp;]
+
+<a NAME="TIC2V2_CHAPTER6_I52"></a>
+</FONT><BR></P></DIV>
+<A NAME="Heading173"></A><FONT FACE = "Verdana, Tahoma, Arial, Helvetica, Sans"><H4 ALIGN="LEFT">
+Pointer specialization</H4></FONT>
+<A NAME="Heading174"></A><FONT FACE = "Verdana, Tahoma, Arial, Helvetica, Sans"><H4 ALIGN="LEFT">
+Partial ordering of function
+templates<A NAME="_Toc312374085"></A><A NAME="_Toc519041996"></A></H4></FONT>
+<A NAME="Heading175"></A><FONT FACE = "Verdana, Tahoma, Arial, Helvetica, Sans"><H3 ALIGN="LEFT">
+Design &amp; efficiency<BR><A NAME="Index482"></A><A NAME="Index483"></A></H3></FONT>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">In <B>Sorted</B>, every time you call
+<B>add(&#160;)</B> the element is inserted and the array is resorted. Here, the
+horribly inefficient and greatly deprecated (but easy to understand and code)
+bubble sort <A NAME="Index484"></A><A NAME="Index485"></A>is used. This is
+perfectly appropriate, because it&#8217;s part of the <B>private</B>
+implementation. During program development, your priorities are
+to
+[&nbsp;<a HREF="mailto:cda@freshsources.com?subject=[TICV2] TIC2V2_CHAPTER6_I52">Comment</a>&nbsp;]
+
+<a NAME="TIC2V2_CHAPTER6_I53"></a>
+</FONT><BR></P></DIV>
+<OL>
+<LI><FONT FACE="Verdana">	</FONT><FONT FACE="Georgia">Get the class interfaces
+correct.</FONT><LI><FONT FACE="Verdana">	</FONT><FONT FACE="Georgia">Create an
+accurate implementation as rapidly as possible so you
+can:</FONT><LI><FONT FACE="Verdana">	</FONT><FONT FACE="Georgia">Prove your
+design.</FONT></OL><DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Very often, you will
+discover problems with the class interface only when you assemble your initial
+&#8220;rough draft&#8221; of the working system. You may also discover the need
+for &#8220;helper&#8221; classes like containers and iterators during system
+assembly and during your first-pass implementation. Sometimes it&#8217;s very
+difficult to discover these kinds of issues during analysis &#8211; your goal in
+analysis should be to get a big-picture design that can be rapidly
+implemented<A NAME="Index486"></A> and tested. Only after the design has been
+proven should you spend the time to flesh it out completely and worry about
+performance issues. If the design fails, or if performance is not a problem, the
+bubble sort is good enough, and you haven&#8217;t wasted any time. (Of course,
+the ideal solution is to use someone else&#8217;s sorted container; the Standard
+C++ template library is the first place to
+look.)
+[&nbsp;<a HREF="mailto:cda@freshsources.com?subject=[TICV2] TIC2V2_CHAPTER6_I53">Comment</a>&nbsp;]
+
+<a NAME="TIC2V2_CHAPTER6_I54"></a>
+</FONT><A NAME="_Toc312374086"></A><A NAME="_Toc519041997"></A><BR></P></DIV>
+<A NAME="Heading176"></A><FONT FACE = "Verdana, Tahoma, Arial, Helvetica, Sans"><H3 ALIGN="LEFT">
+Preventing template bloat<BR><A NAME="Index487"></A><A NAME="Index488"></A></H3></FONT>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Each time you instantiate a template, the
+code in the template is generated anew (except for <B>inline</B> functions). If
+some of the functionality of a template does not depend on type, it can be put
+in a common base class to prevent needless reproduction of that code. For
+example, in Chapter XX in <B>InheritStack.cpp</B> inheritance was used to
+specify the types that a <B>Stack</B> could accept and produce. Here&#8217;s the
+templatized version of that
+code:
+[&nbsp;<a HREF="mailto:cda@freshsources.com?subject=[TICV2] TIC2V2_CHAPTER6_I54">Comment</a>&nbsp;]
+
+<a NAME="TIC2V2_CHAPTER6_I55"></a>
+</FONT><BR></P></DIV>
+
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE><font color=#009900>//: C06:Nobloat.h</font>
+<font color=#009900>// Templatized InheritStack.cpp</font>
+#ifndef NOBLOAT_H
+#define NOBLOAT_H
+#include <font color=#004488>"..</font><font color=#004488>/C0B</font><font color=#004488>/Stack4.h"</font>
+
+<font color=#0000ff>template</font>&lt;<font color=#0000ff>class</font> T&gt;
+<font color=#0000ff>class</font> NBStack : <font color=#0000ff>public</font> Stack {
+<font color=#0000ff>public</font>:
+  <font color=#0000ff>void</font> push(T* str) {
+    Stack::push(str);
+  }
+  T* peek() <font color=#0000ff>const</font> {
+    <font color=#0000ff>return</font> (T*)Stack::peek();
+  }
+  T* pop() {
+    <font color=#0000ff>return</font> (T*)Stack::pop();
+  }
+  ~NBStack();
+};
+
+<font color=#009900>// Defaults to heap objects &amp; ownership:</font>
+<font color=#0000ff>template</font>&lt;<font color=#0000ff>class</font> T&gt;
+NBStack&lt;T&gt;::~NBStack() {
+  T* top = pop();
+  <font color=#0000ff>while</font>(top) {
+    <font color=#0000ff>delete</font> top;
+    top = pop();
+  }
+}
+#endif <font color=#009900>// NOBLOAT_H ///:~</font></PRE></FONT></BLOCKQUOTE>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">As before, the inline functions generate
+no code and are thus &#8220;free.&#8221; The functionality is provided by
+creating the base-class code only once. However, the ownership problem has been
+solved here by adding a destructor (which <I>is</I> type-dependent, and thus
+must be created by the template). Here, it defaults to ownership. Notice that
+when the base-class destructor is called, the stack will be empty so no
+duplicate releases will
+occur.
+[&nbsp;<a HREF="mailto:cda@freshsources.com?subject=[TICV2] TIC2V2_CHAPTER6_I55">Comment</a>&nbsp;]
+
+<a NAME="TIC2V2_CHAPTER6_I56"></a>
+</FONT><BR></P></DIV>
+
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE><font color=#009900>//: C06:NobloatTest.cpp</font>
+<font color=#009900>//{L} ../TestSuite/Test </font>
+#include <font color=#004488>"Nobloat.h"</font>
+#include <font color=#004488>"..</font><font color=#004488>/require.h"</font>
+#include &lt;fstream&gt;
+#include &lt;iostream&gt;
+#include &lt;string&gt;
+<font color=#0000ff>using</font> <font color=#0000ff>namespace</font> std;
+
+<font color=#0000ff>int</font> main() {
+  ifstream in(<font color=#004488>"NobloatTest.cpp"</font>);
+  assure(in, <font color=#004488>"NobloatTest.cpp"</font>);
+  NBStack&lt;string&gt; textlines;
+  string line;
+  <font color=#009900>// Read file and store lines in the stack:</font>
+  <font color=#0000ff>while</font>(getline(in, line))
+    textlines.push(<font color=#0000ff>new</font> string(line));
+  <font color=#009900>// Pop the lines from the stack and print them:</font>
+  string* s;
+  <font color=#0000ff>while</font>((s = (string*)textlines.pop()) != 0) {
+    cout &lt;&lt; *s &lt;&lt; endl;
+    <font color=#0000ff>delete</font> s; 
+  }
+} <font color=#009900>///:~<A NAME="_Toc519041998"></A></font></PRE></FONT></BLOCKQUOTE><A NAME="Heading177"></A><FONT FACE = "Verdana, Tahoma, Arial, Helvetica, Sans"><H2 ALIGN="LEFT">
+Explicit instantiation<BR><A NAME="Index489"></A><A NAME="Index490"></A></H2></FONT>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">At times it is useful to explicitly
+instantiate a template; that is, to tell the compiler to lay down the code for a
+specific version of that template even though you&#8217;re not creating an
+object at that point. To do this, you reuse the <B>template</B> keyword as
+follows:
+[&nbsp;<a HREF="mailto:cda@freshsources.com?subject=[TICV2] TIC2V2_CHAPTER6_I56">Comment</a>&nbsp;]
+
+<a NAME="TIC2V2_CHAPTER6_I57"></a>
+</FONT><BR></P></DIV>
+
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE><font color=#0000ff>template</font> <font color=#0000ff>class</font> Bobbin&lt;thread&gt;;
+<font color=#0000ff>template</font> <font color=#0000ff>void</font> sort&lt;<font color=#0000ff>char</font>&gt;(<font color=#0000ff>char</font>*[]);</PRE></FONT></BLOCKQUOTE>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Here&#8217;s a version of the
+<B>Sorted.cpp</B> example that explicitly instantiates a template before using
+it:
+[&nbsp;<a HREF="mailto:cda@freshsources.com?subject=[TICV2] TIC2V2_CHAPTER6_I57">Comment</a>&nbsp;]
+
+<a NAME="TIC2V2_CHAPTER6_I58"></a>
+</FONT><BR></P></DIV>
+
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE><font color=#009900>//: C06:ExplicitInstantiation.cpp</font>
+<font color=#009900>//{L} ../TestSuite/Test</font>
+<font color=#009900>//{-g++295}</font>
+<font color=#009900>//{-msc}</font>
+#include <font color=#004488>"Urand.h"</font>
+#include <font color=#004488>"Sorted.h"</font>
+#include &lt;iostream&gt;
+<font color=#0000ff>using</font> <font color=#0000ff>namespace</font> std;
+
+<font color=#009900>// Explicit instantiation:</font>
+<font color=#0000ff>template</font> <font color=#0000ff>class</font> Sorted&lt;<font color=#0000ff>int</font>&gt;;
+
+<font color=#0000ff>int</font> main() {
+  Sorted&lt;<font color=#0000ff>int</font>&gt; is;
+  Urand&lt;47&gt; rand1;
+  <font color=#0000ff>for</font>(<font color=#0000ff>int</font> k = 0; k &lt; 15; k++)
+    is.push_back(rand1());
+  is.sort();
+  <font color=#0000ff>for</font>(<font color=#0000ff>int</font> l = 0; l &lt; is.size(); l++)
+    cout &lt;&lt; is[l] &lt;&lt; endl;
+} <font color=#009900>///:~</font></PRE></FONT></BLOCKQUOTE>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">In this example, the explicit
+instantiation doesn&#8217;t really accomplish anything; the program would work
+the same without it. Explicit instantiation is only for special cases where
+extra control is
+needed.
+[&nbsp;<a HREF="mailto:cda@freshsources.com?subject=[TICV2] TIC2V2_CHAPTER6_I58">Comment</a>&nbsp;]
+
+<a NAME="TIC2V2_CHAPTER6_I59"></a>
+</FONT><A NAME="_Toc519041999"></A><BR></P></DIV>
+<A NAME="Heading178"></A><FONT FACE = "Verdana, Tahoma, Arial, Helvetica, Sans"><H3 ALIGN="LEFT">
+Explicit specification of template functions<A NAME="_Toc519042000"></A></H3></FONT>
+<A NAME="Heading179"></A><FONT FACE = "Verdana, Tahoma, Arial, Helvetica, Sans"><H2 ALIGN="LEFT">
+Controlling template instantiation</H2></FONT>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Normally templates are not instantiated
+until they are needed. For function templates this just means the point at which
+you call the function, but for class templates it&#8217;s more granular than
+that: each individual member function of the template is not instantiated until
+the first point of use. This means that only the member functions you actually
+use will be instantiated, which is quite important since it allows greater
+freedom in what the template can be used with. For
+example:
+[&nbsp;<a HREF="mailto:cda@freshsources.com?subject=[TICV2] TIC2V2_CHAPTER6_I59">Comment</a>&nbsp;]
+
+<a NAME="TIC2V2_CHAPTER6_I60"></a>
+</FONT><BR></P></DIV>
+
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE><font color=#009900>//: C06:DelayedInstantiation.cpp</font>
+<font color=#009900>// Member functions of class templates are not</font>
+<font color=#009900>// instantiated until they're needed.</font>
+<font color=#009900>//{L} ../TestSuite/Test</font>
+
+<font color=#0000ff>class</font> X {
+<font color=#0000ff>public</font>:
+  <font color=#0000ff>void</font> f() {}
+};
+
+<font color=#0000ff>class</font> Y {
+<font color=#0000ff>public</font>:
+  <font color=#0000ff>void</font> g() {}
+};
+
+<font color=#0000ff>template</font> &lt;<font color=#0000ff>typename</font> T&gt; <font color=#0000ff>class</font> Z {
+  T t;
+<font color=#0000ff>public</font>:
+  <font color=#0000ff>void</font> a() { t.f(); }
+  <font color=#0000ff>void</font> b() { t.g(); }
+};
+
+<font color=#0000ff>int</font> main() {
+  Z&lt;X&gt; zx;
+  zx.a(); <font color=#009900>// Doesn't create Z&lt;X&gt;::b()</font>
+  Z&lt;Y&gt; zy;
+  zy.b(); <font color=#009900>// Doesn't create Z&lt;Y&gt;::a()</font>
+} <font color=#009900>///:~</font></PRE></FONT></BLOCKQUOTE>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Here, even though the template purports
+to use both <B>f(&#160;)</B> and <B>g(&#160;)</B> member functions of <B>T</B>,
+the fact that the program compiles shows you that it only generates
+<B>Z&lt;X&gt;::a(&#160;)</B> when it is explicitly called for <B>zx</B> (if
+<B>Z&lt;X&gt;::b(&#160;)</B> were also generated at the same time, a
+compile-time error message would be generated). Similarly, the call to
+<B>zy.b(&#160;)</B> doesn&#8217;t generate <B>Z&lt;Y&gt;::a(&#160;)</B>. As a
+result, the <B>Z</B> template can be used with <B>X</B> and <B>Y</B>, whereas if
+all the member functions were generated when the class was first created it
+would significantly limit the use of many
+templates.
+[&nbsp;<a HREF="mailto:cda@freshsources.com?subject=[TICV2] TIC2V2_CHAPTER6_I60">Comment</a>&nbsp;]
+
+<a NAME="TIC2V2_CHAPTER6_I61"></a>
+</FONT><A NAME="_Toc519042001"></A><BR></P></DIV>
+<A NAME="Heading180"></A><FONT FACE = "Verdana, Tahoma, Arial, Helvetica, Sans"><H3 ALIGN="LEFT">
+The inclusion vs. separation models<A NAME="_Toc519042002"></A></H3></FONT>
+<A NAME="Heading181"></A><FONT FACE = "Verdana, Tahoma, Arial, Helvetica, Sans"><H3 ALIGN="LEFT">
+The export keyword<A NAME="_Toc519042003"></A></H3></FONT>
+<A NAME="Heading182"></A><FONT FACE = "Verdana, Tahoma, Arial, Helvetica, Sans"><H2 ALIGN="LEFT">
+Template programming idioms<A NAME="_Toc519042004"></A></H2></FONT>
+<A NAME="Heading183"></A><FONT FACE = "Verdana, Tahoma, Arial, Helvetica, Sans"><H3 ALIGN="LEFT">
+The &#8220;curiously-recurring template&#8221;<A NAME="_Toc519042005"></A></H3></FONT>
+<A NAME="Heading184"></A><FONT FACE = "Verdana, Tahoma, Arial, Helvetica, Sans"><H3 ALIGN="LEFT">
+Traits<A NAME="_Toc519042006"></A></H3></FONT>
+<A NAME="Heading185"></A><FONT FACE = "Verdana, Tahoma, Arial, Helvetica, Sans"><H3 ALIGN="LEFT">
+Implementing Locales<A NAME="_Toc519042007"></A></H3></FONT>
+<A NAME="Heading186"></A><FONT FACE = "Verdana, Tahoma, Arial, Helvetica, Sans"><H2 ALIGN="LEFT">
+Summary</H2></FONT>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">One of the greatest weaknesses of C++
+templates will be shown to you when you try to write code that uses templates,
+especially STL code (introduced in the next two chapters), and start getting
+compile-time error messages. When you&#8217;re not used to it, the quantity of
+inscrutable text that will be spewed at you by the compiler will be quite
+overwhelming. After a while you&#8217;ll adapt (although it always feels a bit
+barbaric), and if it&#8217;s any consolation, C++ compilers have actually gotten
+a lot <I>better</I> about this &#8211; previously they would only give the line
+where you tried to instantiate the template, and most of them now go to the line
+in the template definition that caused the
+problem.
+[&nbsp;<a HREF="mailto:cda@freshsources.com?subject=[TICV2] TIC2V2_CHAPTER6_I61">Comment</a>&nbsp;]
+
+<a NAME="TIC2V2_CHAPTER6_I62"></a>
+</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">The issue is that <I>a template implies
+an interface</I>. That is, even though the <B>template</B> keyword says
+&#8220;I&#8217;ll take any type,&#8221; the code in a template definition
+actually requires that certain operators and member functions be supported
+&#8211; that&#8217;s the interface. So in reality, a template definition is
+saying &#8220;I&#8217;ll take any type that supports this interface.&#8221;
+Things would be much nicer if the compiler could simply say &#8220;hey, this
+type that you&#8217;re trying to instantiate the template with doesn&#8217;t
+support that interface &#8211; can&#8217;t do it.&#8221; The Java language has a
+feature called <B>interface</B> that would be a perfect match for this (Java,
+however, has no parameterized type mechanism), but it will be many years, if
+ever, before you will see such a thing in C++ (at this writing the C++ Standard
+has only just been accepted and it will be a while before all the compilers even
+achieve compliance). Compilers can only get so good at reporting template
+instantiation errors, so you&#8217;ll have to grit your teeth, go to the first
+line reported as an error and figure it
+out.
+[&nbsp;<a HREF="mailto:cda@freshsources.com?subject=[TICV2] TIC2V2_CHAPTER6_I62">Comment</a>&nbsp;]
+
+<a NAME="TIC2V2_CHAPTER6_I63"></a>
+</FONT><A NAME="_Toc519042008"></A><BR></P></DIV>
+<A NAME="Heading187"></A><FONT FACE = "Verdana, Tahoma, Arial, Helvetica, Sans"><H2 ALIGN="LEFT">
+Exercises</H2></FONT>
+<OL>
+<LI><FONT FACE="Verdana">	</FONT><FONT FACE="Georgia">Exercise
+1
+[&nbsp;<a HREF="mailto:cda@freshsources.com?subject=[TICV2] TIC2V2_CHAPTER6_I63">Comment</a>&nbsp;]
+
+<a NAME="TIC2V2_CHAPTER6_I64"></a>
+</FONT><LI><FONT FACE="Verdana">	</FONT><FONT FACE="Georgia">Exercise
+2
+[&nbsp;<a HREF="mailto:cda@freshsources.com?subject=[TICV2] TIC2V2_CHAPTER6_I64">Comment</a>&nbsp;]
+
+<a NAME="TIC2V2_CHAPTER6_I65"></a>
+</FONT><LI><FONT FACE="Verdana">	</FONT><FONT FACE="Georgia">Exercise
+3
+[&nbsp;<a HREF="mailto:cda@freshsources.com?subject=[TICV2] TIC2V2_CHAPTER6_I65">Comment</a>&nbsp;]
+
+<a NAME="TIC2V2_CHAPTER6_I66"></a>
+</FONT><LI><FONT FACE="Verdana">	</FONT><FONT FACE="Georgia">Etc.
+[&nbsp;<a HREF="mailto:cda@freshsources.com?subject=[TICV2] TIC2V2_CHAPTER6_I66">Comment</a>&nbsp;]
+
+</FONT></OL>
+<HR><DIV ALIGN="LEFT"><P><A NAME="fn15" HREF="#fnB15">[15]</A><FONT FACE="Georgia" SIZE=2>
+See <I>C++ Inside &amp; Out</I> (Osborne/McGraw-Hill, 1993) by the author,
+Chapter 10.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><A NAME="fn16" HREF="#fnB16">[16]</A><FONT FACE="Georgia" SIZE=2>
+I am indebted to Nathan Myers for this example.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><A NAME="fn17" HREF="#fnB17">[17]</A><FONT FACE="Georgia" SIZE=2>
+A reference to the British animated short <I>The Wrong Trousers</I> by Nick
+Park.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><A NAME="fn18" HREF="#fnB18">[18]</A><FONT FACE="Georgia" SIZE=2>
+Check your compiler version information to see if it supports member function
+templates.</FONT><BR></P></DIV>
+
+<DIV ALIGN="CENTER">
+    <FONT FACE="Verdana, Tahoma, Arial, Helvetica, Sans" size = "-1">
+     [ <a href="Chap05.htm">Previous Chapter</a> ] 
+    
+    [ <a href="SimpCont.htm">Short TOC</a> ] 
+    [ <a href="Contents.htm">Table of Contents</a> ] 
+  
+        [ <a href="DocIdx.htm">Index</a> ]
+        
+     [ <a href="Chap07.htm">Next Chapter</a> ] 
+    </FONT>
+    <BR>
+ Last Update:08/19/2001</P></DIV>
+
+</BODY>
+
+</HTML>

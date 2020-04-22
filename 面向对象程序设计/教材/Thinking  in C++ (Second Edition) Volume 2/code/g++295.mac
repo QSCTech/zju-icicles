@@ -1,0 +1,5 @@
+CPP = g++
+CPPFLAGS = 
+OFLAGS = -c
+EXEFLAG = -o
+OBJEXT = o

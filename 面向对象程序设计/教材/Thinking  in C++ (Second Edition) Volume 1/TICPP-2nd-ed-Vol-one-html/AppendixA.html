@@ -1,0 +1,522 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<HTML>
+<!--
+This document was converted from RTF source: 
+By rtftohtml 4.19
+See http://www.sunpack.com/RTF
+Filename:TIC2Vone.rtf
+Application Directory:C:\TOOLS\RTF2HTML\
+Subject:
+Author:Bruce Eckel
+Operator:Bruce Eckel
+Document Comments:
+Version Comments:
+Comments:
+Keywords:
+Translation Date:09/27/2001
+Translation Time:05:26:04
+Translation Platform:Win32
+Number of Output files:22
+This File:AppendixA.html
+SplitDepth=1
+SkipNavPanel=1
+SkipLeadingToc=1
+SkipTrailingToc=1
+GenContents=1
+GenFrames=1
+GenIndex=1
+-->
+<HEAD lang="en"><META http-equiv="Content-Type" content="text/html">
+<TITLE>A: Coding Style</TITLE>
+</HEAD>
+
+<BODY  BGCOLOR="#FFFFFF"><DIV ALIGN="CENTER">
+  <a href="http://www.MindView.net">
+  <img src="mindview-head.gif" alt="MindView Inc." BORDER = "0"></a>
+  <CENTER>
+    <FONT FACE="Verdana" size = "-1">
+    [ <a href="README-HTML.txt">Viewing Hints</a> ]
+    [ <a href="http://www.mindview.net/CPPServices/SolutionGuide.html">Exercise Solutions</a> ]
+    [ <a href="http://www.mindview.net/ThinkingInCPP2e.html">Volume 2</a> ]
+    [ <a href="http://www.mindview.net/MailingList.html">Free Newsletter</a> ] <br>
+    [ <a href="http://www.mindview.net/CPPServices/#PublicSeminars">Seminars</a> ]
+    [ <a href="http://www.mindview.net/CPPServices/#SeminarsOnCD">Seminars on CD ROM</a> ]
+    [ <a href="http://www.mindview.net/CPPServices/#ConsultingServices">Consulting</a> ]
+    </FONT>
+  <H2><FONT FACE="Verdana">
+  Thinking in C++, 2nd ed. Volume 1</FONT></H2></FONT>
+  <H3><FONT FACE="Verdana">&copy;2000 by Bruce Eckel</FONT></H3></FONT>
+  
+    <FONT FACE="Verdana" size = "-1">
+     [ <a href="Chapter16.html">Previous Chapter</a> ] 
+    [ <a href="Contents.html">Table of Contents</a> ] 
+    [ <a href="DocIndex.html">Index</a> ]
+     [ <a href="AppendixB.html">Next Chapter</a> ] 
+    </FONT>
+    
+  </CENTER>
+  </P></DIV><A NAME="_Toc472655066"></A><FONT FACE = "Verdana"><H1 ALIGN="LEFT">
+A: Coding Style</H1></FONT>
+<A NAME="Heading485"></A><FONT FACE = "Verdana"><H1 ALIGN="LEFT">
+</H1></FONT>
+<DIV ALIGN="LEFT"><P><FONT FACE="Verdana" SIZE=4>This appendix is not about
+indenting and placement of parentheses and curly braces, although that will be
+mentioned. It is about the general guidelines used in
+</FONT><BR><FONT FACE="Verdana" SIZE=4>this book for organizing the code
+listings.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Although many of these issues have been
+introduced throughout the book, this appendix appears at the end so it can be
+assumed that every topic is fair game, and if you don&#8217;t understand
+something you can look it up in the appropriate section.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">All the decisions about coding style in
+this book have been deliberately considered and made, sometimes over a period of
+years. Of course, everyone has their reasons for organizing code the way they
+do, and I&#8217;m just trying to tell you how I arrived at mine and the
+constraints and environmental factors that brought me to those
+decisions.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Verdana" SIZE=5><B>General</B></FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">In the text of this book, identifiers
+(function, variable, and class names) are set in <B>bold</B>. Most keywords will
+also be set in bold, except for those keywords that are used so much that the
+bolding can become tedious, such as &#8220;class&#8221; and
+&#8220;virtual.&#8221;</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">I use a particular coding style for the
+examples in this book. It was developed over a number of years, and was
+partially inspired by Bjarne Stroustrup&#8217;s<A NAME="Index2733"></A> style in
+his original <I>The C++ Programming
+Language</I>.</FONT><A NAME="fnB64" HREF="#fn64">[64]</A><FONT FACE="Georgia">
+The subject of formatting style is good for hours of hot debate, so I&#8217;ll
+just say I&#8217;m not trying to dictate correct style via my examples; I have
+my own motivation for using the style that I do. Because C++ is a free-form
+programming language, you can continue to use whatever style you&#8217;re
+comfortable with.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">That said, I will note that it is
+important to have a consistent formatting style within a project. If you search
+the Internet, you will find a number of tools that can be used to reformat all
+the code in your project to achieve this valuable consistency.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">The programs in this book are files that
+are automatically extracted from the text of the book, which allows them to be
+tested to ensure that they work correctly. Thus, the code files printed in the
+book should all work without compile-time errors when compiled with an
+implementation that conforms to Standard C++ (note that not all compilers
+support all language features). The errors that <I>should</I> cause compile-time
+error messages are commented out with the comment <B>//! </B>so they can be
+easily discovered and tested using automatic means. Errors discovered and
+reported to the author will appear first in the electronic version of the book
+(at <I>www.BruceEckel.com</I>) and later in updates of the
+book.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">One of the standards in this book is that
+all programs will compile and link without errors (although they will sometimes
+cause warnings). To this end, some of the programs, which demonstrate only a
+coding example and don&#8217;t represent stand-alone programs, will have empty
+<B>main(&#160;)</B> functions, like this</FONT><BR></P></DIV>
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE><font color=#0000ff>int</font> main() {}</PRE></FONT></BLOCKQUOTE>
+
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">This allows the linker to complete
+without an error. </FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">The standard for <B>main(&#160;)</B> is
+to return an <B>int</B>, but Standard C++ states that if there is no
+<B>return</B> statement inside <B>main(&#160;)</B>, the compiler will
+automatically generate code to <B>return 0</B>. This option (no <B>return
+</B>statement in <B>main(&#160;)</B>)<B> </B>will be used in this book (some
+compilers may still generate warnings for this, but those are not compliant with
+Standard C++).</FONT><A NAME="_Toc312373824"></A><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Verdana" SIZE=5><B>File names</B></FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><A NAME="Index2734"></A><A NAME="Index2735"></A><FONT FACE="Georgia">In
+C, it has been traditional to name header files (containing declarations) with
+an extension of <B>.h</B> and implementation files (that cause storage to be
+allocated and code to be generated) with an extension of <B>.c</B>. C++ went
+through an evolution. It was first developed on Unix, where the operating system
+was aware of upper and lower case in file names. The original file names were
+simply capitalized versions of the C extensions: <B>.H</B> and <B>.C</B>. This
+of course didn&#8217;t work for operating systems that didn&#8217;t distinguish
+upper and lower case, such as DOS. DOS C++ vendors used extensions of <B>hxx</B>
+and <B>cxx</B> for header files and implementation files, respectively, or
+<B>hpp</B> and <B>cpp</B>. Later, someone figured out that the only reason you
+needed a different extension for a file was so the compiler could determine
+whether to compile it as a C or C++ file. Because the compiler never compiled
+header files directly, only the implementation file extension needed to be
+changed. The custom, across virtually all systems, has now become to use
+<B>cpp</B> for implementation files and <B>h</B> for header files. Note that
+when including Standard C++ header files, the option of having no file name
+extension is used, i.e.: <B>#include &lt;iostream&gt;</B>.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Verdana" SIZE=5><B>Begin and end comment
+tags</B></FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><A NAME="Index2736"></A><A NAME="Index2737"></A><FONT FACE="Georgia">A
+very important issue with this book is that all code that you see in the book
+must be verified to be correct (with at least one compiler). This is
+accomplished by automatically extracting the files from the book. To facilitate
+this, all code listings that are meant to be compiled (as opposed to code
+fragments, of which there are few) have comment tags at the beginning and end.
+These tags are used by the code-extraction tool <B>ExtractCode.cpp</B> in Volume
+2 of this book (which you can find on the Web site <I>www.BruceEckel.com</I>) to
+pull each code listing out of the plain-ASCII text version of this
+book.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">The end-listing tag simply tells
+<B>ExtractCode.cpp</B> that it&#8217;s the end of the listing, but the
+begin-listing tag is followed by information about what subdirectory the file
+belongs in (generally organized by chapters, so a file that belongs in Chapter 8
+would have a tag of <B>C08</B>), followed by a colon and the name of the listing
+file.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Because <B>ExtractCode.cpp</B> also
+creates a <A NAME="Index2738"></A><B>makefile</B> for each subdirectory,
+information about how a program is made and the command-line used to test it is
+also incorporated into the listings. If a program is stand-alone (it
+doesn&#8217;t need to be linked with anything else) it has no extra information.
+This is also true for header files. However, if it doesn&#8217;t contain a
+<B>main(&#160;)</B> and is meant to be linked with something else, then it has
+an <B>{O}</B> after the file name. If this listing is meant to be the main
+program but needs to be linked with other components, there&#8217;s a separate
+line that begins with <B>//{L}</B> and continues with all the files that need to
+be linked (without extensions, since those can vary from platform to
+platform).</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">You can find examples throughout the
+book.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">If a file should be extracted but the
+begin- and end-tags should not be included in the extracted file (for example,
+if it&#8217;s a file of test data) then the begin-tag is immediately followed by
+a &#8216;<B>!</B>&#8217;.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Verdana" SIZE=5><B>Parentheses, braces, and
+indentation</B></FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">You may notice the formatting style in
+this book is different from many traditional C styles. Of course, everyone
+thinks their own style is the most rational. However, the style used here has a
+simple logic behind it, which will be presented here mixed in with ideas on why
+some of the other styles developed.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">The formatting style is motivated by one
+thing: presentation, both in print and in live seminars. You may feel your needs
+are different because you don&#8217;t make a lot of presentations. However,
+working code is read much more than it is written, and so it should be easy for
+the reader to perceive. My two most important criteria are
+&#8220;scannability&#8221; (how easy it is for the reader to grasp the meaning
+of a single line) and the number of lines that can fit on a page. This latter
+may sound funny, but when you are giving a live presentation, it&#8217;s very
+distracting for the audience if the presenter must shuffle back and forth
+between slides, and a few wasted lines can cause this.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Everyone seems to agree that code inside
+braces should be indented. What people don&#8217;t agree on &#8211; and the
+place where there&#8217;s the most inconsistency within formatting styles
+&#8211; is this: Where does the opening brace go? This one question, I think, is
+what causes such variations among coding styles (For an enumeration of coding
+styles, see C++ Programming Guidelines, by <A NAME="Index2739"></A>Tom Plum and
+<A NAME="Index2740"></A>Dan Saks, Plum Hall 1991.) I&#8217;ll try to convince
+you that many of today&#8217;s coding styles come from pre-Standard C
+constraints (before function prototypes) and are thus inappropriate
+now.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">First, my answer to that key question:
+the opening brace should always go on the same line as the
+&#8220;precursor&#8221; (by which I mean &#8220;whatever the body is about: a
+class, function, object definition, if statement, etc.&#8221;). This is a
+single, consistent rule I apply to all of the code I write, and it makes
+formatting much simpler. It makes the &#8220;scannability&#8221; easier &#8211;
+when you look at this line:</FONT><BR></P></DIV>
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE><font color=#0000ff>int</font> func(<font color=#0000ff>int</font> a);</PRE></FONT></BLOCKQUOTE>
+
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">you know, by the semicolon at the end of
+the line, that this is a declaration and it goes no further, but when you see
+the line:</FONT><BR></P></DIV>
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE><font color=#0000ff>int</font> func(<font color=#0000ff>int</font> a) {</PRE></FONT></BLOCKQUOTE>
+
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">you immediately know it&#8217;s a
+definition because the line finishes with an opening brace, not a semicolon. By
+using this approach, there&#8217;s no difference in where you place the opening
+parenthesis for a multi-line definition:</FONT><BR></P></DIV>
+
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE><font color=#0000ff>int</font> func(<font color=#0000ff>int</font> a) {
+  <font color=#0000ff>int</font> b = a + 1;
+  <font color=#0000ff>return</font> b * 2;
+} </PRE></FONT></BLOCKQUOTE>
+
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">and for a single-line definition that is
+often used for inlines:</FONT><BR></P></DIV>
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE><font color=#0000ff>int</font> func(<font color=#0000ff>int</font> a) { <font color=#0000ff>return</font> (a + 1) * 2; }</PRE></FONT></BLOCKQUOTE>
+
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Similarly, for a class:</FONT><BR></P></DIV>
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE><font color=#0000ff>class</font> Thing;</PRE></FONT></BLOCKQUOTE>
+
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">is a class name declaration,
+and</FONT><BR></P></DIV>
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE><font color=#0000ff>class</font> Thing {</PRE></FONT></BLOCKQUOTE>
+
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">is a class definition. You can tell by
+looking at the single line in all cases whether it&#8217;s a declaration or
+definition. And of course, putting the opening brace on the same line, instead
+of a line by itself, allows you to fit more lines on a page. </FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">So why do we have so many other styles?
+In particular, you&#8217;ll notice that most people create classes following the
+style above (which Stroustrup uses in all editions of his book <I>The C++
+Programming Language</I> from Addison-Wesley) but create function definitions by
+putting the opening brace on a single line by itself (which also engenders many
+different indentation styles). Stroustrup does this except for short inline
+functions. With the approach I describe here, everything is consistent &#8211;
+you name whatever it is (<B>class</B>, function, <B>enum</B>, etc.) and on that
+same line you put the opening brace to indicate that the body for this thing is
+about to follow. Also, the opening brace is the same for short inlines and
+ordinary function definitions.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">I assert that the style of function
+definition used by many folks comes from pre-function-prototyping C, in which
+you didn&#8217;t declare the arguments inside the parentheses, but instead
+between the closing parenthesis and the opening curly brace (this shows
+C&#8217;s assembly-language roots):</FONT><BR></P></DIV>
+
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE><font color=#0000ff>void</font> bar()
+ <font color=#0000ff>int</font> x;
+ <font color=#0000ff>float</font> y;
+{
+ <font color=#009900>/* body here */</font>
+} </PRE></FONT></BLOCKQUOTE>
+
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Here, it would be quite ungainly to put
+the opening brace on the same line, so no one did it. However, they did make
+various decisions about whether the braces should be indented with the body of
+the code or whether they should be at the level of the &#8220;precursor.&#8221;
+Thus, we got many different formatting styles. </FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">There are other arguments for placing the
+brace on the line immediately following the declaration (of a class, struct,
+function, etc.). The following came from a reader, and is presented here so you
+know what the issues are:</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Experienced &#8216;vi&#8217; (vim) users
+know that typing the &#8216;]&#8217; key twice will take the user to the next
+occurrence of &#8216;{&#8216; (or ^L) in column 0. This feature is extremely
+useful in navigating code (jumping to the next function or class definition).
+[My comment: when I was initially working under Unix, GNU Emacs was just
+appearing and I became enmeshed in that. As a result, &#8216;vi&#8217; has never
+made sense to me, and thus I do not think in terms of &#8220;column 0
+locations.&#8221; However, there is a fair contingent of &#8216;vi&#8217; users
+out there, and they are affected by this issue.]</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Placing the &#8216;{&#8216; on the next
+line eliminates some confusing code in complex conditionals, aiding in the
+scannability. Example:</FONT><BR></P></DIV>
+
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE><font color=#0000ff>if</font>(cond1
+   &amp;&amp; cond2
+   &amp;&amp; cond3) {
+   statement;
+} </PRE></FONT></BLOCKQUOTE>
+
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">The above [asserts the reader] has poor
+scannability. However,</FONT><BR></P></DIV>
+
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE><font color=#0000ff>if</font> (cond1
+&amp;&amp; cond2
+&amp;&amp; cond3)
+{
+statement;
+} </PRE></FONT></BLOCKQUOTE>
+
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">breaks up the &#8216;if&#8217; from the
+body, resulting in better readability. [Your opinions on whether this is true
+will vary depending on what you&#8217;re used to.]</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Finally, it&#8217;s much easier to
+visually align braces when they are aligned in the same column. They visually
+"stick out" much better. [End of reader comment]</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">The issue of where to put the opening
+curly brace is probably the most discordant issue. I&#8217;ve learned to scan
+both forms, and in the end it comes down to what you&#8217;ve grown comfortable
+with. However, I note that the official Java coding standard (found on
+Sun&#8217;s Java Web site) is effectively the same as the one I present here
+&#8211; since more folks are beginning to program in both languages, the
+consistency between coding styles may be helpful.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">The approach I use removes all the
+exceptions and special cases, and logically produces a single style of
+indentation as well. Even within a function body, the consistency holds, as
+in:</FONT><BR></P></DIV>
+
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE><font color=#0000ff>for</font>(<font color=#0000ff>int</font> i = 0; i &lt; 100; i++) {
+  cout &lt;&lt; i &lt;&lt; endl;
+  cout &lt;&lt; x * i &lt;&lt; endl;
+} </PRE></FONT></BLOCKQUOTE>
+
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">The style is easy to teach and to
+remember &#8211; you use a single, consistent rule for all your formatting, not
+one for classes, two for functions (one-line inlines vs. multi-line), and
+possibly others for <B>for</B> loops, <B>if</B> statements, etc. The consistency
+alone, I think, makes it worthy of consideration. Above all, C++ is a newer
+language than C, and although we must make many concessions to C, we
+shouldn&#8217;t be carrying too many artifacts with us that cause problems in
+the future. Small problems multiplied by many lines of code become big problems.
+For a thorough examination of the subject, albeit in C, see <I>C Style:
+Standards and Guidelines</I>, by <A NAME="Index2741"></A>David Straker
+(Prentice-Hall 1992).</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">The other constraint I must work under is
+the line width, since the book has a limitation of 50 characters. What happens
+when something is too long to fit on one line? Well, again I strive to have a
+consistent policy for the way lines are broken up, so they can be easily viewed.
+As long as something is part of a single definition, argument list, etc.,
+continuation lines should be indented one level in from the beginning of that
+definition, argument list, etc. </FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Verdana" SIZE=5><B>Identifier
+names</B></FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Those familiar with Java will notice that
+I have switched to using the standard Java style for all identifier names.
+However, I cannot be completely consistent here because identifiers in the
+Standard C and C++ libraries do not follow this style.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">The style is quite straightforward. The
+first letter of an identifier is only capitalized if that identifier is a class.
+If it is a function or variable, then the first letter is lowercase. The rest of
+the identifier consists of one or more words, run together but distinguished by
+capitalizing each word. So a class looks like this:</FONT><BR></P></DIV>
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE><font color=#0000ff>class</font> FrenchVanilla : <font color=#0000ff>public</font> IceCream {</PRE></FONT></BLOCKQUOTE>
+
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">an object identifier looks like
+this:</FONT><BR></P></DIV>
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE>FrenchVanilla myIceCreamCone(3);</PRE></FONT></BLOCKQUOTE>
+
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">and a function looks like
+this:</FONT><BR></P></DIV>
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE><font color=#0000ff>void</font> eatIceCreamCone();</PRE></FONT></BLOCKQUOTE>
+
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">(for either a member function or a
+regular function).</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">The one exception is for compile-time
+constants (<B>const</B> or <B>#define</B>), in which all of the letters in the
+identifier are uppercase.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">The value of the style is that
+capitalization has meaning &#8211; you can see from the first letter whether
+you&#8217;re talking about a class or an object/method. This is especially
+useful when <B>static</B> class members are accessed.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Verdana" SIZE=5><B>Order of header
+inclusion</B></FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><A NAME="Index2742"></A><FONT FACE="Georgia">Headers are
+included in order from &#8220;the most specific to the most general.&#8221; That
+is, any header files in the local directory are included first, then any of my
+own &#8220;tool&#8221; headers, such as
+<A NAME="Index2743"></A><B>require.h</B>, then any third-party library headers,
+then the Standard C++ Library headers, and finally the C library
+headers.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">The justification for this comes from
+<A NAME="Index2744"></A>John Lakos in <I>Large-Scale C++ Software Design</I>
+(Addison-Wesley, 1996):</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia"><I>Latent usage errors can be avoided by
+ensuring that the .h file of a component parses by itself &#8211; without
+externally-provided declarations or definitions... Including the .h file as the
+very first line of the .c file ensures that no critical piece of information
+intrinsic to the physical interface of the component is missing from the .h file
+(or, if there is, that you will find out about it as soon as you try to compile
+the .c file).</I></FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">If the order of header inclusion goes
+&#8220;from most specific to most general,&#8221; then it&#8217;s more likely
+that if your header doesn&#8217;t parse by itself, you&#8217;ll find out about
+it sooner and prevent annoyances down the road.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Verdana" SIZE=5><B>Include guards on header
+files</B></FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><A NAME="Index2745"></A><A NAME="Index2746"></A><FONT FACE="Georgia"><I>Include
+guards </I>are always used inside header files to prevent multiple inclusion of
+a header file during the compilation of a single <B>.cpp</B> file. The include
+guards are implemented using a preprocessor <B>#define</B> and checking to see
+that a name hasn&#8217;t already been defined. The name used for the guard is
+based on the name of the header file, with all letters of the file name
+uppercase and replacing the &#8216;<B>.</B>&#8217; with an underscore. For
+example:</FONT><BR></P></DIV>
+
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE><font color=#009900>// IncludeGuard.h</font>
+#ifndef INCLUDEGUARD_H
+#define INCLUDEGUARD_H
+<font color=#009900>// Body of header file here...</font>
+#endif <font color=#009900>// INCLUDEGUARD_H</font></PRE></FONT></BLOCKQUOTE>
+
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">The identifier on the last line is
+included for clarity. Although some preprocessors ignored any characters after
+an <A NAME="Index2747"></A><A NAME="Index2748"></A><B>#endif</B>, that
+isn&#8217;t standard behavior and so the identifier is commented.
+</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Verdana" SIZE=5><B>Use of
+namespaces</B></FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">In header files, any
+&#8220;pollution&#8221; of the
+<A NAME="Index2749"></A><A NAME="Index2750"></A>namespace in which the header is
+included must be scrupulously avoided. That is, if you change the namespace
+outside of a function or class, you will cause that change to occur for any file
+that includes your header, resulting in all kinds of problems. No
+<A NAME="Index2751"></A><B>using</B> declarations of any kind are allowed
+outside of function definitions, and no global <A NAME="Index2752"></A><B>using
+</B>directives are allowed in header files.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">In <B>cpp</B> files, any global
+<B>using</B> directives will only affect that file, and so in this book they are
+generally used to produce more easily-readable code, especially in small
+programs.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Verdana" SIZE=5><B>Use of require(&#160;) and
+assure(&#160;)</B></FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">The
+<A NAME="Index2753"></A><B>require(&#160;)</B> and
+<A NAME="Index2754"></A><B>assure(&#160;)</B> functions defined in
+<A NAME="Index2755"></A><B>require.h</B> are used consistently throughout most
+of the book, so that they may properly report problems. If you are familiar with
+the concepts of <A NAME="Index2756"></A><I>preconditions </I>and
+<A NAME="Index2757"></A><I>postconditions</I> (introduced by Bertrand Meyer) you
+will recognize that the use of <B>require(&#160;)</B> and <B>assure(&#160;)</B>
+more or less provide preconditions (usually) and postconditions (occasionally).
+Thus, at the beginning of a function, before any of the &#8220;core&#8221; of
+the function is executed, the preconditions are checked to make sure everything
+is proper and that all of the necessary conditions are correct. Then the
+&#8220;core&#8221; of the function is executed, and sometimes some
+postconditions are checked to make sure that the new state of the data is within
+defined parameters. You&#8217;ll notice that the postcondition checks are rare
+in this book, and <B>assure(&#160;)</B> is primarily used to make sure that
+files were opened successfully.</FONT><BR></P></DIV>
+<FONT FACE = "Verdana"><H1 ALIGN="LEFT">
+</H1></FONT>
+
+<FONT FACE = "Verdana"><H1 ALIGN="LEFT">
+</H1></FONT>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<FONT FACE = "Verdana"><H1 ALIGN="LEFT">
+</H1></FONT>
+
+
+
+
+
+
+
+
+
+
+
+<HR><DIV ALIGN="LEFT"><P><A NAME="fn64" HREF="#fnB64">[64]</A><FONT FACE="Georgia" SIZE=2>
+Ibid.</FONT><BR></P></DIV>
+
+<DIV ALIGN="CENTER">
+    <FONT FACE="Verdana" size = "-1">
+     [ <a href="Chapter16.html">Previous Chapter</a> ] 
+    [ <a href="Contents.html">Table of Contents</a> ] 
+    [ <a href="DocIndex.html">Index</a> ]
+     [ <a href="AppendixB.html">Next Chapter</a> ] 
+    </FONT>
+    <BR>
+ Last Update:09/27/2001</P></DIV>
+
+</BODY>
+
+</HTML>

@@ -1,0 +1,553 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<HTML>
+<!--
+This document was converted from RTF source: 
+By rtftohtml 4.19
+See http://www.sunpack.com/RTF
+Filename:TIC2Vone.rtf
+Application Directory:C:\TOOLS\RTF2HTML\
+Subject:
+Author:Bruce Eckel
+Operator:Bruce Eckel
+Document Comments:
+Version Comments:
+Comments:
+Keywords:
+Translation Date:09/27/2001
+Translation Time:05:26:06
+Translation Platform:Win32
+Number of Output files:22
+This File:AppendixB.html
+SplitDepth=1
+SkipNavPanel=1
+SkipLeadingToc=1
+SkipTrailingToc=1
+GenContents=1
+GenFrames=1
+GenIndex=1
+-->
+<HEAD lang="en"><META http-equiv="Content-Type" content="text/html">
+<TITLE>B: Programming Guidelines</TITLE>
+</HEAD>
+
+<BODY  BGCOLOR="#FFFFFF"><DIV ALIGN="CENTER">
+  <a href="http://www.MindView.net">
+  <img src="mindview-head.gif" alt="MindView Inc." BORDER = "0"></a>
+  <CENTER>
+    <FONT FACE="Verdana" size = "-1">
+    [ <a href="README-HTML.txt">Viewing Hints</a> ]
+    [ <a href="http://www.mindview.net/CPPServices/SolutionGuide.html">Exercise Solutions</a> ]
+    [ <a href="http://www.mindview.net/ThinkingInCPP2e.html">Volume 2</a> ]
+    [ <a href="http://www.mindview.net/MailingList.html">Free Newsletter</a> ] <br>
+    [ <a href="http://www.mindview.net/CPPServices/#PublicSeminars">Seminars</a> ]
+    [ <a href="http://www.mindview.net/CPPServices/#SeminarsOnCD">Seminars on CD ROM</a> ]
+    [ <a href="http://www.mindview.net/CPPServices/#ConsultingServices">Consulting</a> ]
+    </FONT>
+  <H2><FONT FACE="Verdana">
+  Thinking in C++, 2nd ed. Volume 1</FONT></H2></FONT>
+  <H3><FONT FACE="Verdana">&copy;2000 by Bruce Eckel</FONT></H3></FONT>
+  
+    <FONT FACE="Verdana" size = "-1">
+     [ <a href="AppendixA.html">Previous Chapter</a> ] 
+    [ <a href="Contents.html">Table of Contents</a> ] 
+    [ <a href="DocIndex.html">Index</a> ]
+     [ <a href="AppendixC.html">Next Chapter</a> ] 
+    </FONT>
+    
+  </CENTER>
+  </P></DIV><A NAME="_Toc472655067"></A><A NAME="Heading486"></A><FONT FACE = "Verdana"><H1 ALIGN="LEFT">
+B: Programming Guidelines</H1></FONT>
+<DIV ALIGN="LEFT"><P><FONT FACE="Verdana" SIZE=4>This appendix is a collection of
+suggestions for C++ programming. They&#8217;ve been assembled over the course of
+my teaching and programming experience and</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">also from the insights of friends
+including Dan Saks<A NAME="Index2758"></A> (co-author with Tom
+Plum<A NAME="Index2759"></A> of <I>C++ Programming Guidelines</I>, Plum Hall,
+1991), Scott Meyers<A NAME="Index2760"></A> (author of <I>Effective C++</I>,
+2<SUP>nd</SUP> edition, Addison-Wesley, 1998), and Rob
+Murray<A NAME="Index2761"></A> (author of <I>C++ Strategies &amp; Tactics</I>,
+Addison-Wesley, 1993). Also, many of the tips are summarized from the pages of
+<I>Thinking in C++</I>.
+<A NAME="Index2762"></A><A NAME="Index2763"></A><A NAME="Index2764"></A><A NAME="Index2765"></A><A NAME="Index2766"></A></FONT><BR></P></DIV>
+<OL>
+<LI><FONT FACE="Verdana">	</FONT><FONT FACE="Georgia">First make it work, then
+make it fast. This is true even if you are certain that a piece of code is
+really important and that it will be a principal bottleneck in your system.
+Don&#8217;t do it. Get the system going first with as simple a design as
+possible. Then if it isn&#8217;t going fast enough, profile it. You&#8217;ll
+almost always discover that &#8220;your&#8221; bottleneck isn&#8217;t the
+problem. Save your time for the really important
+stuff.</FONT><LI><FONT FACE="Verdana">	</FONT><FONT FACE="Georgia">Elegance
+always pays off. It&#8217;s not a frivolous pursuit. Not only does it give you a
+program that&#8217;s easier to build and debug, but it&#8217;s also easier to
+understand and maintain, and that&#8217;s where the financial value lies. This
+point can take some experience to believe, because it can seem that while
+you&#8217;re making a piece of code elegant, you&#8217;re not being productive.
+The productivity comes when the code seamlessly integrates into your system, and
+even more so when the code or system is
+modified.</FONT><LI><FONT FACE="Verdana">	</FONT><FONT FACE="Georgia">Remember
+the &#8220;divide and conquer&#8221; principle. If the problem you&#8217;re
+looking at is too confusing, try to imagine what the basic operation of the
+program would be, given the existence of a magic &#8220;piece&#8221; that
+handles the hard parts. That &#8220;piece&#8221; is an object &#8211; write the
+code that uses the object, then look at the object and encapsulate <I>its</I>
+hard parts into other objects,
+etc.</FONT><LI><FONT FACE="Verdana">	</FONT><FONT FACE="Georgia">Don&#8217;t
+automatically rewrite all your existing C code in C++ unless you need to
+significantly change its functionality (that is, don&#8217;t fix it if it
+isn&#8217;t broken). <I>Recompiling</I> C in C++ is a valuable activity because
+it may reveal hidden bugs. However, taking C code that works fine and rewriting
+it in C++ may not be the best use of your time, unless the C++ version will
+provide a lot of opportunities for reuse as a
+class.</FONT><LI><FONT FACE="Verdana">	</FONT><FONT FACE="Georgia">If you do
+have a large body of C code that needs changing, first isolate the parts of the
+code that will not be modified, possibly wrapping those functions in an
+&#8220;API class&#8221; as static member functions. Then focus on the code that
+will be changed, refactoring it into classes to facilitate easy modifications as
+your maintenance
+proceeds.</FONT><LI><FONT FACE="Verdana">	</FONT><FONT FACE="Georgia">Separate
+the class creator from the class user (<I>client programmer</I>). The class user
+is the &#8220;customer&#8221; and doesn&#8217;t need or want to know
+what&#8217;s going on behind the scenes of the class. The class creator must be
+the expert in class design and write the class so that it can be used by the
+most novice programmer possible, yet still work robustly in the application.
+Library use will be easy only if it&#8217;s
+transparent.</FONT><LI><FONT FACE="Verdana">	</FONT><FONT FACE="Georgia">When
+you create a class, make your names as clear as possible. Your goal should be to
+make the client programmer&#8217;s interface conceptually simple. Attempt to
+make your names so clear that comments are unnecessary. To this end, use
+function overloading and default arguments to create an intuitive, easy-to-use
+interface.</FONT><LI><FONT FACE="Verdana">	</FONT><FONT FACE="Georgia">Access
+control allows you (the class creator) to change as much as possible in the
+future without damaging client code in which the class is used. In this light,
+keep everything as <B>private</B> as possible, and make only the class interface
+<B>public</B>, always using functions rather than data. Make data <B>public</B>
+only when forced. If class users don&#8217;t need to access a function, make it
+<B>private</B>. If a part of your class must be exposed to inheritors as
+<B>protected</B>, provide a function interface rather than expose the actual
+data. In this way, implementation changes will have minimal impact on derived
+classes.</FONT><LI><FONT FACE="Verdana">	</FONT><FONT FACE="Georgia">Don&#8217;t
+fall into analysis paralysis. There are some things that you don&#8217;t learn
+until you start coding and get some kind of system working. C++ has built-in
+firewalls; let them work for you. Your mistakes in a class or set of classes
+won&#8217;t destroy the integrity of the whole
+system.</FONT><LI><FONT FACE="Verdana">	</FONT><FONT FACE="Georgia">Your
+analysis and design must produce, at minimum, the classes in your system, their
+public interfaces, and their relationships to other classes, especially base
+classes. If your design methodology produces more than that, ask yourself if all
+the pieces produced by that methodology have value over the lifetime of the
+program. If they do not, maintaining them will cost you. Members of development
+teams tend not to maintain anything that does not contribute to their
+productivity; this is a fact of life that many design methods don&#8217;t
+account for.</FONT><LI><FONT FACE="Verdana">	</FONT><FONT FACE="Georgia">Write
+the test code first (before you write the class), and keep it with the class.
+Automate the running of your tests through a makefile or similar tool. This way,
+any changes can be automatically verified by running the test code, and
+you&#8217;ll immediately discover errors. Because you know that you have the
+safety net of your test framework, you will be bolder about making sweeping
+changes when you discover the need. Remember that the greatest improvements in
+languages come from the built-in testing that type checking, exception handling,
+etc., provide, but those features take you only so far. You must go the rest of
+the way in creating a robust system by filling in the tests that verify features
+that are specific to your class or
+program.</FONT><LI><FONT FACE="Verdana">	</FONT><FONT FACE="Georgia">Write the
+test code first (before you write the class) in order to verify that your class
+design is complete. If you can&#8217;t write test code, you don&#8217;t know
+what your class looks like. In addition, the act of writing the test code will
+often flush out additional features or constraints that you need in the class
+&#8211; these features or constraints don&#8217;t always appear during analysis
+and design.</FONT><LI><FONT FACE="Verdana">	</FONT><FONT FACE="Georgia">Remember
+a fundamental rule of software
+engineering</FONT><A NAME="fnB65" HREF="#fn65">[65]</A><A NAME="Index2767"></A><FONT FACE="Georgia">:
+<I>All software design problems can be simplified by introducing an extra level
+of conceptual indirection.</I> This one idea is the basis of abstraction, the
+primary feature of object-oriented
+programming.</FONT><LI><FONT FACE="Verdana">	</FONT><FONT FACE="Georgia">Make
+classes as atomic as possible; that is, give each class a single, clear purpose.
+If your classes or your system design grows too complicated, break complex
+classes into simpler ones. The most obvious indicator of this is sheer size: if
+a class is big, chances are it&#8217;s doing too much and should be broken
+up.</FONT><LI><FONT FACE="Verdana">	</FONT><FONT FACE="Georgia">Watch for long
+member function definitions. A function that is long and complicated is
+difficult and expensive to maintain, and is probably trying to do too much all
+by itself. If you see such a function, it indicates that, at the least, it
+should be broken up into multiple functions. It may also suggest the creation of
+a new class.</FONT><LI><FONT FACE="Verdana">	</FONT><FONT FACE="Georgia">Watch
+for long argument lists. Function calls then become difficult to write, read and
+maintain. Instead, try to move the member function to a class where it is (more)
+appropriate, and/or pass objects in as
+arguments.</FONT><LI><FONT FACE="Verdana">	</FONT><FONT FACE="Georgia">Don&#8217;t
+repeat yourself. If a piece of code is recurring in many functions in derived
+classes, put that code into a single function in the base class and call it from
+the derived-class functions. Not only do you save code space, you provide for
+easy propagation of changes. You can use an inline function for efficiency.
+Sometimes the discovery of this common code will add valuable functionality to
+your
+interface.</FONT><LI><FONT FACE="Verdana">	</FONT><FONT FACE="Georgia">Watch for
+<B>switch</B> statements or chained <B>if-else</B> clauses. This is typically an
+indicator of <I>type-check coding</I>, which means you are choosing what code to
+execute based on some kind of type information (the exact type may not be
+obvious at first). You can usually replace this kind of code with inheritance
+and polymorphism; a polymorphic function call will perform the type checking for
+you, and allow for more reliable and easier
+extensibility.</FONT><LI><FONT FACE="Verdana">	</FONT><FONT FACE="Georgia">From
+a design standpoint, look for and separate things that change from things that
+stay the same. That is, search for the elements in a system that you might want
+to change without forcing a redesign, then encapsulate those elements in
+classes. You can learn significantly more about this concept in the Design
+Patterns chapter in Volume 2 of this book, available at
+<I>www.BruceEckel.com</I>.</FONT><LI><FONT FACE="Verdana">	</FONT><FONT FACE="Georgia">Watch
+out for <I>variance</I>. Two semantically different objects may have identical
+actions, or responsibilities, and there is a natural temptation to try to make
+one a subclass of the other just to benefit from inheritance. This is called
+variance, but there&#8217;s no real justification to force a superclass/subclass
+relationship where it doesn&#8217;t exist. A better solution is to create a
+general base class that produces an interface for both as derived classes
+&#8211; it requires a bit more space, but you still benefit from inheritance and
+will probably make an important discovery about the
+design.</FONT><LI><FONT FACE="Verdana">	</FONT><FONT FACE="Georgia">Watch out
+for <I>limitation</I> during inheritance. The clearest designs add new
+capabilities to inherited ones. A suspicious design removes old capabilities
+during inheritance without adding new ones. But rules are made to be broken, and
+if you are working from an old class library, it may be more efficient to
+restrict an existing class in its subclass than it would be to restructure the
+hierarchy so your new class fits in where it should, above the old
+class.</FONT><LI><FONT FACE="Verdana">	</FONT><FONT FACE="Georgia">Don&#8217;t
+extend fundamental functionality by subclassing. If an interface element is
+essential to a class it should be in the base class, not added during
+derivation. If you&#8217;re adding member functions by inheriting, perhaps you
+should rethink the
+design.</FONT><LI><FONT FACE="Verdana">	</FONT><FONT FACE="Georgia">Less is
+more. Start with a minimal interface to a class, as small and simple as you need
+to solve the problem at hand, but don&#8217;t try to anticipate all the ways
+that your class <I>might</I> be used. As the class is used, you&#8217;ll
+discover ways you must expand the interface. However, once a class is in use you
+cannot shrink the interface without disturbing client code. If you need to add
+more functions, that&#8217;s fine; it won&#8217;t disturb code, other than
+forcing recompiles. But even if new member functions replace the functionality
+of old ones, leave the existing interface alone (you can combine the
+functionality in the underlying implementation if you want). If you need to
+expand the interface of an existing function by adding more arguments, leave the
+existing arguments in their current order, and put default values on all of the
+new arguments; this way you won&#8217;t disturb any existing calls to that
+function.</FONT><LI><FONT FACE="Verdana">	</FONT><FONT FACE="Georgia">Read your
+classes aloud to make sure they&#8217;re logical, referring to the relationship
+between a base class and derived class as &#8220;is-a&#8221; and member objects
+as
+&#8220;has-a.&#8221;</FONT><LI><FONT FACE="Verdana">	</FONT><FONT FACE="Georgia">When
+deciding between inheritance and composition, ask if you need to upcast to the
+base type. If not, prefer composition (member objects) to inheritance. This can
+eliminate the perceived need for multiple inheritance. If you inherit, users
+will think they are supposed to
+upcast.</FONT><LI><FONT FACE="Verdana">	</FONT><FONT FACE="Georgia">Sometimes
+you need to inherit in order to access <B>protected</B> members of the base
+class. This can lead to a perceived need for multiple inheritance. If you
+don&#8217;t need to upcast, first derive a new class to perform the protected
+access. Then make that new class a member object inside any class that needs to
+use it, rather than
+inheriting.</FONT><LI><FONT FACE="Verdana">	</FONT><FONT FACE="Georgia">Typically,
+a base class will be used primarily to create an interface to classes derived
+from it. Thus, when you create a base class, default to making the member
+functions pure virtual. The destructor can also be pure virtual (to force
+inheritors to explicitly override it), but remember to give the destructor a
+function body, because all destructors in a hierarchy are always
+called.</FONT><LI><FONT FACE="Verdana">	</FONT><FONT FACE="Georgia">When you put
+a <B>virtual</B> function in a class, make all functions in that class
+<B>virtual</B>, and put in a <B>virtual</B> destructor. This approach prevents
+surprises in the behavior of the interface. Only start removing the
+<B>virtual</B> keyword when you&#8217;re tuning for efficiency and your profiler
+has pointed you in this
+direction.</FONT><LI><FONT FACE="Verdana">	</FONT><FONT FACE="Georgia">Use data
+members for variation in value and <B>virtual</B> functions for variation in
+behavior. That is, if you find a class that uses state variables along with
+member functions that switch behavior based on those variables, you should
+probably redesign it to express the differences in behavior within subclasses
+and overridden <B>virtual</B>
+functions.</FONT><LI><FONT FACE="Verdana">	</FONT><FONT FACE="Georgia">If you
+must do something nonportable, make an abstraction for that service and localize
+it within a class. This extra level of indirection prevents the non-portability
+from being distributed throughout your
+program.</FONT><LI><FONT FACE="Verdana">	</FONT><FONT FACE="Georgia">Avoid
+multiple inheritance. It&#8217;s for getting you out of bad situations,
+especially repairing class interfaces in which you don&#8217;t have control of
+the broken class (see Volume 2). You should be an experienced programmer before
+designing multiple inheritance into your
+system.</FONT><LI><FONT FACE="Verdana">	</FONT><FONT FACE="Georgia">Don&#8217;t
+use <B>private</B> inheritance. Although it&#8217;s in the language and seems to
+have occasional functionality, it introduces  significant ambiguities when
+combined with run-time type identification. Create a private member object
+instead of using private
+inheritance.</FONT><LI><FONT FACE="Verdana">	</FONT><FONT FACE="Georgia">If two
+classes are associated with each other in some functional way (such as
+containers and iterators), try to make one a <B>public </B>nested <B>friend</B>
+class of the other, as the Standard C++ Library does with iterators inside
+containers (examples of this are shown in the latter part of Chapter 16). This
+not only emphasizes the association between the classes, but it allows the class
+name to be reused by nesting it within another class. The Standard C++ Library
+does this by defining a nested <B>iterator</B> class inside each container
+class, thereby providing the containers with a common interface. The other
+reason you&#8217;ll want to nest a class is as part of the <B>private
+</B>implementation. Here, nesting is beneficial for implementation hiding rather
+than the class association and prevention of namespace pollution noted
+above.</FONT><LI><FONT FACE="Verdana">	</FONT><FONT FACE="Georgia">Operator
+overloading is only &#8220;syntactic sugar:&#8221; a different way to make a
+function call. If overloading an operator doesn&#8217;t make the class interface
+clearer and easier to use, don&#8217;t do it. Create only one automatic type
+conversion operator for a class. In general, follow the guidelines and format
+given in Chapter 12 when overloading
+operators.</FONT><LI><FONT FACE="Verdana">	</FONT><FONT FACE="Georgia">Don&#8217;t
+fall prey to premature optimization. That way lies madness. In particular,
+don&#8217;t worry about writing (or avoiding) <B>inline</B> functions, making
+some functions non<B>virtual</B>, or tweaking code to be efficient when you are
+first constructing the system. Your primary goal should be to prove the design,
+unless the design requires a certain
+efficiency.</FONT><LI><FONT FACE="Verdana">	</FONT><FONT FACE="Georgia">Normally,
+don&#8217;t let the compiler create the constructors, destructors, or the
+<B>operator=</B> for you. Class designers should always say exactly what the
+class should do and keep the class entirely under control. If you don&#8217;t
+want a copy-constructor or <B>operator=</B>, declare them as <B>private</B>.<B>
+</B>Remember that if you create any constructor, it prevents the default
+constructor from being
+synthesized.</FONT><LI><FONT FACE="Verdana">	</FONT><FONT FACE="Georgia">If your
+class contains pointers, you must create the copy-constructor, <B>operator=</B>,
+and destructor for the class to work
+properly.</FONT><LI><FONT FACE="Verdana">	</FONT><FONT FACE="Georgia">When you
+write a copy-constructor for a derived class, remember to call the base-class
+copy-constructor explicitly (also the member-object versions). (See Chapter 14.)
+If you don&#8217;t, the default constructor will be called for the base class
+(or member object) and that probably isn&#8217;t what you want. To call the
+base-class copy-constructor, pass it the derived object you&#8217;re copying
+from:</FONT><BR><TT><FONT FACE="Courier New"><B>Derived(const Derived&amp; d) :
+Base(d) { //
+...</B></FONT></TT><LI><FONT FACE="Verdana">	</FONT><FONT FACE="Georgia">When
+you write an assignment operator for a derived class, remember to call the
+base-class version of the assignment operator explicitly. (See Chapter 14.) If
+you don&#8217;t, then nothing will happen (the same is true for the member
+objects). To call the base-class assignment operator, use the base-class name
+and scope resolution:</FONT><BR><TT><FONT FACE="Courier New"><B>Derived&amp;
+operator=(const Derived&amp; d)
+{</B></FONT></TT><BR><TT><FONT FACE="Courier New"><B> 
+Base::operator=(d);</B></FONT></TT><LI><FONT FACE="Verdana">	</FONT><FONT FACE="Georgia">If
+you need to minimize recompiles during development of a large project, use the
+handle class/Cheshire cat technique demonstrated in Chapter 5, and remove it
+only if runtime efficiency is a
+problem.</FONT><LI><FONT FACE="Verdana">	</FONT><FONT FACE="Georgia">Avoid the
+preprocessor. Always use <B>const</B> for value substitution and <B>inline</B>s
+for macros.</FONT><LI><FONT FACE="Verdana">	</FONT><FONT FACE="Georgia">Keep
+scopes as small as possible so the visibility and lifetime of your objects are
+as small as possible. This reduces the chance of using an object in the wrong
+context and hiding a difficult-to-find bug. For example, suppose you have a
+container and a piece of code that iterates through it. If you copy that code to
+use with a new container, you may accidentally end up using the size of the old
+container as the upper bound of the new one. If, however, the old container is
+out of scope, the error will be caught at compile
+time.</FONT><LI><FONT FACE="Verdana">	</FONT><FONT FACE="Georgia">Avoid global
+variables. Always strive to put data inside classes. Global functions are more
+likely to occur naturally than global variables, although you may later discover
+that a global function may fit better as a <B>static </B>member of a
+class.</FONT><LI><FONT FACE="Verdana">	</FONT><FONT FACE="Georgia">If you need
+to declare a class or function from a library, always do so by including a
+header file. For example, if you want to create a function to write to an
+<B>ostream</B>, never declare <B>ostream</B> yourself using an incomplete type
+specification like this,</FONT><BR><TT><FONT FACE="Courier New"><B>class
+ostream;</B></FONT></TT><BR><FONT FACE="Georgia">This approach leaves your code
+vulnerable to changes in representation. (For example, <B>ostream</B> could
+actually be a <B>typedef</B>.) Instead, always use the header
+file:</FONT><BR><TT><FONT FACE="Courier New"><B>#include
+&lt;iostream&gt;</B></FONT></TT><BR><FONT FACE="Georgia">When creating your own
+classes, if a library is big, provide your users an abbreviated form of the
+header file with incomplete type specifications (that is, class name
+declarations) for cases in which they need to use only pointers. (It can speed
+compilations.)</FONT><LI><FONT FACE="Verdana">	</FONT><FONT FACE="Georgia">When
+choosing the return type of an overloaded operator, consider what will happen if
+expressions are chained together. Return a copy or reference to the lvalue
+(<B>return *this</B>) so it can be used in a chained expression (<B>A = B =
+C</B>). When defining <B>operator=</B>, remember
+<B>x=x</B>.</FONT><LI><FONT FACE="Verdana">	</FONT><FONT FACE="Georgia">When
+writing a function, pass arguments by <B>const</B> reference as your first
+choice. As long as you don&#8217;t need to modify the object being passed, this
+practice is best because it has the simplicity of pass-by-value syntax but
+doesn&#8217;t require expensive constructions and destructions to create a local
+object, which occurs when passing by value. Normally you don&#8217;t want to be
+worrying too much about efficiency issues when designing and building your
+system, but this habit is a sure
+win.</FONT><LI><FONT FACE="Verdana">	</FONT><FONT FACE="Georgia">Be aware of
+temporaries<B>.</B> When tuning for performance, watch out for temporary
+creation, especially with operator overloading. If your constructors and
+destructors are complicated, the cost of creating and destroying temporaries can
+be high. When returning a value from a function, always try to build the object
+&#8220;in place&#8221; with a constructor call in the return statement:
+</FONT><BR><TT><FONT FACE="Courier New"><B>return MyType(i,
+j);</B></FONT></TT><BR><FONT FACE="Georgia">rather
+than</FONT><BR><TT><FONT FACE="Courier New"><B>MyType x(i,
+j);</B></FONT></TT><BR><TT><FONT FACE="Courier New"><B>return
+x;</B></FONT></TT><BR><FONT FACE="Georgia">The former return statement (the
+so-called <I>return-value optimization</I>)<I> </I>eliminates a copy-constructor
+call and destructor
+call.</FONT><LI><FONT FACE="Verdana">	</FONT><FONT FACE="Georgia">When creating
+constructors, consider exceptions. In the best case, the constructor won&#8217;t
+do anything that throws an exception. In the next-best scenario, the class will
+be composed and inherited from robust classes only, so they will automatically
+clean themselves up if an exception is thrown. If you must have naked pointers,
+you are responsible for catching your own exceptions and then deallocating any
+resources pointed to before you throw an exception in your constructor. If a
+constructor must fail, the appropriate action is to throw an
+exception.</FONT><LI><FONT FACE="Verdana">	</FONT><FONT FACE="Georgia">Do only
+what is minimally necessary in your constructors. Not only does this produce a
+lower overhead for constructor calls (many of which may not be under your
+control) but your constructors are then less likely to throw exceptions or cause
+problems.</FONT><LI><FONT FACE="Verdana">	</FONT><FONT FACE="Georgia">The
+responsibility of the destructor is to release resources allocated during the
+lifetime of the object, not just during
+construction.</FONT><LI><FONT FACE="Verdana">	</FONT><FONT FACE="Georgia">Use
+exception hierarchies, preferably derived from the Standard C++ exception
+hierarchy and nested as public classes within the class that throws the
+exceptions. The person catching the exceptions can then catch the specific types
+of exceptions, followed by the base type. If you add new derived exceptions,
+existing client code will still catch the exception through the base
+type.</FONT><LI><FONT FACE="Verdana">	</FONT><FONT FACE="Georgia">Throw
+exceptions by value and catch exceptions by reference. Let the
+exception-handling mechanism handle memory management. If you throw pointers to
+exception objects that have been created on the heap, the catcher must know to
+destroy the exception, which is bad coupling. If you catch exceptions by value,
+you cause extra constructions and destructions; worse, the derived portions of
+your exception objects may be sliced during upcasting by
+value.</FONT><LI><FONT FACE="Verdana">	</FONT><FONT FACE="Georgia">Don&#8217;t
+write your own class templates unless you must. Look first in the Standard C++
+Library, then to vendors who create special-purpose tools. Become proficient
+with their use and you&#8217;ll greatly increase your
+productivity.</FONT><LI><FONT FACE="Verdana">	</FONT><FONT FACE="Georgia">When
+creating templates, watch for code that does not depend on type and put that
+code in a non-template base class to prevent needless code bloat. Using
+inheritance or composition, you can create templates in which the bulk of the
+code they contain is type-dependent and therefore
+essential.</FONT><LI><FONT FACE="Verdana">	</FONT><FONT FACE="Georgia">Don&#8217;t
+use the <B>&lt;cstdio&gt;</B> functions, such as <B>printf(&#160;)</B>. Learn to
+use iostreams instead; they are type-safe and type-extensible, and significantly
+more powerful. Your investment will be rewarded regularly. In general, always
+use C++ libraries in preference to C
+libraries.</FONT><LI><FONT FACE="Verdana">	</FONT><FONT FACE="Georgia">Avoid
+C&#8217;s built-in types. They are supported in C++ for backward compatibility,
+but they are much less robust than C++ classes, so your bug-hunting time will
+increase.</FONT><LI><FONT FACE="Verdana">	</FONT><FONT FACE="Georgia">Whenever
+you use built-in types as globals or automatics, don&#8217;t define them until
+you can also initialize them. Define variables one per line along with their
+initialization. When defining pointers, put the &#8216;<B>*</B>&#8217; next to
+the type name. You can safely do this if you define one variable per line. This
+style tends to be less confusing for the
+reader.</FONT><LI><FONT FACE="Verdana">	</FONT><FONT FACE="Georgia">Guarantee
+that initialization occurs in all aspects of your code. Perform all member
+initialization in the constructor initializer list, even built-in types (using
+pseudo-constructor calls). Using the constructor initializer list is often more
+efficient when initializing subobjects; otherwise the default constructor is
+called, and you end up calling other member functions (probably
+<B>operator=</B>) on top of that in order to get the initialization you
+want.</FONT><LI><FONT FACE="Verdana">	</FONT><FONT FACE="Georgia">Don&#8217;t
+use the form <B>MyType a = b;</B> to define an object. This one feature is a
+major source of confusion because it calls a constructor instead of the
+<B>operator=</B>. For clarity, always be specific and use the form <B>MyType
+a(b);</B> instead. The results are identical, but other programmers won&#8217;t
+be confused.</FONT><LI><FONT FACE="Verdana">	</FONT><FONT FACE="Georgia">Use the
+explicit casts described in Chapter 3. A cast overrides the normal typing system
+and is a potential error spot. Since the explicit casts divide C&#8217;s
+one-cast-does-all into classes of well-marked casts, anyone debugging and
+maintaining the code can easily find all the places where logical errors are
+most likely to
+happen.</FONT><LI><FONT FACE="Verdana">	</FONT><FONT FACE="Georgia">For a
+program to be robust, each component must be robust. Use all the tools provided
+by C++: access control, exceptions, const-correctness, type checking, and so on
+in each class you create. That way you can safely move to the next level of
+abstraction when building your
+system.</FONT><LI><FONT FACE="Verdana">	</FONT><FONT FACE="Georgia">Build in
+<B>const</B>-correctness. This allows the compiler to point out bugs that would
+otherwise be subtle and difficult to find. This practice takes a little
+discipline and must be used consistently throughout your classes, but it pays
+off.</FONT><LI><FONT FACE="Verdana">	</FONT><FONT FACE="Georgia">Use compiler
+error checking to your advantage. Perform all compiles with full warnings, and
+fix your code to remove all warnings. Write code that utilizes the compile-time
+errors and warnings rather than that which causes runtime errors (for example,
+don&#8217;t use variadic argument lists, which disable all type checking). Use
+<B>assert(&#160;)</B> for debugging, but use exceptions for runtime
+errors.</FONT><LI><FONT FACE="Verdana">	</FONT><FONT FACE="Georgia">Prefer
+compile-time errors to runtime errors. Try to handle an error as close to the
+point of its occurrence as possible. Prefer dealing with the error at that point
+to throwing an exception. Catch any exceptions in the nearest handler that has
+enough information to deal with them. Do what you can with the exception at the
+current level; if that doesn&#8217;t solve the problem, rethrow the exception.
+(See Volume 2 for more
+details.)</FONT><LI><FONT FACE="Verdana">	</FONT><FONT FACE="Georgia">If
+you&#8217;re using exception specifications (see Volume 2 of this book,
+downloadable from <I>www.BruceEckel.com</I>, to learn about exception handling),
+install your own <B>unexpected(&#160;)</B> function using
+<B>set_unexpected(&#160;)</B>. Your <B>unexpected(&#160;)</B> should log the
+error and rethrow the current exception. That way, if an existing function gets
+overridden and starts throwing exceptions, you will have a record of the culprit
+and can modify your calling code to handle the exception.
+</FONT><LI><FONT FACE="Verdana">	</FONT><FONT FACE="Georgia">Create a
+user-defined <B>terminate(&#160;)</B> (indicating a programmer error) to log the
+error that caused the exception, then release system resources, and exit the
+program.</FONT><LI><FONT FACE="Verdana">	</FONT><FONT FACE="Georgia">If a
+destructor calls any functions, those functions might throw exceptions. A
+destructor cannot throw an exception (this can result in a call to
+<B>terminate(&#160;)</B>, which indicates a programming error), so any
+destructor that calls functions must catch and manage its own
+exceptions.</FONT><LI><FONT FACE="Verdana">	</FONT><FONT FACE="Georgia">Don&#8217;t
+create your own &#8220;decorated&#8221; private data member names (prepending
+underscores, Hungarian notation, etc.), unless you have a lot of pre-existing
+global values; otherwise, let classes and namespaces do the name scoping for
+you.</FONT><LI><FONT FACE="Verdana">	</FONT><FONT FACE="Georgia">Watch for
+overloading. A function should not conditionally execute code based on the value
+of an argument, default or not. In this case, you should create two or more
+overloaded functions
+instead.</FONT><LI><FONT FACE="Verdana">	</FONT><FONT FACE="Georgia">Hide your
+pointers inside container classes. Bring them out only when you are going to
+immediately perform operations on them. Pointers have always been a major source
+of bugs. When you use <B>new</B>, try to drop the resulting pointer into a
+container.<B> </B>Prefer that a container &#8220;own&#8221; its pointers so
+it&#8217;s responsible for cleanup. Even better, wrap a pointer inside a class;
+if you still want it to look like a pointer, overload <B>operator-&gt; </B>and
+<B>operator*</B>.<B> </B>If you must have a free-standing pointer, always
+initialize it, preferably to an object address, but to zero if necessary. Set it
+to zero when you delete it to prevent accidental multiple
+deletions.</FONT><LI><FONT FACE="Verdana">	</FONT><FONT FACE="Georgia">Don&#8217;t
+overload global <B>new</B> and <B>delete</B>; always do this on a class-by-class
+basis. Overloading the global versions affects the entire client programmer
+project, something only the creators of a project should control. When
+overloading <B>new</B> and <B>delete</B> for classes, don&#8217;t assume that
+you know the size of the object; someone may be inheriting from you. Use the
+provided argument. If you do anything special, consider the effect it could have
+on
+inheritors.</FONT><LI><FONT FACE="Verdana">	</FONT><FONT FACE="Georgia">Prevent
+object slicing. It virtually never makes sense to upcast an object by value. To
+prevent upcasting by value, put pure virtual functions in your base
+class.</FONT><LI><FONT FACE="Verdana">	</FONT><FONT FACE="Georgia">Sometimes
+simple aggregation does the job. A &#8220;passenger comfort system&#8221; on an
+airline consists of disconnected elements: seat, air conditioning, video, etc.,
+and yet you need to create many of these in a plane. Do you make private members
+and build a whole new interface? No &#8211; in this case, the components are
+also part of the public interface, so you should create public member objects.
+Those objects have their own private implementations, which are still safe. Be
+aware that simple aggregation is not a solution to be used often, but it does
+happen. </FONT><A NAME="_Toc312374168"></A></OL><FONT FACE = "Verdana"><H1 ALIGN="LEFT">
+</H1></FONT>
+
+
+
+
+
+<HR><DIV ALIGN="LEFT"><P><A NAME="fn65" HREF="#fnB65">[65]</A><FONT FACE="Georgia" SIZE=2>
+Explained to me by Andrew Koenig.</FONT><BR></P></DIV>
+
+<DIV ALIGN="CENTER">
+    <FONT FACE="Verdana" size = "-1">
+     [ <a href="AppendixA.html">Previous Chapter</a> ] 
+    [ <a href="Contents.html">Table of Contents</a> ] 
+    [ <a href="DocIndex.html">Index</a> ]
+     [ <a href="AppendixC.html">Next Chapter</a> ] 
+    </FONT>
+    <BR>
+ Last Update:09/27/2001</P></DIV>
+
+</BODY>
+
+</HTML>

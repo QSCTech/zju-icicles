@@ -1,0 +1,63 @@
+<HTML><HEAD><META http-equiv="Content-Type" content="text/html">
+<TITLE>Thinking in C++, 2nd Edition, Volume 2: Revision History</TITLE>
+</HEAD><BODY><Font face="Verdana, Tahoma, Arial, Helvetica, Sans">
+
+<h1>Revision 4</h1>
+
+<h3>Revision history for Thinking in C++, 2nd Edition, Volume 2</h3>
+Please note that much of this book is still in very early form.
+
+<hr>
+Full text, source code and additional information available at 
+<A HREF="http://www.BruceEckel.com">www.BruceEckel.com</A>.
+<hr>
+
+To be informed of future releases of this document and other information about 
+object-oriented books, documents, seminars and CDs, subscribe to my free 
+newsletter. Just send any email to: 
+
+<A HREF="mailto:join-eckel-oo-programming@earth.lyris.net">
+join-eckel-oo-programming@earth.lyris.net</A><hr>
+
+<!--------------------------------------------------------->
+<h2>Revision history:</h2>
+
+<h4>Revision 4, August 19, 2001</h4> 
+
+<ul>
+
+<LI><p>Restructured the book; this is the first version with 
+<a href="http://www.freshsources.com">Chuck Allison</a> 
+coauthoring. Incorporated Chuck's testing framework, which will be used 
+throughout the book and automatically included as part of the book's build 
+process in the makefiles.</p>
+
+<LI><p>In the <b>code</b> subdirectory of the unpacked distribution, you can now 
+use <b>make</b> to compile for Borland, Microsoft, Gnu g++2.95 (distributed with 
+Cygwin) and Gnu g++3.0 (tested under Linux).</p>
+
+<LI><p>Under Windows98/NT/2000, you will get best results running under the free 
+Cygwin environment (www.Cygwin.com), even if you're compiling for Borland or 
+Microsoft. In particular, some linker command lines for Microsoft are too long 
+for Win98 COMMAND.COM, but work just fine under Cygwin.</p>
+
+<LI><p>Made many code changes to allow programs to be run inside the test 
+framework, in particular removing the need for user input when executing 
+programs.</p>
+
+<LI><p>Added //{L} ../TestSuite/Test in all the programs that <i>can</i> be run 
+without user input, to cause the makefile builder to generate calls to the 
+programs as part of the build process.</p>
+
+<LI><p>Expected publication date is July 2002. Periodic updates will be posted via 
+www.BruceEckel.com.</p>
+
+</ul>
+
+<hr>
+<!--------------------------------------------------------->
+<h2>To do:</h2>
+<OL>
+<LI>Add/verify const correctness
+</OL>
+</BODY></HTML>

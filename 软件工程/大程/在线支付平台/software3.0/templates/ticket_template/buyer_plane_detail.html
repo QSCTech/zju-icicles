@@ -1,0 +1,474 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">    
+    <title>去旅行 | 商品介绍页面</title>
+    
+    <!-- Font awesome -->
+    <link href="/static/css/font-awesome.css" rel="stylesheet">
+    <!-- Bootstrap -->
+    <link href="/static/css/bootstrap.css" rel="stylesheet">   
+    <!-- SmartMenus jQuery Bootstrap Addon CSS -->
+    <link href="/static/css/jquery.smartmenus.bootstrap.css" rel="stylesheet">
+    <!-- Product view slider -->
+    <link rel="stylesheet" type="text/css" href="/static/css/jquery.simpleLens.css">    
+    <!-- slick slider -->
+    <link rel="stylesheet" type="text/css" href="/static/css/slick.css">
+    <!-- price picker slider -->
+    <link rel="stylesheet" type="text/css" href="/static/css/nouislider.css">
+    <!-- Theme color -->
+    <link id="switcher" href="/static/css/theme-color/default-theme.css" rel="stylesheet">
+    <!-- Top Slider CSS -->
+    <link href="/static/css/sequence-theme.modern-slide-in.css" rel="stylesheet" media="all">
+
+    <!-- Main style sheet -->
+    <link href="/static/css/style.css" rel="stylesheet">    
+
+    <!-- Google Font -->
+    <link href='https://fonts.googleapis.com/css?family=Lato' rel='stylesheet' type='text/css'>
+    <link href='https://fonts.googleapis.com/css?family=Raleway' rel='stylesheet' type='text/css'>
+    
+
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+      <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+  
+
+  </head>
+  <body>  
+     <!-- wpf loader Two -->
+  <!--   <div id="wpf-loader-two">    -->      
+     <!-- <div class="wpf-loader-two-inner"> -->
+     <!--    <span>Loading</span> -->
+      <!--  </div> -->
+   <!-- </div> -->
+    <!-- / wpf loader Two -->              
+    <!-- SCROLL TOP BUTTON -->
+    <a class="scrollToTop" href="#"><i class="fa fa-chevron-up"></i></a>
+    <!-- END SCROLL TOP BUTTON -->
+
+
+  <!-- Start header section -->
+  <header id="aa-header">
+    <!-- start header top  -->
+    <div class="aa-header-top">
+      <div class="container">
+        <div class="row">
+          <div class="col-md-12">
+            <div class="aa-header-top-area">
+              <!-- start header top left -->
+              <div class="aa-header-top-left">
+                <!-- start language -->
+                <div class="aa-language">
+                  <div class="dropdown">
+                    <a class="btn dropdown-toggle" href="#" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                      <img src="/static/img/flag/english.jpg" alt="english flag">ENGLISH
+                      <span class="caret"></span>
+                    </a>
+                    <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
+                      <li><a href="#"><img src="/static/img/flag/french.jpg" alt="">FRENCH</a></li>
+                      <li><a href="#"><img src="/static/img/flag/english.jpg" alt="">ENGLISH</a></li>
+                    </ul>
+                  </div>
+                </div>
+                <!-- / language -->
+
+                <!-- start currency -->
+                <div class="aa-currency">
+                  <div class="dropdown">
+                    <a class="btn dropdown-toggle" href="#" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                      <i class="fa fa-usd"></i>USD
+                      <span class="caret"></span>
+                    </a>
+                    <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
+                      <li><a href="#"><i class="fa fa-euro"></i>EURO</a></li>
+                      <li><a href="#"><i class="fa fa-jpy"></i>YEN</a></li>
+                    </ul>
+                  </div>
+                </div>
+                <!-- / currency -->
+                <!-- start cellphone -->
+                <div class="cellphone hidden-xs">
+                  <p><span class="fa fa-phone"></span>00-62-658-658</p>
+                </div>
+                <!-- / cellphone -->
+              </div>
+              <!-- / header top left -->
+              <div class="aa-header-top-right">
+                <ul class="aa-head-top-nav-right">
+                  <li><a href={{ url_for("account") }}>我的账号</a></li>
+                  <li class="hidden-xs"><a href="https://xixi.dev.zjuqsc.com/order-manage.html">我的订单</a></li>
+                  <li><a href={{ url_for("logout") }} >注销</a></li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- / header top  -->
+
+    <!-- start header bottom  -->
+    <div class="aa-header-bottom">
+      <div class="container">
+        <div class="row">
+          <div class="col-md-12">
+            <div class="aa-header-bottom-area">
+              <!-- logo  -->
+              <div class="aa-logo">
+                <!-- Text based logo -->
+                <a href="tourist_index">
+                  <!--span class="fa fa-shopping-cart"></span-->
+                  <p>去<strong>旅行</strong> <span>在线付款交易平台</span></p>
+                </a>
+                <!-- img based logo -->
+                <!-- <a href="index"><img src="/static/img/logo.jpg" alt="logo img"></a> -->
+              </div>
+              <!-- / logo  -->
+               
+              <!-- search box -->
+              <div class="aa-search-box">
+                <form action="">
+                  <input type="text" name="" id="" placeholder="关键字... ">
+                  <button type="submit"><span class="fa fa-search"></span></button>
+                </form>
+              </div>
+              <!-- / search box -->             
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- / header bottom  -->
+  </header>
+  <!-- / header section -->
+  <!-- menu -->
+  <section id="menu">
+    <div class="container">
+      <div class="menu-area">
+        <!-- Navbar -->
+        <div class="navbar navbar-default" role="navigation">
+          <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+              <span class="sr-only">Toggle navigation</span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+            </button>          
+          </div>
+            <div class="navbar-collapse collapse">
+            <!-- Left nav -->
+            <ul class="nav navbar-nav">
+              <li><a href="../tourist_index">主页</a></li>
+              <li><a href="contact">联系</a></li>
+            </ul>
+          </div><!--/.nav-collapse -->
+        </div>
+      </div> 
+      </div>
+    </div>
+  </section>
+  <!-- / menu -->  
+ 
+  <!-- catg header banner section -->
+  <!--section id="aa-catg-head-banner">
+   <img src="/static/img/fashion/fashion-header-bg-8.jpg" alt="fashion img">
+   <div class="aa-catg-head-banner-area">
+     <div class="container">
+      <div class="aa-catg-head-banner-content">
+        <h2>T-Shirt</h2>
+        <ol class="breadcrumb">
+          <li><a href="index">Home</a></li>         
+          <li><a href="#">Product</a></li>
+          <li class="active">T-shirt</li>
+        </ol>
+      </div>
+     </div>
+   </div>
+  </section-->
+  <!-- / catg header banner section -->
+
+  <!-- product category -->
+  <section id="aa-product_details">
+    <div class="container">
+      <div class="row">
+        <div class="col-md-12">
+          <div class="aa-product_details-area">
+            <div class="aa-product_details-content">
+              <div class="row">
+                <!-- Modal view slider -->
+                <div class="col-md-5 col-sm-5 col-xs-12">                              
+                  <div class="aa-product-view-slider">                                
+                    <div id="demo-1" class="simpleLens-gallery-container">
+                      <div class="simpleLens-container">
+                        <div class="simpleLens-big-image-container"><a data-lens-image="img/view-slider/large/polo-shirt-1.png" class="simpleLens-lens-image"><img src="/static/picture/airplane_icon.jpg" width="250" height="300" alt=""/></a></div>
+                      </div>
+                      <!--div class="simpleLens-thumbnails-container">
+                          <a data-big-image="img/view-slider/medium/polo-shirt-1.png" data-lens-image="img/view-slider/large/polo-shirt-1.png" class="simpleLens-thumbnail-wrapper" href="#">
+                            <img src="/static/img/view-slider/thumbnail/polo-shirt-1.png">
+                          </a>                                    
+                          <a data-big-image="img/view-slider/medium/polo-shirt-3.png" data-lens-image="img/view-slider/large/polo-shirt-3.png" class="simpleLens-thumbnail-wrapper" href="#">
+                            <img src="/static/img/view-slider/thumbnail/polo-shirt-3.png">
+                          </a>
+                          <a data-big-image="img/view-slider/medium/polo-shirt-4.png" data-lens-image="img/view-slider/large/polo-shirt-4.png" class="simpleLens-thumbnail-wrapper" href="#">
+                            <img src="/static/img/view-slider/thumbnail/polo-shirt-4.png">
+                          </a>
+                      </div-->
+                    </div>
+                  </div>
+                </div>
+                <!-- Modal view content -->
+                <div class="col-md-7 col-sm-7 col-xs-12">
+                  <div class="aa-product-view-content">
+                    <h3>{{plane.1}} {{plane.2}}->{{plane.3}}</h3>
+                    <div class="aa-price-block">
+                      <span class="aa-product-view-price">￥ {{ plane.5 }}</span>
+					            <!--p><span class="aa-product-view-price">经济舱</span></p-->
+                      <p class="aa-product-avilability">出发日期: <span>{{ plane.4 }}</span></p>
+                      <p class="aa-product-avilability">目前状态: <span>有票</span></p>
+                    </div>
+                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Officiis animi, veritatis quae repudiandae quod nulla porro quidem, itaque quis quaerat!</p>
+                    <!--h4>Seat</h4>
+                    <div class="aa-prod-view-size">
+                      <a href="#">Aisle</a>
+                      <a href="#">Window</a>
+                      <a href="#">Middle</a>
+                    </div-->
+                    <!--h4>Color</h4>
+                    <div class="aa-color-tag">
+                      <a href="#" class="aa-color-green"></a>
+                      <a href="#" class="aa-color-yellow"></a>
+                      <a href="#" class="aa-color-pink"></a>                      
+                      <a href="#" class="aa-color-black"></a>
+                      <a href="#" class="aa-color-white"></a>                      
+                    </div-->
+                    <!-- extend from base layout -->
+                    {% extends "ticket_template/base.html" %}
+                    {% block content %}
+                    <div class="aa-prod-quantity">
+                      <form action="" method="POST" name="amount">
+                        <a>欲预订商品数量: </a>   
+                        {{form.hidden_tag()}} 
+                        {{form.amount(size = 3)}}
+                        <!--select id="" name="">
+                          <option selected="1" value="0">1</option>
+                          <option value="1">2</option>
+                          <option value="2">3</option>
+                          <option value="3">4</option>
+                          <option value="4">5</option>
+                          <option value="5">6</option>
+                        </select-->
+                        <p class="aa-prod-category">
+                        商品类別: <a href="#">飞机机票</a>
+                        </p>
+                        <input type="submit" name="submit_button" value="预订" onclick="alert('成功')" class="aa-add-to-cart-btn">
+                      </form>
+                    </div>
+                    <!--div class="aa-prod-view-bottom">
+                      <input type="submit" name="submit_button" value="1" class="aa-add-to-cart-btn">
+                      <a class="aa-add-to-cart-btn" href="#">预订</a>
+                      <a class="aa-add-to-cart-btn" href="#">Wishlist</a>
+                      <a class="aa-add-to-cart-btn" href="#">Compare</a>
+                    </div-->
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="aa-product_details-bottom">
+              <ul class="nav nav-tabs" id="myTab2">
+                <li><a href="#description" data-toggle="tab">详细说明</a></li>
+                <li><a href="#review" data-toggle="tab">评论</a></li>                
+              </ul>
+
+              <!-- Tab panes -->
+              <div class="tab-content">
+                <div class="tab-pane fade in active" id="description">
+                  <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.</p>
+                  <ul>
+                    <li>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quod, culpa!</li>
+                    <li>Lorem ipsum dolor sit amet.</li>
+                    <li>Lorem ipsum dolor sit amet, consectetur adipisicing elit.</li>
+                    <li>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Dolor qui eius esse!</li>
+                    <li>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quibusdam, modi!</li>
+                  </ul>
+                  <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Illum, iusto earum voluptates autem esse molestiae ipsam, atque quam amet similique ducimus aliquid voluptate perferendis, distinctio!</p>
+                  <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Blanditiis ea, voluptas! Aliquam facere quas cumque rerum dolore impedit, dicta ducimus repellat dignissimos, fugiat, minima quaerat necessitatibus? Optio adipisci ab, obcaecati, porro unde accusantium facilis repudiandae.</p>
+                </div>
+                <div class="tab-pane fade " id="review">
+                 <div class="aa-product-review-area">
+                   <h4>3 则评论</h4> 
+                   <ul class="aa-review-nav">
+                     <li>
+                        <div class="media">
+                          <div class="media-left">
+                            <a href="#"><img src="/static/picture/user_image.jpg" width="60" height="60" alt=""/>
+                            </a>
+                          </div>
+                          <div class="media-body">
+                            <h4 class="media-heading"><strong>Marla Jobs</strong> - <span>March 26, 2016</span></h4>
+                            <div class="aa-product-rating">
+                              <span class="fa fa-star"></span>
+                              <span class="fa fa-star"></span>
+                              <span class="fa fa-star"></span>
+                              <span class="fa fa-star"></span>
+                              <span class="fa fa-star-o"></span>
+                            </div>
+                            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit.</p>
+                          </div>
+                        </div>
+                      </li>
+                      <li>
+                        <div class="media">
+                          <div class="media-left">
+                            <a href="#">
+                              <img src="/static/picture/user_image.jpg" width="60" height="60" alt=""/>
+                            </a>
+                          </div>
+                          <div class="media-body">
+                            <h4 class="media-heading"><strong>Marla Jobs</strong> - <span>March 26, 2016</span></h4>
+                            <div class="aa-product-rating">
+                              <span class="fa fa-star"></span>
+                              <span class="fa fa-star"></span>
+                              <span class="fa fa-star"></span>
+                              <span class="fa fa-star"></span>
+                              <span class="fa fa-star-o"></span>
+                            </div>
+                            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit.</p>
+                          </div>
+                        </div>
+                      </li>
+					            <li>
+                        <div class="media">
+                          <div class="media-left">
+                            <a href="#">
+                              <img src="/static/picture/user_image.jpg" width="60" height="60" alt=""/>
+                            </a>
+                          </div>
+                          <div class="media-body">
+                            <h4 class="media-heading"><strong>Steve Jobs</strong> - <span>April 10, 2016</span></h4>
+                            <div class="aa-product-rating">
+                              <span class="fa fa-star"></span>
+                              <span class="fa fa-star"></span>
+              							  <span class="fa fa-star-o"></span>
+              						 	  <span class="fa fa-star-o"></span>
+                              <span class="fa fa-star-o"></span>
+                            </div>
+                            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit.</p>
+                          </div>
+                        </div>
+                      </li>
+                   </ul>
+                   <!--h4>Add a review</h4>
+                   <div class="aa-your-rating">
+                     <p>Your Rating</p>
+                     <a href="#"><span class="fa fa-star-o"></span></a>
+                     <a href="#"><span class="fa fa-star-o"></span></a>
+                     <a href="#"><span class="fa fa-star-o"></span></a>
+                     <a href="#"><span class="fa fa-star-o"></span></a>
+                     <a href="#"><span class="fa fa-star-o"></span></a>
+                   </div>
+                   <!-- review form -->
+                   <!--form action="" class="aa-review-form">
+                      <div class="form-group">
+                        <label for="message">Your Review</label>
+                        <textarea class="form-control" rows="3" id="message"></textarea>
+                      </div>
+                      <div class="form-group">
+                        <label for="name">Name</label>
+                        <input type="text" class="form-control" id="name" placeholder="Name">
+                      </div>  
+                      <div class="form-group">
+                        <label for="email">Email</label>
+                        <input type="email" class="form-control" id="email" placeholder="example@gmail.com">
+                      </div>
+
+                      <button type="submit" class="btn btn-default aa-review-submit">Submit</button>
+                   </form-->
+                 </div>
+                </div>            
+              </div>
+            </div>
+            <!-- Related product -->
+             
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <!-- / product category -->
+
+
+  <!-- Subscribe section -->
+  <section id="aa-subscribe">
+    <div class="container">
+      <div class="row">
+        <div class="col-md-12">
+          <div class="aa-subscribe-area">
+            <!--h3>Subscribe our newsletter </h3>
+            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ex, velit!</p>
+            <form action="" class="aa-subscribe-form">
+              <input type="email" name="" id="" placeholder="Enter your Email">
+              <input type="submit" value="Subscribe">
+            </form-->
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <!-- / Subscribe section -->
+
+  <!-- Login Modal -->  
+  <div class="modal fade" id="login-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">                      
+        <div class="modal-body">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+          <h4>Login or Register</h4>
+          <form class="aa-login-form" action="">
+            <label for="">Username or Email address<span>*</span></label>
+            <input type="text" placeholder="Username or email">
+            <label for="">Password<span>*</span></label>
+            <input type="password" placeholder="Password">
+            <button class="aa-browse-btn" type="submit">Login</button>
+            <label for="rememberme" class="rememberme"><input type="checkbox" id="rememberme"> Remember me </label>
+            <p class="aa-lost-password"><a href="#">Lost your password?</a></p>
+            <div class="aa-register-now">
+              Don't have an account?<a href="account">Register now!</a>
+            </div>
+          </form>
+        </div>                        
+      </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+  </div>
+
+
+    
+  <!-- jQuery library -->
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+  <!-- Include all compiled plugins (below), or include individual files as needed -->
+  <script src="/static/js/bootstrap.js"></script>  
+  <!-- SmartMenus jQuery plugin -->
+  <script type="text/javascript" src="/static/js/jquery.smartmenus.js"></script>
+  <!-- SmartMenus jQuery Bootstrap Addon -->
+  <script type="text/javascript" src="/static/js/jquery.smartmenus.bootstrap.js"></script>  
+  <!-- To Slider JS -->
+  <script src="/static/js/sequence.js"></script>
+  <script src="/static/js/sequence-theme.modern-slide-in.js"></script>  
+  <!-- Product view slider -->
+  <script type="text/javascript" src="/static/js/jquery.simpleGallery.js"></script>
+  <script type="text/javascript" src="/static/js/jquery.simpleLens.js"></script>
+  <!-- slick slider -->
+  <script type="text/javascript" src="/static/js/slick.js"></script>
+  <!-- Price picker slider -->
+  <script type="text/javascript" src="/static/js/nouislider.js"></script>
+  <!-- Custom js -->
+  <script src="/static/js/custom.js"></script> 
+
+  </body>
+</html>
+{% endblock %}

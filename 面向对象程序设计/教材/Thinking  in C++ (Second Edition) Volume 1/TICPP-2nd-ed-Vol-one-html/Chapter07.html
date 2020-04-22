@@ -1,0 +1,987 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<HTML>
+<!--
+This document was converted from RTF source: 
+By rtftohtml 4.19
+See http://www.sunpack.com/RTF
+Filename:TIC2Vone.rtf
+Application Directory:C:\TOOLS\RTF2HTML\
+Subject:
+Author:Bruce Eckel
+Operator:Bruce Eckel
+Document Comments:
+Version Comments:
+Comments:
+Keywords:
+Translation Date:09/27/2001
+Translation Time:05:25:34
+Translation Platform:Win32
+Number of Output files:22
+This File:Chapter07.html
+SplitDepth=1
+SkipNavPanel=1
+SkipLeadingToc=1
+SkipTrailingToc=1
+GenContents=1
+GenFrames=1
+GenIndex=1
+-->
+<HEAD lang="en"><META http-equiv="Content-Type" content="text/html">
+<TITLE>7: Function Overloading &amp; Default Arguments</TITLE>
+</HEAD>
+
+<BODY  BGCOLOR="#FFFFFF"><DIV ALIGN="CENTER">
+  <a href="http://www.MindView.net">
+  <img src="mindview-head.gif" alt="MindView Inc." BORDER = "0"></a>
+  <CENTER>
+    <FONT FACE="Verdana" size = "-1">
+    [ <a href="README-HTML.txt">Viewing Hints</a> ]
+    [ <a href="http://www.mindview.net/CPPServices/SolutionGuide.html">Exercise Solutions</a> ]
+    [ <a href="http://www.mindview.net/ThinkingInCPP2e.html">Volume 2</a> ]
+    [ <a href="http://www.mindview.net/MailingList.html">Free Newsletter</a> ] <br>
+    [ <a href="http://www.mindview.net/CPPServices/#PublicSeminars">Seminars</a> ]
+    [ <a href="http://www.mindview.net/CPPServices/#SeminarsOnCD">Seminars on CD ROM</a> ]
+    [ <a href="http://www.mindview.net/CPPServices/#ConsultingServices">Consulting</a> ]
+    </FONT>
+  <H2><FONT FACE="Verdana">
+  Thinking in C++, 2nd ed. Volume 1</FONT></H2></FONT>
+  <H3><FONT FACE="Verdana">&copy;2000 by Bruce Eckel</FONT></H3></FONT>
+  
+    <FONT FACE="Verdana" size = "-1">
+     [ <a href="Chapter06.html">Previous Chapter</a> ] 
+    [ <a href="Contents.html">Table of Contents</a> ] 
+    [ <a href="DocIndex.html">Index</a> ]
+     [ <a href="Chapter08.html">Next Chapter</a> ] 
+    </FONT>
+    
+  </CENTER>
+  </P></DIV><A NAME="_Toc472654865"></A><A NAME="Heading236"></A><FONT FACE = "Verdana"><H1 ALIGN="LEFT">
+7: Function Overloading &amp; Default Arguments</H1></FONT>
+<DIV ALIGN="LEFT"><P><FONT FACE="Verdana" SIZE=4>One of the important features in
+any programming language is the convenient use of names. </FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><A NAME="Index1378"></A><A NAME="Index1379"></A><A NAME="Index1380"></A><A NAME="Index1381"></A><FONT FACE="Georgia">When
+you create an object (a variable), you give a name to a region of storage. A
+function is a name for an action. By making up names to describe the system at
+hand, you create a program that is easier for people to understand and change.
+It&#8217;s a lot like writing prose &#8211; the goal is to communicate with your
+readers.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">A problem arises when mapping the concept
+of nuance <A NAME="Index1382"></A>in human language onto a programming language.
+Often, the same word expresses a number of different meanings, depending on
+context. That is, a single word has multiple meanings &#8211; it&#8217;s
+<I>overloaded</I>. This is very useful, especially when it comes to trivial
+differences. You say &#8220;wash the shirt, wash the car.&#8221; It would be
+silly to be forced to say, &#8220;shirt_wash the shirt, car_wash the car&#8221;
+just so the listener doesn&#8217;t have to make any distinction about the action
+performed. Human languages have built-in redundancy, so even if you miss a few
+words, you can still determine the meaning. We don&#8217;t need unique
+identifiers &#8211; we can deduce meaning from
+context<A NAME="Index1383"></A>.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Most programming languages, however,
+require that you have a <A NAME="Index1384"></A><A NAME="Index1385"></A>unique
+identifier for each function. If you have three different types of data that you
+want to print: <B>int</B>, <B>char</B>, and <B>float</B>, you generally have to
+create three different function names, for example, <B>print_int(&#160;)</B>,
+<B>print_char(&#160;)</B>, and <B>print_float(&#160;)</B>. This loads extra work
+on you as you write the program, and on readers as they try to understand
+it.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">In C++, another factor forces the
+overloading of function names: the constructor<A NAME="Index1386"></A>. Because
+the constructor&#8217;s name is predetermined by the name of the class, it would
+seem that there can be only one constructor. But what if you want to create an
+object in more than one way? For example, suppose you build a class that can
+initialize itself in a standard way and also by reading information from a file.
+You need two constructors, one that takes no arguments (the default constructor)
+and one that takes a <B>string</B> as an argument, which is the name of the file
+to initialize the object. Both are constructors, so they must have the same
+name: the name of the class. Thus, function overloading is essential to allow
+the same function name &#8211; the constructor in this case &#8211; to be used
+with different argument types.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Although function overloading is a must
+for constructors, it&#8217;s a general convenience and can be used with any
+function, not just class member functions. In addition, function overloading
+means that if you have two libraries that contain functions of the same name,
+they won&#8217;t conflict as long as the argument lists are different.
+We&#8217;ll look at all these factors in detail throughout this
+chapter.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">The theme of this chapter is convenient
+use of function names. Function overloading allows you to use the same name for
+different functions, but there&#8217;s a second way to make calling a function
+more convenient. What if you&#8217;d like to call the same function in different
+ways? When functions have long argument lists, it can become tedious to write
+(and confusing to read) the function calls when most of the arguments are the
+same for all the calls. A commonly used feature in C++ is called <I>default
+arguments<A NAME="Index1387"></A><A NAME="Index1388"></A></I>. A default
+argument is one the compiler inserts if it isn&#8217;t specified in the function
+call. Thus, the calls <B>f(&#8220;hello&#8221;)</B>, <B>f(&#8220;hi&#8221;,
+1)</B>, and <B>f(&#8220;howdy&#8221;, 2, &#8216;c&#8217;)</B> can all be calls
+to the same function. They could also be calls to three overloaded functions,
+but when the argument lists are this similar, you&#8217;ll usually want similar
+behavior, which calls for a single function.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Function overloading and default
+arguments really aren&#8217;t very complicated. By the time you reach the end of
+this chapter, you&#8217;ll understand when to use them and the underlying
+mechanisms that implement them during compiling and
+linking.</FONT><A NAME="_Toc312373865"></A><A NAME="_Toc472654866"></A><BR></P></DIV>
+<A NAME="Heading237"></A><FONT FACE = "Verdana"><H2 ALIGN="LEFT">
+More name decoration</H2></FONT>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">In Chapter 4, the concept of
+<A NAME="Index1389"></A><A NAME="Index1390"></A><I>name decoration</I>
+<A NAME="Index1391"></A><A NAME="Index1392"></A>was introduced. In the
+code</FONT><BR></P></DIV>
+
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE><font color=#0000ff>void</font> f();
+<font color=#0000ff>class</font> X { <font color=#0000ff>void</font> f(); };</PRE></FONT></BLOCKQUOTE>
+
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">the function <B>f(&#160;)</B> inside the
+scope of <B>class X</B> does not clash with the global version of
+<B>f(&#160;)</B>. The compiler performs this scoping by manufacturing different
+internal names for the global version of <B>f(&#160;)</B> and
+<B>X::f(&#160;)</B>. In Chapter 4, it was suggested that the names are simply
+the class name &#8220;decorated&#8221; together with the function name, so the
+internal names the compiler uses might be <B>_f</B> and <B>_X_f</B>. However, it
+turns out that function name decoration involves more than the class
+name.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Here&#8217;s why. Suppose you want to
+overload two function names</FONT><BR></P></DIV>
+
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE><font color=#0000ff>void</font> print(<font color=#0000ff>char</font>);
+<font color=#0000ff>void</font> print(<font color=#0000ff>float</font>);</PRE></FONT></BLOCKQUOTE>
+
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">It doesn&#8217;t matter whether they are
+both inside a class or at the global scope. The compiler can&#8217;t generate
+unique internal identifiers if it uses only the scope of the function names.
+You&#8217;d end up with <B>_print</B> in both cases. The idea of an overloaded
+function is that you use the same function name, but different argument lists.
+Thus, for overloading to work the compiler must decorate the function name with
+the names of the argument <A NAME="Index1393"></A>types. The functions above,
+defined at global scope, produce internal names that might look something like
+<B>_print_char</B> and <B>_print_float</B>. It&#8217;s worth noting there is no
+standard <A NAME="Index1394"></A>for the way names must be decorated by the
+compiler, so you will see very different results from one compiler to another.
+(You can see what it looks like by telling the compiler to generate
+assembly-language output.) This, of course, causes problems if you want to buy
+compiled libraries for a particular compiler and linker &#8211; but  even if
+name decoration were standardized, there would be other roadblocks because of
+the way different compilers generate
+code<A NAME="Index1395"></A>.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">That&#8217;s really all there is to
+function overloading: you can use the same function name for different functions
+as long as the argument lists are different. The compiler decorates the name,
+the scope, and the argument lists to produce internal names for it and the
+linker to
+use.</FONT><A NAME="_Toc312373866"></A><A NAME="_Toc472654867"></A><BR></P></DIV>
+<A NAME="Heading238"></A><FONT FACE = "Verdana"><H3 ALIGN="LEFT">
+Overloading on return values</H3></FONT>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">It&#8217;s common to wonder, &#8220;Why
+just scopes and argument lists? Why not return values?&#8221; It seems at first
+that it would make sense to also decorate the return value with the internal
+function name. Then you could overload on return
+values<A NAME="Index1396"></A><A NAME="Index1397"></A>, as
+well:</FONT><BR></P></DIV>
+
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE><font color=#0000ff>void</font> f();
+<font color=#0000ff>int</font> f();</PRE></FONT></BLOCKQUOTE>
+
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">This works fine when the compiler can
+unequivocally determine the meaning from the context, as in <B>int x =
+f(&#160;);</B>. However, in C you&#8217;ve always been able to call a
+<A NAME="Index1398"></A>function and ignore the return value (that is, you can
+call the function for its <I>side effects</I>). How can the compiler distinguish
+which call is meant in this case? Possibly worse is the difficulty the reader
+has in knowing which function call is meant. Overloading solely on return value
+is a bit too subtle, and thus isn&#8217;t allowed in
+C++.</FONT><A NAME="_Toc312373867"></A><A NAME="_Toc472654868"></A><BR></P></DIV>
+<A NAME="Heading239"></A><FONT FACE = "Verdana"><H3 ALIGN="LEFT">
+Type-safe linkage<BR><A NAME="Index1399"></A><A NAME="Index1400"></A></H3></FONT>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">There is an added benefit to all of this
+name decoration. A particularly sticky problem in C occurs when the client
+programmer misdeclares a
+<A NAME="Index1401"></A><A NAME="Index1402"></A>function, or, worse, a function
+is called without declaring it first, and the compiler infers the function
+declaration from the way it is called. Sometimes this function declaration is
+correct, but when it isn&#8217;t, it can be a difficult bug to
+find.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Because all functions <I>must</I> be
+declared before they are used in C++, the opportunity for this problem to pop up
+is greatly diminished. The C++ compiler refuses to declare a function
+automatically for you, so it&#8217;s likely that you will include the
+appropriate header file. However, if for some reason you still manage to
+misdeclare a function, either by declaring by hand or including the wrong header
+file (perhaps one that is out of date), the name decoration provides a safety
+net that is often referred to as <I>type-safe linkage</I>.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Consider the following scenario. In one
+file is the definition for a function:</FONT><BR></P></DIV>
+
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE><font color=#009900>//: C07:Def.cpp {O}</font>
+<font color=#009900>// Function definition</font>
+<font color=#0000ff>void</font> f(<font color=#0000ff>int</font>) {}
+<font color=#009900>///:~ </font></PRE></FONT></BLOCKQUOTE>
+
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">In the second file, the function is
+misdeclared and then called:</FONT><BR></P></DIV>
+
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE><font color=#009900>//: C07:Use.cpp</font>
+<font color=#009900>//{L} Def</font>
+<font color=#009900>// Function misdeclaration</font>
+<font color=#0000ff>void</font> f(<font color=#0000ff>char</font>);
+
+<font color=#0000ff>int</font> main() {
+<font color=#009900>//!  f(1); // Causes a linker error</font>
+} <font color=#009900>///:~</font></PRE></FONT></BLOCKQUOTE>
+
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Even though you can see that the function
+is actually <B>f(int)</B>, the compiler doesn&#8217;t know this because it was
+told &#8211; through an explicit declaration &#8211; that the function is
+<B>f(char)</B>. Thus, the compilation is successful. In
+<A NAME="Index1403"></A>C, the linker would also be successful, but <I>not</I>
+in C++. Because the compiler decorates the names, the definition becomes
+something like <B>f_int</B>, whereas the use of the function is <B>f_char</B>.
+When the linker tries to resolve the reference to <B>f_char</B>, it can only
+find <B>f_int</B>, and it gives you an error message. This is type-safe linkage.
+Although the problem doesn&#8217;t occur all that often, when it does it can be
+incredibly difficult to find, especially in a large project. This is one of the
+cases where you can easily find a difficult error in a C program simply by
+running it through the <A NAME="Index1404"></A>C++
+compiler.</FONT><A NAME="_Toc312373868"></A><A NAME="_Toc472654869"></A><BR></P></DIV>
+<A NAME="Heading240"></A><FONT FACE = "Verdana"><H2 ALIGN="LEFT">
+Overloading example</H2></FONT>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">We can now modify earlier examples to use
+function overloading. As stated before, an immediately useful place for
+overloading is in constructors. You can see this in the following version of the
+<B>Stash</B> class: <A NAME="Index1405"></A></FONT><BR></P></DIV>
+
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE><font color=#009900>//: C07:Stash3.h</font>
+<font color=#009900>// Function overloading</font>
+#ifndef STASH3_H
+#define STASH3_H
+
+<font color=#0000ff>class</font> Stash {
+  <font color=#0000ff>int</font> size;      <font color=#009900>// Size of each space</font>
+  <font color=#0000ff>int</font> quantity;  <font color=#009900>// Number of storage spaces</font>
+  <font color=#0000ff>int</font> next;      <font color=#009900>// Next empty space</font>
+  <font color=#009900>// Dynamically allocated array of bytes:</font>
+  <font color=#0000ff>unsigned</font> <font color=#0000ff>char</font>* storage;
+  <font color=#0000ff>void</font> inflate(<font color=#0000ff>int</font> increase);
+<font color=#0000ff>public</font>:
+  Stash(<font color=#0000ff>int</font> size); <font color=#009900>// Zero quantity</font>
+  Stash(<font color=#0000ff>int</font> size, <font color=#0000ff>int</font> initQuantity);
+  ~Stash();
+  <font color=#0000ff>int</font> add(<font color=#0000ff>void</font>* element);
+  <font color=#0000ff>void</font>* fetch(<font color=#0000ff>int</font> index);
+  <font color=#0000ff>int</font> count();
+};
+#endif <font color=#009900>// STASH3_H ///:~</font></PRE></FONT></BLOCKQUOTE>
+
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">The first <B>Stash(&#160;)</B>
+constructor is the same as before, but the second one has a <B>Quantity</B>
+argument to indicate the initial number of storage places to be allocated. In
+the definition, you can see that the internal value of <B>quantity</B> is set to
+zero, along with the <B>storage</B> pointer. In the second constructor, the call
+to <B>inflate(initQuantity)</B> increases <B>quantity</B> to the allocated
+size:</FONT><BR></P></DIV>
+
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE><font color=#009900>//: C07:Stash3.cpp {O}</font>
+<font color=#009900>// Function overloading</font>
+#include <font color=#004488>"Stash3.h"</font>
+#include <font color=#004488>"../require.h"</font>
+#include &lt;iostream&gt;
+#include &lt;cassert&gt;
+<font color=#0000ff>using</font> <font color=#0000ff>namespace</font> std;
+<font color=#0000ff>const</font> <font color=#0000ff>int</font> increment = 100;
+
+Stash::Stash(<font color=#0000ff>int</font> sz) {
+  size = sz;
+  quantity = 0;
+  next = 0;
+  storage = 0;
+}
+
+Stash::Stash(<font color=#0000ff>int</font> sz, <font color=#0000ff>int</font> initQuantity) {
+  size = sz;
+  quantity = 0;
+  next = 0;
+  storage = 0;
+  inflate(initQuantity);
+}
+
+Stash::~Stash() {
+  <font color=#0000ff>if</font>(storage != 0) {
+    cout &lt;&lt; <font color=#004488>"freeing storage"</font> &lt;&lt; endl;
+    <font color=#0000ff>delete</font> []storage;
+  }
+}
+
+<font color=#0000ff>int</font> Stash::add(<font color=#0000ff>void</font>* element) {
+  <font color=#0000ff>if</font>(next &gt;= quantity) <font color=#009900>// Enough space left?</font>
+    inflate(increment);
+  <font color=#009900>// Copy element into storage,</font>
+  <font color=#009900>// starting at next empty space:</font>
+  <font color=#0000ff>int</font> startBytes = next * size;
+  <font color=#0000ff>unsigned</font> <font color=#0000ff>char</font>* e = (<font color=#0000ff>unsigned</font> <font color=#0000ff>char</font>*)element;
+  <font color=#0000ff>for</font>(<font color=#0000ff>int</font> i = 0; i &lt; size; i++)
+    storage[startBytes + i] = e[i];
+  next++;
+  <font color=#0000ff>return</font>(next - 1); <font color=#009900>// Index number</font>
+}
+
+<font color=#0000ff>void</font>* Stash::fetch(<font color=#0000ff>int</font> index) {
+  require(0 &lt;= index, <font color=#004488>"Stash::fetch (-)index"</font>);
+  <font color=#0000ff>if</font>(index &gt;= next)
+    <font color=#0000ff>return</font> 0; <font color=#009900>// To indicate the end</font>
+  <font color=#009900>// Produce pointer to desired element:</font>
+  <font color=#0000ff>return</font> &amp;(storage[index * size]);
+}
+
+<font color=#0000ff>int</font> Stash::count() {
+  <font color=#0000ff>return</font> next; <font color=#009900>// Number of elements in CStash</font>
+}
+
+<font color=#0000ff>void</font> Stash::inflate(<font color=#0000ff>int</font> increase) {
+  assert(increase &gt;= 0);
+  <font color=#0000ff>if</font>(increase == 0) <font color=#0000ff>return</font>;
+  <font color=#0000ff>int</font> newQuantity = quantity + increase;
+  <font color=#0000ff>int</font> newBytes = newQuantity * size;
+  <font color=#0000ff>int</font> oldBytes = quantity * size;
+  <font color=#0000ff>unsigned</font> <font color=#0000ff>char</font>* b = <font color=#0000ff>new</font> <font color=#0000ff>unsigned</font> <font color=#0000ff>char</font>[newBytes];
+  <font color=#0000ff>for</font>(<font color=#0000ff>int</font> i = 0; i &lt; oldBytes; i++)
+    b[i] = storage[i]; <font color=#009900>// Copy old to new</font>
+  <font color=#0000ff>delete</font> [](storage); <font color=#009900>// Release old storage</font>
+  storage = b; <font color=#009900>// Point to new memory</font>
+  quantity = newQuantity; <font color=#009900>// Adjust the size</font>
+} <font color=#009900>///:~</font></PRE></FONT></BLOCKQUOTE>
+
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">When you use the first constructor no
+memory is allocated for <B>storage</B>. The allocation happens the first time
+you try to <B>add(&#160;)</B> an object and any time the current block of memory
+is exceeded inside <B>add(&#160;)</B>.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Both constructors are exercised in the
+test program:</FONT><BR></P></DIV>
+
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE><font color=#009900>//: C07:Stash3Test.cpp</font>
+<font color=#009900>//{L} Stash3</font>
+<font color=#009900>// Function overloading</font>
+#include <font color=#004488>"Stash3.h"</font>
+#include <font color=#004488>"../require.h"</font>
+#include &lt;fstream&gt;
+#include &lt;iostream&gt;
+#include &lt;string&gt;
+<font color=#0000ff>using</font> <font color=#0000ff>namespace</font> std;
+
+<font color=#0000ff>int</font> main() {
+  Stash intStash(<font color=#0000ff>sizeof</font>(<font color=#0000ff>int</font>));
+  <font color=#0000ff>for</font>(<font color=#0000ff>int</font> i = 0; i &lt; 100; i++)
+    intStash.add(&amp;i);
+  <font color=#0000ff>for</font>(<font color=#0000ff>int</font> j = 0; j &lt; intStash.count(); j++)
+    cout &lt;&lt; <font color=#004488>"intStash.fetch("</font> &lt;&lt; j &lt;&lt; <font color=#004488>") = "</font>
+         &lt;&lt; *(<font color=#0000ff>int</font>*)intStash.fetch(j)
+         &lt;&lt; endl;
+  <font color=#0000ff>const</font> <font color=#0000ff>int</font> bufsize = 80;
+  Stash stringStash(<font color=#0000ff>sizeof</font>(<font color=#0000ff>char</font>) * bufsize, 100);
+  ifstream in(<font color=#004488>"Stash3Test.cpp"</font>);
+  assure(in, <font color=#004488>"Stash3Test.cpp"</font>);
+  string line;
+  <font color=#0000ff>while</font>(getline(in, line))
+    stringStash.add((<font color=#0000ff>char</font>*)line.c_str());
+  <font color=#0000ff>int</font> k = 0;
+  <font color=#0000ff>char</font>* cp;
+  <font color=#0000ff>while</font>((cp = (<font color=#0000ff>char</font>*)stringStash.fetch(k++))!=0)
+    cout &lt;&lt; <font color=#004488>"stringStash.fetch("</font> &lt;&lt; k &lt;&lt; <font color=#004488>") = "</font>
+         &lt;&lt; cp &lt;&lt; endl;
+} <font color=#009900>///:~</font></PRE></FONT></BLOCKQUOTE>
+
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">The constructor call for <B>stringStash
+</B>uses a second argument; presumably you know something special about the
+specific problem you&#8217;re solving that allows you to choose an initial size
+for the <B>Stash</B>.</FONT><A NAME="_Toc472654870"></A><BR></P></DIV>
+<A NAME="Heading241"></A><FONT FACE = "Verdana"><H2 ALIGN="LEFT">
+unions<BR><A NAME="Index1406"></A></H2></FONT>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">As you&#8217;ve seen, the only difference
+between <B>struct </B>and <B>class </B>in C++ is that <B>struct </B>defaults to
+<B>public </B>and <B>class </B>defaults to <B>private</B>. A <B>struct</B> can
+also have constructors and destructors, as you might expect. But it turns out
+that a <A NAME="Index1407"></A><B>union</B> can also have a constructor,
+destructor, member functions, and even access control. You can again see the use
+and benefit of overloading in the following example:</FONT><BR></P></DIV>
+
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE><font color=#009900>//: C07:UnionClass.cpp</font>
+<font color=#009900>// Unions with constructors and member functions</font>
+#include&lt;iostream&gt;
+<font color=#0000ff>using</font> <font color=#0000ff>namespace</font> std;
+
+<font color=#0000ff>union</font> U {
+<font color=#0000ff>private</font>: <font color=#009900>// Access control too!</font>
+  <font color=#0000ff>int</font> i;
+  <font color=#0000ff>float</font> f;
+<font color=#0000ff>public</font>:  
+  U(<font color=#0000ff>int</font> a);
+  U(<font color=#0000ff>float</font> b);
+  ~U();
+  <font color=#0000ff>int</font> read_int();
+  <font color=#0000ff>float</font> read_float();
+};
+
+U::U(<font color=#0000ff>int</font> a) { i = a; }
+
+U::U(<font color=#0000ff>float</font> b) { f = b;}
+
+U::~U() { cout &lt;&lt; <font color=#004488>"U::~U()\n"</font>; }
+
+<font color=#0000ff>int</font> U::read_int() { <font color=#0000ff>return</font> i; }
+
+<font color=#0000ff>float</font> U::read_float() { <font color=#0000ff>return</font> f; }
+
+<font color=#0000ff>int</font> main() {
+  U X(12), Y(1.9F);
+  cout &lt;&lt; X.read_int() &lt;&lt; endl;
+  cout &lt;&lt; Y.read_float() &lt;&lt; endl;
+} <font color=#009900>///:~</font></PRE></FONT></BLOCKQUOTE>
+
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">You might think from the code above that
+the only <A NAME="Index1408"></A><A NAME="Index1409"></A>difference between a
+<B>union</B> and a <B>class</B> is the way the data is stored (that is, the
+<B>int</B> and <B>float</B> are overlaid on the same piece of storage). However,
+a <B>union</B> cannot be used as a base class during inheritance, which is quite
+limiting from an object-oriented design standpoint (you&#8217;ll learn about
+inheritance in Chapter 14).</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Although the member functions civilize
+access to the <B>union</B> somewhat, there is still no way to prevent the client
+programmer from selecting the wrong element type once the <B>union</B> is
+initialized. In the example above, you could say <B>X.read_float(&#160;)</B>
+even though it is inappropriate. However, a
+<A NAME="Index1410"></A><A NAME="Index1411"></A>&#8220;safe&#8221; <B>union</B>
+can be encapsulated in a class. In the following example, notice how the
+<B>enum</B> clarifies the code, and how overloading comes in handy with the
+<A NAME="Index1412"></A><A NAME="Index1413"></A>constructors:</FONT><BR></P></DIV>
+
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE><font color=#009900>//: C07:SuperVar.cpp</font>
+<font color=#009900>// A super-variable</font>
+#include &lt;iostream&gt;
+<font color=#0000ff>using</font> <font color=#0000ff>namespace</font> std;
+
+<font color=#0000ff>class</font> SuperVar {
+  <font color=#0000ff>enum</font> {
+    character,
+    integer,
+    floating_point
+  } vartype;  <font color=#009900>// Define one</font>
+  <font color=#0000ff>union</font> {  <font color=#009900>// Anonymous union</font>
+    <font color=#0000ff>char</font> c;
+    <font color=#0000ff>int</font> i;
+    <font color=#0000ff>float</font> f;
+  };
+<font color=#0000ff>public</font>:
+  SuperVar(<font color=#0000ff>char</font> ch);
+  SuperVar(<font color=#0000ff>int</font> ii);
+  SuperVar(<font color=#0000ff>float</font> ff);
+  <font color=#0000ff>void</font> print();
+};
+
+SuperVar::SuperVar(<font color=#0000ff>char</font> ch) {
+  vartype = character;
+  c = ch;
+}
+
+SuperVar::SuperVar(<font color=#0000ff>int</font> ii) {
+  vartype = integer;
+  i = ii;
+}
+
+SuperVar::SuperVar(<font color=#0000ff>float</font> ff) {
+  vartype = floating_point;
+  f = ff;
+}
+
+<font color=#0000ff>void</font> SuperVar::print() {
+  <font color=#0000ff>switch</font> (vartype) {
+    <font color=#0000ff>case</font> character:
+      cout &lt;&lt; <font color=#004488>"character: "</font> &lt;&lt; c &lt;&lt; endl;
+      <font color=#0000ff>break</font>;
+    <font color=#0000ff>case</font> integer:
+      cout &lt;&lt; <font color=#004488>"integer: "</font> &lt;&lt; i &lt;&lt; endl;
+      <font color=#0000ff>break</font>;
+    <font color=#0000ff>case</font> floating_point:
+      cout &lt;&lt; <font color=#004488>"float: "</font> &lt;&lt; f &lt;&lt; endl;
+      <font color=#0000ff>break</font>;
+  }
+}
+
+<font color=#0000ff>int</font> main() {
+  SuperVar A('c'), B(12), C(1.44F);
+  A.print();
+  B.print();
+  C.print();
+} <font color=#009900>///:~</font></PRE></FONT></BLOCKQUOTE>
+
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">In the code above, the
+<A NAME="Index1414"></A><B>enum</B> has no type name (it is an
+<A NAME="Index1415"></A><A NAME="Index1416"></A>untagged enumeration). This is
+acceptable if you are going to immediately define instances of the <B>enum</B>,
+as is done here. There is no need to refer to the <B>enum&#8217;s</B> type name
+in the future, so the type name is optional.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">The <A NAME="Index1417"></A><B>union</B>
+has no type name and no variable name. This is called an
+<A NAME="Index1418"></A><A NAME="Index1419"></A><I>anonymous union</I>, and
+creates space for the <B>union</B> but doesn&#8217;t require accessing the
+<B>union</B> elements with a variable name and the dot operator. For instance,
+if your anonymous <B>union</B> is:</FONT><BR></P></DIV>
+
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE><font color=#009900>//: C07:AnonymousUnion.cpp</font>
+<font color=#0000ff>int</font> main() {
+  <font color=#0000ff>union</font> { 
+    <font color=#0000ff>int</font> i; 
+    <font color=#0000ff>float</font> f; 
+  };
+  <font color=#009900>// Access members without using qualifiers:</font>
+  i = 12;
+  f = 1.22;
+} <font color=#009900>///:~</font></PRE></FONT></BLOCKQUOTE>
+
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Note that you access members of an
+anonymous union just as if they were ordinary variables. The only difference is
+that both variables occupy the same space. If the anonymous <B>union</B> is at
+file scope (outside all functions and classes) then it must be declared
+<B>static</B> so it has internal
+linkage.<A NAME="Index1420"></A></FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Although <B>SuperVar</B> is now safe, its
+usefulness is a bit dubious because the reason for using a <B>union</B> in the
+first place is to save space, and the addition of <B>vartype</B> takes up quite
+a bit of space relative to the data in the <B>union</B>, so the savings are
+effectively eliminated. There are a couple of alternatives to make this scheme
+workable. If the <B>vartype</B> controlled more than one <B>union</B> instance
+&#8211; if they were all the same type &#8211; then you&#8217;d only need one
+for the group and it wouldn&#8217;t take up more space. A more useful approach
+is to have <B>#ifdef</B>s around all the <B>vartype</B> code, which can then
+guarantee things are being used correctly during development and testing. For
+shipping code, the extra space and time overhead can be
+eliminated.</FONT><A NAME="_Toc312373869"></A><A NAME="_Toc472654871"></A><BR></P></DIV>
+<A NAME="Heading242"></A><FONT FACE = "Verdana"><H2 ALIGN="LEFT">
+Default arguments</H2></FONT>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">In <B>Stash3.h</B>, examine the two
+constructors for <B>Stash(&#160;)</B>. They don&#8217;t seem all that different,
+do they? In fact, the first constructor seems to be a special case of the second
+one with the initial <B>size</B> set to zero. It&#8217;s a bit of a waste of
+effort to create and maintain two different versions of a similar
+function.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">C++ provides a remedy with <I>default
+arguments<A NAME="Index1421"></A><A NAME="Index1422"></A></I>. A default
+argument is a value given in the declaration that the compiler automatically
+inserts if you don&#8217;t provide a value in the function call. In the
+<B>Stash</B> example, we can replace the two functions:
+<A NAME="Index1423"></A></FONT><BR></P></DIV>
+
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE>  Stash(<font color=#0000ff>int</font> size); <font color=#009900>// Zero quantity</font>
+ Stash(<font color=#0000ff>int</font> size, <font color=#0000ff>int</font> initQuantity);</PRE></FONT></BLOCKQUOTE>
+
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">with the single
+function:</FONT><BR></P></DIV>
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE>  Stash(<font color=#0000ff>int</font> size, <font color=#0000ff>int</font> initQuantity = 0);</PRE></FONT></BLOCKQUOTE>
+
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">The <B>Stash(int)</B> definition is
+simply removed &#8211; all that is necessary is the single <B>Stash(int,
+int)</B> definition.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Now, the two object
+definitions</FONT><BR></P></DIV>
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE>  Stash A(100), B(100, 0);</PRE></FONT></BLOCKQUOTE>
+
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">will produce exactly the same results.
+The identical constructor is called in both cases, but for <B>A</B>, the second
+argument is automatically substituted by the compiler when it sees the first
+argument is an <B>int</B> and that there is no second argument. The compiler has
+seen the default argument, so it knows it can still make the function call if it
+substitutes this second argument, which is what you&#8217;ve told it to do by
+making it a default.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Default arguments are a convenience, as
+function overloading is a convenience. Both features allow you to use a single
+function name in different situations. The difference is that with default
+arguments the compiler is substituting arguments when you don&#8217;t want to
+put them in yourself. The preceding example is a good place to use default
+arguments instead of function overloading; otherwise you end up with two or more
+functions that have similar signatures and similar behaviors. If the functions
+have very different behaviors, it doesn&#8217;t usually make sense to use
+default arguments (for that matter, you might want to question whether two
+functions with very different behaviors should have the same
+name).</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">There are two rules you must be aware of
+when using default arguments. First, only
+<A NAME="Index1424"></A><A NAME="Index1425"></A>trailing arguments may be
+defaulted. That is, you can&#8217;t have a default argument followed by a
+non-default argument. Second, once you start using default arguments in a
+particular function call, all the subsequent arguments in that function&#8217;s
+argument list must be defaulted (this follows from the first
+rule).</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Default arguments are only placed in the
+declaration of a function (typically placed in a header
+file)<A NAME="Index1426"></A><A NAME="Index1427"></A>. The compiler must see the
+default value before it can use it. Sometimes people will place the commented
+values of the default arguments in the function definition, for documentation
+purposes</FONT><BR></P></DIV>
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE><font color=#0000ff>void</font> fn(<font color=#0000ff>int</font> x <font color=#009900>/* = 0 */</font>) { <font color=#009900>// ...</font></PRE></FONT></BLOCKQUOTE>
+<DIV ALIGN="LEFT"><P><A NAME="_Toc472654872"></A><BR></P></DIV>
+<A NAME="Heading243"></A><FONT FACE = "Verdana"><H3 ALIGN="LEFT">
+Placeholder arguments<BR><A NAME="Index1428"></A><A NAME="Index1429"></A></H3></FONT>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Arguments in a function declaration can
+be declared <A NAME="Index1430"></A>without identifiers. When these are used
+with default arguments, it can look a bit funny. You can end up
+with</FONT><BR></P></DIV>
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE><font color=#0000ff>void</font> f(<font color=#0000ff>int</font> x, <font color=#0000ff>int</font> = 0, <font color=#0000ff>float</font> = 1.1);</PRE></FONT></BLOCKQUOTE>
+
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">In C++ you don&#8217;t need identifiers
+in the function definition, either:</FONT><BR></P></DIV>
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE><font color=#0000ff>void</font> f(<font color=#0000ff>int</font> x, <font color=#0000ff>int</font>, <font color=#0000ff>float</font> flt) { <font color=#009900>/* ... */</font> }</PRE></FONT></BLOCKQUOTE>
+
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">In the function body, <B>x</B> and
+<B>flt</B> can be referenced, but not the middle argument, because it has no
+name. Function calls must still provide a value for the placeholder, though:
+<B>f(1)</B> or <B>f(1,2,3.0)</B>. This syntax allows you to put the argument in
+as a placeholder without using it. The idea is that you might want to change the
+function definition to use the placeholder later, without changing all the code
+where the function is called. Of course, you can accomplish the same thing by
+using a named argument, but if you define the argument for the function body
+without using it, most compilers will give you a warning message, assuming
+you&#8217;ve made a logical error. By intentionally leaving the argument name
+out, you suppress this warning. </FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">More important, if you start out using a
+function argument and later decide that you don&#8217;t need it, you can
+effectively remove it without generating warnings, and yet not disturb any
+client code that was calling the previous version of the
+function.</FONT><A NAME="_Toc472654873"></A><BR></P></DIV>
+<A NAME="Heading244"></A><FONT FACE = "Verdana"><H2 ALIGN="LEFT">
+Choosing overloading vs. default
+arguments<BR><A NAME="Index1431"></A><A NAME="Index1432"></A><A NAME="Index1433"></A></H2></FONT>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Both function overloading and default
+arguments provide a convenience for calling function names. However, it can seem
+confusing at times to know which technique to use. For example, consider the
+following tool that is designed to automatically manage blocks of
+<A NAME="Index1434"></A>memory for you:</FONT><BR></P></DIV>
+
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE><font color=#009900>//: C07:Mem.h</font>
+#ifndef MEM_H
+#define MEM_H
+<font color=#0000ff>typedef</font> <font color=#0000ff>unsigned</font> <font color=#0000ff>char</font> byte;
+
+<font color=#0000ff>class</font> Mem {
+  byte* mem;
+  <font color=#0000ff>int</font> size;
+  <font color=#0000ff>void</font> ensureMinSize(<font color=#0000ff>int</font> minSize);
+<font color=#0000ff>public</font>:
+  Mem();
+  Mem(<font color=#0000ff>int</font> sz);
+  ~Mem();
+  <font color=#0000ff>int</font> msize();
+  byte* pointer();
+  byte* pointer(<font color=#0000ff>int</font> minSize);
+}; 
+#endif <font color=#009900>// MEM_H ///:~</font></PRE></FONT></BLOCKQUOTE>
+
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">A <B>Mem</B> object holds a block of
+<B>byte</B>s and makes sure that you have enough storage. The default
+constructor doesn&#8217;t allocate any storage, and the second constructor
+ensures that there is <B>sz</B> storage in the <B>Mem</B> object. The destructor
+releases the storage, <B>msize(&#160;)</B> tells you how many bytes there are
+currently in the <B>Mem</B> object, and <B>pointer(&#160;)</B> produces a
+pointer to the starting address of the storage (<B>Mem</B> is a fairly low-level
+tool). There&#8217;s an overloaded version of <B>pointer(&#160;)</B> in which
+client programmers can say that they want a pointer to a block of bytes that is
+at least <B>minSize</B> large, and the member function ensures
+this.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Both the constructor and the
+<B>pointer(&#160;)</B> member function use the <B>private</B>
+<B>ensureMinSize(&#160;)</B> member function to increase the size of the memory
+block (notice that it&#8217;s not safe to hold the result of
+<B>pointer(&#160;)</B> if the memory is resized).</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Here&#8217;s the implementation of the
+class:</FONT><BR></P></DIV>
+
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE><font color=#009900>//: C07:Mem.cpp {O}</font>
+#include <font color=#004488>"Mem.h"</font>
+#include &lt;cstring&gt;
+<font color=#0000ff>using</font> <font color=#0000ff>namespace</font> std;
+
+Mem::Mem() { mem = 0; size = 0; }
+
+Mem::Mem(<font color=#0000ff>int</font> sz) {
+  mem = 0;
+  size = 0;
+  ensureMinSize(sz); 
+}
+
+Mem::~Mem() { <font color=#0000ff>delete</font> []mem; }
+
+<font color=#0000ff>int</font> Mem::msize() { <font color=#0000ff>return</font> size; }
+
+<font color=#0000ff>void</font> Mem::ensureMinSize(<font color=#0000ff>int</font> minSize) {
+  <font color=#0000ff>if</font>(size &lt; minSize) {
+    byte* newmem = <font color=#0000ff>new</font> byte[minSize];
+    memset(newmem + size, 0, minSize - size);
+    memcpy(newmem, mem, size);
+    <font color=#0000ff>delete</font> []mem;
+    mem = newmem;
+    size = minSize;
+  }
+}
+
+byte* Mem::pointer() { <font color=#0000ff>return</font> mem; }
+
+byte* Mem::pointer(<font color=#0000ff>int</font> minSize) {
+  ensureMinSize(minSize);
+  <font color=#0000ff>return</font> mem; 
+} <font color=#009900>///:~</font></PRE></FONT></BLOCKQUOTE>
+
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">You can see that
+<B>ensureMinSize(&#160;)</B> is the only function responsible for allocating
+memory, and that it is used from the second constructor and the second
+overloaded form of <B>pointer(&#160;)</B>. Inside <B>ensureMinSize(&#160;)</B>,
+nothing needs to be done if the <B>size</B> is large enough. If new storage must
+be allocated in order to make the block bigger (which is also the case when the
+block is of size zero after default construction), the new &#8220;extra&#8221;
+portion is set to zero using the <A NAME="Index1435"></A>Standard C library
+function <B>memset(&#160;)</B>, which was introduced in Chapter 5. The
+subsequent function call is to the Standard C library function
+<A NAME="Index1436"></A><B>memcpy(&#160;)</B>, which in this case copies the
+existing bytes from <B>mem</B> to <B>newmem</B> (typically in an efficient
+fashion). Finally, the old memory is deleted and the new memory and sizes are
+assigned to the appropriate members.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">The <B>Mem</B> class is designed to be
+used as a tool within other classes to simplify their memory management (it
+could also be used to hide a more sophisticated memory-management system
+provided, for example, by the operating system). Appropriately, it is tested
+here by creating a simple &#8220;string&#8221; class:</FONT><BR></P></DIV>
+
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE><font color=#009900>//: C07:MemTest.cpp</font>
+<font color=#009900>// Testing the Mem class</font>
+<font color=#009900>//{L} Mem</font>
+#include <font color=#004488>"Mem.h"</font>
+#include &lt;cstring&gt;
+#include &lt;iostream&gt;
+<font color=#0000ff>using</font> <font color=#0000ff>namespace</font> std;
+
+<font color=#0000ff>class</font> MyString {
+  Mem* buf;
+<font color=#0000ff>public</font>:
+  MyString();
+  MyString(<font color=#0000ff>char</font>* str);
+  ~MyString();
+  <font color=#0000ff>void</font> concat(<font color=#0000ff>char</font>* str);
+  <font color=#0000ff>void</font> print(ostream&amp; os);
+};
+
+MyString::MyString() {  buf = 0; }
+
+MyString::MyString(<font color=#0000ff>char</font>* str) {
+  buf = <font color=#0000ff>new</font> Mem(strlen(str) + 1);
+  strcpy((<font color=#0000ff>char</font>*)buf-&gt;pointer(), str);
+}
+
+<font color=#0000ff>void</font> MyString::concat(<font color=#0000ff>char</font>* str) {
+  <font color=#0000ff>if</font>(!buf) buf = <font color=#0000ff>new</font> Mem;
+  strcat((<font color=#0000ff>char</font>*)buf-&gt;pointer(
+    buf-&gt;msize() + strlen(str) + 1), str);
+}
+
+<font color=#0000ff>void</font> MyString::print(ostream&amp; os) {
+  <font color=#0000ff>if</font>(!buf) <font color=#0000ff>return</font>;
+  os &lt;&lt; buf-&gt;pointer() &lt;&lt; endl;
+}
+
+MyString::~MyString() { <font color=#0000ff>delete</font> buf; }
+
+<font color=#0000ff>int</font> main() {
+  MyString s(<font color=#004488>"My test string"</font>);
+  s.print(cout);
+  s.concat(<font color=#004488>" some additional stuff"</font>);
+  s.print(cout);
+  MyString s2;
+  s2.concat(<font color=#004488>"Using default constructor"</font>);
+  s2.print(cout);
+} <font color=#009900>///:~</font></PRE></FONT></BLOCKQUOTE>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">All you can do with this class is to
+create a <B>MyString</B>, concatenate text, and print to an
+<A NAME="Index1437"></A><B>ostream</B>. The class only contains a pointer to a
+<B>Mem</B>, but note the distinction between the default constructor, which sets
+the pointer to zero, and the second constructor, which creates a <B>Mem</B> and
+copies data into it. The advantage of the
+<A NAME="Index1438"></A><A NAME="Index1439"></A>default constructor is that you
+can create, for example, a large array of empty <B>MyString</B> objects very
+cheaply, since the size of each object is only one pointer and the only overhead
+of the default constructor is that of assigning to zero. The cost of a
+<B>MyString</B> only begins to accrue when you concatenate data; at that point
+the <B>Mem</B> object is created if it hasn&#8217;t been already. However, if
+you use the default constructor and never concatenate any data, the destructor
+call is still safe because <A NAME="Index1440"></A>calling <B>delete</B> for
+zero is defined such that it does not try to release storage or otherwise cause
+problems.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">If you look at these two constructors it
+might at first seem like this is a prime candidate for default arguments.
+However, if you drop the default constructor and write the remaining constructor
+with a default argument:</FONT><BR></P></DIV>
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE>MyString(<font color=#0000ff>char</font>* str = <font color=#004488>""</font>);</PRE></FONT></BLOCKQUOTE>
+
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">everything will work correctly, but
+you&#8217;ll lose the previous efficiency benefit since a <B>Mem</B> object will
+always be created. To get the efficiency back, you must modify the
+constructor:</FONT><BR></P></DIV>
+
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE>MyString::MyString(<font color=#0000ff>char</font>* str) {
+  <font color=#0000ff>if</font>(!*str) { <font color=#009900>// Pointing at an empty string</font>
+    buf = 0;
+    <font color=#0000ff>return</font>;
+  }
+  buf = <font color=#0000ff>new</font> Mem(strlen(str) + 1);
+  strcpy((<font color=#0000ff>char</font>*)buf-&gt;pointer(), str);
+} </PRE></FONT></BLOCKQUOTE>
+
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">This means, in effect, that the default
+value becomes a flag that causes a separate piece of code to be executed than if
+a non-default value is used. Although it seems innocent enough with a small
+constructor like this one, in general this practice can cause problems. If you
+have to <I>look</I> for the default rather than treating it as an ordinary
+value, that should be a clue that you will end up with effectively two different
+functions inside a single function body: one version for the normal case and one
+for the default. You might as well split it up into two distinct function bodies
+and let the compiler do the selection. This results in a slight (but usually
+invisible) increase in efficiency, because the extra argument isn&#8217;t passed
+and the extra code for the conditional isn&#8217;t executed. More importantly,
+you are keeping the code for two separate functions <I>in</I> two separate
+functions rather than combining them into one using default arguments, which
+will result in easier maintainability, especially if the functions are
+large.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">On the other hand, consider the
+<B>Mem</B> class. If you look at the definitions of the two constructors and the
+two <B>pointer(&#160;)</B> functions, you can see that using default arguments
+in both cases will not cause the member function definitions to change at all.
+Thus, the class could easily be:</FONT><BR></P></DIV>
+
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE><font color=#009900>//: C07:Mem2.h</font>
+#ifndef MEM2_H
+#define MEM2_H
+<font color=#0000ff>typedef</font> <font color=#0000ff>unsigned</font> <font color=#0000ff>char</font> byte;
+
+<font color=#0000ff>class</font> Mem {
+  byte* mem;
+  <font color=#0000ff>int</font> size;
+  <font color=#0000ff>void</font> ensureMinSize(<font color=#0000ff>int</font> minSize);
+<font color=#0000ff>public</font>:
+  Mem(<font color=#0000ff>int</font> sz = 0);
+  ~Mem();
+  <font color=#0000ff>int</font> msize();
+  byte* pointer(<font color=#0000ff>int</font> minSize = 0);
+}; 
+#endif <font color=#009900>// MEM2_H ///:~</font></PRE></FONT></BLOCKQUOTE>
+
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Notice that a call to
+<B>ensureMinSize(0)</B> will always be quite efficient.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Although in both of these cases I based
+some of the decision-making process on the issue of
+<A NAME="Index1441"></A>efficiency, you must be careful not to fall into the
+trap of thinking only about efficiency (fascinating as it is). The most
+important issue in class design is the interface of the class (its <B>public</B>
+members, which are available to the client programmer). If these produce a class
+that is easy to use and reuse, then you have a success; you can always tune for
+efficiency if necessary but the effect of a class that is designed badly because
+the programmer is over-focused on efficiency issues can be dire. Your primary
+concern should be that the interface makes sense to those who use it and who
+read the resulting code. Notice that in <B>MemTest.cpp</B> the usage of
+<B>MyString</B> does not change regardless of whether a default constructor is
+used or whether the efficiency is high or
+low.</FONT><A NAME="_Toc312373871"></A><A NAME="_Toc472654874"></A><BR></P></DIV>
+<A NAME="Heading245"></A><FONT FACE = "Verdana"><H2 ALIGN="LEFT">
+Summary</H2></FONT>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">As a guideline, you shouldn&#8217;t use a
+<A NAME="Index1442"></A><A NAME="Index1443"></A>default argument as a flag upon
+which to conditionally execute code. You should instead break the function into
+two or more overloaded functions if you can. A default argument should be a
+value you would ordinarily put in that position. It&#8217;s a value that is more
+likely to occur than all the rest, so client programmers can generally ignore it
+or use it only if they want to change it from the default
+value.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">The default argument is included to make
+function calls easier, especially when those functions have many arguments with
+typical values. Not only is it much easier to write the calls, it&#8217;s easier
+to read them, especially if the class creator can order the arguments so the
+least-modified defaults appear latest in the list.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">An especially important use of default
+arguments is when you start out with a function with a set of arguments, and
+after it&#8217;s been used for a while you discover you need to add arguments.
+By defaulting all the new arguments, you ensure that all client code using the
+previous interface is not disturbed.
+<A NAME="Index1444"></A><A NAME="Index1445"></A></FONT><A NAME="_Toc312373872"></A><A NAME="_Toc472654875"></A><BR></P></DIV>
+<A NAME="Heading246"></A><FONT FACE = "Verdana"><H2 ALIGN="LEFT">
+Exercises</H2></FONT>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia" SIZE=2>Solutions to selected exercises
+can be found in the electronic document <I>The Thinking in C++ Annotated
+Solution Guide</I>, available for a small fee from
+www.BruceEckel.com.</FONT><BR></P></DIV>
+<OL>
+<LI><FONT FACE="Verdana">	</FONT><FONT FACE="Georgia">Create a <B>Text</B> class
+that contains a <B>string</B> object to hold the text of a file. Give it two
+constructors: a default constructor and a constructor that takes a <B>string</B>
+argument that is the name of the file to open. When the second constructor is
+used, open the file and read the contents into the <B>string</B> member object.
+Add a member function <B>contents(&#160;)</B> to return the <B>string</B> so
+(for example) it can be printed. In <B>main(&#160;)</B>,<B> </B>open a file
+using <B>Text</B> and print the
+contents.</FONT><LI><FONT FACE="Verdana">	</FONT><FONT FACE="Georgia">Create a
+<B>Message</B> class with a constructor that takes a single <B>string</B> with a
+default value. Create a private member <B>string</B>, and in the constructor
+simply assign the argument <B>string</B> to your internal <B>string</B>. Create
+two overloaded member functions called <B>print(&#160;)</B>: one that takes no
+arguments and simply prints the message stored in the object, and one that takes
+a <B>string</B> argument, which it prints in addition to the internal message.
+Does it make sense to use this approach instead of the one used for the
+constructor?</FONT><LI><FONT FACE="Verdana">	</FONT><FONT FACE="Georgia">Determine
+how to generate assembly output with your compiler, and run experiments to
+deduce the name-decoration
+scheme.</FONT><LI><FONT FACE="Verdana">	</FONT><FONT FACE="Georgia">Create a
+class that contains four member functions, with 0, 1, 2, and 3 <B>int</B>
+arguments, respectively. Create a <B>main(&#160;)</B> that makes an object of
+your class and calls each of the member functions. Now modify the class so it
+has instead a single member function with all the arguments defaulted. Does this
+change your
+<B>main(&#160;)</B>?</FONT><LI><FONT FACE="Verdana">	</FONT><FONT FACE="Georgia">Create
+a function with two arguments and call it from <B>main(&#160;)</B>. Now make one
+of the arguments a &#8220;placeholder&#8221; (no identifier) and see if your
+call in <B>main(&#160;)</B>
+changes.</FONT><LI><FONT FACE="Verdana">	</FONT><FONT FACE="Georgia">Modify
+<B>Stash3.h</B> and <B>Stash3.cpp</B> to use default arguments in the
+constructor. Test the constructor by making two different versions of a
+<B>Stash</B>
+object.</FONT><LI><FONT FACE="Verdana">	</FONT><FONT FACE="Georgia">Create a new
+version of the <B>Stack</B> class (from Chapter 6) that contains the default
+constructor as before, and a second constructor that takes as its arguments an
+array of pointers to objects and the size of that array. This constructor should
+move through the array and push each pointer onto the <B>Stack</B>. Test your
+class with an array of
+<B>string</B>.</FONT><LI><FONT FACE="Verdana">	</FONT><FONT FACE="Georgia">Modify
+<B>SuperVar</B> so that there are <B>#ifdef</B>s around all the <B>vartype</B>
+code as described in the section on <B>enum</B>. Make <B>vartype</B> a regular
+and <B>public </B>enumeration (with no instance) and modify <B>print(&#160;)</B>
+so that it requires a <B>vartype</B> argument to tell it what to
+do.</FONT><LI><FONT FACE="Verdana">	</FONT><FONT FACE="Georgia">Implement
+<B>Mem2.h</B> and make sure that the modified class still works with
+<B>MemTest.cpp</B>.</FONT><LI><FONT FACE="Verdana">	</FONT><FONT FACE="Georgia">Use
+<B>class Mem</B> to implement <B>Stash</B>. Note that because the implementation
+is <B>private</B> and thus hidden from the client programmer, the test code does
+not need to be
+modified.</FONT><LI><FONT FACE="Verdana">	</FONT><FONT FACE="Georgia">In
+<B>class Mem</B>, add a <B>bool</B> <B>moved(&#160;)</B> member function that
+takes the result of a call to <B>pointer(&#160;)</B> and tells you whether the
+pointer has moved (due to reallocation). Write a <B>main(&#160;)</B> that tests
+your <B>moved(&#160;)</B> member function. Does it make more sense to use
+something like <B>moved(&#160;)</B> or to simply call <B>pointer(&#160;)</B>
+every time you need to access the memory in
+<B>Mem</B>?</FONT><A NAME="_Toc305628674"></A><A NAME="_Toc312373902"></A></OL><FONT FACE = "Verdana"><H1 ALIGN="LEFT">
+</H1></FONT>
+<DIV ALIGN="CENTER">
+    <FONT FACE="Verdana" size = "-1">
+     [ <a href="Chapter06.html">Previous Chapter</a> ] 
+    [ <a href="Contents.html">Table of Contents</a> ] 
+    [ <a href="DocIndex.html">Index</a> ]
+     [ <a href="Chapter08.html">Next Chapter</a> ] 
+    </FONT>
+    <BR>
+ Last Update:09/27/2001</P></DIV>
+
+</BODY>
+
+</HTML>

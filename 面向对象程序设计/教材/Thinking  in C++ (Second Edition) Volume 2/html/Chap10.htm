@@ -1,0 +1,1593 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<HTML>
+<!--
+This document was converted from RTF source: 
+By rtftohtml 4.19
+See http://www.sunpack.com/RTF
+Filename:C:\TEMP\TicV2\html\TicV2.rtf
+Application Directory:C:\TOOLS\RTF2HTML\
+Subject:
+Author:Bruce Eckel
+Operator:Bruce Eckel
+Document Comments:
+Version Comments:
+Comments:
+Keywords:
+Translation Date:08/19/2001
+Translation Time:14:25:07
+Translation Platform:Win32
+Number of Output files:19
+This File:C:\TEMP\TicV2\html\Chap10.htm
+SplitDepth=1
+SkipNavPanel=1
+SkipLeadingToc=1
+SkipTrailingToc=1
+GenContents=1
+GenFrames=1
+GenIndex=1
+-->
+<HEAD lang="en"><META http-equiv="Content-Type" content="text/html">
+<TITLE>10: Multiple inheritance</TITLE>
+</HEAD>
+
+<BODY  BGCOLOR="#FFFFFF"><DIV ALIGN="CENTER">
+  <a href="http://www.MindView.net">
+  <img src="mindview.gif" alt="MindView Inc." BORDER = "0"></a>
+  <CENTER>
+    <FONT FACE="Verdana, Tahoma, Arial, Helvetica, Sans" size = "-1">
+    [ <a href="README.txt">Viewing Hints</a> ]
+    [ <a href="RevisionHistory.htm">Revision History</a> ]
+    [ <a href="http://www.mindview.net/Books/TICPP/ThinkingInCPP2e.html">Book Home Page</a> ]
+    [ <a href="http://www.mindview.net/Etc/MailingList.html">Free Newsletter</a> ] <br>
+    [ <a href="http://www.mindview.net/Seminars">Seminars</a> ]
+    [ <a href="http://www.mindview.net/CDs">Seminars on CD ROM</a> ]
+    [ <a href="http://www.mindview.net/Services">Consulting</a> ]
+    </FONT>
+  <H2><FONT FACE="Verdana, Tahoma, Arial, Helvetica, Sans">
+  Thinking in C++, 2nd edition, Volume 2<br>
+  <small>Revision 4.0</small></FONT></H2>
+  <H3><FONT FACE="Verdana, Tahoma, Arial, Helvetica, Sans">
+  by Bruce Eckel &amp; Chuck Allison<br>&copy;2001 MindView, Inc.</FONT></H3>
+  
+    <FONT FACE="Verdana, Tahoma, Arial, Helvetica, Sans" size = "-1">
+     [ <a href="Chap09.htm">Previous Chapter</a> ] 
+    
+    [ <a href="SimpCont.htm">Short TOC</a> ] 
+    [ <a href="Contents.htm">Table of Contents</a> ] 
+  
+        [ <a href="DocIdx.htm">Index</a> ]
+        
+     [ <a href="Chap11.htm">Next Chapter</a> ] 
+    </FONT>
+    
+  </CENTER>
+  </P></DIV><A NAME="_Toc519042101"></A><A NAME="Heading308"></A><FONT FACE = "Verdana, Tahoma, Arial, Helvetica, Sans"><H1 ALIGN="LEFT">
+10: Multiple inheritance</H1></FONT>
+<DIV ALIGN="LEFT"><P><FONT FACE="Verdana" SIZE=4><a NAME="TIC2V2_CHAPTER10_I1"></a>
+The
+basic concept of multiple inheritance (MI) sounds simple enough.
+</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">[[[Notes: </FONT><BR></P></DIV>
+<OL>
+<LI><FONT FACE="Verdana">	</FONT><FONT FACE="Georgia">Demo of use of MI, using
+Greenhouse example and different company&#8217;s greenhouse controller
+equipment.</FONT><LI><FONT FACE="Verdana">	</FONT><FONT FACE="Georgia">Introduce
+concept of interfaces; toys and &#8220;tuckable&#8221;
+interface</FONT><LI><FONT FACE="Verdana">	</FONT><FONT FACE="Georgia">Class
+Sattelite : public Task, public Displayed {}; highlight(Displayed*);
+Suspend(Task*)</FONT><LI><FONT FACE="Verdana">	</FONT><FONT FACE="Georgia">Slider:
+Islider, BBslider {} (GUI from a Vendor, MI
+Decouples)</FONT><LI><FONT FACE="Verdana">	</FONT><FONT FACE="Georgia">Barton
+&amp; Nackman MI
+Examples</FONT><LI><FONT FACE="Verdana">	</FONT><FONT FACE="Georgia">Concrete
+classes (nonvirtual) vs. interface classes (pure
+virtual)</FONT><LI><FONT FACE="Verdana">	</FONT><FONT FACE="Georgia">class X {
+int f(x); };</FONT><BR><FONT FACE="Georgia">class Y { int f(y);
+};</FONT><BR><FONT FACE="Georgia">class Z : X, Y
+{</FONT><BR><FONT FACE="Georgia">  using X::f;</FONT><BR><FONT FACE="Georgia"> 
+int
+f(Z);</FONT><BR><FONT FACE="Georgia">};</FONT></OL><DIV ALIGN="LEFT"><P><FONT FACE="Georgia">]]]</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><A NAME="Index596"></A><A NAME="Index597"></A><A NAME="Index598"></A><FONT FACE="Georgia">You
+create a new type by inheriting from more than one base class. The syntax is
+exactly what you&#8217;d expect, and as long as the inheritance diagrams are
+simple, MI is simple as
+well.
+[&nbsp;<a HREF="mailto:cda@freshsources.com?subject=[TICV2] TIC2V2_CHAPTER10_I1">Comment</a>&nbsp;]
+
+<a NAME="TIC2V2_CHAPTER10_I2"></a>
+</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">However, MI can introduce a number of
+ambiguities and strange situations, which are covered in this chapter. But
+first, it helps to get a perspective on the
+subject.
+[&nbsp;<a HREF="mailto:cda@freshsources.com?subject=[TICV2] TIC2V2_CHAPTER10_I2">Comment</a>&nbsp;]
+
+<a NAME="TIC2V2_CHAPTER10_I3"></a>
+</FONT><A NAME="_Toc305593286"></A><A NAME="_Toc305628758"></A><A NAME="_Toc312374097"></A><A NAME="_Toc519042102"></A><BR></P></DIV>
+<A NAME="Heading309"></A><FONT FACE = "Verdana, Tahoma, Arial, Helvetica, Sans"><H2 ALIGN="LEFT">
+Perspective</H2></FONT>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Before C++, the most successful
+object-oriented language was Smalltalk<A NAME="Index599"></A>. Smalltalk was
+created from the ground up as an OO language. It is often referred to as
+<I>pure,</I> whereas C++, because it was built on top of C, is called
+<I>hybrid</I>. One of the design decisions made with Smalltalk was that all
+classes would be derived in a single hierarchy, rooted in a single base class
+(called <B>Object</B> &#8211; this is the model for the <I>object-based
+hierarchy<A NAME="Index600"></A><A NAME="Index601"></A></I>). You cannot create
+a new class in Smalltalk without inheriting it from an existing class, which is
+why it takes a certain amount of time to become productive in Smalltalk &#8211;
+you must learn the class library before you can start making new classes. So the
+Smalltalk class hierarchy is always a single monolithic
+<A NAME="Index602"></A>tree.
+[&nbsp;<a HREF="mailto:cda@freshsources.com?subject=[TICV2] TIC2V2_CHAPTER10_I3">Comment</a>&nbsp;]
+
+<a NAME="TIC2V2_CHAPTER10_I4"></a>
+</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Classes in Smalltalk usually have a
+number of things in common, and always have <I>some</I> things in common (the
+characteristics and behaviors of <B>Object</B>), so you almost never run into a
+situation where you need to inherit from more than one base class. However, with
+C++ you can create as many hierarchy trees as you want. Therefore, for logical
+completeness the language must be able to combine more than one class at a time
+&#8211; thus the need for multiple
+inheritance.
+[&nbsp;<a HREF="mailto:cda@freshsources.com?subject=[TICV2] TIC2V2_CHAPTER10_I4">Comment</a>&nbsp;]
+
+<a NAME="TIC2V2_CHAPTER10_I5"></a>
+</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">However, this was not a crystal-clear
+case of a feature that no one could live without, and there was (and still is) a
+lot of disagreement about whether MI is really essential in C++. MI was added in
+AT&amp;T <B>cfront</B> release 2.0 and was the first significant change to the
+language. Since then, a number of other features have been added (notably
+templates) that change the way we think about programming and place MI in a much
+less important role. You can think of MI as a &#8220;minor&#8221; language
+feature that shouldn&#8217;t be involved in your daily design
+decisions.
+[&nbsp;<a HREF="mailto:cda@freshsources.com?subject=[TICV2] TIC2V2_CHAPTER10_I5">Comment</a>&nbsp;]
+
+<a NAME="TIC2V2_CHAPTER10_I6"></a>
+</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">One of the most pressing issues that
+drove MI involved containers. Suppose you want to create a container that
+everyone can easily use. One approach is to use <B>void*</B> as the type inside
+the container, as with <B>PStash</B> and <B>Stack</B>. The Smalltalk approach,
+however, is to make a container that holds <B>Object</B>s. (Remember that
+<B>Object</B> is the base type of the entire Smalltalk hierarchy.) Because
+everything in Smalltalk is ultimately derived from <B>Object</B>, any container
+that holds <B>Object</B>s can hold anything, so this approach works
+nicely.
+[&nbsp;<a HREF="mailto:cda@freshsources.com?subject=[TICV2] TIC2V2_CHAPTER10_I6">Comment</a>&nbsp;]
+
+<a NAME="TIC2V2_CHAPTER10_I7"></a>
+</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Now consider the situation in C++.
+Suppose vendor <B>A</B> creates an object-based hierarchy that includes a useful
+set of containers including one you want to use called <B>Holder</B>. Now you
+come across vendor <B>B</B>&#8217;s class hierarchy that contains some other
+class that is important to you, a <B>BitImage</B> class, for example, which
+holds graphic images. The only way to make a <B>Holder</B> of <B>BitImage</B>s
+is to inherit a new class from both <B>Object</B>, so it can be held in the
+<B>Holder</B>, and
+<B>BitImage</B>:
+[&nbsp;<a HREF="mailto:cda@freshsources.com?subject=[TICV2] TIC2V2_CHAPTER10_I7">Comment</a>&nbsp;]
+
+<a NAME="TIC2V2_CHAPTER10_I8"></a>
+</FONT><BR></P></DIV>
+<DIV ALIGN="RIGHT"><IMG SRC="TicV202.gif"><BR></P></DIV>
+
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">This was seen as an important reason for
+MI, and a number of class libraries were built on this model. However, as you
+saw in Chapter XX, the addition of templates has changed the way containers are
+created, so this situation isn&#8217;t a driving issue for
+MI.
+[&nbsp;<a HREF="mailto:cda@freshsources.com?subject=[TICV2] TIC2V2_CHAPTER10_I8">Comment</a>&nbsp;]
+
+<a NAME="TIC2V2_CHAPTER10_I9"></a>
+</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">The other reason you may need MI is
+logical, related to design. Unlike the above situation, where you don&#8217;t
+have control of the base classes, in this one you do, and you intentionally use
+MI to make the design more flexible or useful. (At least, you may believe this
+to be the case.) An example of this is in the original iostream library
+design:
+[&nbsp;<a HREF="mailto:cda@freshsources.com?subject=[TICV2] TIC2V2_CHAPTER10_I9">Comment</a>&nbsp;]
+
+<a NAME="TIC2V2_CHAPTER10_I10"></a>
+</FONT><BR></P></DIV>
+<DIV ALIGN="CENTER"><FONT FACE="Georgia"><IMG SRC="TicV203.gif"></FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Both <B>istream</B> and <B>ostream</B>
+are useful classes by themselves, but they can also be inherited into a class
+that combines both their characteristics and
+behaviors.
+[&nbsp;<a HREF="mailto:cda@freshsources.com?subject=[TICV2] TIC2V2_CHAPTER10_I10">Comment</a>&nbsp;]
+
+<a NAME="TIC2V2_CHAPTER10_I11"></a>
+</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Regardless of what motivates you to use
+MI, a number of problems arise in the process, and you need to understand them
+to use
+it.
+[&nbsp;<a HREF="mailto:cda@freshsources.com?subject=[TICV2] TIC2V2_CHAPTER10_I11">Comment</a>&nbsp;]
+
+<a NAME="TIC2V2_CHAPTER10_I12"></a>
+</FONT><A NAME="_Toc305593287"></A><A NAME="_Toc305628759"></A><A NAME="_Toc312374098"></A><A NAME="_Toc519042103"></A><BR></P></DIV>
+<A NAME="Heading310"></A><FONT FACE = "Verdana, Tahoma, Arial, Helvetica, Sans"><H2 ALIGN="LEFT">
+Duplicate subobjects<BR><A NAME="Index603"></A><A NAME="Index604"></A></H2></FONT>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">When you inherit from a base class, you
+get a copy of all the data members of that base class in your derived class.
+This copy is referred to as a <I>subobject</I>. If you multiply inherit from
+class <B>d1</B> and class <B>d2</B> into class <B>mi</B>, class <B>mi</B>
+contains one subobject of <B>d1</B> and one of <B>d2</B>. So your <B>mi
+</B>object looks like
+this:
+[&nbsp;<a HREF="mailto:cda@freshsources.com?subject=[TICV2] TIC2V2_CHAPTER10_I12">Comment</a>&nbsp;]
+
+<a NAME="TIC2V2_CHAPTER10_I13"></a>
+</FONT><BR></P></DIV>
+<DIV ALIGN="CENTER"><FONT FACE="Georgia"><IMG SRC="TicV204.gif"></FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Now consider what happens if <B>d1</B>
+and <B>d2</B> both inherit from the same base class, called
+<B>Base</B>:
+[&nbsp;<a HREF="mailto:cda@freshsources.com?subject=[TICV2] TIC2V2_CHAPTER10_I13">Comment</a>&nbsp;]
+
+<a NAME="TIC2V2_CHAPTER10_I14"></a>
+</FONT><BR></P></DIV>
+<DIV ALIGN="CENTER"><FONT FACE="Georgia"><IMG SRC="TicV205.gif"></FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">In the above diagram, both <B>d1 </B>and
+<B>d2 </B>contain a subobject of <B>Base</B>, so <B>mi</B> contains <I>two</I>
+subobjects of <B>Base</B>. Because of the path produced in the diagram, this is
+sometimes called a &#8220;diamond&#8221; in the inheritance hierarchy. Without
+diamonds<A NAME="Index605"></A><A NAME="Index606"></A>, multiple inheritance is
+quite straightforward, but as soon as a diamond appears, trouble starts because
+you have duplicate subobjects in your new class. This takes up extra space,
+which may or may not be a problem depending on your design. But it also
+introduces an
+ambiguity.
+[&nbsp;<a HREF="mailto:cda@freshsources.com?subject=[TICV2] TIC2V2_CHAPTER10_I14">Comment</a>&nbsp;]
+
+<a NAME="TIC2V2_CHAPTER10_I15"></a>
+</FONT><A NAME="_Toc305593288"></A><A NAME="_Toc305628760"></A><A NAME="_Toc312374099"></A><A NAME="_Toc519042104"></A><BR></P></DIV>
+<A NAME="Heading311"></A><FONT FACE = "Verdana, Tahoma, Arial, Helvetica, Sans"><H2 ALIGN="LEFT">
+Ambiguous
+upcasting<BR><A NAME="Index607"></A><A NAME="Index608"></A><A NAME="Index609"></A><A NAME="Index610"></A></H2></FONT>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">What happens, in the above diagram, if
+you want to cast a pointer to an <B>mi</B> to a pointer to a <B>Base</B>? There
+are two subobjects of type <B>Base</B>, so which address does the cast produce?
+Here&#8217;s the diagram in
+code:
+[&nbsp;<a HREF="mailto:cda@freshsources.com?subject=[TICV2] TIC2V2_CHAPTER10_I15">Comment</a>&nbsp;]
+
+<a NAME="TIC2V2_CHAPTER10_I16"></a>
+</FONT><BR></P></DIV>
+
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE><font color=#009900>//: C10:MultipleInheritance1.cpp</font>
+<font color=#009900>// MI &amp; ambiguity</font>
+<font color=#009900>//{L} ../TestSuite/Test</font>
+#include <font color=#004488>"..</font><font color=#004488>/purge.h"</font>
+#include &lt;iostream&gt;
+#include &lt;vector&gt;
+<font color=#0000ff>using</font> <font color=#0000ff>namespace</font> std;
+
+<font color=#0000ff>class</font> MBase {
+<font color=#0000ff>public</font>:
+  <font color=#0000ff>virtual</font> <font color=#0000ff>char</font>* vf() <font color=#0000ff>const</font> = 0;
+  <font color=#0000ff>virtual</font> ~MBase() {}
+};
+
+<font color=#0000ff>class</font> D1 : <font color=#0000ff>public</font> MBase {
+<font color=#0000ff>public</font>:
+  <font color=#0000ff>char</font>* vf() <font color=#0000ff>const</font> { <font color=#0000ff>return</font> <font color=#004488>"D1"</font>; }
+};
+
+<font color=#0000ff>class</font> D2 : <font color=#0000ff>public</font> MBase {
+<font color=#0000ff>public</font>:
+  <font color=#0000ff>char</font>* vf() <font color=#0000ff>const</font> { <font color=#0000ff>return</font> <font color=#004488>"D2"</font>; }
+};
+
+<font color=#009900>// Causes error: ambiguous override of vf():</font>
+<font color=#009900>//! class MI : public D1, public D2 {};</font>
+
+<font color=#0000ff>int</font> main() {
+  vector&lt;MBase*&gt; b;
+  b.push_back(<font color=#0000ff>new</font> D1);
+  b.push_back(<font color=#0000ff>new</font> D2);
+  <font color=#009900>// Cannot upcast: which subobject?:</font>
+<font color=#009900>//!  b.push_back(new mi);</font>
+  <font color=#0000ff>for</font>(<font color=#0000ff>int</font> i = 0; i &lt; b.size(); i++)
+    cout &lt;&lt; b[i]-&gt;vf() &lt;&lt; endl;
+  purge(b);
+} <font color=#009900>///:~</font></PRE></FONT></BLOCKQUOTE>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Two problems occur here. First, you
+cannot even create the class <B>mi</B> because doing so would cause a clash
+between the two definitions of <B>vf(&#160;)</B> in <B>D1</B> and
+<B>D2</B>.
+[&nbsp;<a HREF="mailto:cda@freshsources.com?subject=[TICV2] TIC2V2_CHAPTER10_I16">Comment</a>&nbsp;]
+
+<a NAME="TIC2V2_CHAPTER10_I17"></a>
+</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Second, in the array definition for <B>b[
+]</B> this code attempts to create a <B>new mi</B> and upcast the address to a
+<B>MBase*</B>. The compiler won&#8217;t accept this because it has no way of
+knowing whether you want to use <B>D1</B>&#8217;s subobject <B>MBase</B> or
+<B>D2</B>&#8217;s subobject <B>MBase</B> for the resulting
+address.
+[&nbsp;<a HREF="mailto:cda@freshsources.com?subject=[TICV2] TIC2V2_CHAPTER10_I17">Comment</a>&nbsp;]
+
+<a NAME="TIC2V2_CHAPTER10_I18"></a>
+</FONT><A NAME="_Toc305593289"></A><A NAME="_Toc305628761"></A><A NAME="_Toc312374100"></A><A NAME="_Toc519042105"></A><BR></P></DIV>
+<A NAME="Heading312"></A><FONT FACE = "Verdana, Tahoma, Arial, Helvetica, Sans"><H2 ALIGN="LEFT">
+virtual base
+classes<BR><A NAME="Index611"></A><A NAME="Index612"></A><A NAME="Index613"></A></H2></FONT>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">To solve the first problem, you must
+explicitly disambiguate the function <B>vf(&#160;)</B> by writing a redefinition
+in the class <B>mi</B>.
+[&nbsp;<a HREF="mailto:cda@freshsources.com?subject=[TICV2] TIC2V2_CHAPTER10_I18">Comment</a>&nbsp;]
+
+<a NAME="TIC2V2_CHAPTER10_I19"></a>
+</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">The solution to the second problem is a
+language extension: The meaning of the <B>virtual</B> keyword is overloaded. If
+you inherit a base class as <B>virtual</B>, only one subobject of that class
+will ever appear as a base class. Virtual base classes are implemented by the
+compiler with pointer magic in a way suggesting the implementation of ordinary
+virtual functions.
+[&nbsp;<a HREF="mailto:cda@freshsources.com?subject=[TICV2] TIC2V2_CHAPTER10_I19">Comment</a>&nbsp;]
+
+<a NAME="TIC2V2_CHAPTER10_I20"></a>
+</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Because only one subobject of a virtual
+base class will ever appear during multiple inheritance, there is no ambiguity
+during upcasting. Here&#8217;s an
+example:
+[&nbsp;<a HREF="mailto:cda@freshsources.com?subject=[TICV2] TIC2V2_CHAPTER10_I20">Comment</a>&nbsp;]
+
+<a NAME="TIC2V2_CHAPTER10_I21"></a>
+</FONT><BR></P></DIV>
+
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE><font color=#009900>//: C10:MultipleInheritance2.cpp</font>
+<font color=#009900>// Virtual base classes</font>
+<font color=#009900>//{L} ../TestSuite/Test</font>
+#include <font color=#004488>"..</font><font color=#004488>/purge.h"</font>
+#include &lt;iostream&gt;
+#include &lt;vector&gt;
+<font color=#0000ff>using</font> <font color=#0000ff>namespace</font> std;
+
+<font color=#0000ff>class</font> MBase {
+<font color=#0000ff>public</font>:
+  <font color=#0000ff>virtual</font> <font color=#0000ff>char</font>* vf() <font color=#0000ff>const</font> = 0;
+  <font color=#0000ff>virtual</font> ~MBase() {}
+};
+
+<font color=#0000ff>class</font> D1 : <font color=#0000ff>virtual</font> <font color=#0000ff>public</font> MBase {
+<font color=#0000ff>public</font>:
+  <font color=#0000ff>char</font>* vf() <font color=#0000ff>const</font> { <font color=#0000ff>return</font> <font color=#004488>"D1"</font>; }
+};
+
+<font color=#0000ff>class</font> D2 : <font color=#0000ff>virtual</font> <font color=#0000ff>public</font> MBase {
+<font color=#0000ff>public</font>:
+  <font color=#0000ff>char</font>* vf() <font color=#0000ff>const</font> { <font color=#0000ff>return</font> <font color=#004488>"D2"</font>; }
+};
+
+<font color=#009900>// MUST explicitly disambiguate vf():</font>
+<font color=#0000ff>class</font> MI : <font color=#0000ff>public</font> D1, <font color=#0000ff>public</font> D2 {
+<font color=#0000ff>public</font>:
+  <font color=#0000ff>char</font>* vf() <font color=#0000ff>const</font> { <font color=#0000ff>return</font> D1::vf();}
+};
+
+<font color=#0000ff>int</font> main() {
+  vector&lt;MBase*&gt; b;
+  b.push_back(<font color=#0000ff>new</font> D1);
+  b.push_back(<font color=#0000ff>new</font> D2);
+  b.push_back(<font color=#0000ff>new</font> MI); <font color=#009900>// OK</font>
+  <font color=#0000ff>for</font>(<font color=#0000ff>int</font> i = 0; i &lt; b.size(); i++)
+    cout &lt;&lt; b[i]-&gt;vf() &lt;&lt; endl;
+  purge(b);
+} <font color=#009900>///:~</font></PRE></FONT></BLOCKQUOTE>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">The compiler now accepts the upcast, but
+notice that you must still explicitly disambiguate the function
+<B>vf(&#160;)</B> in <B>MI</B>; otherwise the compiler wouldn&#8217;t know which
+version to
+use.
+[&nbsp;<a HREF="mailto:cda@freshsources.com?subject=[TICV2] TIC2V2_CHAPTER10_I21">Comment</a>&nbsp;]
+
+<a NAME="TIC2V2_CHAPTER10_I22"></a>
+</FONT><A NAME="_Toc312374101"></A><A NAME="_Toc519042106"></A><BR></P></DIV>
+<A NAME="Heading313"></A><FONT FACE = "Verdana, Tahoma, Arial, Helvetica, Sans"><H3 ALIGN="LEFT">
+The "most derived" class and virtual base initialization</H3></FONT>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">The use of virtual base classes
+isn&#8217;t quite as simple as that. The above example uses the
+(compiler-synthesized) default constructor. If the virtual base has a
+constructor, things become a bit strange. To understand this, you need a new
+term: <I>most-derived</I>
+class<A NAME="Index614"></A><A NAME="Index615"></A>.
+[&nbsp;<a HREF="mailto:cda@freshsources.com?subject=[TICV2] TIC2V2_CHAPTER10_I22">Comment</a>&nbsp;]
+
+<a NAME="TIC2V2_CHAPTER10_I23"></a>
+</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">The most-derived class is the one
+you&#8217;re currently in, and is particularly important when you&#8217;re
+thinking about constructors. In the previous example, <B>MBase</B> is the
+most-derived class inside the <B>MBase</B> constructor. Inside the <B>D1</B>
+constructor, <B>D1</B> is the most-derived class, and inside the <B>MI</B>
+constructor, <B>MI</B> is the most-derived
+class.
+[&nbsp;<a HREF="mailto:cda@freshsources.com?subject=[TICV2] TIC2V2_CHAPTER10_I23">Comment</a>&nbsp;]
+
+<a NAME="TIC2V2_CHAPTER10_I24"></a>
+</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">When you are using a virtual base class,
+the most-derived constructor is responsible for initializing that virtual base
+class. That means any class, no matter how far away it is from the virtual base,
+is responsible for initializing it. Here&#8217;s an
+example:
+[&nbsp;<a HREF="mailto:cda@freshsources.com?subject=[TICV2] TIC2V2_CHAPTER10_I24">Comment</a>&nbsp;]
+
+<a NAME="TIC2V2_CHAPTER10_I25"></a>
+</FONT><BR></P></DIV>
+
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE><font color=#009900>//: C10:MultipleInheritance3.cpp</font>
+<font color=#009900>// Virtual base initialization.</font>
+<font color=#009900>// Virtual base classes must always be</font>
+<font color=#009900>// Initialized by the "most-derived" class.</font>
+<font color=#009900>//{L} ../TestSuite/Test</font>
+#include <font color=#004488>"..</font><font color=#004488>/purge.h"</font>
+#include &lt;iostream&gt;
+#include &lt;vector&gt;
+<font color=#0000ff>using</font> <font color=#0000ff>namespace</font> std;
+
+<font color=#0000ff>class</font> MBase {
+<font color=#0000ff>public</font>:
+  MBase(<font color=#0000ff>int</font>) {}
+  <font color=#0000ff>virtual</font> <font color=#0000ff>char</font>* vf() <font color=#0000ff>const</font> = 0;
+  <font color=#0000ff>virtual</font> ~MBase() {}
+};
+
+<font color=#0000ff>class</font> D1 : <font color=#0000ff>virtual</font> <font color=#0000ff>public</font> MBase {
+<font color=#0000ff>public</font>:
+  D1() : MBase(1) {}
+  <font color=#0000ff>char</font>* vf() <font color=#0000ff>const</font> { <font color=#0000ff>return</font> <font color=#004488>"D1"</font>; }
+};
+
+<font color=#0000ff>class</font> D2 : <font color=#0000ff>virtual</font> <font color=#0000ff>public</font> MBase {
+<font color=#0000ff>public</font>:
+  D2() : MBase(2) {}
+  <font color=#0000ff>char</font>* vf() <font color=#0000ff>const</font> { <font color=#0000ff>return</font> <font color=#004488>"D2"</font>; }
+};
+
+<font color=#0000ff>class</font> MI : <font color=#0000ff>public</font> D1, <font color=#0000ff>public</font> D2 {
+<font color=#0000ff>public</font>:
+  MI() : MBase(3) {}
+  <font color=#0000ff>char</font>* vf() <font color=#0000ff>const</font> {
+    <font color=#0000ff>return</font> D1::vf(); <font color=#009900>// MUST disambiguate</font>
+  }
+};
+
+<font color=#0000ff>class</font> X : <font color=#0000ff>public</font> MI {
+<font color=#0000ff>public</font>:
+  <font color=#009900>// You must ALWAYS init the virtual base:</font>
+  X() : MBase(4) {}
+};
+
+<font color=#0000ff>int</font> main() {
+  vector&lt;MBase*&gt; b;
+  b.push_back(<font color=#0000ff>new</font> D1);
+  b.push_back(<font color=#0000ff>new</font> D2);
+  b.push_back(<font color=#0000ff>new</font> MI); <font color=#009900>// OK</font>
+  b.push_back(<font color=#0000ff>new</font> X);
+  <font color=#0000ff>for</font>(<font color=#0000ff>int</font> i = 0; i &lt; b.size(); i++)
+    cout &lt;&lt; b[i]-&gt;vf() &lt;&lt; endl;
+  purge(b);
+} <font color=#009900>///:~</font></PRE></FONT></BLOCKQUOTE>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">As you would expect, both <B>D1</B> and
+<B>D2</B> must initialize <B>MBase</B> in their constructor. But so must <B>MI
+</B>and <B>X</B>, even though they are more than one layer away! That&#8217;s
+because each one in turn becomes the most-derived class. The compiler
+can&#8217;t know whether to use <B>D1</B>&#8217;s initialization of <B>MBase</B>
+or to use <B>D2</B>&#8217;s version. Thus you are always forced to do it in the
+most-derived class. Note that only the single selected virtual base constructor
+is
+called.
+[&nbsp;<a HREF="mailto:cda@freshsources.com?subject=[TICV2] TIC2V2_CHAPTER10_I25">Comment</a>&nbsp;]
+
+<a NAME="TIC2V2_CHAPTER10_I26"></a>
+</FONT><A NAME="_Toc312374102"></A><A NAME="_Toc519042107"></A><BR></P></DIV>
+<A NAME="Heading314"></A><FONT FACE = "Verdana, Tahoma, Arial, Helvetica, Sans"><H3 ALIGN="LEFT">
+"Tying off" virtual bases with a default
+constructor<BR><A NAME="Index616"></A><A NAME="Index617"></A><A NAME="Index618"></A></H3></FONT>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Forcing the most-derived class to
+initialize a virtual base that may be buried deep in the class hierarchy can
+seem like a tedious and confusing task to put upon the user of your class.
+It&#8217;s better to make this invisible, which is done by creating a default
+constructor for the virtual base class, like
+this:
+[&nbsp;<a HREF="mailto:cda@freshsources.com?subject=[TICV2] TIC2V2_CHAPTER10_I26">Comment</a>&nbsp;]
+
+<a NAME="TIC2V2_CHAPTER10_I27"></a>
+</FONT><BR></P></DIV>
+
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE><font color=#009900>//: C10:MultipleInheritance4.cpp</font>
+<font color=#009900>// "Tying off" virtual bases so you don't have</font>
+<font color=#009900>// to worry about them in derived classes.</font>
+<font color=#009900>//{L} ../TestSuite/Test</font>
+#include <font color=#004488>"..</font><font color=#004488>/purge.h"</font>
+#include &lt;iostream&gt;
+#include &lt;vector&gt;
+<font color=#0000ff>using</font> <font color=#0000ff>namespace</font> std;
+
+<font color=#0000ff>class</font> MBase {
+<font color=#0000ff>public</font>:
+ <font color=#009900>// Default constructor removes responsibility:</font>
+  MBase(<font color=#0000ff>int</font> = 0) {}
+  <font color=#0000ff>virtual</font> <font color=#0000ff>char</font>* vf() <font color=#0000ff>const</font> = 0;
+  <font color=#0000ff>virtual</font> ~MBase() {}
+};
+
+<font color=#0000ff>class</font> D1 : <font color=#0000ff>virtual</font> <font color=#0000ff>public</font> MBase {
+<font color=#0000ff>public</font>:
+  D1() : MBase(1) {}
+  <font color=#0000ff>char</font>* vf() <font color=#0000ff>const</font> { <font color=#0000ff>return</font> <font color=#004488>"D1"</font>; }
+};
+
+<font color=#0000ff>class</font> D2 : <font color=#0000ff>virtual</font> <font color=#0000ff>public</font> MBase {
+<font color=#0000ff>public</font>:
+  D2() : MBase(2) {}
+  <font color=#0000ff>char</font>* vf() <font color=#0000ff>const</font> { <font color=#0000ff>return</font> <font color=#004488>"D2"</font>; }
+};
+
+<font color=#0000ff>class</font> MI : <font color=#0000ff>public</font> D1, <font color=#0000ff>public</font> D2 {
+<font color=#0000ff>public</font>:
+  MI() {} <font color=#009900>// Calls default constructor for MBase</font>
+  <font color=#0000ff>char</font>* vf() <font color=#0000ff>const</font> {
+    <font color=#0000ff>return</font> D1::vf(); <font color=#009900>// MUST disambiguate</font>
+  }
+};
+
+<font color=#0000ff>class</font> X : <font color=#0000ff>public</font> MI {
+<font color=#0000ff>public</font>:
+  X() {} <font color=#009900>// Calls default constructor for MBase</font>
+};
+
+<font color=#0000ff>int</font> main() {
+  vector&lt;MBase*&gt; b;
+  b.push_back(<font color=#0000ff>new</font> D1);
+  b.push_back(<font color=#0000ff>new</font> D2);
+  b.push_back(<font color=#0000ff>new</font> MI); <font color=#009900>// OK</font>
+  b.push_back(<font color=#0000ff>new</font> X);
+  <font color=#0000ff>for</font>(<font color=#0000ff>int</font> i = 0; i &lt; b.size(); i++)
+    cout &lt;&lt; b[i]-&gt;vf() &lt;&lt; endl;
+  purge(b);
+} <font color=#009900>///:~</font></PRE></FONT></BLOCKQUOTE>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">If you can always arrange for a virtual
+base class to have a default constructor, you&#8217;ll make things much easier
+for anyone who inherits from that
+class.
+[&nbsp;<a HREF="mailto:cda@freshsources.com?subject=[TICV2] TIC2V2_CHAPTER10_I27">Comment</a>&nbsp;]
+
+<a NAME="TIC2V2_CHAPTER10_I28"></a>
+</FONT><A NAME="_Toc312374103"></A><A NAME="_Toc305593290"></A><A NAME="_Toc305628762"></A><A NAME="_Toc519042108"></A><BR></P></DIV>
+<A NAME="Heading315"></A><FONT FACE = "Verdana, Tahoma, Arial, Helvetica, Sans"><H2 ALIGN="LEFT">
+Overhead<BR><A NAME="Index619"></A><A NAME="Index620"></A></H2></FONT>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">The term &#8220;pointer magic&#8221; has
+been used to describe the way virtual inheritance is implemented. You can see
+the physical overhead of virtual inheritance with the following
+program:
+[&nbsp;<a HREF="mailto:cda@freshsources.com?subject=[TICV2] TIC2V2_CHAPTER10_I28">Comment</a>&nbsp;]
+
+<a NAME="TIC2V2_CHAPTER10_I29"></a>
+</FONT><BR></P></DIV>
+
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE><font color=#009900>//: C10:Overhead.cpp</font>
+<font color=#009900>// Virtual base class overhead</font>
+<font color=#009900>//{L} ../TestSuite/Test</font>
+#include &lt;fstream&gt;
+<font color=#0000ff>using</font> <font color=#0000ff>namespace</font> std;
+ofstream out(<font color=#004488>"overhead.out"</font>);
+
+<font color=#0000ff>class</font> MBase {
+<font color=#0000ff>public</font>:
+  <font color=#0000ff>virtual</font> <font color=#0000ff>void</font> f() <font color=#0000ff>const</font> {};
+  <font color=#0000ff>virtual</font> ~MBase() {}
+};
+
+<font color=#0000ff>class</font> NonVirtualInheritance
+  : <font color=#0000ff>public</font> MBase {};
+
+<font color=#0000ff>class</font> VirtualInheritance
+  : <font color=#0000ff>virtual</font> <font color=#0000ff>public</font> MBase {};
+
+<font color=#0000ff>class</font> VirtualInheritance2
+  : <font color=#0000ff>virtual</font> <font color=#0000ff>public</font> MBase {};
+
+<font color=#0000ff>class</font> MI
+  : <font color=#0000ff>public</font> VirtualInheritance,
+    <font color=#0000ff>public</font> VirtualInheritance2 {};
+
+#define WRITE(ARG) \
+out &lt;&lt; #ARG &lt;&lt; <font color=#004488>" = "</font> &lt;&lt; ARG &lt;&lt; endl;
+
+<font color=#0000ff>int</font> main() {
+  MBase b;
+  WRITE(<font color=#0000ff>sizeof</font>(b));
+  NonVirtualInheritance nonv_inheritance;
+  WRITE(<font color=#0000ff>sizeof</font>(nonv_inheritance));
+  VirtualInheritance v_inheritance;
+  WRITE(<font color=#0000ff>sizeof</font>(v_inheritance));
+  MI mi;
+  WRITE(<font color=#0000ff>sizeof</font>(mi));
+} <font color=#009900>///:~</font></PRE></FONT></BLOCKQUOTE>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Each of these classes only contains a
+single byte, and the &#8220;core size&#8221; is that byte. Because all these
+classes contain virtual functions, you expect the object size to be bigger than
+the core size by a pointer (at least &#8211; your compiler may also pad extra
+bytes into an object for alignment). The results are a bit surprising (these are
+from one particular compiler; yours may do it
+differently):
+[&nbsp;<a HREF="mailto:cda@freshsources.com?subject=[TICV2] TIC2V2_CHAPTER10_I29">Comment</a>&nbsp;]
+
+<a NAME="TIC2V2_CHAPTER10_I30"></a>
+</FONT><BR></P></DIV>
+
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE><font color=#0000ff>sizeof</font>(b) = 2
+<font color=#0000ff>sizeof</font>(nonv_inheritance) = 2
+<font color=#0000ff>sizeof</font>(v_inheritance) = 6
+<font color=#0000ff>sizeof</font>(MI) = 12</PRE></FONT></BLOCKQUOTE><DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Both <B>b</B> and
+<B>nonv_inheritance</B> contain the extra pointer, as expected. But when virtual
+inheritance is added, it would appear that the VPTR plus <I>two extra
+pointers</I> are added! By the time the multiple inheritance is performed, the
+object appears to contain five extra pointers (however, one of these is probably
+a second VPTR for the second multiply inherited
+subobject).
+[&nbsp;<a HREF="mailto:cda@freshsources.com?subject=[TICV2] TIC2V2_CHAPTER10_I30">Comment</a>&nbsp;]
+
+<a NAME="TIC2V2_CHAPTER10_I31"></a>
+</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">The curious can certainly probe into your
+particular implementation and look at the assembly language for member selection
+to determine exactly what these extra bytes are for, and the cost of member
+selection with multiple
+inheritance</FONT><A NAME="fnB24" HREF="#fn24">[24]</A><A NAME="Index621"></A><FONT FACE="Georgia">.
+The rest of you have probably seen enough to guess that quite a bit more goes on
+with virtual multiple inheritance, so it should be used sparingly (or avoided)
+when efficiency is an
+issue.
+[&nbsp;<a HREF="mailto:cda@freshsources.com?subject=[TICV2] TIC2V2_CHAPTER10_I31">Comment</a>&nbsp;]
+
+<a NAME="TIC2V2_CHAPTER10_I32"></a>
+</FONT><A NAME="_Toc312374104"></A><A NAME="_Toc519042109"></A><BR></P></DIV>
+<A NAME="Heading316"></A><FONT FACE = "Verdana, Tahoma, Arial, Helvetica, Sans"><H2 ALIGN="LEFT">
+Upcasting<BR><A NAME="Index622"></A><A NAME="Index623"></A></H2></FONT>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">When you embed subobjects of a class
+inside a new class, whether you do it by creating member objects or through
+inheritance, each subobject is placed within the new object by the compiler. Of
+course, each subobject has its own <B>this</B> pointer, and as long as
+you&#8217;re dealing with member objects, everything is quite straightforward.
+But as soon as multiple inheritance is introduced, a funny thing occurs: An
+object can have more than one <B>this</B> pointer because the object represents
+more than one type during upcasting. The following example demonstrates this
+point:
+[&nbsp;<a HREF="mailto:cda@freshsources.com?subject=[TICV2] TIC2V2_CHAPTER10_I32">Comment</a>&nbsp;]
+
+<a NAME="TIC2V2_CHAPTER10_I33"></a>
+</FONT><BR></P></DIV>
+
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE><font color=#009900>//: C10:Mithis.cpp</font>
+<font color=#009900>// MI and the "this" pointer</font>
+<font color=#009900>//{L} ../TestSuite/Test</font>
+#include &lt;fstream&gt;
+<font color=#0000ff>using</font> <font color=#0000ff>namespace</font> std;
+ofstream out(<font color=#004488>"mithis.out"</font>);
+
+<font color=#0000ff>class</font> Base1 {
+  <font color=#0000ff>char</font> c[0x10];
+<font color=#0000ff>public</font>:
+  <font color=#0000ff>void</font> printthis1() {
+    out &lt;&lt; <font color=#004488>"Base1 this = "</font> &lt;&lt; <font color=#0000ff>this</font> &lt;&lt; endl;
+  }
+};
+
+<font color=#0000ff>class</font> Base2 {
+  <font color=#0000ff>char</font> c[0x10];
+<font color=#0000ff>public</font>:
+  <font color=#0000ff>void</font> printthis2() {
+    out &lt;&lt; <font color=#004488>"Base2 this = "</font> &lt;&lt; <font color=#0000ff>this</font> &lt;&lt; endl;
+  }
+};
+
+<font color=#0000ff>class</font> Member1 {
+  <font color=#0000ff>char</font> c[0x10];
+<font color=#0000ff>public</font>:
+  <font color=#0000ff>void</font> printthism1() {
+    out &lt;&lt; <font color=#004488>"Member1 this = "</font> &lt;&lt; <font color=#0000ff>this</font> &lt;&lt; endl;
+  }
+};
+
+<font color=#0000ff>class</font> Member2 {
+  <font color=#0000ff>char</font> c[0x10];
+<font color=#0000ff>public</font>:
+  <font color=#0000ff>void</font> printthism2() {
+    out &lt;&lt; <font color=#004488>"Member2 this = "</font> &lt;&lt; <font color=#0000ff>this</font> &lt;&lt; endl;
+  }
+};
+
+<font color=#0000ff>class</font> MI : <font color=#0000ff>public</font> Base1, <font color=#0000ff>public</font> Base2 {
+  Member1 m1;
+  Member2 m2;
+<font color=#0000ff>public</font>:
+  <font color=#0000ff>void</font> printthis() {
+    out &lt;&lt; <font color=#004488>"MI this = "</font> &lt;&lt; <font color=#0000ff>this</font> &lt;&lt; endl;
+    printthis1();
+    printthis2();
+    m1.printthism1();
+    m2.printthism2();
+  }
+};
+
+<font color=#0000ff>int</font> main() {
+  MI mi;
+  out &lt;&lt; <font color=#004488>"sizeof(mi) = "</font>
+    &lt;&lt; hex &lt;&lt; <font color=#0000ff>sizeof</font>(mi) &lt;&lt; <font color=#004488>" hex"</font> &lt;&lt; endl;
+  mi.printthis();
+  <font color=#009900>// A second demonstration:</font>
+  Base1* b1 = &amp;mi; <font color=#009900>// Upcast</font>
+  Base2* b2 = &amp;mi; <font color=#009900>// Upcast</font>
+  out &lt;&lt; <font color=#004488>"Base 1 pointer = "</font> &lt;&lt; b1 &lt;&lt; endl;
+  out &lt;&lt; <font color=#004488>"Base 2 pointer = "</font> &lt;&lt; b2 &lt;&lt; endl;
+} <font color=#009900>///:~</font></PRE></FONT></BLOCKQUOTE>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">The arrays of bytes inside each class are
+created with hexadecimal sizes, so the output addresses (which are printed in
+hex) are easy to read. Each class has a function that prints its <B>this</B>
+pointer, and these classes are assembled with both multiple inheritance and
+composition into the class <B>MI,</B> which prints its own address and the
+addresses of all the other subobjects. This function is called in
+<B>main(&#160;)</B>. You can clearly see that you get two different <B>this</B>
+pointers for the same object. The address of the <B>MI</B> object is taken and
+upcast to the two different types. Here&#8217;s the
+output:</FONT><A NAME="fnB25" HREF="#fn25">[25]</A><FONT FACE="Georgia">
+[&nbsp;<a HREF="mailto:cda@freshsources.com?subject=[TICV2] TIC2V2_CHAPTER10_I33">Comment</a>&nbsp;]
+
+<a NAME="TIC2V2_CHAPTER10_I34"></a>
+</FONT><BR></P></DIV>
+
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE><font color=#0000ff>sizeof</font>(mi) = 40 hex
+mi <font color=#0000ff>this</font> = 0x223e
+Base1 <font color=#0000ff>this</font> = 0x223e
+Base2 <font color=#0000ff>this</font> = 0x224e
+Member1 <font color=#0000ff>this</font> = 0x225e
+Member2 <font color=#0000ff>this</font> = 0x226e
+Base 1 pointer = 0x223e
+Base 2 pointer = 0x224e</PRE></FONT></BLOCKQUOTE>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Although object layouts vary from
+compiler to compiler and are not specified in Standard C++, this one is fairly
+typical. The starting address of the object corresponds to the address of the
+first class in the base-class list. Then the second inherited class is placed,
+followed by the member objects in order of
+declaration.
+[&nbsp;<a HREF="mailto:cda@freshsources.com?subject=[TICV2] TIC2V2_CHAPTER10_I34">Comment</a>&nbsp;]
+
+<a NAME="TIC2V2_CHAPTER10_I35"></a>
+</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">When the upcast to the <B>Base1</B> and
+<B>Base2</B> pointers occur, you can see that, even though they&#8217;re
+ostensibly pointing to the same object, they must actually have different
+<B>this</B> pointers, so the proper starting address can be passed to the member
+functions of each subobject. The only way things can work correctly is if this
+implicit upcasting takes place when you call a member function for a multiply
+inherited
+subobject.
+[&nbsp;<a HREF="mailto:cda@freshsources.com?subject=[TICV2] TIC2V2_CHAPTER10_I35">Comment</a>&nbsp;]
+
+<a NAME="TIC2V2_CHAPTER10_I36"></a>
+</FONT><A NAME="_Toc312374105"></A><A NAME="_Toc519042110"></A><BR></P></DIV>
+<A NAME="Heading317"></A><FONT FACE = "Verdana, Tahoma, Arial, Helvetica, Sans"><H3 ALIGN="LEFT">
+Persistence</H3></FONT>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Normally this isn&#8217;t a problem,
+because you want to call member functions that are concerned with that subobject
+of the multiply inherited object. However, if your member function needs to know
+the true starting address of the object, multiple inheritance causes problems.
+Ironically, this happens in one of the situations where multiple inheritance
+seems to be useful:
+<I>persistence</I>.
+[&nbsp;<a HREF="mailto:cda@freshsources.com?subject=[TICV2] TIC2V2_CHAPTER10_I36">Comment</a>&nbsp;]
+
+<a NAME="TIC2V2_CHAPTER10_I37"></a>
+</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">The lifetime of a local object is the
+scope in which it is defined. The lifetime of a global object is the lifetime of
+the program. A <I>persistent object<A NAME="Index624"></A></I> lives between
+invocations of a program: You can normally think of it as existing on disk
+instead of in memory. One definition of an object-oriented
+database<A NAME="Index625"></A><A NAME="Index626"></A> is &#8220;a collection of
+persistent
+objects.&#8221;
+[&nbsp;<a HREF="mailto:cda@freshsources.com?subject=[TICV2] TIC2V2_CHAPTER10_I37">Comment</a>&nbsp;]
+
+<a NAME="TIC2V2_CHAPTER10_I38"></a>
+</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">To implement persistence, you must move a
+persistent object from disk into memory in order to call functions for it, and
+later store it to disk before the program expires. Four issues arise when
+storing an object on
+disk:
+[&nbsp;<a HREF="mailto:cda@freshsources.com?subject=[TICV2] TIC2V2_CHAPTER10_I38">Comment</a>&nbsp;]
+
+<a NAME="TIC2V2_CHAPTER10_I39"></a>
+</FONT><BR></P></DIV>
+<OL>
+<LI><FONT FACE="Verdana">	</FONT><FONT FACE="Georgia">The object must be
+converted from its representation in memory to a series of bytes on
+disk.</FONT><LI><FONT FACE="Verdana">	</FONT><FONT FACE="Georgia">Because the
+values of any pointers in memory won&#8217;t have meaning the next time the
+program is invoked, these pointers must be converted to something
+meaningful.</FONT><LI><FONT FACE="Verdana">	</FONT><FONT FACE="Georgia">What the
+pointers <I>point to</I> must also be stored and
+retrieved.</FONT><LI><FONT FACE="Verdana">	</FONT><FONT FACE="Georgia">When
+restoring an object from disk, the virtual pointers in the object must be
+respected.</FONT></OL><DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Because the object
+must be converted back and forth between a layout in memory and a serial
+representation on disk, the process is called <I>serialization</I>
+<A NAME="Index627"></A>(to write an object to disk) and <I>deserialization</I>
+<A NAME="Index628"></A>(to restore an object from disk). Although it would be
+very convenient, these processes require too much overhead to support directly
+in the language. Class libraries will often build in support for serialization
+and deserialization by adding special member functions and placing requirements
+on new classes. (Usually some sort of <B>serialize(&#160;)</B> function must be
+written for each new class.) Also, persistence is generally not automatic; you
+must usually explicitly write and read the
+objects.
+[&nbsp;<a HREF="mailto:cda@freshsources.com?subject=[TICV2] TIC2V2_CHAPTER10_I39">Comment</a>&nbsp;]
+
+<a NAME="TIC2V2_CHAPTER10_I40"></a>
+</FONT><BR></P></DIV>
+<A NAME="Heading318"></A><FONT FACE = "Verdana, Tahoma, Arial, Helvetica, Sans"><H4 ALIGN="LEFT">
+MI-based persistence</H4></FONT>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Consider sidestepping the pointer issues
+for now and creating a class that installs persistence into simple objects using
+multiple inheritance. By inheriting the <B>persistence</B> class along with your
+new class, you automatically create classes that can be read from and written to
+disk. Although this sounds great, the use of multiple inheritance introduces a
+pitfall, as seen in the following
+example.
+[&nbsp;<a HREF="mailto:cda@freshsources.com?subject=[TICV2] TIC2V2_CHAPTER10_I40">Comment</a>&nbsp;]
+
+<a NAME="TIC2V2_CHAPTER10_I41"></a>
+</FONT><BR></P></DIV>
+
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE><font color=#009900>//: C10:Persist1.cpp</font>
+<font color=#009900>// Simple persistence with MI</font>
+<font color=#009900>//{L} ../TestSuite/Test</font>
+<font color=#009900>//{-g++3} dumps core</font>
+#include <font color=#004488>"..</font><font color=#004488>/require.h"</font>
+#include &lt;iostream&gt;
+#include &lt;fstream&gt;
+<font color=#0000ff>using</font> <font color=#0000ff>namespace</font> std;
+
+<font color=#0000ff>class</font> Persistent {
+  <font color=#0000ff>int</font> objSize; <font color=#009900>// Size of stored object</font>
+<font color=#0000ff>public</font>:
+  Persistent(<font color=#0000ff>int</font> sz) : objSize(sz) {}
+  <font color=#0000ff>void</font> write(ostream&amp; out) <font color=#0000ff>const</font> {
+    out.write((<font color=#0000ff>char</font>*)<font color=#0000ff>this</font>, objSize);
+  }
+  <font color=#0000ff>void</font> read(istream&amp; in) {
+    in.read((<font color=#0000ff>char</font>*)<font color=#0000ff>this</font>, objSize);
+  }
+};
+
+<font color=#0000ff>class</font> Data {
+  <font color=#0000ff>float</font> f[3];
+<font color=#0000ff>public</font>:
+  Data(<font color=#0000ff>float</font> f0 = 0.0, <font color=#0000ff>float</font> f1 = 0.0,
+    <font color=#0000ff>float</font> f2 = 0.0) {
+    f[0] = f0;
+    f[1] = f1;
+    f[2] = f2;
+  }
+  <font color=#0000ff>void</font> print(<font color=#0000ff>const</font> <font color=#0000ff>char</font>* msg = <font color=#004488>""</font>) <font color=#0000ff>const</font> {
+    <font color=#0000ff>if</font>(*msg) cout &lt;&lt; msg &lt;&lt; <font color=#004488>"   "</font>;
+    <font color=#0000ff>for</font>(<font color=#0000ff>int</font> i = 0; i &lt; 3; i++)
+      cout &lt;&lt; <font color=#004488>"f["</font> &lt;&lt; i &lt;&lt; <font color=#004488>"] = "</font>
+           &lt;&lt; f[i] &lt;&lt; endl;
+  }
+};
+
+<font color=#0000ff>class</font> WData1 : <font color=#0000ff>public</font> Persistent, <font color=#0000ff>public</font> Data {
+<font color=#0000ff>public</font>:
+  WData1(<font color=#0000ff>float</font> f0 = 0.0, <font color=#0000ff>float</font> f1 = 0.0,
+    <font color=#0000ff>float</font> f2 = 0.0) : Data(f0, f1, f2),
+    Persistent(<font color=#0000ff>sizeof</font>(WData1)) {}
+};
+
+<font color=#0000ff>class</font> WData2 : <font color=#0000ff>public</font> Data, <font color=#0000ff>public</font> Persistent {
+<font color=#0000ff>public</font>:
+  WData2(<font color=#0000ff>float</font> f0 = 0.0, <font color=#0000ff>float</font> f1 = 0.0,
+    <font color=#0000ff>float</font> f2 = 0.0) : Data(f0, f1, f2),
+    Persistent(<font color=#0000ff>sizeof</font>(WData2)) {}
+};
+
+<font color=#0000ff>int</font> main() {
+  {
+    ofstream f1(<font color=#004488>"f1.dat"</font>), f2(<font color=#004488>"f2.dat"</font>);
+    assure(f1, <font color=#004488>"f1.dat"</font>); assure(f2, <font color=#004488>"f2.dat"</font>);
+    WData1 d1(1.1, 2.2, 3.3);
+    WData2 d2(4.4, 5.5, 6.6);
+    d1.print(<font color=#004488>"d1 before storage"</font>);
+    d2.print(<font color=#004488>"d2 before storage"</font>);
+    d1.write(f1);
+    d2.write(f2);
+  } <font color=#009900>// Closes files</font>
+  ifstream f1(<font color=#004488>"f1.dat"</font>), f2(<font color=#004488>"f2.dat"</font>);
+  assure(f1, <font color=#004488>"f1.dat"</font>); assure(f2, <font color=#004488>"f2.dat"</font>);
+  WData1 d1;
+  WData2 d2;
+  d1.read(f1);
+  d2.read(f2);
+  d1.print(<font color=#004488>"d1 after storage"</font>);
+  d2.print(<font color=#004488>"d2 after storage"</font>);
+} <font color=#009900>///:~</font></PRE></FONT></BLOCKQUOTE>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">In this very simple version, the
+<B>Persistent::read(&#160;)</B> and <B>Persistent::write(&#160;)</B> functions
+take the <B>this</B> pointer and call <B>iostream</B> <B>read(&#160;)</B> and
+<B>write(&#160;)
+<A NAME="Index629"></A><A NAME="Index630"></A><A NAME="Index631"></A></B>functions.
+(Note that any type of <B>iostream</B> can be used). A more sophisticated
+<B>Persistent</B> class would call a <B>virtual</B> <B>write(&#160;)</B>
+function for each
+subobject.
+[&nbsp;<a HREF="mailto:cda@freshsources.com?subject=[TICV2] TIC2V2_CHAPTER10_I41">Comment</a>&nbsp;]
+
+<a NAME="TIC2V2_CHAPTER10_I42"></a>
+</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">With the language features covered so far
+in the book, the number of bytes in the object cannot be known by the
+<B>Persistent</B> class so it is inserted as a constructor argument. (In Chapter
+XX, <I>run-time type identification</I> shows how you can find the exact type of
+an object given only a base pointer; once you have the exact type you can find
+out the correct size with the <B>sizeof</B>
+<A NAME="Index632"></A>operator.)
+[&nbsp;<a HREF="mailto:cda@freshsources.com?subject=[TICV2] TIC2V2_CHAPTER10_I42">Comment</a>&nbsp;]
+
+<a NAME="TIC2V2_CHAPTER10_I43"></a>
+</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">The <B>Data</B> class contains no
+pointers or VPTR<A NAME="Index633"></A>, so there is no danger in simply writing
+it to disk and reading it back again. And it works fine in class <B>WData1</B>
+when, in <B>main(&#160;)</B>, it&#8217;s written to file F1.DAT and later read
+back again. However, when <B>Persistent</B> is second in the inheritance list of
+<B>WData2</B>, the <B>this</B> pointer for <B>Persistent</B> is offset to the
+end of the object, so it reads and writes past the end of the object. This not
+only produces garbage when reading the object from the file, it&#8217;s
+dangerous because it walks over any storage that occurs after the
+object.
+[&nbsp;<a HREF="mailto:cda@freshsources.com?subject=[TICV2] TIC2V2_CHAPTER10_I43">Comment</a>&nbsp;]
+
+<a NAME="TIC2V2_CHAPTER10_I44"></a>
+</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">This problem occurs in multiple
+inheritance<A NAME="Index634"></A><A NAME="Index635"></A> any time a class must
+produce the <B>this</B> pointer for the actual object from a subobject&#8217;s
+<B>this </B>pointer. Of course, if you know your compiler always lays out
+objects in order of declaration in the inheritance list, you can ensure that you
+always put the critical class at the beginning of the list (assuming
+there&#8217;s only one critical class). However, such a class may exist in the
+inheritance hierarchy of another class and you may unwittingly put it in the
+wrong place during multiple inheritance. Fortunately, using run-time type
+identification<A NAME="Index636"></A> (the subject of Chapter XX) will produce
+the proper pointer to the actual object, even if multiple inheritance is
+used.
+[&nbsp;<a HREF="mailto:cda@freshsources.com?subject=[TICV2] TIC2V2_CHAPTER10_I44">Comment</a>&nbsp;]
+
+<a NAME="TIC2V2_CHAPTER10_I45"></a>
+</FONT><BR></P></DIV>
+<A NAME="Heading319"></A><FONT FACE = "Verdana, Tahoma, Arial, Helvetica, Sans"><H4 ALIGN="LEFT">
+Improved persistence<BR><A NAME="Index637"></A></H4></FONT>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">A more practical approach to persistence,
+and one you will see employed more often, is to create virtual functions in the
+base class for reading and writing and then require the creator of any new class
+that must be streamed to redefine these functions. The argument to the function
+is the stream object to write to or read
+from.</FONT><A NAME="fnB26" HREF="#fn26">[26]</A><FONT FACE="Georgia"> Then the
+creator of the class, who knows best how the new parts should be read or
+written, is responsible for making the correct function calls. This
+doesn&#8217;t have the &#8220;magical&#8221; quality of the previous example,
+and it requires more coding and knowledge on the part of the user, but it works
+and doesn&#8217;t break when pointers are
+present:
+[&nbsp;<a HREF="mailto:cda@freshsources.com?subject=[TICV2] TIC2V2_CHAPTER10_I45">Comment</a>&nbsp;]
+
+<a NAME="TIC2V2_CHAPTER10_I46"></a>
+</FONT><BR></P></DIV>
+
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE><font color=#009900>//: C10:Persist2.cpp</font>
+<font color=#009900>// Improved MI persistence</font>
+<font color=#009900>//{L} ../TestSuite/Test</font>
+#include <font color=#004488>"..</font><font color=#004488>/require.h"</font>
+#include &lt;iostream&gt;
+#include &lt;fstream&gt;
+#include &lt;cstring&gt;
+<font color=#0000ff>using</font> <font color=#0000ff>namespace</font> std;
+
+<font color=#0000ff>class</font> Persistent {
+<font color=#0000ff>public</font>:
+  <font color=#0000ff>virtual</font> <font color=#0000ff>void</font> write(ostream&amp; out) <font color=#0000ff>const</font> = 0;
+  <font color=#0000ff>virtual</font> <font color=#0000ff>void</font> read(istream&amp; in) = 0;
+  <font color=#0000ff>virtual</font> ~Persistent() {}
+};
+
+<font color=#0000ff>class</font> Data {
+<font color=#0000ff>protected</font>:
+  <font color=#0000ff>float</font> f[3];
+<font color=#0000ff>public</font>:
+  Data(<font color=#0000ff>float</font> f0 = 0.0, <font color=#0000ff>float</font> f1 = 0.0,
+    <font color=#0000ff>float</font> f2 = 0.0) {
+    f[0] = f0;
+    f[1] = f1;
+    f[2] = f2;
+  }
+  <font color=#0000ff>void</font> print(<font color=#0000ff>const</font> <font color=#0000ff>char</font>* msg = <font color=#004488>""</font>) <font color=#0000ff>const</font> {
+    <font color=#0000ff>if</font>(*msg) cout &lt;&lt; msg &lt;&lt; endl;
+    <font color=#0000ff>for</font>(<font color=#0000ff>int</font> i = 0; i &lt; 3; i++)
+      cout &lt;&lt; <font color=#004488>"f["</font> &lt;&lt; i &lt;&lt; <font color=#004488>"] = "</font>
+           &lt;&lt; f[i] &lt;&lt; endl;
+  }
+};
+
+<font color=#0000ff>class</font> WData1 : <font color=#0000ff>public</font> Persistent, <font color=#0000ff>public</font> Data {
+<font color=#0000ff>public</font>:
+  WData1(<font color=#0000ff>float</font> f0 = 0.0, <font color=#0000ff>float</font> f1 = 0.0,
+    <font color=#0000ff>float</font> f2 = 0.0) : Data(f0, f1, f2) {}
+  <font color=#0000ff>void</font> write(ostream&amp; out) <font color=#0000ff>const</font> {
+    out &lt;&lt; f[0] &lt;&lt; <font color=#004488>" "</font> 
+      &lt;&lt; f[1] &lt;&lt; <font color=#004488>" "</font> &lt;&lt; f[2] &lt;&lt; <font color=#004488>" "</font>;
+  }
+  <font color=#0000ff>void</font> read(istream&amp; in) {
+    in &gt;&gt; f[0] &gt;&gt; f[1] &gt;&gt; f[2];
+  }
+};
+
+<font color=#0000ff>class</font> WData2 : <font color=#0000ff>public</font> Data, <font color=#0000ff>public</font> Persistent {
+<font color=#0000ff>public</font>:
+  WData2(<font color=#0000ff>float</font> f0 = 0.0, <font color=#0000ff>float</font> f1 = 0.0,
+    <font color=#0000ff>float</font> f2 = 0.0) : Data(f0, f1, f2) {}
+  <font color=#0000ff>void</font> write(ostream&amp; out) <font color=#0000ff>const</font> {
+    out &lt;&lt; f[0] &lt;&lt; <font color=#004488>" "</font> 
+      &lt;&lt; f[1] &lt;&lt; <font color=#004488>" "</font> &lt;&lt; f[2] &lt;&lt; <font color=#004488>" "</font>;
+  }
+  <font color=#0000ff>void</font> read(istream&amp; in) {
+    in &gt;&gt; f[0] &gt;&gt; f[1] &gt;&gt; f[2];
+  }
+};
+
+<font color=#0000ff>class</font> Conglomerate : <font color=#0000ff>public</font> Data,
+<font color=#0000ff>public</font> Persistent {
+  <font color=#0000ff>char</font>* name; <font color=#009900>// Contains a pointer</font>
+  WData1 d1;
+  WData2 d2;
+<font color=#0000ff>public</font>:
+  Conglomerate(<font color=#0000ff>const</font> <font color=#0000ff>char</font>* nm = <font color=#004488>""</font>,
+    <font color=#0000ff>float</font> f0 = 0.0, <font color=#0000ff>float</font> f1 = 0.0,
+    <font color=#0000ff>float</font> f2 = 0.0, <font color=#0000ff>float</font> f3 = 0.0,
+    <font color=#0000ff>float</font> f4 = 0.0, <font color=#0000ff>float</font> f5 = 0.0,
+    <font color=#0000ff>float</font> f6 = 0.0, <font color=#0000ff>float</font> f7 = 0.0,
+    <font color=#0000ff>float</font> f8= 0.0) : Data(f0, f1, f2),
+    d1(f3, f4, f5), d2(f6, f7, f8) {
+    name = <font color=#0000ff>new</font> <font color=#0000ff>char</font>[strlen(nm) + 1];
+    strcpy(name, nm);
+  }
+  <font color=#0000ff>void</font> write(ostream&amp; out) <font color=#0000ff>const</font> {
+    <font color=#0000ff>int</font> i = strlen(name) + 1;
+    out &lt;&lt; i &lt;&lt; <font color=#004488>" "</font>; <font color=#009900>// Store size of string</font>
+    out &lt;&lt; name &lt;&lt; endl;
+    d1.write(out);
+    d2.write(out);
+    out &lt;&lt; f[0] &lt;&lt; <font color=#004488>" "</font> &lt;&lt; f[1] &lt;&lt; <font color=#004488>" "</font> &lt;&lt; f[2];
+  }
+  <font color=#009900>// Must read in same order as write:</font>
+  <font color=#0000ff>void</font> read(istream&amp; in) {
+    <font color=#0000ff>delete</font> []name; <font color=#009900>// Remove old storage</font>
+    <font color=#0000ff>int</font> i;
+    in &gt;&gt; i &gt;&gt; ws; <font color=#009900>// Get int, strip whitespace</font>
+    name = <font color=#0000ff>new</font> <font color=#0000ff>char</font>[i];
+    in.getline(name, i);
+    d1.read(in);
+    d2.read(in);
+    in &gt;&gt; f[0] &gt;&gt; f[1] &gt;&gt; f[2];
+  }
+  <font color=#0000ff>void</font> print() <font color=#0000ff>const</font> {
+    Data::print(name);
+    d1.print();
+    d2.print();
+  }
+};
+
+<font color=#0000ff>int</font> main() {
+  {
+    ofstream data(<font color=#004488>"data.dat"</font>);
+    assure(data, <font color=#004488>"data.dat"</font>);
+    Conglomerate C(<font color=#004488>"This is Conglomerate C"</font>,
+      1.1, 2.2, 3.3, 4.4, 5.5,
+      6.6, 7.7, 8.8, 9.9);
+    cout &lt;&lt; <font color=#004488>"C before storage"</font> &lt;&lt; endl;
+    C.print();
+    C.write(data);
+  } <font color=#009900>// Closes file</font>
+  ifstream data(<font color=#004488>"data.dat"</font>);
+  assure(data, <font color=#004488>"data.dat"</font>);
+  Conglomerate C;
+  C.read(data);
+  cout &lt;&lt; <font color=#004488>"after storage: "</font> &lt;&lt; endl;
+  C.print();
+} <font color=#009900>///:~</font></PRE></FONT></BLOCKQUOTE>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">The pure virtual functions in
+<B>Persistent</B> must be redefined in the derived classes to perform the proper
+reading and writing. If you already knew that <B>Data</B> would be persistent,
+you could inherit directly from <B>Persistent</B> and redefine the functions
+there, thus eliminating the need for multiple inheritance. This example is based
+on the idea that you don&#8217;t own the code for <B>Data</B>, that it was
+created elsewhere and may be part of another class hierarchy so you don&#8217;t
+have control over its inheritance. However, for this scheme to work correctly
+you must have access to the underlying implementation so it can be stored; thus
+the use of
+<B>protected</B>.
+[&nbsp;<a HREF="mailto:cda@freshsources.com?subject=[TICV2] TIC2V2_CHAPTER10_I46">Comment</a>&nbsp;]
+
+<a NAME="TIC2V2_CHAPTER10_I47"></a>
+</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">The classes <B>WData1</B> and
+<B>WData2</B> use familiar iostream inserters and extractors to store and
+retrieve the <B>protected</B> data in <B>Data</B> to and from the iostream
+object. In <B>write(&#160;)</B>, you can see that spaces are added after each
+floating point number is written; these are necessary to allow parsing of the
+data on input.
+[&nbsp;<a HREF="mailto:cda@freshsources.com?subject=[TICV2] TIC2V2_CHAPTER10_I47">Comment</a>&nbsp;]
+
+<a NAME="TIC2V2_CHAPTER10_I48"></a>
+</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">The class <B>Conglomerate</B> not only
+inherits from <B>Data</B>, it also has member objects of type <B>WData1</B> and
+<B>WData2</B>, as well as a pointer to a character string. In addition, all the
+classes that inherit from <B>Persistent</B> also contain a VPTR, so this example
+shows the kind of problem you&#8217;ll actually encounter when using
+persistence.
+[&nbsp;<a HREF="mailto:cda@freshsources.com?subject=[TICV2] TIC2V2_CHAPTER10_I48">Comment</a>&nbsp;]
+
+<a NAME="TIC2V2_CHAPTER10_I49"></a>
+</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">When you create <B>write(&#160;)</B> and
+<B>read(&#160;)</B> function pairs, the <B>read(&#160;)</B> must exactly mirror
+what happens during the <B>write(&#160;)</B>, so <B>read(&#160;)</B> pulls the
+bits off the disk the same way they were placed there by <B>write(&#160;)</B>.
+Here, the first problem that&#8217;s tackled is the <B>char*</B>, which points
+to a string of any length. The size of the string is calculated and stored on
+disk as an <B>int</B> (followed by a space to enable parsing) to allow the
+<B>read(&#160;)</B> function to allocate the correct amount of
+storage.
+[&nbsp;<a HREF="mailto:cda@freshsources.com?subject=[TICV2] TIC2V2_CHAPTER10_I49">Comment</a>&nbsp;]
+
+<a NAME="TIC2V2_CHAPTER10_I50"></a>
+</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">When you have subobjects that have
+<B>read(&#160;)</B> and <B>write(&#160;)</B> member functions, all you need to
+do is call those functions in the new <B>read(&#160;)</B> and
+<B>write(&#160;)</B> functions. This is followed by direct storage of the
+members in the base
+class.
+[&nbsp;<a HREF="mailto:cda@freshsources.com?subject=[TICV2] TIC2V2_CHAPTER10_I50">Comment</a>&nbsp;]
+
+<a NAME="TIC2V2_CHAPTER10_I51"></a>
+</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">People have gone to great lengths to
+automate persistence, for example, by creating modified preprocessors to support
+a &#8220;persistent&#8221; keyword to be applied when defining a class. One can
+imagine a more elegant approach than the one shown here for implementing
+persistence, but it has the advantage that it works under all implementations of
+C++, doesn&#8217;t require special language extensions, and is relatively
+bulletproof.
+[&nbsp;<a HREF="mailto:cda@freshsources.com?subject=[TICV2] TIC2V2_CHAPTER10_I51">Comment</a>&nbsp;]
+
+<a NAME="TIC2V2_CHAPTER10_I52"></a>
+</FONT><A NAME="_Toc305593291"></A><A NAME="_Toc305628763"></A><A NAME="_Toc312374106"></A><A NAME="_Toc519042111"></A><BR></P></DIV>
+<A NAME="Heading320"></A><FONT FACE = "Verdana, Tahoma, Arial, Helvetica, Sans"><H2 ALIGN="LEFT">
+Avoiding MI</H2></FONT>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">The need for multiple
+inheritance<A NAME="Index638"></A> in <B>Persist2.cpp</B> is contrived, based on
+the concept that you don&#8217;t have control of some of the code in the
+project. Upon examination of the example, you can see that MI can be easily
+avoided by using member objects of type <B>Data</B>, and putting the virtual
+<B>read(&#160;)</B>and <B>write(&#160;)</B> members inside <B>Data</B> or
+<B>WData1</B> and <B>WData2 </B>rather than in a separate class. There are many
+situations like this one where multiple inheritance may be avoided; the language
+feature is included for unusual, special-case situations that would otherwise be
+difficult or impossible to handle. But when the question of whether to use
+multiple inheritance comes up, you should ask two
+questions:
+[&nbsp;<a HREF="mailto:cda@freshsources.com?subject=[TICV2] TIC2V2_CHAPTER10_I52">Comment</a>&nbsp;]
+
+<a NAME="TIC2V2_CHAPTER10_I53"></a>
+</FONT><BR></P></DIV>
+<OL>
+<LI><FONT FACE="Verdana">	</FONT><FONT FACE="Georgia">Do I need to show the
+public interfaces of both these classes, or could one class be embedded with
+some of its interface produced with member functions in the new
+class?</FONT><LI><FONT FACE="Verdana">	</FONT><FONT FACE="Georgia">Do I need to
+upcast to both of the base classes? (This applies when you have more than two
+base classes, of course.) </FONT></OL><DIV ALIGN="LEFT"><P><FONT FACE="Georgia">If
+you can&#8217;t answer &#8220;no&#8221; to both questions, you can avoid using
+MI and should probably do
+so.
+[&nbsp;<a HREF="mailto:cda@freshsources.com?subject=[TICV2] TIC2V2_CHAPTER10_I53">Comment</a>&nbsp;]
+
+<a NAME="TIC2V2_CHAPTER10_I54"></a>
+</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">One situation to watch for is when one
+class only needs to be upcast as a function argument. In that case, the class
+can be embedded and an automatic type conversion operator provided in your new
+class to produce a reference to the embedded object. Any time you use an object
+of your new class as an argument to a function that expects the embedded object,
+the type conversion operator is used. However, type conversion can&#8217;t be
+used for normal member selection; that requires
+inheritance.
+[&nbsp;<a HREF="mailto:cda@freshsources.com?subject=[TICV2] TIC2V2_CHAPTER10_I54">Comment</a>&nbsp;]
+
+<a NAME="TIC2V2_CHAPTER10_I55"></a>
+</FONT><A NAME="_Toc305593292"></A><A NAME="_Toc305628764"></A><A NAME="_Toc312374107"></A><A NAME="_Toc519042112"></A><BR></P></DIV>
+<A NAME="Heading321"></A><FONT FACE = "Verdana, Tahoma, Arial, Helvetica, Sans"><H2 ALIGN="LEFT">
+Mixin types</H2></FONT>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Rodents &amp; pets(play)</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">interfaces in
+general</FONT><A NAME="_Toc519042113"></A><BR></P></DIV>
+<A NAME="Heading322"></A><FONT FACE = "Verdana, Tahoma, Arial, Helvetica, Sans"><H2 ALIGN="LEFT">
+Repairing an interface<BR><A NAME="Index639"></A><A NAME="Index640"></A></H2></FONT>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">One of the best arguments for multiple
+inheritance involves code that&#8217;s out of your control. Suppose you&#8217;ve
+acquired a library that consists of a header file and compiled member functions,
+but no source code for member functions. This library is a class hierarchy with
+virtual functions, and it contains some global functions that take pointers to
+the base class of the library; that is, it uses the library objects
+polymorphically. Now suppose you build an application around this library, and
+write your own code that uses the base class
+polymorphically.
+[&nbsp;<a HREF="mailto:cda@freshsources.com?subject=[TICV2] TIC2V2_CHAPTER10_I55">Comment</a>&nbsp;]
+
+<a NAME="TIC2V2_CHAPTER10_I56"></a>
+</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Later in the development of the project
+or sometime during its maintenance, you discover that the base-class interface
+provided by the vendor is incomplete: A function may be nonvirtual and you need
+it to be virtual, or a virtual function is completely missing in the interface,
+but essential to the solution of your problem. If you had the source code, you
+could go back and put it in. But you don&#8217;t, and you have a lot of existing
+code that depends on the original interface. Here, multiple inheritance is the
+perfect solution.
+[&nbsp;<a HREF="mailto:cda@freshsources.com?subject=[TICV2] TIC2V2_CHAPTER10_I56">Comment</a>&nbsp;]
+
+<a NAME="TIC2V2_CHAPTER10_I57"></a>
+</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">For example, here&#8217;s the header file
+for a library you
+acquire:
+[&nbsp;<a HREF="mailto:cda@freshsources.com?subject=[TICV2] TIC2V2_CHAPTER10_I57">Comment</a>&nbsp;]
+
+<a NAME="TIC2V2_CHAPTER10_I58"></a>
+</FONT><BR></P></DIV>
+
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE><font color=#009900>//: C10:Vendor.h</font>
+<font color=#009900>// Vendor-supplied class header</font>
+<font color=#009900>// You only get this &amp; the compiled Vendor.obj</font>
+#ifndef VENDOR_H
+#define VENDOR_H
+
+<font color=#0000ff>class</font> Vendor {
+<font color=#0000ff>public</font>:
+  <font color=#0000ff>virtual</font> <font color=#0000ff>void</font> v() <font color=#0000ff>const</font>;
+  <font color=#0000ff>void</font> f() <font color=#0000ff>const</font>;
+  ~Vendor();
+};
+
+<font color=#0000ff>class</font> Vendor1 : <font color=#0000ff>public</font> Vendor {
+<font color=#0000ff>public</font>:
+  <font color=#0000ff>void</font> v() <font color=#0000ff>const</font>;
+  <font color=#0000ff>void</font> f() <font color=#0000ff>const</font>;
+  ~Vendor1();
+};
+
+<font color=#0000ff>void</font> A(<font color=#0000ff>const</font> Vendor&amp;);
+<font color=#0000ff>void</font> B(<font color=#0000ff>const</font> Vendor&amp;);
+<font color=#009900>// Etc.</font>
+#endif <font color=#009900>// VENDOR_H ///:~</font></PRE></FONT></BLOCKQUOTE>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Assume the library is much bigger, with
+more derived classes and a larger interface. Notice that it also includes the
+functions <B>A(&#160;)</B> and <B>B(&#160;)</B>, which take a base pointer and
+treat it polymorphically. Here&#8217;s the implementation file for the
+library:
+[&nbsp;<a HREF="mailto:cda@freshsources.com?subject=[TICV2] TIC2V2_CHAPTER10_I58">Comment</a>&nbsp;]
+
+<a NAME="TIC2V2_CHAPTER10_I59"></a>
+</FONT><BR></P></DIV>
+
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE><font color=#009900>//: C10:Vendor.cpp {O}</font>
+<font color=#009900>// Implementation of VENDOR.H</font>
+<font color=#009900>// This is compiled and unavailable to you</font>
+#include <font color=#004488>"Vendor.h"</font>
+#include &lt;fstream&gt;
+<font color=#0000ff>using</font> <font color=#0000ff>namespace</font> std;
+
+<font color=#0000ff>extern</font> ofstream out; <font color=#009900>// For trace info</font>
+
+<font color=#0000ff>void</font> Vendor::v() <font color=#0000ff>const</font> {
+  out &lt;&lt; <font color=#004488>"Vendor::v()\n"</font>;
+}
+
+<font color=#0000ff>void</font> Vendor::f() <font color=#0000ff>const</font> {
+  out &lt;&lt; <font color=#004488>"Vendor::f()\n"</font>;
+}
+
+Vendor::~Vendor() {
+  out &lt;&lt; <font color=#004488>"~Vendor()\n"</font>;
+}
+
+<font color=#0000ff>void</font> Vendor1::v() <font color=#0000ff>const</font> {
+  out &lt;&lt; <font color=#004488>"Vendor1::v()\n"</font>;
+}
+
+<font color=#0000ff>void</font> Vendor1::f() <font color=#0000ff>const</font> {
+  out &lt;&lt; <font color=#004488>"Vendor1::f()\n"</font>;
+}
+
+Vendor1::~Vendor1() {
+  out &lt;&lt; <font color=#004488>"~Vendor1()\n"</font>;
+}
+
+<font color=#0000ff>void</font> A(<font color=#0000ff>const</font> Vendor&amp; V) {
+  <font color=#009900>// ...</font>
+  V.v();
+  V.f();
+  <font color=#009900>//..</font>
+}
+
+<font color=#0000ff>void</font> B(<font color=#0000ff>const</font> Vendor&amp; V) {
+  <font color=#009900>// ...</font>
+  V.v();
+  V.f();
+  <font color=#009900>//..</font>
+} <font color=#009900>///:~</font></PRE></FONT></BLOCKQUOTE>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">In your project, this source code is
+unavailable to you. Instead, you get a compiled file as <B>Vendor.obj</B> or
+<B>Vendor.lib</B> (or the equivalent for your
+system).
+[&nbsp;<a HREF="mailto:cda@freshsources.com?subject=[TICV2] TIC2V2_CHAPTER10_I59">Comment</a>&nbsp;]
+
+<a NAME="TIC2V2_CHAPTER10_I60"></a>
+</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">The problem occurs in the use of this
+library. First, the destructor isn&#8217;t virtual. This is actually a design
+error on the part of the library creator. In addition, <B>f(&#160;)</B> was not
+made virtual; assume the library creator decided it wouldn&#8217;t need to be.
+And you discover that the interface to the base class is missing a function
+essential to the solution of your problem. Also suppose you&#8217;ve already
+written a fair amount of code using the existing interface (not to mention the
+functions <B>A(&#160;)</B> and <B>B(&#160;),</B> which are out of your control),
+and you don&#8217;t want to change
+it.
+[&nbsp;<a HREF="mailto:cda@freshsources.com?subject=[TICV2] TIC2V2_CHAPTER10_I60">Comment</a>&nbsp;]
+
+<a NAME="TIC2V2_CHAPTER10_I61"></a>
+</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">To repair the problem, create your own
+class interface and multiply inherit a new set of derived classes from your
+interface and from the existing
+classes:
+[&nbsp;<a HREF="mailto:cda@freshsources.com?subject=[TICV2] TIC2V2_CHAPTER10_I61">Comment</a>&nbsp;]
+
+<a NAME="TIC2V2_CHAPTER10_I62"></a>
+</FONT><BR></P></DIV>
+
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE><font color=#009900>//: C10:Paste.cpp</font>
+<font color=#009900>// Fixing a mess with MI</font>
+<font color=#009900>//{L} Vendor ../TestSuite/Test</font>
+#include <font color=#004488>"Vendor.h"</font>
+#include &lt;fstream&gt;
+<font color=#0000ff>using</font> <font color=#0000ff>namespace</font> std;
+
+ofstream out(<font color=#004488>"paste.out"</font>);
+
+<font color=#0000ff>class</font> MyBase { <font color=#009900>// Repair Vendor interface</font>
+<font color=#0000ff>public</font>:
+  <font color=#0000ff>virtual</font> <font color=#0000ff>void</font> v() <font color=#0000ff>const</font> = 0;
+  <font color=#0000ff>virtual</font> <font color=#0000ff>void</font> f() <font color=#0000ff>const</font> = 0;
+  <font color=#009900>// New interface function:</font>
+  <font color=#0000ff>virtual</font> <font color=#0000ff>void</font> g() <font color=#0000ff>const</font> = 0;
+  <font color=#0000ff>virtual</font> ~MyBase() { out &lt;&lt; <font color=#004488>"~MyBase()\n"</font>; }
+};
+
+<font color=#0000ff>class</font> Paste1 : <font color=#0000ff>public</font> MyBase, <font color=#0000ff>public</font> Vendor1 {
+<font color=#0000ff>public</font>:
+  <font color=#0000ff>void</font> v() <font color=#0000ff>const</font> {
+    out &lt;&lt; <font color=#004488>"Paste1::v()\n"</font>;
+    Vendor1::v();
+  }
+  <font color=#0000ff>void</font> f() <font color=#0000ff>const</font> {
+    out &lt;&lt; <font color=#004488>"Paste1::f()\n"</font>;
+    Vendor1::f();
+  }
+  <font color=#0000ff>void</font> g() <font color=#0000ff>const</font> {
+    out &lt;&lt; <font color=#004488>"Paste1::g()\n"</font>;
+  }
+  ~Paste1() { out &lt;&lt; <font color=#004488>"~Paste1()\n"</font>; }
+};
+
+<font color=#0000ff>int</font> main() {
+  Paste1&amp; p1p = *<font color=#0000ff>new</font> Paste1;
+  MyBase&amp; mp = p1p; <font color=#009900>// Upcast</font>
+  out &lt;&lt; <font color=#004488>"calling f()\n"</font>;
+  mp.f();  <font color=#009900>// Right behavior</font>
+  out &lt;&lt; <font color=#004488>"calling g()\n"</font>;
+  mp.g(); <font color=#009900>// New behavior</font>
+  out &lt;&lt; <font color=#004488>"calling A(p1p)\n"</font>;
+  A(p1p); <font color=#009900>// Same old behavior</font>
+  out &lt;&lt; <font color=#004488>"calling B(p1p)\n"</font>;
+  B(p1p);  <font color=#009900>// Same old behavior</font>
+  out &lt;&lt; <font color=#004488>"delete mp\n"</font>;
+  <font color=#009900>// Deleting a reference to a heap object:</font>
+  <font color=#0000ff>delete</font> &amp;mp; <font color=#009900>// Right behavior</font>
+} <font color=#009900>///:~</font></PRE></FONT></BLOCKQUOTE>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">In <B>MyBase</B> (which does <I>not</I>
+use MI), both <B>f(&#160;)</B> and the destructor are now virtual, and a new
+virtual function <B>g(&#160;)</B> has been added to the interface. Now each of
+the derived classes in the original library must be recreated, mixing in the new
+interface with MI. The functions <B>Paste1::v(&#160;)</B> and
+<B>Paste1::f(&#160;)</B>need to call only the original base-class versions of
+their functions. But now, if you upcast to <B>MyBase</B> as in
+<B>main(&#160;)</B>
+[&nbsp;<a HREF="mailto:cda@freshsources.com?subject=[TICV2] TIC2V2_CHAPTER10_I62">Comment</a>&nbsp;]
+
+<a NAME="TIC2V2_CHAPTER10_I63"></a>
+</FONT><BR></P></DIV>
+
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE>MyBase* mp = p1p; <font color=#009900>// Upcast</font></PRE></FONT></BLOCKQUOTE><DIV ALIGN="LEFT"><P><FONT FACE="Georgia">any
+function calls made through <B>mp</B> will be polymorphic, including
+<B>delete</B>. Also, the new interface function <B>g(&#160;)</B> can be called
+through <B>mp</B>. Here&#8217;s the output of the
+program:
+[&nbsp;<a HREF="mailto:cda@freshsources.com?subject=[TICV2] TIC2V2_CHAPTER10_I63">Comment</a>&nbsp;]
+
+<a NAME="TIC2V2_CHAPTER10_I64"></a>
+</FONT><BR></P></DIV>
+
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE>calling f()
+Paste1::f()
+Vendor1::f()
+calling g()
+Paste1::g()
+calling A(p1p)
+Paste1::v()
+Vendor1::v()
+Vendor::f()
+calling B(p1p)
+Paste1::v()
+Vendor1::v()
+Vendor::f()
+<font color=#0000ff>delete</font> mp
+~Paste1()
+~Vendor1()
+~Vendor()
+~MyBase()
+</PRE></FONT></BLOCKQUOTE><DIV ALIGN="LEFT"><P><FONT FACE="Georgia">The original library functions
+<B>A(&#160;)</B> and <B>B(&#160;)</B> still work the same (assuming the new
+<B>v(&#160;)</B> calls its base-class version). The destructor is now virtual
+and exhibits the correct
+behavior.
+[&nbsp;<a HREF="mailto:cda@freshsources.com?subject=[TICV2] TIC2V2_CHAPTER10_I64">Comment</a>&nbsp;]
+
+<a NAME="TIC2V2_CHAPTER10_I65"></a>
+</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Although this is a messy example, it does
+occur in practice and it&#8217;s a good demonstration of where multiple
+inheritance is clearly necessary: You must be able to upcast to both base
+classes.
+[&nbsp;<a HREF="mailto:cda@freshsources.com?subject=[TICV2] TIC2V2_CHAPTER10_I65">Comment</a>&nbsp;]
+
+<a NAME="TIC2V2_CHAPTER10_I66"></a>
+</FONT><A NAME="_Toc305593293"></A><A NAME="_Toc305628765"></A><A NAME="_Toc312374108"></A><A NAME="_Toc519042114"></A><BR></P></DIV>
+<A NAME="Heading323"></A><FONT FACE = "Verdana, Tahoma, Arial, Helvetica, Sans"><H2 ALIGN="LEFT">
+Summary</H2></FONT>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">The reason MI exists in C++ and not in
+other OOP languages is that C++ is a hybrid language and couldn&#8217;t enforce
+a single monolithic class hierarchy the way Smalltalk does. Instead, C++ allows
+many inheritance trees to be formed, so sometimes you may need to combine the
+interfaces from two or more trees into a new
+class.
+[&nbsp;<a HREF="mailto:cda@freshsources.com?subject=[TICV2] TIC2V2_CHAPTER10_I66">Comment</a>&nbsp;]
+
+<a NAME="TIC2V2_CHAPTER10_I67"></a>
+</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">If no &#8220;diamonds&#8221; appear in
+your class hierarchy, MI is fairly simple (although identical function
+signatures in base classes must be resolved). If a diamond appears, then you
+must deal with the problems of duplicate subobjects by introducing virtual base
+classes. This not only adds confusion, but the underlying representation becomes
+more complex and less
+efficient.
+[&nbsp;<a HREF="mailto:cda@freshsources.com?subject=[TICV2] TIC2V2_CHAPTER10_I67">Comment</a>&nbsp;]
+
+<a NAME="TIC2V2_CHAPTER10_I68"></a>
+</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Multiple inheritance has been called the
+&#8220;goto of the
+90&#8217;s&#8221;.</FONT><A NAME="fnB27" HREF="#fn27">[27]</A><A NAME="Index641"></A><FONT FACE="Georgia">
+This seems appropriate because, like a goto, MI is best avoided in normal
+programming, but can occasionally be very useful. It&#8217;s a
+&#8220;minor&#8221; but more advanced feature of C++, designed to solve problems
+that arise in special situations. If you find yourself using it often, you may
+want to take a look at your reasoning. A good Occam&#8217;s Razor is to ask,
+&#8220;Must I upcast to all of the base classes?&#8221; If not, your life will
+be easier if you embed instances of all the classes you <I>don&#8217;t</I> need
+to upcast
+to.
+[&nbsp;<a HREF="mailto:cda@freshsources.com?subject=[TICV2] TIC2V2_CHAPTER10_I68">Comment</a>&nbsp;]
+
+<a NAME="TIC2V2_CHAPTER10_I69"></a>
+</FONT><A NAME="_Toc312374109"></A><A NAME="_Toc519042115"></A><BR></P></DIV>
+<A NAME="Heading324"></A><FONT FACE = "Verdana, Tahoma, Arial, Helvetica, Sans"><H2 ALIGN="LEFT">
+Exercises</H2></FONT>
+<OL>
+<LI><FONT FACE="Verdana">	</FONT><FONT FACE="Georgia">These exercises will take
+you step-by-step through the traps of MI. Create a base class X with a single
+constructor that takes an int argument and a member function f(&#160;), that
+takes no arguments and returns void. Now inherit X into Y and Z, creating
+constructors for each of them that takes a single int argument. Now multiply
+inherit Y and Z into A. Create an object of class A, and call f(&#160;) for that
+object. Fix the problem with explicit
+disambiguation.
+[&nbsp;<a HREF="mailto:cda@freshsources.com?subject=[TICV2] TIC2V2_CHAPTER10_I69">Comment</a>&nbsp;]
+
+<a NAME="TIC2V2_CHAPTER10_I70"></a>
+</FONT><LI><FONT FACE="Verdana">	</FONT><FONT FACE="Georgia">Starting
+with the results of exercise 1, create a pointer to an X called px, and assign
+to it the address of the object of type A you created before. Fix the problem
+using a virtual base class. Now fix X so you no longer have to call the
+constructor for X inside
+A.
+[&nbsp;<a HREF="mailto:cda@freshsources.com?subject=[TICV2] TIC2V2_CHAPTER10_I70">Comment</a>&nbsp;]
+
+<a NAME="TIC2V2_CHAPTER10_I71"></a>
+</FONT><LI><FONT FACE="Verdana">	</FONT><FONT FACE="Georgia">Starting
+with the results of exercise 2, remove the explicit disambiguation for
+f(&#160;), and see if you can call f(&#160;) through px. Trace it to see which
+function gets called. Fix the problem so the correct function will be called in
+a class hierarchy.
+[&nbsp;<a HREF="mailto:cda@freshsources.com?subject=[TICV2] TIC2V2_CHAPTER10_I71">Comment</a>&nbsp;]
+
+</FONT></OL>
+
+<HR><DIV ALIGN="LEFT"><P><A NAME="fn24" HREF="#fnB24">[24]</A><FONT FACE="Georgia" SIZE=2>
+See also Jan Gray<I>, &#8220;C++ Under the Hood&#8221;</I>, a chapter in
+<I>Black Belt C++</I> (edited by Bruce Eckel, M&amp;T Press,
+1995).</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><A NAME="fn25" HREF="#fnB25">[25]</A><FONT FACE="Georgia" SIZE=2>
+For easy readability the code was generated for a small-model Intel
+processor.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><A NAME="fn26" HREF="#fnB26">[26]</A><FONT FACE="Georgia" SIZE=2>
+Sometimes there&#8217;s only a single function for streaming, and the argument
+contains information about whether you&#8217;re reading or
+writing.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><A NAME="fn27" HREF="#fnB27">[27]</A><FONT FACE="Georgia" SIZE=2>
+A phrase coined by Zack Urlocker.</FONT><BR></P></DIV>
+
+<DIV ALIGN="CENTER">
+    <FONT FACE="Verdana, Tahoma, Arial, Helvetica, Sans" size = "-1">
+     [ <a href="Chap09.htm">Previous Chapter</a> ] 
+    
+    [ <a href="SimpCont.htm">Short TOC</a> ] 
+    [ <a href="Contents.htm">Table of Contents</a> ] 
+  
+        [ <a href="DocIdx.htm">Index</a> ]
+        
+     [ <a href="Chap11.htm">Next Chapter</a> ] 
+    </FONT>
+    <BR>
+ Last Update:08/19/2001</P></DIV>
+
+</BODY>
+
+</HTML>

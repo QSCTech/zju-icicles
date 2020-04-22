@@ -1,0 +1,308 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<HTML>
+<!--
+This document was converted from RTF source: 
+By rtftohtml 4.19
+See http://www.sunpack.com/RTF
+Filename:C:\TEMP\TicV2\html\TicV2.rtf
+Application Directory:C:\TOOLS\RTF2HTML\
+Subject:
+Author:Bruce Eckel
+Operator:Bruce Eckel
+Document Comments:
+Version Comments:
+Comments:
+Keywords:
+Translation Date:08/19/2001
+Translation Time:14:24:53
+Translation Platform:Win32
+Number of Output files:19
+This File:C:\TEMP\TicV2\html\Part2.htm
+SplitDepth=1
+SkipNavPanel=1
+SkipLeadingToc=1
+SkipTrailingToc=1
+GenContents=1
+GenFrames=1
+GenIndex=1
+-->
+<HEAD lang="en"><META http-equiv="Content-Type" content="text/html">
+<TITLE>Part 2: The Standard C++ Library</TITLE>
+</HEAD>
+
+<BODY  BGCOLOR="#FFFFFF"><DIV ALIGN="CENTER">
+  <a href="http://www.MindView.net">
+  <img src="mindview.gif" alt="MindView Inc." BORDER = "0"></a>
+  <CENTER>
+    <FONT FACE="Verdana, Tahoma, Arial, Helvetica, Sans" size = "-1">
+    [ <a href="README.txt">Viewing Hints</a> ]
+    [ <a href="RevisionHistory.htm">Revision History</a> ]
+    [ <a href="http://www.mindview.net/Books/TICPP/ThinkingInCPP2e.html">Book Home Page</a> ]
+    [ <a href="http://www.mindview.net/Etc/MailingList.html">Free Newsletter</a> ] <br>
+    [ <a href="http://www.mindview.net/Seminars">Seminars</a> ]
+    [ <a href="http://www.mindview.net/CDs">Seminars on CD ROM</a> ]
+    [ <a href="http://www.mindview.net/Services">Consulting</a> ]
+    </FONT>
+  <H2><FONT FACE="Verdana, Tahoma, Arial, Helvetica, Sans">
+  Thinking in C++, 2nd edition, Volume 2<br>
+  <small>Revision 4.0</small></FONT></H2>
+  <H3><FONT FACE="Verdana, Tahoma, Arial, Helvetica, Sans">
+  by Bruce Eckel &amp; Chuck Allison<br>&copy;2001 MindView, Inc.</FONT></H3>
+  
+    <FONT FACE="Verdana, Tahoma, Arial, Helvetica, Sans" size = "-1">
+     [ <a href="Chap03.htm">Previous Chapter</a> ] 
+    
+    [ <a href="SimpCont.htm">Short TOC</a> ] 
+    [ <a href="Contents.htm">Table of Contents</a> ] 
+  
+        [ <a href="DocIdx.htm">Index</a> ]
+        
+     [ <a href="Chap04.htm">Next Chapter</a> ] 
+    </FONT>
+    
+  </CENTER>
+  </P></DIV><A NAME="_Toc519041922"></A><A NAME="Heading81"></A><FONT FACE = "Verdana, Tahoma, Arial, Helvetica, Sans"><H1 ALIGN="LEFT">
+Part 2: The Standard C++ Library</H1></FONT>
+<DIV ALIGN="LEFT"><P><FONT FACE="Verdana" SIZE=4><a NAME="TIC2V2_PART2_I1"></a>
+Standard
+C++ not only incorporates all the Standard C libraries, with small additions and
+changes to support type safety, it also adds libraries of its own. These
+libraries are far more powerful than those in Standard C; the leverage you get
+from them is analogous to the leverage you get from changing from C to
+C++.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">This section of the book gives you an
+in-depth introduction to the most important portions of the Standard C++
+library.
+[&nbsp;<a HREF="mailto:cda@freshsources.com?subject=[TICV2] TIC2V2_PART2_I1">Comment</a>&nbsp;]
+
+<a NAME="TIC2V2_PART2_I2"></a>
+</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">The most complete and also the most
+obscure reference to the full libraries is the Standard itself. Somewhat more
+readable (and yet still a self-described &#8220;expert&#8217;s guide&#8221;) is
+Bjarne Stroustrup&#8217;s 3<SUP>rd</SUP> Edition of <I>The C++ Programming
+Language</I> (Addison-Wesley, 1997). Another valuable reference is the
+3<SUP>rd</SUP> edition of  <I>C++ Primer</I>, by Lippman &amp; Lajoie.<I>
+</I>The goal of the chapters in this book that cover the libraries is to provide
+you with an encyclopedia of descriptions and examples so you&#8217;ll have a
+good starting point for solving any problem that requires the use of the
+Standard libraries. However, there are some techniques and topics that are used
+rarely enough that they are not covered here, so if you can&#8217;t find it in
+these chapters you should reach for the other two books; this book is not
+intended to replace those but rather to complement them. In particular, I hope
+that after going through the material in the following chapters you&#8217;ll
+have a much easier time understanding those
+books.
+[&nbsp;<a HREF="mailto:cda@freshsources.com?subject=[TICV2] TIC2V2_PART2_I2">Comment</a>&nbsp;]
+
+<a NAME="TIC2V2_PART2_I3"></a>
+</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">You will notice that this section does
+not contain exhaustive documentation describing every function and class in the
+Standard C++ library. I&#8217;ve left the full descriptions to others; in
+particular there a particularly good on-line sources of standard library
+documentation in HTML format that you can keep resident on your computer and
+view with a Web browser whenever you need to look something up. This is PJ
+Plauger&#8217;s Dinkumware C/C++ Library reference at http://www.dinkumware.com.
+You can view this on-line, and purchase it for local viewing. It contains
+complete reference pages for the both the C and C++ libraries (so it&#8217;s
+good to use for all your Standard C/C++ programming questions). I am
+particularly fond of electronic documentation not only because you can always
+have it with you, but also because you can do an electronic search for what
+you&#8217;re seeking.
+[&nbsp;<a HREF="mailto:cda@freshsources.com?subject=[TICV2] TIC2V2_PART2_I3">Comment</a>&nbsp;]
+
+<a NAME="TIC2V2_PART2_I4"></a>
+</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">When you&#8217;re actively programming,
+these resources should adequately satisfy your reference needs (and you can use
+them to look up anything in this chapter that isn&#8217;t clear to you).
+Appendix XX lists additional
+references.
+[&nbsp;<a HREF="mailto:cda@freshsources.com?subject=[TICV2] TIC2V2_PART2_I4">Comment</a>&nbsp;]
+
+<a NAME="TIC2V2_PART2_I5"></a>
+</FONT><A NAME="_Toc519041923"></A><BR></P></DIV>
+<A NAME="Heading82"></A><FONT FACE = "Verdana, Tahoma, Arial, Helvetica, Sans"><H2 ALIGN="LEFT">
+Library overview</H2></FONT>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">[[ Still needs work
+]]
+[&nbsp;<a HREF="mailto:cda@freshsources.com?subject=[TICV2] TIC2V2_PART2_I5">Comment</a>&nbsp;]
+
+<a NAME="TIC2V2_PART2_I6"></a>
+</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">The first chapter in this section
+introduces the Standard C++ <B>string</B> class, which is a powerful tool that
+simplifies most of the text processing chores you might have to do. The
+<B>string</B> class may be the most thorough string manipulation tool
+you&#8217;ve ever seen. Chances are, anything you&#8217;ve done to character
+strings with lines of code in C can be done with a member function call in the
+string class, including <B>append(&#160;)</B>, <B>assign(&#160;)</B>,
+<B>insert(&#160;)</B>, <B>remove(&#160;)</B>, <B>replace(&#160;)</B>,
+<B>resize(&#160;)</B>, <B>copy(&#160;)</B>, <B>find(&#160;)</B>,
+<B>rfind(&#160;)</B>, <B>find_first_of(&#160;)</B>, <B>find_last_of(&#160;)</B>,
+<B>find_first_not_of(&#160;)</B>, <B>find_last_not_of(&#160;)</B>,
+<B>substr(&#160;)</B>, and <B>compare(&#160;)</B>. The operators <B>=</B>,
+<B>+=</B>, and <B>[ ]</B> are also overloaded to perform the intuitive
+operations. In addition, there&#8217;s a &#8220;wide&#8221; <B>wstring</B> class
+designed to support international character sets. Both <B>string</B> and
+<B>wstring</B> (declared in <B>&lt;string&gt;</B>, not to be confused with
+C&#8217;s <B>&lt;string.h&gt;</B>, which is, in strict C++,
+<B>&lt;cstring&gt;</B>) are created from a common template class called
+<B>basic_string</B>. Note that the string classes are seamlessly integrated with
+iostreams<A NAME="Index139"></A>, virtually eliminating the need for you to ever
+use <B>strstream</B>. 
+[&nbsp;<a HREF="mailto:cda@freshsources.com?subject=[TICV2] TIC2V2_PART2_I6">Comment</a>&nbsp;]
+
+<a NAME="TIC2V2_PART2_I7"></a>
+</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">The next chapter covers the
+<B>iostream</B> library.
+[&nbsp;<a HREF="mailto:cda@freshsources.com?subject=[TICV2] TIC2V2_PART2_I7">Comment</a>&nbsp;]
+
+<a NAME="TIC2V2_PART2_I8"></a>
+</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia"><B>Language
+Support<A NAME="Index140"></A></B>. Elements inherent to the language itself,
+like implementation limits<A NAME="Index141"></A><A NAME="Index142"></A> in
+<B>&lt;climits&gt;</B> and <B>&lt;cfloat&gt;</B>; dynamic memory declarations in
+<B>&lt;new&gt;</B> like <B>bad_alloc<A NAME="Index143"></A></B> (the exception
+thrown when you&#8217;re out of memory) and
+<B>set_new_handler<A NAME="Index144"></A></B>; the <B>&lt;typeinfo&gt;</B>
+header for RTTI<A NAME="Index145"></A> and the <B>&lt;exception&gt;</B> header
+that declares the <B>terminate(&#160;)<A NAME="Index146"></A></B> and
+<B>unexpected(&#160;)<A NAME="Index147"></A></B>
+functions.
+[&nbsp;<a HREF="mailto:cda@freshsources.com?subject=[TICV2] TIC2V2_PART2_I8">Comment</a>&nbsp;]
+
+<a NAME="TIC2V2_PART2_I9"></a>
+</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia"><B>Diagnostics
+Library<A NAME="Index148"></A></B>. Components C++ programs can use to detect
+and report errors. The <B>&lt;exception&gt;</B> header declares the standard
+exception classes <A NAME="Index149"></A><A NAME="Index150"></A>and
+<B>&lt;cassert&gt;</B> declares the same thing as C&#8217;s
+<B>assert.h</B>.
+[&nbsp;<a HREF="mailto:cda@freshsources.com?subject=[TICV2] TIC2V2_PART2_I9">Comment</a>&nbsp;]
+
+<a NAME="TIC2V2_PART2_I10"></a>
+</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia"><B>General Utilities
+Library<A NAME="Index151"></A></B>. These components are used by other parts of
+the Standard C++ library, but you can also use them in your own programs.
+Included are templatized versions of operators <B>!=</B>, <B>&gt;</B>,
+<B>&lt;=</B>, and <B>&gt;=</B> (to prevent redundant definitions), a <B>pair</B>
+template class<A NAME="Index152"></A> with a <B>tuple</B>-making template
+function<A NAME="Index153"></A>, a set of <I>function
+objects<A NAME="Index154"></A></I> for support of the STL, and storage
+allocation functions for use with the STL<A NAME="Index155"></A> so you can
+easily modify the storage allocation
+mechanism.
+[&nbsp;<a HREF="mailto:cda@freshsources.com?subject=[TICV2] TIC2V2_PART2_I10">Comment</a>&nbsp;]
+
+<a NAME="TIC2V2_PART2_I11"></a>
+</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia"><B>Localization
+Library<A NAME="Index156"></A></B>. This allows you to localize strings in your
+program to adapt to usage in different countries<A NAME="Index157"></A>,
+including money, numbers, date, time, and so
+on.
+[&nbsp;<a HREF="mailto:cda@freshsources.com?subject=[TICV2] TIC2V2_PART2_I11">Comment</a>&nbsp;]
+
+<a NAME="TIC2V2_PART2_I12"></a>
+</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia"><B>Containers
+Library<A NAME="Index158"></A></B>. This includes the Standard Template Library
+(described in the next section of this appendix) and also the <B>bits</B>
+<A NAME="Index159"></A><A NAME="Index160"></A>and <B>bit_string</B>
+<A NAME="Index161"></A><A NAME="Index162"></A>classes in <B>&lt;bits&gt;</B> and
+<B>&lt;bitstring&gt;</B>, respectively. Both <B>bits</B> and <B>bit_string</B>
+are more complete implementations of the bitvector concept introduced in Chapter
+XX. The <B>bits</B> template creates a fixed-sized array of bits that can be
+manipulated with all the bitwise operators, as well as member functions like
+<B>set(&#160;)</B>, <B>reset(&#160;)</B>, <B>count(&#160;)</B>,
+<B>length(&#160;)</B>, <B>test(&#160;)</B>, <B>any(&#160;)</B>, and
+<B>none(&#160;)</B>. There are also conversion operators
+<B>to_ushort(&#160;)</B>, <B>to_ulong(&#160;)</B>, and <B>to_string(&#160;)</B>.
+
+[&nbsp;<a HREF="mailto:cda@freshsources.com?subject=[TICV2] TIC2V2_PART2_I12">Comment</a>&nbsp;]
+
+<a NAME="TIC2V2_PART2_I13"></a>
+</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">The <B>bit_string</B> class is, by
+contrast, a dynamically sized array of bits, with similar operations to
+<B>bits</B>, but also with additional operations that make it act somewhat like
+a <B>string</B>. There&#8217;s a fundamental difference in bit weighting: With
+<B>bits</B>, the right-most bit (bit zero) is the least significant bit, but
+with <B>bit_string</B>, the right-most bit is the <I>most</I> significant bit.
+There are no conversions between <B>bits</B> and <B>bit_string</B>. You&#8217;ll
+use <B>bits</B> for a space-efficient set of on-off flags and <B>bit_string</B>
+for manipulating arrays of binary values (like
+pixels).
+[&nbsp;<a HREF="mailto:cda@freshsources.com?subject=[TICV2] TIC2V2_PART2_I13">Comment</a>&nbsp;]
+
+<a NAME="TIC2V2_PART2_I14"></a>
+</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia"><B>Iterators
+Library<A NAME="Index163"></A></B>. Includes iterators that are tools for the
+STL (described in the next section of this appendix), streams, and stream
+buffers.
+[&nbsp;<a HREF="mailto:cda@freshsources.com?subject=[TICV2] TIC2V2_PART2_I14">Comment</a>&nbsp;]
+
+<a NAME="TIC2V2_PART2_I15"></a>
+</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia"><B>Algorithms
+Library<A NAME="Index164"></A></B>. These are the template functions that
+perform operations on the STL<A NAME="Index165"></A> containers using iterators.
+The algorithms include: <B>adjacent_find</B>,<B> prev_permutation</B>,<B>
+binary_search</B>,<B> push_heap</B>,<B> copy</B>,<B> random_shuffle</B>,<B>
+copy_backward</B>,<B> remove</B>,<B> count</B>,<B> remove_copy</B>,<B>
+count_if</B>,<B> remove_copy_if</B>,<B> equal</B>,<B> remove_if</B>,<B>
+equal_range</B>,<B> replace</B>,<B> fill</B>,<B> replace_copy</B>,<B>
+fill_n</B>,<B> replace_copy_if</B>,<B> find</B>,<B> replace_if</B>,<B>
+find_if</B>,<B> reverse</B>,<B> for_each</B>,<B> reverse_copy</B>,<B>
+generate</B>,<B> rotate</B>,<B> generate_n</B>,<B> rotate_copy</B>,<B>
+includes</B>,<B> search</B>,<B> inplace_merge</B>,<B> set_difference</B>,<B>
+lexicographical_compare</B>,<B> set_intersection</B>,<B> lower_bound</B>,<B>
+set_symmetric_difference</B>,<B> make_heap</B>,<B> set_union</B>,<B> max</B>,<B>
+sort</B>,<B> max_element</B>,<B> sort_heap</B>,<B> merge</B>,<B>
+stable_partition</B>,<B> min</B>,<B> stable_sort</B>,<B> min_element</B>,<B>
+swap</B>,<B> mismatch</B>,<B> swap_ranges</B>,<B> next_permutation</B>,<B>
+transform</B>,<B> nth_element</B>,<B> unique</B>,<B> partial_sort</B>,<B>
+unique_copy</B>,<B> partial_sort_copy</B>,<B> upper_bound</B>, and<B>
+partition</B>.
+[&nbsp;<a HREF="mailto:cda@freshsources.com?subject=[TICV2] TIC2V2_PART2_I15">Comment</a>&nbsp;]
+
+<a NAME="TIC2V2_PART2_I16"></a>
+</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia"><B>Numerics
+Library<A NAME="Index166"></A></B>. The goal of this library is to allow the
+compiler implementer to take advantage of the architecture of the underlying
+machine when used for numerical operations<A NAME="Index167"></A>. This way,
+creators of higher level numerical libraries can write to the numerics library
+and produce efficient algorithms without having to customize to every possible
+machine. The numerics library also includes the complex number
+class<A NAME="Index168"></A><A NAME="Index169"></A> (which appeared in the first
+version of C++ as an example, and has become an expected part of the library) in
+<B>float</B>, <B>double</B>, and <B>long double</B>
+forms.
+[&nbsp;<a HREF="mailto:cda@freshsources.com?subject=[TICV2] TIC2V2_PART2_I16">Comment</a>&nbsp;]
+
+</FONT><BR></P></DIV>
+<DIV ALIGN="CENTER">
+    <FONT FACE="Verdana, Tahoma, Arial, Helvetica, Sans" size = "-1">
+     [ <a href="Chap03.htm">Previous Chapter</a> ] 
+    
+    [ <a href="SimpCont.htm">Short TOC</a> ] 
+    [ <a href="Contents.htm">Table of Contents</a> ] 
+  
+        [ <a href="DocIdx.htm">Index</a> ]
+        
+     [ <a href="Chap04.htm">Next Chapter</a> ] 
+    </FONT>
+    <BR>
+ Last Update:08/19/2001</P></DIV>
+
+</BODY>
+
+</HTML>

@@ -1,0 +1,1441 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<HTML>
+<!--
+This document was converted from RTF source: 
+By rtftohtml 4.19
+See http://www.sunpack.com/RTF
+Filename:TIC2Vone.rtf
+Application Directory:C:\TOOLS\RTF2HTML\
+Subject:
+Author:Bruce Eckel
+Operator:Bruce Eckel
+Document Comments:
+Version Comments:
+Comments:
+Keywords:
+Translation Date:09/27/2001
+Translation Time:05:25:44
+Translation Platform:Win32
+Number of Output files:22
+This File:Chapter11.html
+SplitDepth=1
+SkipNavPanel=1
+SkipLeadingToc=1
+SkipTrailingToc=1
+GenContents=1
+GenFrames=1
+GenIndex=1
+-->
+<HEAD lang="en"><META http-equiv="Content-Type" content="text/html">
+<TITLE>11: References &amp;  the Copy-Constructor</TITLE>
+</HEAD>
+
+<BODY  BGCOLOR="#FFFFFF"><DIV ALIGN="CENTER">
+  <a href="http://www.MindView.net">
+  <img src="mindview-head.gif" alt="MindView Inc." BORDER = "0"></a>
+  <CENTER>
+    <FONT FACE="Verdana" size = "-1">
+    [ <a href="README-HTML.txt">Viewing Hints</a> ]
+    [ <a href="http://www.mindview.net/CPPServices/SolutionGuide.html">Exercise Solutions</a> ]
+    [ <a href="http://www.mindview.net/ThinkingInCPP2e.html">Volume 2</a> ]
+    [ <a href="http://www.mindview.net/MailingList.html">Free Newsletter</a> ] <br>
+    [ <a href="http://www.mindview.net/CPPServices/#PublicSeminars">Seminars</a> ]
+    [ <a href="http://www.mindview.net/CPPServices/#SeminarsOnCD">Seminars on CD ROM</a> ]
+    [ <a href="http://www.mindview.net/CPPServices/#ConsultingServices">Consulting</a> ]
+    </FONT>
+  <H2><FONT FACE="Verdana">
+  Thinking in C++, 2nd ed. Volume 1</FONT></H2></FONT>
+  <H3><FONT FACE="Verdana">&copy;2000 by Bruce Eckel</FONT></H3></FONT>
+  
+    <FONT FACE="Verdana" size = "-1">
+     [ <a href="Chapter10.html">Previous Chapter</a> ] 
+    [ <a href="Contents.html">Table of Contents</a> ] 
+    [ <a href="DocIndex.html">Index</a> ]
+     [ <a href="Chapter12.html">Next Chapter</a> ] 
+    </FONT>
+    
+  </CENTER>
+  </P></DIV><A NAME="_Toc472654932"></A><A NAME="Heading324"></A><FONT FACE = "Verdana"><H1 ALIGN="LEFT">
+11: References &amp;  the Copy-Constructor</H1></FONT>
+<DIV ALIGN="LEFT"><P><FONT FACE="Verdana" SIZE=4>References are like constant
+pointers that are automatically dereferenced by the compiler. </FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Although references
+<A NAME="Index1845"></A>also exist in Pascal, the C++ version was taken from the
+Algol language. They are essential in C++ to support the syntax of operator
+overloading <A NAME="Index1846"></A><A NAME="Index1847"></A>(see Chapter 12),
+but they are also a general convenience to control the way arguments are passed
+<A NAME="Index1848"></A>into and out of functions.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">This chapter will first look briefly at
+the differences between pointers <A NAME="Index1849"></A>in C and C++, then
+introduce references. But the bulk of the chapter will delve into a rather
+confusing issue for the new C++ programmer: the
+copy-constructor<A NAME="Index1850"></A><A NAME="Index1851"></A>, a special
+constructor (requiring references) that makes a new object from an existing
+object of the same type. The copy-constructor is used by the compiler to pass
+and return objects <I>by value</I>
+<A NAME="Index1852"></A><A NAME="Index1853"></A>into and out of
+functions.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Finally, the somewhat obscure C++
+<I>pointer-to-member</I> feature is
+illuminated.</FONT><A NAME="_Toc305593227"></A><A NAME="_Toc305628699"></A><A NAME="_Toc312373958"></A><A NAME="_Toc472654933"></A><BR></P></DIV>
+<A NAME="Heading325"></A><FONT FACE = "Verdana"><H2 ALIGN="LEFT">
+Pointers in C++</H2></FONT>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">The most important difference between
+pointers in C and those in C++ is that
+<A NAME="Index1854"></A><A NAME="Index1855"></A><A NAME="Index1856"></A>C++ is a
+more strongly typed language. This stands out where
+<A NAME="Index1857"></A><B>void*<A NAME="Index1858"></A><A NAME="Index1859"></A></B>
+is concerned. C doesn&#8217;t let you casually assign a pointer of one type to
+another, but it <I>does</I> allow you to accomplish this through a <B>void*</B>.
+Thus,</FONT><BR></P></DIV>
+
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE>bird* b;
+rock* r;
+<font color=#0000ff>void</font>* v;
+v = r;
+b = v;</PRE></FONT></BLOCKQUOTE>
+
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Because this &#8220;feature&#8221; of C
+allows you to quietly treat any type like any other type, it leaves a big
+<A NAME="Index1860"></A>hole in the type system. C++ doesn&#8217;t allow this;
+the compiler gives you an error message, and if you really want to treat one
+type as another, you must make it explicit, both to the compiler and to the
+reader, using a cast. (Chapter 3 introduced C++&#8217;s improved
+&#8220;explicit&#8221; casting
+syntax.)</FONT><A NAME="_Toc305593228"></A><A NAME="_Toc305628700"></A><A NAME="_Toc312373959"></A><A NAME="_Toc472654934"></A><BR></P></DIV>
+<A NAME="Heading326"></A><FONT FACE = "Verdana"><H2 ALIGN="LEFT">
+References in C++</H2></FONT>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">A <I>reference</I>
+<A NAME="Index1861"></A>(<B>&amp;</B>) is like a constant pointer that is
+automatically dereferenced. It is usually used for function argument lists
+<A NAME="Index1862"></A><A NAME="Index1863"></A>and function return
+values<A NAME="Index1864"></A><A NAME="Index1865"></A>. But you can also make a
+<A NAME="Index1866"></A><A NAME="Index1867"></A>free-standing reference. For
+example,</FONT><BR></P></DIV>
+
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE><font color=#009900>//: C11:FreeStandingReferences.cpp</font>
+#include &lt;iostream&gt;
+<font color=#0000ff>using</font> <font color=#0000ff>namespace</font> std;
+
+<font color=#009900>// Ordinary free-standing reference:</font>
+<font color=#0000ff>int</font> y;
+<font color=#0000ff>int</font>&amp; r = y;
+<font color=#009900>// When a reference is created, it must </font>
+<font color=#009900>// be initialized to a live object. </font>
+<font color=#009900>// However, you can also say:</font>
+<font color=#0000ff>const</font> <font color=#0000ff>int</font>&amp; q = 12;  <font color=#009900>// (1)</font>
+<font color=#009900>// References are tied to someone else's storage:</font>
+<font color=#0000ff>int</font> x = 0;          <font color=#009900>// (2)</font>
+<font color=#0000ff>int</font>&amp; a = x;         <font color=#009900>// (3)</font>
+<font color=#0000ff>int</font> main() {
+  cout &lt;&lt; <font color=#004488>"x = "</font> &lt;&lt; x &lt;&lt; <font color=#004488>", a = "</font> &lt;&lt; a &lt;&lt; endl;
+  a++;
+  cout &lt;&lt; <font color=#004488>"x = "</font> &lt;&lt; x &lt;&lt; <font color=#004488>", a = "</font> &lt;&lt; a &lt;&lt; endl;
+} <font color=#009900>///:~</font></PRE></FONT></BLOCKQUOTE>
+
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">In line (1), the compiler allocates a
+piece of storage, initializes it with the value 12, and ties the reference to
+that piece of storage. The point is that any reference must be tied to someone
+<I>else&#8217;s</I> piece of storage. When you access a reference, you&#8217;re
+accessing that storage. Thus, if you write lines like (2) and (3), then
+incrementing <B>a</B> is actually incrementing <B>x</B>, as is shown in
+<B>main(&#160;)</B>. Again, the easiest way to think about a reference is as a
+fancy pointer. One advantage of this &#8220;pointer&#8221; is that you never
+have to wonder whether it&#8217;s been initialized (the compiler enforces it)
+and how to dereference it (the compiler does it).</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">There are certain rules when using
+references<A NAME="Index1868"></A><A NAME="Index1869"></A><A NAME="Index1870"></A>:</FONT><BR></P></DIV>
+<OL>
+<LI><FONT FACE="Verdana">	</FONT><FONT FACE="Georgia">A reference must be
+initialized when it is created. (Pointers can be initialized at any
+time.)</FONT><LI><FONT FACE="Verdana">	</FONT><FONT FACE="Georgia">Once a
+reference is initialized to an object, it cannot be changed to refer to another
+object. (Pointers can be pointed to another object at any
+time.)</FONT><LI><FONT FACE="Verdana">	</FONT><FONT FACE="Georgia">You cannot
+have NULL references. You must always be able to assume that a reference is
+connected to a legitimate piece of
+storage.</FONT><A NAME="_Toc312373960"></A><A NAME="_Toc472654935"></A></OL><A NAME="Heading327"></A><FONT FACE = "Verdana"><H3 ALIGN="LEFT">
+References in functions</H3></FONT>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">The most common place you&#8217;ll see
+references is as function arguments and return values. When a reference is used
+as a function <A NAME="Index1871"></A>argument, any modification to the
+reference <I>inside</I> the function will cause changes to the argument
+<I>outside</I> the function. Of course, you could do the same thing by passing a
+pointer, but a reference has much cleaner syntax. (You can think of a reference
+as nothing more than a syntax convenience, if you want.)</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">If you return <A NAME="Index1872"></A>a
+reference from a function, you must take the same care as if you return a
+pointer from a function. Whatever the reference is connected to shouldn&#8217;t
+go away when the function returns, otherwise you&#8217;ll be referring to
+unknown memory.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Here&#8217;s an example:</FONT><BR></P></DIV>
+
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE><font color=#009900>//: C11:Reference.cpp</font>
+<font color=#009900>// Simple C++ references</font>
+
+<font color=#0000ff>int</font>* f(<font color=#0000ff>int</font>* x) {
+  (*x)++;
+  <font color=#0000ff>return</font> x; <font color=#009900>// Safe, x is outside this scope</font>
+}
+
+<font color=#0000ff>int</font>&amp; g(<font color=#0000ff>int</font>&amp; x) {
+  x++; <font color=#009900>// Same effect as in f()</font>
+  <font color=#0000ff>return</font> x; <font color=#009900>// Safe, outside this scope</font>
+}
+
+<font color=#0000ff>int</font>&amp; h() {
+  <font color=#0000ff>int</font> q;
+<font color=#009900>//!  return q;  // Error</font>
+  <font color=#0000ff>static</font> <font color=#0000ff>int</font> x;
+  <font color=#0000ff>return</font> x; <font color=#009900>// Safe, x lives outside this scope</font>
+}
+
+<font color=#0000ff>int</font> main() {
+  <font color=#0000ff>int</font> a = 0;
+  f(&amp;a); <font color=#009900>// Ugly (but explicit)</font>
+  g(a);  <font color=#009900>// Clean (but hidden)</font>
+} <font color=#009900>///:~</font></PRE></FONT></BLOCKQUOTE>
+
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">The call to <B>f(&#160;)</B>
+doesn&#8217;t have the convenience and cleanliness of using references, but
+it&#8217;s clear that an address is being passed. In the call to
+<B>g(&#160;)</B>, an address is being passed (via a reference), but you
+don&#8217;t see it.</FONT><BR></P></DIV>
+<A NAME="Heading328"></A><FONT FACE = "Verdana"><H4 ALIGN="LEFT">
+const references<BR><A NAME="Index1873"></A><A NAME="Index1874"></A></H4></FONT>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">The reference argument in
+<B>Reference.cpp</B> works only when the argument is a non-<B>const</B> object.
+If it is a <B>const</B> object, the function <B>g(&#160;)</B> will not accept
+the argument, which is actually a good thing, because the function <I>does</I>
+modify the outside argument. If you know the function will respect the
+<B>const</B>ness of an object, making the argument a
+<A NAME="Index1875"></A><B>const</B> reference will allow the function to be
+used in all situations. This means that, for built-in types, the function will
+not modify the argument, and for user-defined types, the function will call only
+<B>const</B> member functions, and won&#8217;t modify any <B>public</B> data
+members.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">The use of <B>const</B> references in
+function arguments is especially important because your function may receive a
+<A NAME="Index1876"></A>temporary
+object<A NAME="Index1877"></A><A NAME="Index1878"></A>. This might have been
+created as a return value of another function or explicitly by the user of your
+function. Temporary objects are always <B>const</B>, so if you don&#8217;t use a
+<B>const</B> reference, that argument won&#8217;t be accepted by the compiler.
+As a very simple example,</FONT><BR></P></DIV>
+
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE><font color=#009900>//: C11:ConstReferenceArguments.cpp</font>
+<font color=#009900>// Passing references as const</font>
+
+<font color=#0000ff>void</font> f(<font color=#0000ff>int</font>&amp;) {}
+<font color=#0000ff>void</font> g(<font color=#0000ff>const</font> <font color=#0000ff>int</font>&amp;) {}
+
+<font color=#0000ff>int</font> main() {
+<font color=#009900>//!  f(1); // Error</font>
+  g(1);
+} <font color=#009900>///:~</font></PRE></FONT></BLOCKQUOTE>
+
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">The call to <B>f(1)</B> causes a
+compile-time error because the compiler must first create a reference. It does
+so by allocating storage for an <B>int</B>, initializing it to one and producing
+the address to bind to the reference. The storage <I>must</I> be a <B>const</B>
+because changing it would make no sense &#8211; you can never get your hands on
+it again. With all temporary objects you must make the same assumption: that
+they&#8217;re inaccessible. It&#8217;s valuable for the compiler to tell you
+when you&#8217;re changing such data because the result would be lost
+information.</FONT><BR></P></DIV>
+<A NAME="Heading329"></A><FONT FACE = "Verdana"><H4 ALIGN="LEFT">
+Pointer references<BR><A NAME="Index1879"></A><A NAME="Index1880"></A></H4></FONT>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">In C, if you want to modify the
+<I>contents</I> of the pointer rather than what it points to, your function
+declaration looks like: </FONT><BR></P></DIV>
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE><font color=#0000ff>void</font> f(<font color=#0000ff>int</font>**);</PRE></FONT></BLOCKQUOTE>
+
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">and you&#8217;d have to take the address
+of the pointer when passing it in:</FONT><BR></P></DIV>
+
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE><font color=#0000ff>int</font> i = 47;
+<font color=#0000ff>int</font>* ip = &amp;i;
+f(&amp;ip); </PRE></FONT></BLOCKQUOTE>
+
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">With references in C++, the syntax is
+cleaner. The function argument becomes a reference to a pointer, and you no
+longer have to take the address of that pointer. Thus,</FONT><BR></P></DIV>
+
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE><font color=#009900>//: C11:ReferenceToPointer.cpp</font>
+#include &lt;iostream&gt;
+<font color=#0000ff>using</font> <font color=#0000ff>namespace</font> std;
+
+<font color=#0000ff>void</font> increment(<font color=#0000ff>int</font>*&amp; i) { i++; }
+
+<font color=#0000ff>int</font> main() {
+  <font color=#0000ff>int</font>* i = 0;
+  cout &lt;&lt; <font color=#004488>"i = "</font> &lt;&lt; i &lt;&lt; endl;
+  increment(i);
+  cout &lt;&lt; <font color=#004488>"i = "</font> &lt;&lt; i &lt;&lt; endl;
+} <font color=#009900>///:~</font></PRE></FONT></BLOCKQUOTE>
+
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">By running this program, you&#8217;ll
+prove to yourself that the pointer is incremented, not what it points
+to.</FONT><A NAME="_Toc312373961"></A><A NAME="_Toc472654936"></A><BR></P></DIV>
+<A NAME="Heading330"></A><FONT FACE = "Verdana"><H3 ALIGN="LEFT">
+Argument-passing
+guidelines<BR><A NAME="Index1881"></A><A NAME="Index1882"></A></H3></FONT>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Your normal habit when passing an
+argument to a function should be to pass by <B>const</B> reference. Although at
+first this may seem like only an efficiency
+<A NAME="Index1883"></A><A NAME="Index1884"></A>concern (and you normally
+don&#8217;t want to concern yourself with efficiency tuning while you&#8217;re
+designing and assembling your program), there&#8217;s more at stake: as
+you&#8217;ll see in the remainder of the chapter, a copy-constructor is required
+to pass an object by value, and this isn&#8217;t always
+available.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">The efficiency savings can be substantial
+for such a simple habit: to pass an argument by value requires a constructor and
+destructor call, but if you&#8217;re not going to modify the argument then
+passing by <B>const</B> reference only needs an address pushed on the
+stack.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">In fact, virtually the only time passing
+an address <I>isn&#8217;t</I> preferable is when you&#8217;re going to do such
+damage to an object that passing by value is the only safe approach (rather than
+modifying the outside object, something the caller doesn&#8217;t usually
+expect). This is the subject of the next
+section.</FONT><A NAME="_Toc305593229"></A><A NAME="_Toc305628701"></A><A NAME="_Toc312373962"></A><A NAME="_Toc472654937"></A><BR></P></DIV>
+<A NAME="Heading331"></A><FONT FACE = "Verdana"><H2 ALIGN="LEFT">
+The copy-constructor</H2></FONT>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Now that you understand the basics of the
+reference in C++, you&#8217;re ready to tackle one of the more confusing
+concepts in the language: the
+copy-constructor<A NAME="Index1885"></A><A NAME="Index1886"></A>, often called
+<B>X(X&amp;)</B> (&#8220;X of X ref&#8221;). This constructor is essential to
+control passing and returning of user-defined types by value during function
+calls. It&#8217;s so important, in fact, that the compiler will automatically
+synthesize a copy-constructor if you don&#8217;t provide one yourself, as you
+will
+see.</FONT><A NAME="_Toc312373963"></A><A NAME="_Toc472654938"></A><BR></P></DIV>
+<A NAME="Heading332"></A><FONT FACE = "Verdana"><H3 ALIGN="LEFT">
+Passing &amp; returning by value</H3></FONT>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">To understand the need for the
+copy-constructor, consider the way C handles passing and returning variables by
+value
+<A NAME="Index1887"></A><A NAME="Index1888"></A><A NAME="Index1889"></A>during
+function calls. If you declare a function and make a function
+call,</FONT><BR></P></DIV>
+
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE><font color=#0000ff>int</font> f(<font color=#0000ff>int</font> x, <font color=#0000ff>char</font> c);
+<font color=#0000ff>int</font> g = f(a, b);</PRE></FONT></BLOCKQUOTE>
+
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">how does the compiler know how to pass
+and return those variables? It just knows! The range of the types it must deal
+with is so small &#8211; <B>char</B>, <B>int</B>, <B>float</B>, <B>double</B>,
+and their variations &#8211; that this information is built into the compiler.
+</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">If you figure out how to generate
+<A NAME="Index1890"></A><A NAME="Index1891"></A><A NAME="Index1892"></A>assembly
+code with your compiler and determine the statements generated by the function
+call to <B>f(&#160;)</B>, you&#8217;ll get the equivalent of:</FONT><BR></P></DIV>
+
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE>push  b
+push  a
+call  f()
+add  sp,4
+mov  g, <font color=#0000ff>register</font> a</PRE></FONT></BLOCKQUOTE>
+
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">This code has been cleaned up
+significantly to make it generic; the expressions for <B>b</B> and <B>a</B> will
+be different depending on whether the variables are global (in which case they
+will be <B>_b</B> and <B>_a</B>) or local (the compiler will index them off the
+stack pointer). This is also true for the expression for <B>g</B>. The
+appearance of the call to <B>f(&#160;)</B> will depend on your name-decoration
+scheme, and &#8220;register a&#8221; depends on how the CPU registers are named
+within your assembler. The logic behind the code, however, will remain the
+same.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">In C and C++, arguments are first pushed
+on the stack from right to left, then the function call is made. The calling
+code is responsible for cleaning the arguments off the stack (which accounts for
+the <B>add sp,4</B>). But notice that to pass the arguments by value, the
+compiler simply pushes copies on the stack &#8211; it knows how big they are and
+that pushing those arguments makes accurate copies of them.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">The return value of <B>f(&#160;)</B> is
+placed in a register. Again, the compiler knows everything there is to know
+about the return value type because that type is built into the language, so the
+compiler can return it by placing it in a register. With the primitive data
+types in C, the simple act of copying the bits of the value is equivalent to
+copying the object.</FONT><BR></P></DIV>
+<A NAME="Heading333"></A><FONT FACE = "Verdana"><H4 ALIGN="LEFT">
+Passing &amp; returning large
+objects<BR><A NAME="Index1893"></A><A NAME="Index1894"></A><A NAME="Index1895"></A></H4></FONT>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">But now consider user-defined types. If
+you create a class and you want to pass an object of that class by value, how is
+the compiler supposed to know what to do? This is not a type built into the
+compiler; it&#8217;s a type you have created.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">To investigate this, you can start with a
+simple structure that is clearly too large to return in
+registers:</FONT><BR></P></DIV>
+
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE><font color=#009900>//: C11:PassingBigStructures.cpp</font>
+<font color=#0000ff>struct</font> Big {
+  <font color=#0000ff>char</font> buf[100];
+  <font color=#0000ff>int</font> i;
+  <font color=#0000ff>long</font> d;
+} B, B2;
+
+Big bigfun(Big b) {
+  b.i = 100; <font color=#009900>// Do something to the argument</font>
+  <font color=#0000ff>return</font> b;
+}
+
+<font color=#0000ff>int</font> main() {
+  B2 = bigfun(B);
+} <font color=#009900>///:~</font></PRE></FONT></BLOCKQUOTE>
+
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Decoding the assembly output is a little
+more complicated here because most compilers use &#8220;helper&#8221; functions
+instead of putting all functionality inline. In <B>main(&#160;)</B>, the call to
+<B>bigfun(&#160;)</B> starts as you might guess &#8211; the entire contents of
+<B>B</B> is pushed on the stack. (Here, you might see some compilers load
+registers with the address of the <B>Big</B> and its size, then call a helper
+function <A NAME="Index1896"></A><A NAME="Index1897"></A>to push the <B>Big</B>
+onto the stack.)</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">In the previous code fragment, pushing
+the arguments onto the stack was all that was required before making the
+function call. In <B>PassingBigStructures.cpp</B>, however, you&#8217;ll see an
+additional action: the address of <B>B2</B> is pushed before making the call,
+even though it&#8217;s obviously not an argument. To comprehend what&#8217;s
+going on here, you need to understand the constraints on the compiler when
+it&#8217;s making a function call.</FONT><BR></P></DIV>
+<A NAME="Heading334"></A><FONT FACE = "Verdana"><H4 ALIGN="LEFT">
+Function-call stack
+frame<BR><A NAME="Index1898"></A><A NAME="Index1899"></A></H4></FONT>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">When the compiler generates code for a
+function call, it first pushes all the arguments on the stack, then makes the
+call. Inside the function, code is generated to move the stack pointer down even
+farther to provide storage for the function&#8217;s local variables.
+(&#8220;Down&#8221; is relative here; your machine may increment or decrement
+the stack pointer during a push.) But during the assembly-language
+CALL<A NAME="Index1900"></A><A NAME="Index1901"></A>, the CPU pushes the address
+in the program code where the function call <I>came from</I>, so the
+assembly-language RETURN <A NAME="Index1902"></A><A NAME="Index1903"></A>can use
+that address to return to the calling point. This address is of course sacred,
+because without it your program will get completely lost. Here&#8217;s what the
+stack frame looks like after the CALL and the allocation of local variable
+storage in the function:</FONT><BR></P></DIV>
+<DIV ALIGN="CENTER"><FONT FACE="Georgia"><IMG SRC="TIC2Vo14.gif"></FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">The code generated for the rest of the
+function expects the memory to be laid out exactly this way, so that it can
+carefully pick from the function arguments and local variables without touching
+the return address. I shall call this block of memory, which is everything used
+by a function in the process of the function call, the <I>function
+frame</I>.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">You might think it reasonable to try to
+return values on the stack. The compiler could simply push it, and the function
+could return an offset to indicate how far down in the stack the return value
+begins.</FONT><BR></P></DIV>
+<A NAME="Heading335"></A><FONT FACE = "Verdana"><H4 ALIGN="LEFT">
+Re-entrancy</H4></FONT>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">The problem occurs because functions in C
+and C++ support interrupts; that is, the languages are
+<I>re-entrant<A NAME="Index1904"></A></I>. They also support recursive function
+calls. This means that at any point in the execution of a program an interrupt
+can occur without breaking the program. Of course, the person who writes the
+interrupt service routine (ISR)<A NAME="Index1905"></A> is responsible for
+saving and restoring all the registers that are used in the ISR, but if the ISR
+needs to use any memory further down on the stack, this must be a safe thing to
+do. (You can think of an ISR as an ordinary function with no arguments and
+<B>void</B> return value that saves and restores the CPU state. An ISR function
+call is triggered by some hardware event instead of an explicit call from within
+a program.)</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Now imagine what would happen if an
+ordinary function tried to return values on the stack. You can&#8217;t touch any
+part of the stack that&#8217;s above the return address, so the function would
+have to push the values below the return address. But when the assembly-language
+RETURN is executed, the stack pointer must be pointing to the return address (or
+right below it, depending on your machine), so right before the RETURN, the
+function must move the stack pointer up, thus clearing off all its local
+variables. If you&#8217;re trying to return values on the stack below the return
+address, you become vulnerable at that moment because an interrupt could come
+along. The ISR would move the stack pointer down to hold its return address and
+its local variables and overwrite your return value.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">To solve this problem, the caller
+<I>could</I> be responsible for allocating the extra storage on the stack for
+the return values before calling the function. However, C was not designed this
+way, and C++ must be compatible. As you&#8217;ll see shortly, the C++ compiler
+uses a more efficient scheme.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Your next idea might be to return the
+value in some global data area, but this doesn&#8217;t work either. Reentrancy
+means that any function can be an interrupt routine for any other function,
+<I>including the same function you&#8217;re currently inside</I>. Thus, if you
+put the return value in a global area, you might return into the same function,
+which would overwrite that return value. The same logic applies to
+recursion<A NAME="Index1906"></A>.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">The only safe place to return values is
+in the registers, so you&#8217;re back to the problem of what to do when the
+registers aren&#8217;t large enough to hold the return value. The answer is to
+push the address of the return value&#8217;s destination on the stack as one of
+the function arguments, and let the function copy the return information
+directly into the destination. This not only solves all the problems, it&#8217;s
+more efficient. It&#8217;s also the reason that, in
+<B>PassingBigStructures.cpp</B>, the compiler pushes the address of <B>B2</B>
+before the call to <B>bigfun(&#160;)</B> in <B>main(&#160;)</B>. If you look at
+the assembly output for <B>bigfun(&#160;)</B>, you can see it expects this
+hidden argument and performs the copy to the destination <I>inside</I> the
+function.</FONT><BR></P></DIV>
+<A NAME="Heading336"></A><FONT FACE = "Verdana"><H4 ALIGN="LEFT">
+Bitcopy versus
+initialization<BR><A NAME="Index1907"></A><A NAME="Index1908"></A></H4></FONT>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">So far, so good. There&#8217;s a workable
+process for passing and returning large simple structures. But notice that all
+you have is a way to copy the bits from one place to another, which certainly
+works fine for the primitive way that C looks at variables. But in C++ objects
+can be much more sophisticated than a patch of bits; they have meaning. This
+meaning may not respond well to having its bits copied.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Consider a simple example: a class that
+knows how many objects of its type exist at any one time. From Chapter 10, you
+know the way to do this is by including a <B>static</B> data
+member:</FONT><BR></P></DIV>
+
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE><font color=#009900>//: C11:HowMany.cpp</font>
+<font color=#009900>// A class that counts its objects</font>
+#include &lt;fstream&gt;
+#include &lt;string&gt;
+<font color=#0000ff>using</font> <font color=#0000ff>namespace</font> std;
+ofstream out(<font color=#004488>"HowMany.out"</font>);
+
+<font color=#0000ff>class</font> HowMany {
+  <font color=#0000ff>static</font> <font color=#0000ff>int</font> objectCount;
+<font color=#0000ff>public</font>:
+  HowMany() { objectCount++; }
+  <font color=#0000ff>static</font> <font color=#0000ff>void</font> print(<font color=#0000ff>const</font> string&amp; msg = <font color=#004488>""</font>) {
+    <font color=#0000ff>if</font>(msg.size() != 0) out &lt;&lt; msg &lt;&lt; <font color=#004488>": "</font>;
+    out &lt;&lt; <font color=#004488>"objectCount = "</font>
+         &lt;&lt; objectCount &lt;&lt; endl;
+  }
+  ~HowMany() {
+    objectCount--;
+    print(<font color=#004488>"~HowMany()"</font>);
+  }
+};
+
+<font color=#0000ff>int</font> HowMany::objectCount = 0;
+
+<font color=#009900>// Pass and return BY VALUE:</font>
+HowMany f(HowMany x) {
+  x.print(<font color=#004488>"x argument inside f()"</font>);
+  <font color=#0000ff>return</font> x;
+}
+
+<font color=#0000ff>int</font> main() {
+  HowMany h;
+  HowMany::print(<font color=#004488>"after construction of h"</font>);
+  HowMany h2 = f(h);
+  HowMany::print(<font color=#004488>"after call to f()"</font>);
+} <font color=#009900>///:~</font></PRE></FONT></BLOCKQUOTE>
+
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">The class <B>HowMany</B> contains a
+<B>static</B> <B>int objectCount</B> and a <B>static</B> member function
+<B>print(&#160;)</B> to report the value of that <B>objectCount</B>, along with
+an optional message argument. The constructor increments the count each time an
+object is created, and the destructor decrements it.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">The output, however, is not what you
+would expect:</FONT><BR></P></DIV>
+
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE>after construction of h: objectCount = 1
+x argument inside f(): objectCount = 1
+~HowMany(): objectCount = 0
+after call to f(): objectCount = 0
+~HowMany(): objectCount = -1
+~HowMany(): objectCount = -2</PRE></FONT></BLOCKQUOTE>
+
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">After <B>h</B> is created, the object
+count is one, which is fine. But after the call to <B>f(&#160;) </B>you would
+expect to have an object count of two, because <B>h2</B> is now in scope as
+well. Instead, the count is zero, which indicates something has gone horribly
+wrong. This is confirmed by the fact that the two destructors at the end make
+the object count go negative, something that should never
+happen.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Look at the point inside
+<B>f(&#160;)</B>, which occurs after the argument is passed by value. This means
+the original object <B>h</B> exists outside the function frame, and
+there&#8217;s an additional object <I>inside</I> the function frame, which is
+the copy that has been passed by value. However, the argument has been passed
+using C&#8217;s primitive notion of bitcopying, whereas the C++ <B>HowMany</B>
+class requires true initialization to maintain its integrity, so the default
+bitcopy fails to produce the desired effect.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">When the local object goes out of scope
+at the end of the call to <B>f(&#160;)</B>, the destructor is called, which
+decrements <B>objectCount</B>, so outside the function, <B>objectCount</B> is
+zero. The creation of <B>h2</B> is also performed using a bitcopy, so the
+constructor isn&#8217;t called there either, and when <B>h</B> and <B>h2</B> go
+out of scope, their destructors cause the negative values of
+<B>objectCount</B>.</FONT><A NAME="_Toc312373964"></A><A NAME="_Toc472654939"></A><BR></P></DIV>
+<A NAME="Heading337"></A><FONT FACE = "Verdana"><H3 ALIGN="LEFT">
+Copy-construction</H3></FONT>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">The problem occurs because the compiler
+makes an assumption about how to create <I>a new object from an existing
+object<A NAME="Index1909"></A><A NAME="Index1910"></A><A NAME="Index1911"></A></I>.
+When you <A NAME="Index1912"></A><A NAME="Index1913"></A>pass an object by
+value, you create a new object, the passed object inside the function frame,
+from an existing object, the original object outside the function frame. This is
+also often true when returning an object from a function. In the expression
+</FONT><BR></P></DIV>
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE>HowMany h2 = f(h);</PRE></FONT></BLOCKQUOTE>
+
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia"><B>h2</B>, a previously unconstructed
+object, is created from the return value of <B>f(&#160;)</B>, so again a new
+object is created from an existing one.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">The compiler&#8217;s assumption is that
+you want to perform this creation using a bitcopy, and in many cases this may
+work fine, but in <B>HowMany</B> it doesn&#8217;t fly because the meaning of
+initialization goes beyond simply copying. Another common example occurs if the
+class contains pointers &#8211; what do they point to, and should you copy them
+or should they be connected to some new piece of memory?</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Fortunately, you can intervene in this
+process and prevent the compiler from doing a bitcopy. You do this by defining
+your own function to be used whenever the compiler needs to make a new object
+from an existing object. Logically enough, you&#8217;re making a new object, so
+this function is a constructor, and also logically enough, the single argument
+to this constructor has to do with the object you&#8217;re constructing from.
+But that object can&#8217;t be passed into the constructor by value because
+you&#8217;re trying to <I>define</I> the function that handles passing by value,
+and syntactically it doesn&#8217;t make sense to pass a pointer because, after
+all, you&#8217;re creating the new object from an existing object. Here,
+references come to the rescue, so you take the reference of the source object.
+This function is called the
+<I>copy-constructor<A NAME="Index1914"></A><A NAME="Index1915"></A></I> and is
+often referred to as <B>X(X&amp;)</B>, which is its appearance for a class
+called <B>X</B>.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">If you create a copy-constructor, the
+compiler will not perform a bitcopy when creating a new object from an existing
+one. It will always call your copy-constructor. So, if you don&#8217;t create a
+copy-constructor, the compiler will do something sensible, but you have the
+choice of taking over complete control of the process.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Now it&#8217;s possible to fix the
+problem in <B>HowMany.cpp</B>:</FONT><BR></P></DIV>
+
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE><font color=#009900>//: C11:HowMany2.cpp</font>
+<font color=#009900>// The copy-constructor</font>
+#include &lt;fstream&gt;
+#include &lt;string&gt;
+<font color=#0000ff>using</font> <font color=#0000ff>namespace</font> std;
+ofstream out(<font color=#004488>"HowMany2.out"</font>);
+
+<font color=#0000ff>class</font> HowMany2 {
+  string name; <font color=#009900>// Object identifier</font>
+  <font color=#0000ff>static</font> <font color=#0000ff>int</font> objectCount;
+<font color=#0000ff>public</font>:
+  HowMany2(<font color=#0000ff>const</font> string&amp; id = <font color=#004488>""</font>) : name(id) {
+    ++objectCount;
+    print(<font color=#004488>"HowMany2()"</font>);
+  }
+  ~HowMany2() {
+    --objectCount;
+    print(<font color=#004488>"~HowMany2()"</font>);
+  }
+  <font color=#009900>// The copy-constructor:</font>
+  HowMany2(<font color=#0000ff>const</font> HowMany2&amp; h) : name(h.name) {
+    name += <font color=#004488>" copy"</font>;
+    ++objectCount;
+    print(<font color=#004488>"HowMany2(const HowMany2&amp;)"</font>);
+  }
+  <font color=#0000ff>void</font> print(<font color=#0000ff>const</font> string&amp; msg = <font color=#004488>""</font>) <font color=#0000ff>const</font> {
+    <font color=#0000ff>if</font>(msg.size() != 0) 
+      out &lt;&lt; msg &lt;&lt; endl;
+    out &lt;&lt; '\t' &lt;&lt; name &lt;&lt; <font color=#004488>": "</font>
+        &lt;&lt; <font color=#004488>"objectCount = "</font>
+        &lt;&lt; objectCount &lt;&lt; endl;
+  }
+};
+
+<font color=#0000ff>int</font> HowMany2::objectCount = 0;
+
+<font color=#009900>// Pass and return BY VALUE:</font>
+HowMany2 f(HowMany2 x) {
+  x.print(<font color=#004488>"x argument inside f()"</font>);
+  out &lt;&lt; <font color=#004488>"Returning from f()"</font> &lt;&lt; endl;
+  <font color=#0000ff>return</font> x;
+}
+
+<font color=#0000ff>int</font> main() {
+  HowMany2 h(<font color=#004488>"h"</font>);
+  out &lt;&lt; <font color=#004488>"Entering f()"</font> &lt;&lt; endl;
+  HowMany2 h2 = f(h);
+  h2.print(<font color=#004488>"h2 after call to f()"</font>);
+  out &lt;&lt; <font color=#004488>"Call f(), no return value"</font> &lt;&lt; endl;
+  f(h);
+  out &lt;&lt; <font color=#004488>"After call to f()"</font> &lt;&lt; endl;
+} <font color=#009900>///:~</font></PRE></FONT></BLOCKQUOTE>
+
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">There are a number of new twists thrown
+in here so you can get a better idea of what&#8217;s happening. First, the
+<B>string</B> <B>name</B> acts as an object identifier when information about
+that object is printed. In the constructor, you can put an identifier string
+(usually the name of the object) that is copied to <B>name</B> using the
+<B>string </B>constructor. The default <B>= "" </B>creates an empty
+<B>string</B>. The constructor increments the <B>objectCount</B> as before, and
+the destructor decrements it.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Next is the copy-constructor,
+<B>HowMany2(const HowMany2&amp;)</B>. The copy-constructor can create a new
+object only from an existing one, so the existing object&#8217;s name is copied
+to <B>name</B>, followed by the word &#8220;copy&#8221; so you can see where it
+came from. If you look closely, you&#8217;ll see that the call
+<B>name(h.name)</B> in the constructor initializer list is actually calling the
+<B>string</B> copy-constructor.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Inside the copy-constructor, the object
+count is incremented just as it is inside the normal constructor. This means
+you&#8217;ll now get an accurate object count when passing and returning by
+value.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">The <B>print(&#160;)</B> function has
+been modified to print out a message, the object identifier, and the object
+count. It must now access the <B>name</B> data of a particular object, so it can
+no longer be a <B>static</B> member
+function<A NAME="Index1916"></A><A NAME="Index1917"></A><A NAME="Index1918"></A>.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Inside <B>main(&#160;)</B>, you can see
+that a second call to <B>f(&#160;)</B> has been added. However, this call uses
+the common C approach of ignoring the return value. But now that you know how
+the value is returned (that is, code <I>inside</I> the function handles the
+return process, putting the result in a destination whose address is passed as a
+hidden argument), you might wonder what happens when the return value is
+ignored. The output of the program will throw some illumination on
+this.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Before showing the output, here&#8217;s a
+little program that uses iostreams to add line numbers to any
+file:</FONT><BR></P></DIV>
+
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE><font color=#009900>//: C11:Linenum.cpp</font>
+<font color=#009900>//{T} Linenum.cpp</font>
+<font color=#009900>// Add line numbers</font>
+#include <font color=#004488>"../require.h"</font>
+#include &lt;vector&gt;
+#include &lt;string&gt;
+#include &lt;fstream&gt;
+#include &lt;iostream&gt;
+#include &lt;cmath&gt;
+<font color=#0000ff>using</font> <font color=#0000ff>namespace</font> std;
+
+<font color=#0000ff>int</font> main(<font color=#0000ff>int</font> argc, <font color=#0000ff>char</font>* argv[]) {
+  requireArgs(argc, 1, <font color=#004488>"Usage: linenum file\n"</font>
+    <font color=#004488>"Adds line numbers to file"</font>);
+  ifstream in(argv[1]);
+  assure(in, argv[1]);
+  string line;
+  vector&lt;string&gt; lines;
+  <font color=#0000ff>while</font>(getline(in, line)) <font color=#009900>// Read in entire file</font>
+    lines.push_back(line);
+  <font color=#0000ff>if</font>(lines.size() == 0) <font color=#0000ff>return</font> 0;
+  <font color=#0000ff>int</font> num = 0;
+  <font color=#009900>// Number of lines in file determines width:</font>
+  <font color=#0000ff>const</font> <font color=#0000ff>int</font> width = 
+    <font color=#0000ff>int</font>(log10((<font color=#0000ff>double</font>)lines.size())) + 1;
+  <font color=#0000ff>for</font>(<font color=#0000ff>int</font> i = 0; i &lt; lines.size(); i++) {
+    cout.setf(ios::right, ios::adjustfield);
+    cout.width(width);
+    cout &lt;&lt; ++num &lt;&lt; <font color=#004488>") "</font> &lt;&lt; lines[i] &lt;&lt; endl;
+  }
+} <font color=#009900>///:~</font></PRE></FONT></BLOCKQUOTE>
+
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">The entire file is read into a
+<B>vector&lt;string&gt;</B>, using the same code that you&#8217;ve seen earlier
+in the book. When printing the line numbers, we&#8217;d like all the lines to be
+aligned with each other, and this requires adjusting for the number of lines in
+the file so that the width allowed for the line numbers is consistent. We can
+easily determine the number of lines using <B>vector::size(&#160;)</B>, but what
+we really need to know is whether there are more than 10 lines, 100 lines, 1,000
+lines, etc. If you take the <A NAME="Index1919"></A>logarithm, base 10, of the
+number of lines in the file, truncate it to an <B>int</B> and add one to the
+value, you&#8217;ll find out the maximum width that your line count will
+be.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">You&#8217;ll notice a couple of strange
+calls inside the <B>for</B> loop:
+<A NAME="Index1920"></A><A NAME="Index1921"></A><B>setf(&#160;)</B> and
+<A NAME="Index1922"></A><A NAME="Index1923"></A><B>width(&#160;)</B>. These are
+<B>ostream</B> calls that allow you to control, in this case, the justification
+and width of the output. However, they must be called each time a line is output
+and that is why they are inside the <B>for</B> loop. Volume 2 of this book has
+an entire chapter explaining iostreams that will tell you more about these calls
+as well as other ways to control iostreams.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">When <B>Linenum.cpp</B> is applied to
+<B>HowMany2.out</B>, the result is</FONT><BR></P></DIV>
+
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE> 1) HowMany2()
+ 2)   h: objectCount = 1
+ 3) Entering f()
+ 4) HowMany2(<font color=#0000ff>const</font> HowMany2&amp;)
+ 5)   h copy: objectCount = 2
+ 6) x argument inside f()
+ 7)   h copy: objectCount = 2
+ 8) Returning from f()
+ 9) HowMany2(<font color=#0000ff>const</font> HowMany2&amp;)
+10)   h copy copy: objectCount = 3
+11) ~HowMany2()
+12)   h copy: objectCount = 2
+13) h2 after call to f()
+14)   h copy copy: objectCount = 2
+15) Call f(), no <font color=#0000ff>return</font> value
+16) HowMany2(<font color=#0000ff>const</font> HowMany2&amp;)
+17)   h copy: objectCount = 3
+18) x argument inside f()
+19)   h copy: objectCount = 3
+20) Returning from f()
+21) HowMany2(<font color=#0000ff>const</font> HowMany2&amp;)
+22)   h copy copy: objectCount = 4
+23) ~HowMany2()
+24)   h copy: objectCount = 3
+25) ~HowMany2()
+26)   h copy copy: objectCount = 2
+27) After call to f()
+28) ~HowMany2()
+29)   h copy copy: objectCount = 1
+30) ~HowMany2()
+31)   h: objectCount = 0
+</PRE></FONT></BLOCKQUOTE><DIV ALIGN="LEFT"><P><FONT FACE="Georgia">As you would expect, the first
+thing that happens is that the normal constructor is called for <B>h</B>, which
+increments the object count to one. But then, as <B>f(&#160;)</B> is entered,
+the copy-constructor is quietly called by the compiler to perform the
+pass-by-value. A new object is created, which is the copy of <B>h</B> (thus the
+name &#8220;h copy&#8221;) inside the function frame of <B>f(&#160;)</B>, so the
+object count becomes two, courtesy of the copy-constructor.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Line eight indicates the beginning of the
+return from <B>f(&#160;)</B>. But before the local variable &#8220;h copy&#8221;
+can be destroyed (it goes out of scope at the end of the function), it must be
+copied into the return value, which happens to be <B>h2</B>. A previously
+unconstructed object (<B>h2</B>) is created from an existing object (the local
+variable inside <B>f(&#160;)</B>), so of course the copy-constructor is used
+again in line nine. Now the name becomes &#8220;h copy copy&#8221; for
+<B>h2</B>&#8217;s identifier because it&#8217;s being copied from the copy that
+is the local object inside <B>f(&#160;)</B>. After the object is returned, but
+before the function ends, the object count becomes temporarily three, but then
+the local object &#8220;h copy&#8221; is destroyed. After the call to
+<B>f(&#160;)</B> completes in line 13, there are only two objects, <B>h</B> and
+<B>h2</B>, and you can see that <B>h2</B> did indeed end up as &#8220;h copy
+copy.&#8221;</FONT><BR></P></DIV>
+<A NAME="Heading338"></A><FONT FACE = "Verdana"><H4 ALIGN="LEFT">
+Temporary objects<BR><A NAME="Index1924"></A><A NAME="Index1925"></A></H4></FONT>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Line 15 begins the call to <B>f(h)</B>,
+this time ignoring the return value. You can see in line 16 that the
+copy-constructor is called just as before to pass the argument in. And also, as
+before, line 21 shows the copy-constructor is called for the return value. But
+the copy-constructor must have an address to work on as its destination (a
+<B>this</B> <A NAME="Index1926"></A>pointer). Where does this address come
+from?</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">It turns out the compiler can create a
+temporary object whenever it needs one to properly evaluate an expression. In
+this case it creates one you don&#8217;t even see to act as the destination for
+the ignored return value of <B>f(&#160;)</B>. The lifetime of this temporary
+object <A NAME="Index1927"></A>is as short as possible so the landscape
+doesn&#8217;t get cluttered up with temporaries waiting to be destroyed and
+taking up valuable resources. In some cases, the temporary might immediately be
+passed to another function, but in this case it isn&#8217;t needed after the
+function call, so as soon as the function call ends by calling the destructor
+for the local object (lines 23 and 24), the temporary object is destroyed (lines
+25 and 26).</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Finally, in lines 28-31, the <B>h2</B>
+object is destroyed, followed by <B>h</B>, and the object count goes correctly
+back to
+zero.</FONT><A NAME="_Toc312373965"></A><A NAME="_Toc472654940"></A><BR></P></DIV>
+<A NAME="Heading339"></A><FONT FACE = "Verdana"><H3 ALIGN="LEFT">
+Default
+copy-constructor<BR><A NAME="Index1928"></A><A NAME="Index1929"></A></H3></FONT>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Because the copy-constructor implements
+pass and return by value, it&#8217;s important that the compiler creates one for
+you in the case of simple structures &#8211; effectively, the same thing it does
+in C. However, all you&#8217;ve seen so far is the default primitive behavior: a
+bitcopy.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">When more complex types are involved, the
+C++ compiler will still automatically create a copy-constructor if you
+don&#8217;t make one. Again, however, a bitcopy
+<A NAME="Index1930"></A>doesn&#8217;t make sense, because it doesn&#8217;t
+necessarily implement the proper meaning.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Here&#8217;s an example to show the more
+intelligent approach the compiler takes. Suppose you create a new class composed
+of objects of several existing classes. This is called, appropriately enough,
+<I>composition<A NAME="Index1931"></A><A NAME="Index1932"></A><A NAME="Index1933"></A></I>,
+and it&#8217;s one of the ways you can make new classes from existing classes.
+Now take the role of a naive user who&#8217;s trying to solve a problem quickly
+by creating a new class this way. You don&#8217;t know about copy-constructors,
+so you don&#8217;t create one. The example demonstrates what the compiler does
+while creating the default copy-constructor for your new class:</FONT><BR></P></DIV>
+
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE><font color=#009900>//: C11:DefaultCopyConstructor.cpp</font>
+<font color=#009900>// Automatic creation of the copy-constructor</font>
+#include &lt;iostream&gt;
+#include &lt;string&gt;
+<font color=#0000ff>using</font> <font color=#0000ff>namespace</font> std;
+
+<font color=#0000ff>class</font> WithCC { <font color=#009900>// With copy-constructor</font>
+<font color=#0000ff>public</font>:
+  <font color=#009900>// Explicit default constructor required:</font>
+  WithCC() {}
+  WithCC(<font color=#0000ff>const</font> WithCC&amp;) {
+    cout &lt;&lt; <font color=#004488>"WithCC(WithCC&amp;)"</font> &lt;&lt; endl;
+  }
+};
+
+<font color=#0000ff>class</font> WoCC { <font color=#009900>// Without copy-constructor</font>
+  string id;
+<font color=#0000ff>public</font>:
+  WoCC(<font color=#0000ff>const</font> string&amp; ident = <font color=#004488>""</font>) : id(ident) {}
+  <font color=#0000ff>void</font> print(<font color=#0000ff>const</font> string&amp; msg = <font color=#004488>""</font>) <font color=#0000ff>const</font> {
+    <font color=#0000ff>if</font>(msg.size() != 0) cout &lt;&lt; msg &lt;&lt; <font color=#004488>": "</font>;
+    cout &lt;&lt; id &lt;&lt; endl;
+  }
+};
+
+<font color=#0000ff>class</font> Composite {
+  WithCC withcc; <font color=#009900>// Embedded objects</font>
+  WoCC wocc;
+<font color=#0000ff>public</font>:
+  Composite() : wocc(<font color=#004488>"Composite()"</font>) {}
+  <font color=#0000ff>void</font> print(<font color=#0000ff>const</font> string&amp; msg = <font color=#004488>""</font>) <font color=#0000ff>const</font> {
+    wocc.print(msg);
+  }
+};
+
+<font color=#0000ff>int</font> main() {
+  Composite c;
+  c.print(<font color=#004488>"Contents of c"</font>);
+  cout &lt;&lt; <font color=#004488>"Calling Composite copy-constructor"</font>
+       &lt;&lt; endl;
+  Composite c2 = c;  <font color=#009900>// Calls copy-constructor</font>
+  c2.print(<font color=#004488>"Contents of c2"</font>);
+} <font color=#009900>///:~</font></PRE></FONT></BLOCKQUOTE>
+
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">The class <B>WithCC</B> contains a
+copy-constructor, which simply announces that it has been called, and this
+brings up an interesting issue. In the class <B>Composite</B>, an object of
+<B>WithCC</B> is created using a default constructor. If there were no
+constructors at all in <B>WithCC</B>, the compiler would automatically create a
+default constructor<A NAME="Index1934"></A><A NAME="Index1935"></A>, which would
+do nothing in this case. However, if you add a copy-constructor, you&#8217;ve
+told the compiler you&#8217;re going to handle constructor creation, so it no
+longer creates a default constructor for you and will complain unless you
+explicitly create a default constructor as was done for
+<B>WithCC</B>.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">The class <B>WoCC</B> has no
+copy-constructor, but its constructor will store a message in an internal
+<B>string </B>that can be printed out using <B>print(&#160;)</B>. This
+constructor is explicitly called in <B>Composite</B>&#8217;s<B> </B>constructor
+initializer list (briefly introduced in Chapter 8 and covered fully in Chapter
+14). The reason for this becomes apparent later.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">The class <B>Composite</B> has member
+objects of both <B>WithCC</B> and <B>WoCC </B>(note the embedded object
+<B>wocc</B> is initialized in the constructor-initializer list, as it must be),
+and no explicitly defined copy-constructor. However, in <B>main(&#160;)</B> an
+object is created using the copy-constructor in the definition:</FONT><BR></P></DIV>
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE>Composite c2 = c;</PRE></FONT></BLOCKQUOTE>
+
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">The copy-constructor for <B>Composite
+</B>is created automatically by the compiler, and the output of the program
+reveals the way that it is created:</FONT><BR></P></DIV>
+
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE>Contents of c: Composite()
+Calling Composite copy-constructor
+WithCC(WithCC&amp;)
+Contents of c2: Composite()</PRE></FONT></BLOCKQUOTE>
+
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">To create a copy-constructor for a class
+that uses composition (and
+<A NAME="Index1936"></A><A NAME="Index1937"></A><A NAME="Index1938"></A>inheritance,
+which is introduced in Chapter 14), the compiler recursively calls the
+copy-constructors for all the member objects and base classes. That is, if the
+member object also contains another object, its copy-constructor is also called.
+So in this case, the compiler calls the copy-constructor for <B>WithCC</B>. The
+output shows this constructor being called. Because <B>WoCC</B> has no
+copy-constructor, the compiler creates one for it that just performs a bitcopy,
+and calls that inside the <B>Composite</B> copy-constructor. The call to
+<B>Composite::print(&#160;)</B> in main shows that this happens because the
+contents of <B>c2.wocc</B> are identical to the contents of <B>c.wocc</B>. The
+process the compiler goes through to synthesize a copy-constructor is called
+<I>memberwise
+initialization<A NAME="Index1939"></A><A NAME="Index1940"></A><A NAME="Index1941"></A></I>.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">It&#8217;s always best to create your own
+copy-constructor instead of letting the compiler do it for you. This guarantees
+that it will be under your
+control.</FONT><A NAME="_Toc312373966"></A><A NAME="_Toc472654941"></A><BR></P></DIV>
+<A NAME="Heading340"></A><FONT FACE = "Verdana"><H3 ALIGN="LEFT">
+Alternatives to
+copy-construction<BR><A NAME="Index1942"></A><A NAME="Index1943"></A></H3></FONT>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">At this point your head may be swimming,
+and you might be wondering how you could have possibly written a working class
+without knowing about the copy-constructor. But remember: You need a
+copy-constructor only if you&#8217;re going to pass an object of your class
+<I>by value</I>. If that never happens, you don&#8217;t need a
+copy-constructor.</FONT><BR></P></DIV>
+<A NAME="Heading341"></A><FONT FACE = "Verdana"><H4 ALIGN="LEFT">
+Preventing pass-by-value</H4></FONT>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">&#8220;But,&#8221; you say, &#8220;if I
+don&#8217;t make a copy-constructor, the compiler will create one for me. So how
+do I know that an object will never be passed by value?&#8221;</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">There&#8217;s a simple technique for
+preventing pass-by-value: declare a <A NAME="Index1944"></A><B>private</B>
+copy-constructor<A NAME="Index1945"></A>. You don&#8217;t even need to create a
+definition, unless one of your member functions or a <B>friend</B> function
+needs to perform a pass-by-value. If the user tries to pass or return the object
+by value, the compiler will produce an error message because the
+copy-constructor is <B>private</B>. It can no longer create a default
+copy-constructor because you&#8217;ve explicitly stated that you&#8217;re taking
+over that job.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Here&#8217;s an example:</FONT><BR></P></DIV>
+
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE><font color=#009900>//: C11:NoCopyConstruction.cpp</font>
+<font color=#009900>// Preventing copy-construction</font>
+
+<font color=#0000ff>class</font> NoCC {
+  <font color=#0000ff>int</font> i;
+  NoCC(<font color=#0000ff>const</font> NoCC&amp;); <font color=#009900>// No definition</font>
+<font color=#0000ff>public</font>:
+  NoCC(<font color=#0000ff>int</font> ii = 0) : i(ii) {}
+};
+
+<font color=#0000ff>void</font> f(NoCC);
+
+<font color=#0000ff>int</font> main() {
+  NoCC n;
+<font color=#009900>//! f(n); // Error: copy-constructor called</font>
+<font color=#009900>//! NoCC n2 = n; // Error: c-c called</font>
+<font color=#009900>//! NoCC n3(n); // Error: c-c called</font>
+} <font color=#009900>///:~</font></PRE></FONT></BLOCKQUOTE>
+
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Notice the use of the more general form
+</FONT><BR></P></DIV>
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE>NoCC(<font color=#0000ff>const</font> NoCC&amp;);</PRE></FONT></BLOCKQUOTE>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">using the <B>const</B>.</FONT><BR></P></DIV>
+<A NAME="Heading342"></A><FONT FACE = "Verdana"><H4 ALIGN="LEFT">
+Functions that modify outside
+objects<BR><A NAME="Index1946"></A><A NAME="Index1947"></A></H4></FONT>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Reference syntax is nicer to use than
+pointer syntax, yet it clouds the meaning for the reader. For example, in the
+iostreams library one overloaded version of the
+<B>get(&#160;)<A NAME="Index1948"></A><A NAME="Index1949"></A></B> function
+takes a <B>char&amp;</B> as an argument, and the whole point of the function is
+to modify its argument by inserting the result of the <B>get(&#160;)</B>.
+However, when you read code using this function it&#8217;s not immediately
+obvious to you that the outside object is being modified:</FONT><BR></P></DIV>
+
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE><font color=#0000ff>char</font> c;
+cin.get(c); </PRE></FONT></BLOCKQUOTE>
+
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Instead, the function call looks like a
+pass-by-value, which suggests the outside object is <I>not</I>
+modified.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Because of this, it&#8217;s probably
+safer from a code maintenance standpoint to use pointers when you&#8217;re
+passing the address of an argument to modify. If you <I>always</I> pass
+addresses as <B>const</B> references
+<A NAME="Index1950"></A><A NAME="Index1951"></A><A NAME="Index1952"></A><I>except</I>
+when you intend to modify the outside object via the address, where you pass by
+non-<B>const</B> pointer, then your code is far easier for the reader to
+follow.</FONT><A NAME="_Toc305593230"></A><A NAME="_Toc305628702"></A><A NAME="_Toc312373967"></A><A NAME="_Toc472654942"></A><BR></P></DIV>
+<A NAME="Heading343"></A><FONT FACE = "Verdana"><H2 ALIGN="LEFT">
+Pointers to members<BR><A NAME="Index1953"></A><A NAME="Index1954"></A></H2></FONT>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">A pointer is a variable that holds the
+address of some location. You can change what a pointer selects at runtime, and
+the destination of the pointer can be either data or a function. The C++
+<I>pointer-to-member</I> follows this same concept, except that what it selects
+is a location inside a class. The dilemma here is that a pointer needs an
+address, but there is no &#8220;address&#8221; inside a class; selecting a
+member of a class means offsetting into that class. You can&#8217;t produce an
+actual address until you combine that offset with the starting address of a
+particular object. The syntax of pointers to members requires that you select an
+object at the same time you&#8217;re dereferencing the pointer to
+member.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">To understand this syntax, consider a
+simple structure, with a pointer <B>sp</B> and an object <B>so</B> for this
+structure. You can select members with the syntax shown:</FONT><BR></P></DIV>
+
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE><font color=#009900>//: C11:SimpleStructure.cpp</font>
+<font color=#0000ff>struct</font> Simple { <font color=#0000ff>int</font> a; };
+<font color=#0000ff>int</font> main() {
+  Simple so, *sp = &amp;so;
+  sp-&gt;a;
+  so.a;
+} <font color=#009900>///:~</font></PRE></FONT></BLOCKQUOTE>
+
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Now suppose you have an ordinary pointer
+to an integer, <B>ip</B>. To access what <B>ip</B> is pointing to, you
+dereference the pointer with a &#8216;<B>*</B>&#8217;:</FONT><BR></P></DIV>
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE>*ip = 4;</PRE></FONT></BLOCKQUOTE>
+
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Finally, consider what happens if you
+have a pointer that happens to point to something inside a class object, even if
+it does in fact represent an offset into the object. To access what it&#8217;s
+pointing at, you must dereference it with <B>*</B>. But it&#8217;s an offset
+into an object, so you must also refer to that particular object. Thus, the
+<B>*</B> is combined with the object dereference. So the new syntax
+becomes<A NAME="Index1955"></A> <B>&#8211;&gt;*</B> for a pointer to an object,
+and <A NAME="Index1956"></A><B>.*</B> for the object or a reference, like
+this:</FONT><BR></P></DIV>
+
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE>objectPointer-&gt;*pointerToMember = 47;
+object.*pointerToMember = 47;</PRE></FONT></BLOCKQUOTE>
+
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Now, what is the syntax for defining
+<B>pointerToMember</B>? Like any pointer, you have to say what type it&#8217;s
+pointing at, and you use a <B>*</B> in the definition. The only difference is
+that you must say what class of objects this pointer-to-member is used with. Of
+course, this is accomplished with the name of the class and the scope resolution
+operator. Thus,</FONT><BR></P></DIV>
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE><font color=#0000ff>int</font> ObjectClass::*pointerToMember;</PRE></FONT></BLOCKQUOTE>
+
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">defines a pointer-to-member variable
+called <B>pointerToMember</B> that points to any <B>int</B> inside
+<B>ObjectClass</B>. You can also initialize the pointer-to-member when you
+define it (or at any other time):</FONT><BR></P></DIV>
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE><font color=#0000ff>int</font> ObjectClass::*pointerToMember = &amp;ObjectClass::a;</PRE></FONT></BLOCKQUOTE>
+
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">There is actually no
+&#8220;address&#8221; of <B>ObjectClass::a</B> because you&#8217;re just
+referring to the class and not an object of that class. Thus,
+<B>&amp;ObjectClass::a</B> can be used only as pointer-to-member
+syntax.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Here&#8217;s an example that shows how to
+create and use pointers to data members:</FONT><BR></P></DIV>
+
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE><font color=#009900>//: C11:PointerToMemberData.cpp</font>
+#include &lt;iostream&gt;
+<font color=#0000ff>using</font> <font color=#0000ff>namespace</font> std;
+
+<font color=#0000ff>class</font> Data {
+<font color=#0000ff>public</font>:  
+  <font color=#0000ff>int</font> a, b, c; 
+  <font color=#0000ff>void</font> print() <font color=#0000ff>const</font> {
+    cout &lt;&lt; <font color=#004488>"a = "</font> &lt;&lt; a &lt;&lt; <font color=#004488>", b = "</font> &lt;&lt; b
+         &lt;&lt; <font color=#004488>", c = "</font> &lt;&lt; c &lt;&lt; endl;
+  }
+};
+
+<font color=#0000ff>int</font> main() {
+  Data d, *dp = &amp;d;
+  <font color=#0000ff>int</font> Data::*pmInt = &amp;Data::a;
+  dp-&gt;*pmInt = 47;
+  pmInt = &amp;Data::b;
+  d.*pmInt = 48;
+  pmInt = &amp;Data::c;
+  dp-&gt;*pmInt = 49;
+  dp-&gt;print();
+} <font color=#009900>///:~</font></PRE></FONT></BLOCKQUOTE>
+
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Obviously, these are too awkward to use
+anywhere except for special cases (which is exactly what they were intended
+for).</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Also, pointers to members are quite
+limited: they can be assigned only to a specific location inside a class. You
+could not, for example, increment or compare them as you can with ordinary
+pointers.</FONT><A NAME="_Toc312373968"></A><A NAME="_Toc472654943"></A><BR></P></DIV>
+<A NAME="Heading344"></A><FONT FACE = "Verdana"><H3 ALIGN="LEFT">
+Functions<BR><A NAME="Index1957"></A><A NAME="Index1958"></A></H3></FONT>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">A similar exercise produces the
+pointer-to-member syntax for member functions. A pointer to a function
+(introduced at the end of Chapter 3) is defined like this:</FONT><BR></P></DIV>
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE><font color=#0000ff>int</font> (*fp)(<font color=#0000ff>float</font>);</PRE></FONT></BLOCKQUOTE>
+
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">The parentheses around <B>(*fp)</B> are
+necessary to force the compiler to evaluate the definition properly. Without
+them this would appear to be a function that returns an <B>int*</B>.
+</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Parentheses also play an important role
+when defining and using pointers to member functions. If you have a function
+inside a class, you define a pointer to that member function by inserting the
+class name and scope resolution operator into an ordinary function pointer
+definition:</FONT><BR></P></DIV>
+
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE><font color=#009900>//: C11:PmemFunDefinition.cpp</font>
+<font color=#0000ff>class</font> Simple2 { 
+<font color=#0000ff>public</font>: 
+  <font color=#0000ff>int</font> f(<font color=#0000ff>float</font>) <font color=#0000ff>const</font> { <font color=#0000ff>return</font> 1; }
+};
+<font color=#0000ff>int</font> (Simple2::*fp)(<font color=#0000ff>float</font>) <font color=#0000ff>const</font>;
+<font color=#0000ff>int</font> (Simple2::*fp2)(<font color=#0000ff>float</font>) <font color=#0000ff>const</font> = &amp;Simple2::f;
+<font color=#0000ff>int</font> main() {
+  fp = &amp;Simple2::f;
+} <font color=#009900>///:~</font></PRE></FONT></BLOCKQUOTE>
+
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">In the definition for <B>fp2 </B>you can
+see that a pointer to member function can also be initialized when it is
+created, or at any other time. Unlike non-member functions, the <B>&amp;</B> is
+<I>not </I>optional when taking the address of a member function. However, you
+can give the function identifier without an argument list, because overload
+resolution can be determined by the type of the pointer to member.
+</FONT><BR></P></DIV>
+<A NAME="Heading345"></A><FONT FACE = "Verdana"><H4 ALIGN="LEFT">
+An example</H4></FONT>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">The value of a pointer is that you can
+change what it points to at runtime, which provides an important flexibility in
+your programming because through a pointer you can select or change
+<I>behavior</I> at runtime. A pointer-to-member is no different; it allows you
+to choose a member at runtime. Typically, your classes will only have member
+functions publicly visible (data members are usually considered part of the
+underlying implementation), so the following example selects member functions at
+runtime.</FONT><BR></P></DIV>
+
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE><font color=#009900>//: C11:PointerToMemberFunction.cpp</font>
+#include &lt;iostream&gt;
+<font color=#0000ff>using</font> <font color=#0000ff>namespace</font> std;
+
+<font color=#0000ff>class</font> Widget {
+<font color=#0000ff>public</font>:
+  <font color=#0000ff>void</font> f(<font color=#0000ff>int</font>) <font color=#0000ff>const</font> { cout &lt;&lt; <font color=#004488>"Widget::f()\n"</font>; }
+  <font color=#0000ff>void</font> g(<font color=#0000ff>int</font>) <font color=#0000ff>const</font> { cout &lt;&lt; <font color=#004488>"Widget::g()\n"</font>; }
+  <font color=#0000ff>void</font> h(<font color=#0000ff>int</font>) <font color=#0000ff>const</font> { cout &lt;&lt; <font color=#004488>"Widget::h()\n"</font>; }
+  <font color=#0000ff>void</font> i(<font color=#0000ff>int</font>) <font color=#0000ff>const</font> { cout &lt;&lt; <font color=#004488>"Widget::i()\n"</font>; }
+};
+
+<font color=#0000ff>int</font> main() {
+  Widget w;
+  Widget* wp = &amp;w;
+  <font color=#0000ff>void</font> (Widget::*pmem)(<font color=#0000ff>int</font>) <font color=#0000ff>const</font> = &amp;Widget::h;
+  (w.*pmem)(1);
+  (wp-&gt;*pmem)(2);
+} <font color=#009900>///:~</font></PRE></FONT></BLOCKQUOTE>
+
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Of course, it isn&#8217;t particularly
+reasonable to expect the casual user to create such complicated expressions. If
+the user must directly manipulate a pointer-to-member, then a <B>typedef</B> is
+in order. To really clean things up, you can use the pointer-to-member as part
+of the internal implementation mechanism. Here&#8217;s the preceding example
+using a pointer-to-member <I>inside</I> the class. All the user needs to do is
+pass a number in to select a
+function.</FONT><A NAME="fnB48" HREF="#fn48">[48]</A><A NAME="Index1959"></A><BR></P></DIV>
+
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE><font color=#009900>//: C11:PointerToMemberFunction2.cpp</font>
+#include &lt;iostream&gt;
+<font color=#0000ff>using</font> <font color=#0000ff>namespace</font> std;
+
+<font color=#0000ff>class</font> Widget {
+  <font color=#0000ff>void</font> f(<font color=#0000ff>int</font>) <font color=#0000ff>const</font> { cout &lt;&lt; <font color=#004488>"Widget::f()\n"</font>; }
+  <font color=#0000ff>void</font> g(<font color=#0000ff>int</font>) <font color=#0000ff>const</font> { cout &lt;&lt; <font color=#004488>"Widget::g()\n"</font>; }
+  <font color=#0000ff>void</font> h(<font color=#0000ff>int</font>) <font color=#0000ff>const</font> { cout &lt;&lt; <font color=#004488>"Widget::h()\n"</font>; }
+  <font color=#0000ff>void</font> i(<font color=#0000ff>int</font>) <font color=#0000ff>const</font> { cout &lt;&lt; <font color=#004488>"Widget::i()\n"</font>; }
+  <font color=#0000ff>enum</font> { cnt = 4 };
+  <font color=#0000ff>void</font> (Widget::*fptr[cnt])(<font color=#0000ff>int</font>) <font color=#0000ff>const</font>;
+<font color=#0000ff>public</font>:
+  Widget() {
+    fptr[0] = &amp;Widget::f; <font color=#009900>// Full spec required</font>
+    fptr[1] = &amp;Widget::g;
+    fptr[2] = &amp;Widget::h;
+    fptr[3] = &amp;Widget::i;
+  }
+  <font color=#0000ff>void</font> select(<font color=#0000ff>int</font> i, <font color=#0000ff>int</font> j) {
+    <font color=#0000ff>if</font>(i &lt; 0 || i &gt;= cnt) <font color=#0000ff>return</font>;
+    (<font color=#0000ff>this</font>-&gt;*fptr[i])(j);
+  }
+  <font color=#0000ff>int</font> count() { <font color=#0000ff>return</font> cnt; }
+};
+
+<font color=#0000ff>int</font> main() {
+  Widget w;
+  <font color=#0000ff>for</font>(<font color=#0000ff>int</font> i = 0; i &lt; w.count(); i++)
+    w.select(i, 47);
+} <font color=#009900>///:~</font></PRE></FONT></BLOCKQUOTE>
+
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">In the class interface and in
+<B>main(&#160;)</B>, you can see that the entire implementation, including the
+functions, has been hidden away. The code must even ask for the
+<B>count(&#160;)</B> of functions. This way, the class implementer can change
+the quantity of functions in the underlying implementation without affecting the
+code where the class is used.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">The initialization of the
+pointers-to-members in the constructor may seem overspecified. Shouldn&#8217;t
+you be able to say</FONT><BR></P></DIV>
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE>fptr[1] = &amp;g;</PRE></FONT></BLOCKQUOTE>
+
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">because the name <B>g</B> occurs in the
+member function, which is automatically in the scope of the class? The problem
+is this doesn&#8217;t conform to the pointer-to-member syntax, which is required
+so everyone, especially the compiler, can figure out what&#8217;s going on.
+Similarly, when the pointer-to-member is dereferenced, it seems
+like</FONT><BR></P></DIV>
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE>(<font color=#0000ff>this</font>-&gt;*fptr[i])(j);</PRE></FONT></BLOCKQUOTE>
+
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">is also over-specified; <B>this</B> looks
+redundant. Again, the syntax requires that a pointer-to-member always be bound
+to an object when it is
+dereferenced.</FONT><A NAME="_Toc305593231"></A><A NAME="_Toc305628703"></A><A NAME="_Toc312373969"></A><A NAME="_Toc472654944"></A><BR></P></DIV>
+<A NAME="Heading346"></A><FONT FACE = "Verdana"><H2 ALIGN="LEFT">
+Summary</H2></FONT>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Pointers in C++ are almost identical to
+pointers in C, which is good. Otherwise, a lot of C code wouldn&#8217;t compile
+properly under C++. The only compile-time errors you will produce occur with
+dangerous assignments. If these are in fact what are intended, the compile-time
+errors can be removed with a simple (and explicit!) cast.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">C++ also adds the <I>reference</I> from
+Algol and Pascal, which is like a constant pointer that is automatically
+dereferenced by the compiler. A reference holds an address, but you treat it
+like an object. References are essential for clean syntax with operator
+overloading (the subject of the next chapter), but they also add syntactic
+convenience for passing and returning objects for ordinary
+functions.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">The copy-constructor takes a reference to
+an existing object of the same type as its argument, and it is used to create a
+new object from an existing one. The compiler automatically calls the
+copy-constructor when you pass or return an object by value. Although the
+compiler will automatically create a copy-constructor for you, if you think one
+will be needed for your class, you should always define it yourself to ensure
+that the proper behavior occurs. If you don&#8217;t want the object passed or
+returned by value, you should create a private
+copy-constructor.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Pointers-to-members have the same
+functionality as ordinary pointers: You can choose a particular region of
+storage (data or function) at runtime. Pointers-to-members just happen to work
+with class members instead of with global data or functions. You get the
+programming flexibility that allows you to change behavior at
+runtime.</FONT><A NAME="_Toc312373970"></A><A NAME="_Toc472654945"></A><BR></P></DIV>
+<A NAME="Heading347"></A><FONT FACE = "Verdana"><H2 ALIGN="LEFT">
+Exercises</H2></FONT>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia" SIZE=2>Solutions to selected exercises
+can be found in the electronic document <I>The Thinking in C++ Annotated
+Solution Guide</I>, available for a small fee from www.BruceEckel.com.
+<A NAME="Index1960"></A><A NAME="Index1961"></A></FONT><BR></P></DIV>
+<OL>
+<LI><FONT FACE="Verdana">	</FONT><FONT FACE="Georgia">Turn the &#8220;bird &amp;
+rock&#8221; code fragment at the beginning of this chapter into a C program
+(using <B>struct</B>s for the data types), and show that it compiles. Now try to
+compile it with the C++ compiler and see what
+happens.</FONT><LI><FONT FACE="Verdana">	</FONT><FONT FACE="Georgia">Take the
+code fragments in the beginning of the section titled &#8220;References in
+C++&#8221; and put them into a <B>main(&#160;)</B>. Add statements to print
+output so that you can prove to yourself that references are like pointers that
+are automatically
+dereferenced.</FONT><LI><FONT FACE="Verdana">	</FONT><FONT FACE="Georgia">Write
+a program in which you try to (1) Create a reference that is not initialized
+when it is created. (2) Change a reference to refer to another object after it
+is initialized. (3) Create a NULL
+reference.</FONT><LI><FONT FACE="Verdana">	</FONT><FONT FACE="Georgia">Write a
+function that takes a pointer argument, modifies what the pointer points to, and
+then returns the destination of the pointer as a
+reference.</FONT><LI><FONT FACE="Verdana">	</FONT><FONT FACE="Georgia">Create a
+class with some member functions, and make that the object that is pointed to by
+the argument of Exercise 4. Make the pointer a <B>const</B> and make some of the
+member functions <B>const</B> and prove that you can only call the <B>const</B>
+member functions inside your function. Make the argument to your function a
+reference instead of a
+pointer.</FONT><LI><FONT FACE="Verdana">	</FONT><FONT FACE="Georgia">Take the
+code fragments at the beginning of the section titled &#8220;Pointer
+references&#8221; and turn them into a
+program.</FONT><LI><FONT FACE="Verdana">	</FONT><FONT FACE="Georgia">Create a
+function that takes an argument of a reference to a pointer to a pointer and
+modifies that argument. In <B>main(&#160;)</B>, call the
+function.</FONT><LI><FONT FACE="Verdana">	</FONT><FONT FACE="Georgia">Create a
+function that takes a <B>char&amp;</B> argument and modifies that argument. In
+<B>main(&#160;)</B>, print out a <B>char</B> variable, call your function for
+that variable, and print it out again to prove to yourself that it has been
+changed. How does this affect program
+readability?</FONT><LI><FONT FACE="Verdana">	</FONT><FONT FACE="Georgia">Write a
+class that has a <B>const</B> member function and a non-<B>const</B> member
+function. Write three functions that take an object of that class as an
+argument; the first takes it by value, the second by reference, and the third by
+<B>const</B> reference. Inside the functions, try to call both member functions
+of your class and explain the
+results.</FONT><LI><FONT FACE="Verdana">	</FONT><FONT FACE="Georgia">(Somewhat
+challenging) Write a simple function that takes an <B>int</B> as an argument,
+increments the value, and returns it. In <B>main(&#160;)</B>, call your
+function. Now discover how your compiler generates assembly code and trace
+through the assembly statements so that you understand how arguments are passed
+and returned, and how local variables are indexed off the
+stack.</FONT><LI><FONT FACE="Verdana">	</FONT><FONT FACE="Georgia">Write a
+function that takes as its arguments a <B>char</B>, <B>int</B>, <B>float</B>,
+and <B>double</B>. Generate assembly code with your compiler and find the
+statements that push the arguments on the stack before a function
+call.</FONT><LI><FONT FACE="Verdana">	</FONT><FONT FACE="Georgia">Write a
+function that returns a <B>double</B>. Generate assembly code and determine how
+the value is
+returned.</FONT><LI><FONT FACE="Verdana">	</FONT><FONT FACE="Georgia">Produce
+assembly code for <B>PassingBigStructures.cpp</B>. Trace through and demystify
+the way your compiler generates code to pass and return large
+structures.</FONT><LI><FONT FACE="Verdana">	</FONT><FONT FACE="Georgia">Write a
+simple recursive function that decrements its argument and returns zero if the
+argument becomes zero, otherwise it calls itself. Generate assembly code for
+this function and explain how the way that the assembly code is created by the
+compiler supports
+recursion.</FONT><LI><FONT FACE="Verdana">	</FONT><FONT FACE="Georgia">Write
+code to prove that the compiler automatically synthesizes a copy-constructor if
+you don&#8217;t create one yourself. Prove that the synthesized copy-constructor
+performs a bitcopy of primitive types and calls the copy-constructor of
+user-defined
+types.</FONT><LI><FONT FACE="Verdana">	</FONT><FONT FACE="Georgia">Write a class
+with a copy-constructor that announces itself to <B>cout</B>. Now create a
+function that passes an object of your new class in by value and another one
+that creates a local object of your new class and returns it by value. Call
+these functions to prove to yourself that the copy-constructor is indeed quietly
+called when passing and returning objects by value.
+</FONT><LI><FONT FACE="Verdana">	</FONT><FONT FACE="Georgia">Create a class that
+contains a <B>double*</B>. The constructor initializes the <B>double*</B> by
+calling <B>new double</B> and assigning a value to the resulting storage from
+the constructor argument. The destructor prints the value that&#8217;s pointed
+to, assigns that value to -1, calls <B>delete </B>for the storage, and then sets
+the pointer to zero. Now create a function that takes an object of your class by
+value, and call this function in <B>main(&#160;)</B>. What happens? Fix the
+problem by writing a
+copy-constructor.</FONT><LI><FONT FACE="Verdana">	</FONT><FONT FACE="Georgia">Create
+a class with a constructor that looks like a copy-constructor, but that has an
+extra argument with a default value. Show that this is still used as the
+copy-constructor.</FONT><LI><FONT FACE="Verdana">	</FONT><FONT FACE="Georgia">Create
+a class with a copy-constructor that announces itself. Make a second class
+containing a member object of the first class, but do not create a
+copy-constructor. Show that the synthesized copy-constructor in the second class
+automatically calls the copy-constructor of the first
+class.</FONT><LI><FONT FACE="Verdana">	</FONT><FONT FACE="Georgia">Create a very
+simple class, and a function that returns an object of that class by value.
+Create a second function that takes a reference to an object of your class. Call
+the first function as the argument of the second function, and demonstrate that
+the second function must use a <B>const</B> reference as its
+argument.</FONT><LI><FONT FACE="Verdana">	</FONT><FONT FACE="Georgia">Create a
+simple class without a copy-constructor, and a simple function that takes an
+object of that class by value. Now change your class by adding a <B>private
+</B>declaration (only) for the copy-constructor. Explain what happens when your
+function is
+compiled.</FONT><LI><FONT FACE="Verdana">	</FONT><FONT FACE="Georgia">This
+exercise creates an alternative to using the copy-constructor. Create a class
+<B>X </B>and declare (but don&#8217;t define) a <B>private</B> copy-constructor.
+Make a public <B>clone(&#160;)</B> function as a <B>const</B> member function
+that returns a copy of the object that is created using <B>new</B>. Now write a
+function that takes as an argument a <B>const X&amp;</B> and clones a local copy
+that can be modified. The drawback to this approach is that you are responsible
+for explicitly destroying the cloned object (using <B>delete</B>) when
+you&#8217;re done with
+it.</FONT><LI><FONT FACE="Verdana">	</FONT><FONT FACE="Georgia">Explain
+what&#8217;s wrong with both <B>Mem.cpp</B> and <B>MemTest.cpp</B> from Chapter
+7. Fix the
+problem.</FONT><LI><FONT FACE="Verdana">	</FONT><FONT FACE="Georgia">Create a
+class containing a <B>double</B> and a <B>print(&#160;)</B> function that prints
+the <B>double</B>. In <B>main(&#160;)</B>, create pointers to members for both
+the data member and the function in your class. Create an object of your class
+and a pointer to that object, and manipulate both class elements via your
+pointers to members, using both the object and the pointer to the
+object.</FONT><LI><FONT FACE="Verdana">	</FONT><FONT FACE="Georgia">Create a
+class containing an array of <B>int</B>. Can you index through this array using
+a pointer to
+member?</FONT><LI><FONT FACE="Verdana">	</FONT><FONT FACE="Georgia">Modify
+<B>PmemFunDefinition.cpp</B> by adding an overloaded member function
+<B>f(&#160;)</B> (you can determine the argument list that causes the overload).
+Now make a second pointer to member, assign it to the overloaded version of
+<B>f(&#160;)</B>, and call the function through that pointer. How does the
+overload resolution happen in this
+case?</FONT><LI><FONT FACE="Verdana">	</FONT><FONT FACE="Georgia">Start with
+<B>FunctionTable.cpp</B> from Chapter 3. Create a class that contains a
+<B>vector</B> of pointers to functions, with <B>add(&#160;)</B> and
+<B>remove(&#160;)</B> member functions to add and remove pointers to functions.
+Add a <B>run(&#160;)</B> function that moves through the <B>vector</B> and calls
+all of the
+functions.</FONT><LI><FONT FACE="Verdana">	</FONT><FONT FACE="Georgia">Modify
+the above Exercise 27 so that it works with pointers to member functions
+instead.</FONT></OL><FONT FACE = "Verdana"><H1 ALIGN="LEFT">
+</H1></FONT>
+
+
+<FONT FACE = "Verdana"><H1 ALIGN="LEFT">
+</H1></FONT>
+<HR><DIV ALIGN="LEFT"><P><A NAME="fn48" HREF="#fnB48">[48]</A><FONT FACE="Georgia" SIZE=2>
+Thanks to Owen Mortensen for this example</FONT><BR></P></DIV>
+
+<DIV ALIGN="CENTER">
+    <FONT FACE="Verdana" size = "-1">
+     [ <a href="Chapter10.html">Previous Chapter</a> ] 
+    [ <a href="Contents.html">Table of Contents</a> ] 
+    [ <a href="DocIndex.html">Index</a> ]
+     [ <a href="Chapter12.html">Next Chapter</a> ] 
+    </FONT>
+    <BR>
+ Last Update:09/27/2001</P></DIV>
+
+</BODY>
+
+</HTML>

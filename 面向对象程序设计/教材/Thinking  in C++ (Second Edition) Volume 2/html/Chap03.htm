@@ -1,0 +1,614 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<HTML>
+<!--
+This document was converted from RTF source: 
+By rtftohtml 4.19
+See http://www.sunpack.com/RTF
+Filename:C:\TEMP\TicV2\html\TicV2.rtf
+Application Directory:C:\TOOLS\RTF2HTML\
+Subject:
+Author:Bruce Eckel
+Operator:Bruce Eckel
+Document Comments:
+Version Comments:
+Comments:
+Keywords:
+Translation Date:08/19/2001
+Translation Time:14:24:52
+Translation Platform:Win32
+Number of Output files:19
+This File:C:\TEMP\TicV2\html\Chap03.htm
+SplitDepth=1
+SkipNavPanel=1
+SkipLeadingToc=1
+SkipTrailingToc=1
+GenContents=1
+GenFrames=1
+GenIndex=1
+-->
+<HEAD lang="en"><META http-equiv="Content-Type" content="text/html">
+<TITLE>3: Debugging Techniques</TITLE>
+</HEAD>
+
+<BODY  BGCOLOR="#FFFFFF"><DIV ALIGN="CENTER">
+  <a href="http://www.MindView.net">
+  <img src="mindview.gif" alt="MindView Inc." BORDER = "0"></a>
+  <CENTER>
+    <FONT FACE="Verdana, Tahoma, Arial, Helvetica, Sans" size = "-1">
+    [ <a href="README.txt">Viewing Hints</a> ]
+    [ <a href="RevisionHistory.htm">Revision History</a> ]
+    [ <a href="http://www.mindview.net/Books/TICPP/ThinkingInCPP2e.html">Book Home Page</a> ]
+    [ <a href="http://www.mindview.net/Etc/MailingList.html">Free Newsletter</a> ] <br>
+    [ <a href="http://www.mindview.net/Seminars">Seminars</a> ]
+    [ <a href="http://www.mindview.net/CDs">Seminars on CD ROM</a> ]
+    [ <a href="http://www.mindview.net/Services">Consulting</a> ]
+    </FONT>
+  <H2><FONT FACE="Verdana, Tahoma, Arial, Helvetica, Sans">
+  Thinking in C++, 2nd edition, Volume 2<br>
+  <small>Revision 4.0</small></FONT></H2>
+  <H3><FONT FACE="Verdana, Tahoma, Arial, Helvetica, Sans">
+  by Bruce Eckel &amp; Chuck Allison<br>&copy;2001 MindView, Inc.</FONT></H3>
+  
+    <FONT FACE="Verdana, Tahoma, Arial, Helvetica, Sans" size = "-1">
+     [ <a href="Chap02.htm">Previous Chapter</a> ] 
+    
+    [ <a href="SimpCont.htm">Short TOC</a> ] 
+    [ <a href="Contents.htm">Table of Contents</a> ] 
+  
+        [ <a href="DocIdx.htm">Index</a> ]
+        
+     [ <a href="Part2.htm">Next Chapter</a> ] 
+    </FONT>
+    
+  </CENTER>
+  </P></DIV><A NAME="_Toc519041910"></A><A NAME="Heading69"></A><FONT FACE = "Verdana, Tahoma, Arial, Helvetica, Sans"><H1 ALIGN="LEFT">
+3: Debugging Techniques</H1></FONT>
+<DIV ALIGN="LEFT"><P><FONT FACE="Verdana" SIZE=4><a NAME="TIC2V2_CHAPTER3_I1"></a>
+Intro
+stuff</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Intro
+stuff
+[&nbsp;<a HREF="mailto:cda@freshsources.com?subject=[TICV2] TIC2V2_CHAPTER3_I1">Comment</a>&nbsp;]
+
+<a NAME="TIC2V2_CHAPTER3_I2"></a>
+</FONT><A NAME="_Toc519041911"></A><BR></P></DIV>
+<A NAME="Heading70"></A><FONT FACE = "Verdana, Tahoma, Arial, Helvetica, Sans"><H2 ALIGN="LEFT">
+Shared objects &amp; reference counting<A NAME="_Toc519041912"></A></H2></FONT>
+<A NAME="Heading71"></A><FONT FACE = "Verdana, Tahoma, Arial, Helvetica, Sans"><H2 ALIGN="LEFT">
+Reference-counted class hierarchies<A NAME="_Toc519041913"></A></H2></FONT>
+<A NAME="Heading72"></A><FONT FACE = "Verdana, Tahoma, Arial, Helvetica, Sans"><H2 ALIGN="LEFT">
+Debugging</H2></FONT>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">This section contains some tips and
+techniques which may help during
+debugging.
+[&nbsp;<a HREF="mailto:cda@freshsources.com?subject=[TICV2] TIC2V2_CHAPTER3_I2">Comment</a>&nbsp;]
+
+<a NAME="TIC2V2_CHAPTER3_I3"></a>
+</FONT><A NAME="_Toc519041914"></A><BR></P></DIV>
+<A NAME="Heading73"></A><FONT FACE = "Verdana, Tahoma, Arial, Helvetica, Sans"><H3 ALIGN="LEFT">
+Trace macros</H3></FONT>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Sometimes it&#8217;s very helpful to
+print the code of each statement before it is executed, either to <B>cout</B> or
+to a trace file. Here&#8217;s a preprocessor macro to accomplish
+this:
+[&nbsp;<a HREF="mailto:cda@freshsources.com?subject=[TICV2] TIC2V2_CHAPTER3_I3">Comment</a>&nbsp;]
+
+<a NAME="TIC2V2_CHAPTER3_I4"></a>
+</FONT><BR></P></DIV>
+
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE>#define TRACE(ARG) cout &lt;&lt; #ARG &lt;&lt; endl; ARG</PRE></FONT></BLOCKQUOTE>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Now you can go through and surround the
+statements you trace with this macro. Of course, it can introduce problems. For
+example, if you take the
+statement:
+[&nbsp;<a HREF="mailto:cda@freshsources.com?subject=[TICV2] TIC2V2_CHAPTER3_I4">Comment</a>&nbsp;]
+
+<a NAME="TIC2V2_CHAPTER3_I5"></a>
+</FONT><BR></P></DIV>
+
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE><font color=#0000ff>for</font>(<font color=#0000ff>int</font> i = 0; i &lt; 100; i++)
+  cout &lt;&lt; i &lt;&lt; endl;</PRE></FONT></BLOCKQUOTE>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">And put both lines inside
+<B>TRACE(&#160;)</B> macros, you get
+this:
+[&nbsp;<a HREF="mailto:cda@freshsources.com?subject=[TICV2] TIC2V2_CHAPTER3_I5">Comment</a>&nbsp;]
+
+<a NAME="TIC2V2_CHAPTER3_I6"></a>
+</FONT><BR></P></DIV>
+
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE>TRACE(<font color=#0000ff>for</font>(<font color=#0000ff>int</font> i = 0; i &lt; 100; i++))
+TRACE(  cout &lt;&lt; i &lt;&lt; endl;)</PRE></FONT></BLOCKQUOTE>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Which expands to
+this:
+[&nbsp;<a HREF="mailto:cda@freshsources.com?subject=[TICV2] TIC2V2_CHAPTER3_I6">Comment</a>&nbsp;]
+
+<a NAME="TIC2V2_CHAPTER3_I7"></a>
+</FONT><BR></P></DIV>
+
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE>cout &lt;&lt; <font color=#004488>"for(int i = 0; i &lt; 100; i++)"</font> &lt;&lt; endl;
+<font color=#0000ff>for</font>(<font color=#0000ff>int</font> i = 0; i &lt; 100; i++)
+  cout &lt;&lt; <font color=#004488>"cout &lt;&lt; i &lt;&lt; endl;"</font> &lt;&lt; endl;
+cout &lt;&lt; i &lt;&lt; endl;</PRE></FONT></BLOCKQUOTE>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Which isn&#8217;t what you want. Thus,
+this technique must be used
+carefully.
+[&nbsp;<a HREF="mailto:cda@freshsources.com?subject=[TICV2] TIC2V2_CHAPTER3_I7">Comment</a>&nbsp;]
+
+<a NAME="TIC2V2_CHAPTER3_I8"></a>
+</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">A variation on the <B>TRACE(&#160;)</B>
+macro is this:
+[&nbsp;<a HREF="mailto:cda@freshsources.com?subject=[TICV2] TIC2V2_CHAPTER3_I8">Comment</a>&nbsp;]
+
+<a NAME="TIC2V2_CHAPTER3_I9"></a>
+</FONT><BR></P></DIV>
+
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE>#define D(a) cout &lt;&lt; #a <font color=#004488>"=["</font> &lt;&lt; a &lt;&lt; <font color=#004488>"]"</font> &lt;&lt; nl;</PRE></FONT></BLOCKQUOTE>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">If there&#8217;s an expression you want
+to display, you simply put it inside a call to <B>D(&#160;)</B> and the
+expression will be printed, followed by its value (assuming there&#8217;s an
+overloaded operator <B>&lt;&lt;</B> for the result type). For example, you can
+say <B>D(a + b)</B>. Thus you can use it anytime you want to test an
+intermediate value to make sure things are
+OK.
+[&nbsp;<a HREF="mailto:cda@freshsources.com?subject=[TICV2] TIC2V2_CHAPTER3_I9">Comment</a>&nbsp;]
+
+<a NAME="TIC2V2_CHAPTER3_I10"></a>
+</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Of course, the above two macros are
+actually just the two most fundamental things you do with a debugger: trace
+through the code execution and print values. A good debugger is an excellent
+productivity tool, but sometimes debuggers are not available, or it&#8217;s not
+convenient to use them. The above techniques always work, regardless of the
+situation.
+[&nbsp;<a HREF="mailto:cda@freshsources.com?subject=[TICV2] TIC2V2_CHAPTER3_I10">Comment</a>&nbsp;]
+
+<a NAME="TIC2V2_CHAPTER3_I11"></a>
+</FONT><A NAME="_Toc519041915"></A><BR></P></DIV>
+<A NAME="Heading74"></A><FONT FACE = "Verdana, Tahoma, Arial, Helvetica, Sans"><H3 ALIGN="LEFT">
+Trace file</H3></FONT>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">This code allows you to easily create a
+trace file and send all the output that would normally go to <B>cout</B> into
+the file. All you have to do is <B>#define</B> TRACEON and include the header
+file (of course, it&#8217;s fairly easy just to write the two key lines right
+into your file):
+[&nbsp;<a HREF="mailto:cda@freshsources.com?subject=[TICV2] TIC2V2_CHAPTER3_I11">Comment</a>&nbsp;]
+
+<a NAME="TIC2V2_CHAPTER3_I12"></a>
+</FONT><BR></P></DIV>
+
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE><font color=#009900>//: C03:Trace.h</font>
+<font color=#009900>// Creating a trace file</font>
+#ifndef TRACE_H
+#define TRACE_H
+#include &lt;fstream&gt;
+
+#ifdef TRACEON
+ofstream TRACEFILE__(<font color=#004488>"TRACE.OUT"</font>);
+#define cout TRACEFILE__
+#endif
+
+#endif <font color=#009900>// TRACE_H ///:~</font></PRE></FONT></BLOCKQUOTE>
+
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Here&#8217;s a simple test of the above
+file:
+[&nbsp;<a HREF="mailto:cda@freshsources.com?subject=[TICV2] TIC2V2_CHAPTER3_I12">Comment</a>&nbsp;]
+
+<a NAME="TIC2V2_CHAPTER3_I13"></a>
+</FONT><BR></P></DIV>
+
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE><font color=#009900>//: C03:Tracetst.cpp</font>
+<font color=#009900>// Test of trace.h</font>
+#include <font color=#004488>"..</font><font color=#004488>/require.h"</font>
+#include &lt;iostream&gt;
+#include &lt;fstream&gt;
+<font color=#0000ff>using</font> <font color=#0000ff>namespace</font> std;
+
+#define TRACEON
+#include <font color=#004488>"Trace.h"</font>
+
+<font color=#0000ff>int</font> main() {
+  ifstream f(<font color=#004488>"Tracetst.cpp"</font>);
+  assure(f, <font color=#004488>"Tracetst.cpp"</font>);
+  cout &lt;&lt; f.rdbuf();
+} <font color=#009900>///:~</font></PRE></FONT></BLOCKQUOTE>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">This also uses the <B>assure(&#160;)</B>
+function defined earlier in the
+book.
+[&nbsp;<a HREF="mailto:cda@freshsources.com?subject=[TICV2] TIC2V2_CHAPTER3_I13">Comment</a>&nbsp;]
+
+<a NAME="TIC2V2_CHAPTER3_I14"></a>
+</FONT><A NAME="_Toc519041916"></A><BR></P></DIV>
+<A NAME="Heading75"></A><FONT FACE = "Verdana, Tahoma, Arial, Helvetica, Sans"><H3 ALIGN="LEFT">
+Abstract base class for debugging</H3></FONT>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">In the Smalltalk tradition, you can
+create your own object-based hierarchy, and install pure virtual functions to
+perform debugging. Then everyone on the team must inherit from this class and
+redefine the debugging functions. All objects in the system will then have
+debugging functions
+available.
+[&nbsp;<a HREF="mailto:cda@freshsources.com?subject=[TICV2] TIC2V2_CHAPTER3_I14">Comment</a>&nbsp;]
+
+<a NAME="TIC2V2_CHAPTER3_I15"></a>
+</FONT><A NAME="_Toc519041917"></A><BR></P></DIV>
+<A NAME="Heading76"></A><FONT FACE = "Verdana, Tahoma, Arial, Helvetica, Sans"><H2 ALIGN="LEFT">
+Finding memory leaks</H2></FONT>
+<OL>
+<LI><FONT FACE="Georgia">	For array bounds checking, use the <B>Array</B>
+template in C16:Array3.cpp of Volume 1 for all arrays. You can turn off the
+checking and increase efficiency when you&#8217;re ready to ship. (This
+doesn&#8217;t deal with the case of taking a pointer to an array, though &#8211;
+perhaps that could be templatized somehow as
+well).
+[&nbsp;<a HREF="mailto:cda@freshsources.com?subject=[TICV2] TIC2V2_CHAPTER3_I15">Comment</a>&nbsp;]
+
+<a NAME="TIC2V2_CHAPTER3_I16"></a>
+</FONT><LI><FONT FACE="Georgia">	Use
+the C11:MemCheck to guarantee that dynamic memory is released
+properly.
+[&nbsp;<a HREF="mailto:cda@freshsources.com?subject=[TICV2] TIC2V2_CHAPTER3_I16">Comment</a>&nbsp;]
+
+<a NAME="TIC2V2_CHAPTER3_I17"></a>
+</FONT><LI><FONT FACE="Georgia">	Check
+for non-virtual destructors in base
+classes.
+[&nbsp;<a HREF="mailto:cda@freshsources.com?subject=[TICV2] TIC2V2_CHAPTER3_I17">Comment</a>&nbsp;]
+
+<a NAME="TIC2V2_CHAPTER3_I18"></a>
+</FONT><A NAME="_Toc519041918"></A></OL><A NAME="Heading77"></A><FONT FACE = "Verdana, Tahoma, Arial, Helvetica, Sans"><H3 ALIGN="LEFT">
+Tracking new/delete &amp; malloc/free</H3></FONT>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Common problems with memory allocation
+include calling <B>delete</B> for things you have <B>malloc</B>ed, calling
+<B>free</B> for things you allocated with <B>new</B>, forgetting to release
+objects from the free store, and releasing them more than once. This section
+provides a system to help you track these kinds of problems
+down.
+[&nbsp;<a HREF="mailto:cda@freshsources.com?subject=[TICV2] TIC2V2_CHAPTER3_I18">Comment</a>&nbsp;]
+
+<a NAME="TIC2V2_CHAPTER3_I19"></a>
+</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">To use the memory checking system, you
+simply link the <B>obj</B> file in and all the calls to <B>malloc(&#160;)</B>,
+<B>realloc(&#160;)</B>, <B>calloc(&#160;)</B>, <B>free(&#160;)</B>, <B>new</B>
+and <B>delete</B> are intercepted. However, if you also include the following
+file (which is optional), all the calls to <B>new</B> will store information
+about the file and line where they were called. This is accomplished with a use
+of the <I>placement syntax</I> for <B>operator new</B> (this trick was suggested
+by Reg Charney of the C++ Standards Committee). The placement syntax is intended
+for situations where you need to place objects at a specific point in memory.
+However, it allows you to create an <B>operator new</B> with any number of
+arguments. This is used to advantage here to store the results of the
+<B>__FILE__</B> and <B>__LINE__</B> macros whenever <B>new</B> is
+called:
+[&nbsp;<a HREF="mailto:cda@freshsources.com?subject=[TICV2] TIC2V2_CHAPTER3_I19">Comment</a>&nbsp;]
+
+<a NAME="TIC2V2_CHAPTER3_I20"></a>
+</FONT><BR></P></DIV>
+
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE><font color=#009900>//: C03:MemCheck.h</font>
+<font color=#009900>// Memory testing system</font>
+<font color=#009900>// This file is only included if you want to</font>
+<font color=#009900>// use the special placement syntax to find</font>
+<font color=#009900>// out the line number where "new" was called.</font>
+#ifndef MEMCHECK_H
+#define MEMCHECK_H
+#include &lt;cstdlib&gt;  <font color=#009900>// size_t</font>
+
+<font color=#009900>// Use placement syntax to pass extra arguments.</font>
+<font color=#009900>// From an idea by Reg Charney:</font>
+<font color=#0000ff>void</font>* <font color=#0000ff>operator</font> <font color=#0000ff>new</font>(
+  std::size_t sz, <font color=#0000ff>char</font>* file, <font color=#0000ff>int</font> line);
+#define <font color=#0000ff>new</font> <font color=#0000ff>new</font>(__FILE__, __LINE__)
+
+#endif <font color=#009900>// MEMCHECK_H ///:~</font></PRE></FONT></BLOCKQUOTE>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">In the following file containing the
+function definitions, you will note that everything is done with standard IO
+rather than iostreams. This is because, for example, the <B>cout</B> constructor
+allocates memory. Standard IO ensures against cyclical conditions that can lock
+up the system.
+[&nbsp;<a HREF="mailto:cda@freshsources.com?subject=[TICV2] TIC2V2_CHAPTER3_I20">Comment</a>&nbsp;]
+
+<a NAME="TIC2V2_CHAPTER3_I21"></a>
+</FONT><BR></P></DIV>
+
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE><font color=#009900>//: C03:MemCheck.cpp {O}</font>
+<font color=#009900>// Memory allocation tester</font>
+<font color=#009900>//{-msc}</font>
+#include &lt;cstdlib&gt;
+#include &lt;cstring&gt;
+#include &lt;cstdio&gt;
+<font color=#0000ff>using</font> <font color=#0000ff>namespace</font> std;
+<font color=#009900>// MemCheck.h must not be included here</font>
+
+<font color=#009900>// Output file object using cstdio</font>
+<font color=#009900>// (cout constructor calls malloc())</font>
+<font color=#0000ff>class</font> OFile {
+  FILE* f;
+<font color=#0000ff>public</font>:
+  OFile(<font color=#0000ff>char</font>* name) : f(fopen(name, <font color=#004488>"w"</font>)) {}
+  ~OFile() { fclose(f); }
+  <font color=#0000ff>operator</font> FILE*() { <font color=#0000ff>return</font> f; }
+};
+<font color=#0000ff>extern</font> OFile memtrace;
+<font color=#009900>// Comment out the following to send all the</font>
+<font color=#009900>// information to the trace file:</font>
+#define memtrace stdout
+
+<font color=#0000ff>const</font> <font color=#0000ff>unsigned</font> <font color=#0000ff>long</font> _pool_sz = 50000L;
+<font color=#0000ff>static</font> <font color=#0000ff>unsigned</font> <font color=#0000ff>char</font> _memory_pool[_pool_sz];
+<font color=#0000ff>static</font> <font color=#0000ff>unsigned</font> <font color=#0000ff>char</font>* _pool_ptr = _memory_pool;
+
+<font color=#0000ff>void</font>* getmem(size_t sz) {
+  <font color=#0000ff>if</font>(_memory_pool + _pool_sz - _pool_ptr &lt; sz) {
+    fprintf(stderr,
+           <font color=#004488>"Out of memory. Use bigger model\n"</font>);
+    exit(1);
+  }
+  <font color=#0000ff>void</font>* p = _pool_ptr;
+  _pool_ptr += sz;
+  <font color=#0000ff>return</font> p;
+}
+
+<font color=#009900>// Holds information about allocated pointers:</font>
+<font color=#0000ff>class</font> MemBag { 
+<font color=#0000ff>public</font>:
+  <font color=#0000ff>enum</font> type { Malloc, New };
+<font color=#0000ff>private</font>:
+  <font color=#0000ff>char</font>* typestr(type t) {
+    <font color=#0000ff>switch</font>(t) {
+      <font color=#0000ff>case</font> Malloc: <font color=#0000ff>return</font> <font color=#004488>"malloc"</font>;
+      <font color=#0000ff>case</font> New: <font color=#0000ff>return</font> <font color=#004488>"new"</font>;
+      <font color=#0000ff>default</font>: <font color=#0000ff>return</font> <font color=#004488>"?unknown?"</font>;
+    }
+  }
+  <font color=#0000ff>struct</font> M {
+    <font color=#0000ff>void</font>* mp;  <font color=#009900>// Memory pointer</font>
+    type t;     <font color=#009900>// Allocation type</font>
+    <font color=#0000ff>char</font>* file; <font color=#009900>// File name where allocated</font>
+    <font color=#0000ff>int</font> line;  <font color=#009900>// Line number where allocated</font>
+    M(<font color=#0000ff>void</font>* v, type tt, <font color=#0000ff>char</font>* f, <font color=#0000ff>int</font> l)
+      : mp(v), t(tt), file(f), line(l) {}
+  }* v;
+  <font color=#0000ff>int</font> sz, next;
+  <font color=#0000ff>enum</font> { increment = 50 };
+<font color=#0000ff>public</font>:
+  MemBag() : v(0), sz(0), next(0) {}
+  <font color=#0000ff>void</font>* add(<font color=#0000ff>void</font>* p, type tt = Malloc,
+            <font color=#0000ff>char</font>* s = <font color=#004488>"library"</font>, <font color=#0000ff>int</font> l = 0) {
+    <font color=#0000ff>if</font>(next &gt;= sz) {
+      sz += increment;
+      <font color=#009900>// This memory is never freed, so it</font>
+      <font color=#009900>// doesn't "get involved" in the test:</font>
+      <font color=#0000ff>const</font> <font color=#0000ff>int</font> memsize = sz * <font color=#0000ff>sizeof</font>(M);
+      <font color=#009900>// Equivalent of realloc, no registration:</font>
+      <font color=#0000ff>void</font>* p = getmem(memsize);
+      <font color=#0000ff>if</font>(v) memmove(p, v, memsize);
+      v = (M*)p;
+      memset(&amp;v[next], 0,
+             increment * <font color=#0000ff>sizeof</font>(M));
+    }
+    v[next++] = M(p, tt, s, l);
+    <font color=#0000ff>return</font> p;
+  }
+  <font color=#009900>// Print information about allocation:</font>
+  <font color=#0000ff>void</font> allocation(<font color=#0000ff>int</font> i) {
+    fprintf(memtrace, <font color=#004488>"pointer %p"</font>
+      <font color=#004488>" allocated with %s"</font>,
+      v[i].mp, typestr(v[i].t));
+    <font color=#0000ff>if</font>(v[i].t == New)
+      fprintf(memtrace, <font color=#004488>" at %s: %d"</font>,
+        v[i].file, v[i].line);
+    fprintf(memtrace, <font color=#004488>"\n"</font>);
+  }
+  <font color=#0000ff>void</font> validate(<font color=#0000ff>void</font>* p, type T = Malloc) {
+    <font color=#0000ff>for</font>(<font color=#0000ff>int</font> i = 0; i &lt; next; i++)
+      <font color=#0000ff>if</font>(v[i].mp == p) {
+        <font color=#0000ff>if</font>(v[i].t != T) {
+          allocation(i);
+          fprintf(memtrace,
+          <font color=#004488>"\t was released as if it were "</font>
+          <font color=#004488>"allocated with %s \n"</font>, typestr(T));
+        }
+        v[i].mp = 0;  <font color=#009900>// Erase it</font>
+        <font color=#0000ff>return</font>;
+      }
+    fprintf(memtrace,
+    <font color=#004488>"pointer not in memory list: %p\n"</font>, p);
+  }
+  ~MemBag() {
+    <font color=#0000ff>for</font>(<font color=#0000ff>int</font> i = 0; i &lt; next; i++)
+      <font color=#0000ff>if</font>(v[i].mp != 0) {
+        fprintf(memtrace,
+        <font color=#004488>"pointer not released: "</font>);
+        allocation(i);
+      }
+  }
+};
+<font color=#0000ff>extern</font> MemBag MEMBAG_;
+
+<font color=#0000ff>void</font>* malloc(size_t sz) {
+  <font color=#0000ff>void</font>* p = getmem(sz);
+  <font color=#0000ff>return</font> MEMBAG_.add(p, MemBag::Malloc);
+}
+
+<font color=#0000ff>void</font>* calloc(size_t num_elems, size_t elem_sz) {
+  <font color=#0000ff>void</font>* p = getmem(num_elems * elem_sz);
+  memset(p, 0, num_elems * elem_sz);
+  <font color=#0000ff>return</font> MEMBAG_.add(p, MemBag::Malloc);
+}  
+
+<font color=#0000ff>void</font>* realloc(<font color=#0000ff>void</font>* block, size_t sz) {
+  <font color=#0000ff>void</font>* p = getmem(sz);
+  <font color=#0000ff>if</font>(block) memmove(p, block, sz);
+  <font color=#0000ff>return</font> MEMBAG_.add(p, MemBag::Malloc);
+}
+
+<font color=#0000ff>void</font> free(<font color=#0000ff>void</font>* v) { 
+  MEMBAG_.validate(v, MemBag::Malloc);
+}
+
+<font color=#0000ff>void</font>* <font color=#0000ff>operator</font> <font color=#0000ff>new</font>(size_t sz) {
+  <font color=#0000ff>void</font>* p = getmem(sz);
+  <font color=#0000ff>return</font> MEMBAG_.add(p, MemBag::New);
+}
+
+<font color=#0000ff>void</font>*
+<font color=#0000ff>operator</font> <font color=#0000ff>new</font>(size_t sz, <font color=#0000ff>char</font>* file, <font color=#0000ff>int</font> line) {
+  <font color=#0000ff>void</font>* p = getmem(sz);
+  <font color=#0000ff>return</font> MEMBAG_.add(p, MemBag::New, file, line);
+}
+
+<font color=#0000ff>void</font> <font color=#0000ff>operator</font> <font color=#0000ff>delete</font>(<font color=#0000ff>void</font>* v) {
+  MEMBAG_.validate(v, MemBag::New);
+}
+
+MemBag MEMBAG_;
+<font color=#009900>// Placed here so the constructor is called</font>
+<font color=#009900>// AFTER that of MEMBAG_ :</font>
+#ifdef memtrace
+#undef memtrace
+#endif
+OFile memtrace(<font color=#004488>"memtrace.out"</font>);
+<font color=#009900>// Causes 1 "pointer not in memory list" message</font>
+<font color=#009900>///:~</font></PRE></FONT></BLOCKQUOTE>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia"><B>OFile</B> is a simple wrapper around a
+<B>FILE*</B>; the constructor opens the file and the destructor closes it. The
+<B>operator FILE*(&#160;)</B> allows you to simply use the <B>OFile</B> object
+anyplace you would ordinarily use a <B>FILE*</B> (in the <B>fprintf(&#160;)</B>
+statements in this example). The <B>#define</B> that follows simply sends
+everything to standard output, but if you need to put it in a trace file you
+simply comment out that
+line.
+[&nbsp;<a HREF="mailto:cda@freshsources.com?subject=[TICV2] TIC2V2_CHAPTER3_I21">Comment</a>&nbsp;]
+
+<a NAME="TIC2V2_CHAPTER3_I22"></a>
+</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Memory is allocated from an array called
+<B>_memory_pool</B>. The <B>_pool_ptr</B> is moved forward every time storage is
+allocated. For simplicity, the storage is never reclaimed, and
+<B>realloc(&#160;)</B> doesn&#8217;t try to resize the storage in the same
+place.
+[&nbsp;<a HREF="mailto:cda@freshsources.com?subject=[TICV2] TIC2V2_CHAPTER3_I22">Comment</a>&nbsp;]
+
+<a NAME="TIC2V2_CHAPTER3_I23"></a>
+</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">All the storage allocation functions call
+<B>getmem(&#160;)</B> which ensures there is enough space left and moves the
+<B>_pool_ptr</B> to allocate your storage. Then they store the pointer in a
+special container of class <B>MemBag</B> called <B>MEMBAG_</B>, along with
+pertinent information (notice the two versions of <B>operator new</B>; one which
+just stores the pointer and the other which stores the file and line number).
+The <B>MemBag</B> class is the heart of the
+system.
+[&nbsp;<a HREF="mailto:cda@freshsources.com?subject=[TICV2] TIC2V2_CHAPTER3_I23">Comment</a>&nbsp;]
+
+<a NAME="TIC2V2_CHAPTER3_I24"></a>
+</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">You will see many similarities to
+<B>xbag</B> in <B>MemBag</B>. A distinct difference is <B>realloc(&#160;)</B> is
+replaced by a call to <B>getmem(&#160;)</B> and <B>memmove(&#160;)</B>, so that
+storage allocated for the <B>MemBag</B> is not registered. In addition, the
+<B>type</B> <B>enum</B> allows you to store the way the memory was allocated;
+the <B>typestr(&#160;)</B> function takes a type and produces a string for use
+with printing.
+[&nbsp;<a HREF="mailto:cda@freshsources.com?subject=[TICV2] TIC2V2_CHAPTER3_I24">Comment</a>&nbsp;]
+
+<a NAME="TIC2V2_CHAPTER3_I25"></a>
+</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">The nested <B>struct M</B> holds the
+pointer, the type, a pointer to the file name (which is assumed to be statically
+allocated) and the line where the allocation occurred. <B>v</B> is a pointer to
+an array of <B>M</B> objects &#8211; this is the array which is dynamically
+sized.
+[&nbsp;<a HREF="mailto:cda@freshsources.com?subject=[TICV2] TIC2V2_CHAPTER3_I25">Comment</a>&nbsp;]
+
+<a NAME="TIC2V2_CHAPTER3_I26"></a>
+</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">The <B>allocation(&#160;)</B> function
+prints out a different message depending on whether the storage was allocated
+with <B>new</B> (where it has line and file information) or
+<B>malloc(&#160;)</B> (where it doesn&#8217;t). This function is used inside
+<B>validate(&#160;)</B>, which is called by <B>free(&#160;)</B> and
+<B>delete(&#160;)</B> to ensure everything is OK, and in the destructor, to
+ensure the pointer was cleaned up (note that in <B>validate(&#160;)</B> the
+pointer value <B>v[i].mp</B> is set to zero, to indicate it has been cleaned
+up).
+[&nbsp;<a HREF="mailto:cda@freshsources.com?subject=[TICV2] TIC2V2_CHAPTER3_I26">Comment</a>&nbsp;]
+
+<a NAME="TIC2V2_CHAPTER3_I27"></a>
+</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">The following is a simple test using the
+memcheck facility. The <B>MemCheck.obj</B> file must be linked in for it to
+work:
+[&nbsp;<a HREF="mailto:cda@freshsources.com?subject=[TICV2] TIC2V2_CHAPTER3_I27">Comment</a>&nbsp;]
+
+<a NAME="TIC2V2_CHAPTER3_I28"></a>
+</FONT><BR></P></DIV>
+
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE><font color=#009900>//: C03:MemTest.cpp</font>
+<font color=#009900>//{L} MemCheck</font>
+<font color=#009900>//{-msc}</font>
+<font color=#009900>// Test of MemCheck system</font>
+#include <font color=#004488>"MemCheck.h"</font>
+
+<font color=#0000ff>int</font> main() {
+  <font color=#0000ff>void</font>* v = std::malloc(100);
+  <font color=#0000ff>delete</font> v;
+  <font color=#0000ff>int</font>* x = <font color=#0000ff>new</font> <font color=#0000ff>int</font>;
+  std::free(x);
+  <font color=#0000ff>new</font> <font color=#0000ff>double</font>;
+} <font color=#009900>///:~</font></PRE></FONT></BLOCKQUOTE>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">The trace file created in
+<B>MemCheck.cpp</B> causes the generation of one "pointer not in memory list"
+message, apparently from the creation of the file pointer on the heap. [[ This
+may not still be true &#8211; test it
+]]
+[&nbsp;<a HREF="mailto:cda@freshsources.com?subject=[TICV2] TIC2V2_CHAPTER3_I28">Comment</a>&nbsp;]
+
+<a NAME="TIC2V2_CHAPTER3_I29"></a>
+</FONT><A NAME="_Toc519041919"></A><BR></P></DIV>
+<A NAME="Heading78"></A><FONT FACE = "Verdana, Tahoma, Arial, Helvetica, Sans"><H2 ALIGN="LEFT">
+The canonical object &amp; singly-rooted
+hierarchies<A NAME="_Toc519041920"></A></H2></FONT>
+<A NAME="Heading79"></A><FONT FACE = "Verdana, Tahoma, Arial, Helvetica, Sans"><H3 ALIGN="LEFT">
+An extended canonical form</H3></FONT>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Including a set of methods (such as
+trace/print/dump) in your library&#8217;s base class to enable easy
+debugging.
+[&nbsp;<a HREF="mailto:cda@freshsources.com?subject=[TICV2] TIC2V2_CHAPTER3_I29">Comment</a>&nbsp;]
+
+<a NAME="TIC2V2_CHAPTER3_I30"></a>
+</FONT><A NAME="_Toc519041921"></A><BR></P></DIV>
+<A NAME="Heading80"></A><FONT FACE = "Verdana, Tahoma, Arial, Helvetica, Sans"><H2 ALIGN="LEFT">
+Exercises</H2></FONT>
+<OL>
+<LI><FONT FACE="Verdana">	</FONT><FONT FACE="Georgia">Create a heap compactor
+for all dynamic memory in a particular program. This will require that you
+control how objects are dynamically created and used (do you overload
+<B>operator new</B> or does that approach work?). The typical heap-compaction
+scheme requires that all pointers are doubly-indirected (that is, pointers to
+pointers) so the &#8220;middle tier&#8221; pointer can be manipulated during
+compaction. Consider overloading <B>operator-&gt;</B> to accomplish this, since
+that operator has special behavior which will probably benefit your
+heap-compaction scheme. Write a program to test your heap-compaction
+scheme.
+[&nbsp;<a HREF="mailto:cda@freshsources.com?subject=[TICV2] TIC2V2_CHAPTER3_I30">Comment</a>&nbsp;]
+
+</FONT></OL>
+<DIV ALIGN="CENTER">
+    <FONT FACE="Verdana, Tahoma, Arial, Helvetica, Sans" size = "-1">
+     [ <a href="Chap02.htm">Previous Chapter</a> ] 
+    
+    [ <a href="SimpCont.htm">Short TOC</a> ] 
+    [ <a href="Contents.htm">Table of Contents</a> ] 
+  
+        [ <a href="DocIdx.htm">Index</a> ]
+        
+     [ <a href="Part2.htm">Next Chapter</a> ] 
+    </FONT>
+    <BR>
+ Last Update:08/19/2001</P></DIV>
+
+</BODY>
+
+</HTML>

@@ -1,0 +1,1467 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<HTML>
+<!--
+This document was converted from RTF source: 
+By rtftohtml 4.19
+See http://www.sunpack.com/RTF
+Filename:TIC2Vone.rtf
+Application Directory:C:\TOOLS\RTF2HTML\
+Subject:
+Author:Bruce Eckel
+Operator:Bruce Eckel
+Document Comments:
+Version Comments:
+Comments:
+Keywords:
+Translation Date:09/27/2001
+Translation Time:05:25:25
+Translation Platform:Win32
+Number of Output files:22
+This File:Chapter02.html
+SplitDepth=1
+SkipNavPanel=1
+SkipLeadingToc=1
+SkipTrailingToc=1
+GenContents=1
+GenFrames=1
+GenIndex=1
+-->
+<HEAD lang="en"><META http-equiv="Content-Type" content="text/html">
+<TITLE>2: Making &amp; Using Objects </TITLE>
+</HEAD>
+
+<BODY  BGCOLOR="#FFFFFF"><DIV ALIGN="CENTER">
+  <a href="http://www.MindView.net">
+  <img src="mindview-head.gif" alt="MindView Inc." BORDER = "0"></a>
+  <CENTER>
+    <FONT FACE="Verdana" size = "-1">
+    [ <a href="README-HTML.txt">Viewing Hints</a> ]
+    [ <a href="http://www.mindview.net/CPPServices/SolutionGuide.html">Exercise Solutions</a> ]
+    [ <a href="http://www.mindview.net/ThinkingInCPP2e.html">Volume 2</a> ]
+    [ <a href="http://www.mindview.net/MailingList.html">Free Newsletter</a> ] <br>
+    [ <a href="http://www.mindview.net/CPPServices/#PublicSeminars">Seminars</a> ]
+    [ <a href="http://www.mindview.net/CPPServices/#SeminarsOnCD">Seminars on CD ROM</a> ]
+    [ <a href="http://www.mindview.net/CPPServices/#ConsultingServices">Consulting</a> ]
+    </FONT>
+  <H2><FONT FACE="Verdana">
+  Thinking in C++, 2nd ed. Volume 1</FONT></H2></FONT>
+  <H3><FONT FACE="Verdana">&copy;2000 by Bruce Eckel</FONT></H3></FONT>
+  
+    <FONT FACE="Verdana" size = "-1">
+     [ <a href="Chapter01.html">Previous Chapter</a> ] 
+    [ <a href="Contents.html">Table of Contents</a> ] 
+    [ <a href="DocIndex.html">Index</a> ]
+     [ <a href="Chapter03.html">Next Chapter</a> ] 
+    </FONT>
+    
+  </CENTER>
+  </P></DIV><FONT FACE = "Verdana"><H1 ALIGN="LEFT">
+</H1></FONT>
+<DIV ALIGN="LEFT"><P><FONT FACE="Verdana" SIZE=4>This chapter will introduce enough
+C++ syntax and program construction concepts to allow you to write
+</FONT><BR><FONT FACE="Verdana" SIZE=4>and run some simple object-oriented
+programs. In the subsequent chapter we will cover the basic syntax of C and C++
+in detail.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">By reading this chapter first,
+you&#8217;ll get the basic flavor of what it is like to program with objects in
+C++, and you&#8217;ll also discover some of the reasons for the enthusiasm
+surrounding this language. This should be enough to carry you through Chapter 3,
+which can be a bit exhausting since it contains most of the details of the C
+language.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">The user-defined data
+type<A NAME="Index253"></A><A NAME="Index254"></A>, or
+<I>class<A NAME="Index255"></A></I>, is what distinguishes C++ from traditional
+procedural languages. A class is a new data type that you or someone else
+creates to solve a particular kind of problem. Once a class is created, anyone
+can use it without knowing the specifics of how it works, or even how classes
+are built. This chapter treats classes as if they are just another built-in data
+type available for use in programs. </FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Classes that someone else has created are
+typically packaged into a library<A NAME="Index256"></A>. This chapter uses
+several of the class libraries that come with all C++ implementations. An
+especially important standard library is iostreams, which (among other things)
+allow you to read from files and the keyboard, and to write to files and the
+display. You&#8217;ll also see the very handy <B>string </B>class, and the
+<B>vector </B>container from the Standard C++ Library. By the end of the
+chapter, you&#8217;ll see how easy it is to use a pre-defined library of
+classes.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">In order to create your first program you
+must understand the tools used to build
+applications.</FONT><A NAME="_Toc462979713"></A><A NAME="_Toc472654717"></A><BR></P></DIV>
+<A NAME="Heading66"></A><FONT FACE = "Verdana"><H2 ALIGN="LEFT">
+The process of language translation</H2></FONT>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">All computer languages are translated
+from something that tends to be easy for a human to understand (<I>source
+code</I>)<I> </I>into something that is executed on a computer (<I>machine
+instructions<A NAME="Index257"></A></I>). Traditionally, translators fall into
+two classes: <I>interpreters</I> and
+<A NAME="Index258"></A><I>compilers</I>.</FONT><A NAME="_Toc462979714"></A><A NAME="_Toc472654718"></A><BR></P></DIV>
+<A NAME="Heading67"></A><FONT FACE = "Verdana"><H3 ALIGN="LEFT">
+Interpreters<A NAME="Index259"></A></H3></FONT>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">An interpreter translates source code
+into activities (which may comprise groups of machine instructions) and
+immediately executes those activities. <A NAME="Index260"></A>BASIC, for
+example, has been a popular interpreted language. Traditional BASIC interpreters
+translate and execute one line at a time, and then forget that the line has been
+translated. This makes them slow, since they must re-translate any repeated
+code. BASIC has also been compiled, for speed. More modern interpreters, such as
+those for the <A NAME="Index261"></A>Python language, translate the entire
+program into an intermediate language that is then executed by a much faster
+interpreter</FONT><A NAME="fnB25" HREF="#fn25">[25]</A><A NAME="Index262"></A><FONT FACE="Georgia">.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Interpreters have many advantages. The
+transition from writing code to executing code is almost immediate, and the
+source code is always available so the interpreter can be much more specific
+when an error occurs. The benefits often cited for interpreters are ease of
+interaction and rapid development (but not necessarily execution) of
+programs.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Interpreted languages often have severe
+limitations when building large projects (Python seems to be an exception to
+this). The interpreter (or a reduced version) must always be in memory to
+execute the code, and even the fastest interpreter may introduce unacceptable
+speed restrictions. Most interpreters require that the complete source code be
+brought into the interpreter all at once. Not only does this introduce a space
+limitation, it can also cause more difficult bugs if the language doesn&#8217;t
+provide facilities to localize the effect of different pieces of
+code.</FONT><A NAME="_Toc462979715"></A><A NAME="_Toc472654719"></A><BR></P></DIV>
+<A NAME="Heading68"></A><FONT FACE = "Verdana"><H3 ALIGN="LEFT">
+Compilers<A NAME="Index263"></A></H3></FONT>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">A compiler translates source code
+directly into assembly language or machine instructions. The eventual end
+product is a file or files containing machine code. This is an involved process,
+and usually takes several steps. The transition from writing code to executing
+code is significantly longer with a compiler.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Depending on the acumen of the compiler
+writer, programs generated by a compiler tend to require much less space to run,
+and they run much more quickly. Although size and speed are probably the most
+often cited reasons for using a compiler, in many situations they aren&#8217;t
+the most important reasons. Some languages (such as C) are designed to allow
+pieces of a program to be compiled independently. These pieces are eventually
+combined into a final <I>executable</I> program by a tool called the
+<I>linker<A NAME="Index264"></A></I>. This process is called <I>separate
+compilation<A NAME="Index265"></A><A NAME="Index266"></A></I>.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Separate compilation has many benefits. A
+program that, taken all at once, would exceed the limits of the compiler or the
+compiling environment can be compiled in pieces. Programs can be built and
+tested one piece at a time. Once a piece is working, it can be saved and treated
+as a building block. Collections of tested and working pieces can be combined
+into <A NAME="Index267"></A><I>libraries</I> for use by other programmers. As
+each piece is created, the complexity of the other pieces is hidden. All these
+features support the creation of large
+programs</FONT><A NAME="fnB26" HREF="#fn26">[26]</A><A NAME="Index268"></A><A NAME="Index269"></A><FONT FACE="Georgia">.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Compiler debugging<A NAME="Index270"></A>
+features have improved significantly over time. Early compilers only generated
+machine code, and the programmer inserted print statements to see what was going
+on. This is not always effective. Modern compilers can insert information about
+the source code into the executable program. This information is used by
+powerful <A NAME="Index271"></A><I>source-level debuggers</I> to show exactly
+what is happening in a program by tracing its progress through the source
+code.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Some compilers tackle the
+compilation-speed problem by performing <A NAME="Index272"></A><I>in-memory
+compilation</I>. Most compilers work with files, reading and writing them in
+each step of the compilation process. In-memory compilers keep the compiler
+program in RAM. For small programs, this can seem as responsive as an
+interpreter.
+</FONT><A NAME="_Toc462979716"></A><A NAME="_Toc472654720"></A><BR></P></DIV>
+<A NAME="Heading69"></A><FONT FACE = "Verdana"><H3 ALIGN="LEFT">
+The compilation process<A NAME="Index273"></A></H3></FONT>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">To program in C and C++, you need to
+understand the steps and tools in the compilation process. Some languages (C and
+C++, in particular) start compilation by running a
+<I>preprocessor<A NAME="Index274"></A></I> on the source code. The preprocessor
+is a simple program that replaces patterns in the source code with other
+patterns the programmer has defined (using <I>preprocessor
+directives<A NAME="Index275"></A></I>). Preprocessor directives are used to save
+typing and to increase the readability of the code. (Later in the book,
+you&#8217;ll learn how the design of C++ is meant to discourage much of the use
+of the preprocessor, since it can cause subtle bugs.) The pre-processed code is
+often written to an intermediate file.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Compilers usually do their work in two
+passes. The first pass <I>parses<A NAME="Index276"></A></I> the pre-processed
+code. The compiler breaks the source code into small units and organizes it into
+a structure called a <I>tree<A NAME="Index277"></A></I>. In the expression
+&#8220;<B>A + B</B>&#8221; the elements &#8216;<B>A</B>&#8217;,
+&#8216;<B>+,</B>&#8217; and &#8216;<B>B</B>&#8217; are leaves on the parse
+tree.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">A <I>global
+optimizer<A NAME="Index278"></A></I> is sometimes used between the first and
+second passes to produce smaller, faster code.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">In the second pass, the <I>code
+generator<A NAME="Index279"></A></I> walks through the parse tree and generates
+either assembly language code or machine code for the nodes of the tree. If the
+code generator creates assembly code, the assembler must then be run. The end
+result in both cases is an object module<A NAME="Index280"></A> (a file that
+typically has an extension of <B>.o</B> or <B>.obj</B>). A <I>peephole
+optimizer<A NAME="Index281"></A></I> is sometimes used in the second pass to
+look for pieces of code containing redundant assembly-language
+statements.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">The use of the word
+&#8220;object&#8221;<A NAME="Index282"></A> to describe chunks of machine code
+is an unfortunate artifact. The word came into use before object-oriented
+programming was in general use. &#8220;Object&#8221; is used in the same sense
+as &#8220;goal&#8221; when discussing compilation, while in object-oriented
+programming it means &#8220;a thing with boundaries.&#8221;</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">The <I>linker<A NAME="Index283"></A></I>
+combines a list of object modules into an executable program that can be loaded
+and run by the operating system. When a function in one object module makes a
+reference to a function or variable in another object module, the linker
+resolves these references; it makes sure that all the external functions and
+data you claimed existed during compilation do exist<A NAME="Index284"></A>. The
+linker also adds a special object module to perform start-up
+activities.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">The linker can search through special
+files called <I>libraries</I> in order to resolve all its references. A
+library<A NAME="Index285"></A> contains a collection of object modules in a
+single file. A library is created and maintained by a program called a
+<I>librarian</I>.</FONT><BR></P></DIV>
+<A NAME="Heading70"></A><FONT FACE = "Verdana"><H4 ALIGN="LEFT">
+Static type checking<BR><A NAME="Index286"></A></H4></FONT>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">The compiler performs <I>type
+checking<A NAME="Index287"></A></I> during the first pass. Type checking tests
+for the proper use of arguments in functions and prevents many kinds of
+programming errors. Since type checking occurs during compilation instead of
+when the program is running, it is called <I>static type checking</I>.
+</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Some object-oriented languages (notably
+Java<A NAME="Index288"></A>) perform some type checking at runtime (<I>dynamic
+type checking</I>). If combined with static type checking,
+<A NAME="Index289"></A>dynamic type checking is more powerful than static type
+checking alone. However, it also adds overhead to program
+execution.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">C++ uses static type checking because the
+language cannot assume any particular runtime support for bad operations. Static
+type checking notifies the programmer about misuses of types during compilation,
+and thus maximizes execution speed. As you learn C++, you will see that most of
+the language design decisions favor the same kind of high-speed,
+production-oriented programming the C language is famous for.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">You can disable static type checking in
+C++. You can also do your own dynamic type checking &#8211; you just need to
+write the code.
+</FONT><A NAME="_Toc462979717"></A><A NAME="_Toc472654721"></A><BR></P></DIV>
+<A NAME="Heading71"></A><FONT FACE = "Verdana"><H2 ALIGN="LEFT">
+Tools for separate compilation</H2></FONT>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Separate compilation is particularly
+important <A NAME="Index290"></A>when building large projects. In C and C++, a
+program can be created in small, manageable, independently tested pieces. The
+most fundamental tool for breaking a program up into pieces is the ability to
+create named subroutines or subprograms. In C and C++, a subprogram is called a
+<A NAME="Index291"></A><I>function</I>, and functions are the pieces of code
+that can be placed in different files, enabling separate compilation. Put
+another way, the function is the atomic unit of code, since you cannot have part
+of a function in one file and another part in a different file; the entire
+function must be placed in a single file (although files can and do contain more
+than one function).</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">When you call a function, you typically
+pass it some <I>arguments</I>, which are values you&#8217;d like the function to
+work with during its execution. When the function is finished, you typically get
+back a <A NAME="Index292"></A><A NAME="Index293"></A><I>return value</I>, a
+value that the function hands back to you as a result. It&#8217;s also possible
+to write functions that take no <A NAME="Index294"></A>arguments and return no
+values.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">To create a program with multiple files,
+functions in one file must access functions and data in other files. When
+compiling a file, the C or C++ compiler must know about the functions and data
+in the other files, in particular their names and proper usage. The compiler
+ensures that functions and data are used correctly. This process of
+&#8220;telling the compiler&#8221; the names of external functions and data and
+what they should look like is called <I>declaration<A NAME="Index295"></A></I>.
+Once you declare a function or variable, the compiler knows how to check to make
+sure it is used
+properly.</FONT><A NAME="_Toc312373820"></A><A NAME="_Toc462979718"></A><A NAME="_Toc472654722"></A><BR></P></DIV>
+<A NAME="Heading72"></A><FONT FACE = "Verdana"><H3 ALIGN="LEFT">
+Declarations vs. definitions</H3></FONT>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">It&#8217;s important to understand the
+difference between <I>declarations<A NAME="Index296"></A></I> and
+<I>definitions<A NAME="Index297"></A></I> because these terms will be used
+precisely throughout the book. Essentially all C and C++ programs require
+declarations. Before you can write your first program, you need to understand
+the proper way to write a declaration.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">A <I>declaration</I> introduces a name
+&#8211; an identifier &#8211; to the compiler. It tells the compiler &#8220;This
+function or this variable exists somewhere, and here is what it should look
+like.&#8221; A <I>definition</I>, on the other hand, says: &#8220;Make this
+variable here&#8221; or &#8220;Make this function here.&#8221; It allocates
+storage for the name. This meaning works whether you&#8217;re talking about a
+variable or a function; in either case, at the point of definition the compiler
+allocates storage. For a variable, the compiler determines how big that variable
+is and causes space to be generated in memory to hold the data for that
+variable. For a function, the compiler generates code, which ends up occupying
+storage in memory. </FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">You can declare a variable or a function
+in many different places, but there must be only one definition in C and C++
+(this is sometimes called the ODR: <A NAME="Index298"></A><I>one-definition
+rule</I>). When the linker is uniting all the object modules, it will usually
+complain if it finds more than one definition for the same function or
+variable.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">A definition can also be a declaration.
+If the compiler hasn&#8217;t seen the name <B>x</B> before and you define <B>int
+x;</B>, the compiler sees the name as a declaration and allocates storage for it
+all at once.</FONT><BR></P></DIV>
+<A NAME="Heading73"></A><FONT FACE = "Verdana"><H4 ALIGN="LEFT">
+Function declaration
+syntax<BR><A NAME="Index299"></A><A NAME="Index300"></A><A NAME="Index301"></A></H4></FONT>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">A function declaration in C and C++ gives
+the function name, the argument types passed to the function, and the return
+value of the function. For example, here is a declaration for a function called
+<B>func1(&#160;) </B>that takes two integer arguments (integers are denoted in
+C/C++ with the keyword <B>int</B>) and returns an integer:</FONT><BR></P></DIV>
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE><font color=#0000ff>int</font> func1(<font color=#0000ff>int</font>,<font color=#0000ff>int</font>);</PRE></FONT></BLOCKQUOTE>
+
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">The first keyword you see is the return
+value all by itself: <B>int</B>. The arguments are enclosed in parentheses after
+the function name in the order they are used. The semicolon indicates the end of
+a statement; in this case, it tells the compiler &#8220;that&#8217;s all &#8211;
+there is no function definition here!&#8221; </FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">C and C++ declarations attempt to mimic
+the form of the item&#8217;s use. For example, if <B>a</B> is another integer
+the above function might be used this way:</FONT><BR></P></DIV>
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE>a = func1(2,3);</PRE></FONT></BLOCKQUOTE>
+
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Since <B>func1</B>(&#160;) returns an
+integer, the C or C++ compiler will check the use of <B>func1(&#160;)</B> to
+make sure that <B>a</B> can accept the return value and that the arguments are
+appropriate.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Arguments <A NAME="Index302"></A>in
+function declarations may have names. The compiler ignores the names but they
+can be helpful as mnemonic devices for the user. For example, we can declare
+<B>func1(&#160;)</B> in a different fashion that has the same
+meaning:</FONT><BR></P></DIV>
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE><font color=#0000ff>int</font> func1(<font color=#0000ff>int</font> length, <font color=#0000ff>int</font> width);</PRE></FONT></BLOCKQUOTE>
+
+<A NAME="Heading74"></A><FONT FACE = "Verdana"><H4 ALIGN="LEFT">
+A gotcha</H4></FONT>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">There is a significant difference between
+C and C++ for functions with empty argument lists. In C, the
+declaration:</FONT><BR></P></DIV>
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE><font color=#0000ff>int</font> func2();</PRE></FONT></BLOCKQUOTE>
+
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">means &#8220;a function with any number
+and type of argument.&#8221; This prevents type-checking<A NAME="Index303"></A>,
+so in C++ it means &#8220;a function with no arguments.&#8221;</FONT><BR></P></DIV>
+<A NAME="Heading75"></A><FONT FACE = "Verdana"><H4 ALIGN="LEFT">
+Function definitions<BR><A NAME="Index304"></A><A NAME="Index305"></A></H4></FONT>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Function definitions look like function
+declarations except that they have bodies<A NAME="Index306"></A>. A body is a
+collection of statements enclosed in braces. Braces denote the beginning and
+ending of a block of code. To give <B>func1(&#160;)</B> a definition that is an
+empty body (a body containing no code), write:</FONT><BR></P></DIV>
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE><font color=#0000ff>int</font> func1(<font color=#0000ff>int</font> length, <font color=#0000ff>int</font> width) { }</PRE></FONT></BLOCKQUOTE>
+
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Notice that in the function definition,
+the braces replace the semicolon. Since braces surround a statement or group of
+statements, you don&#8217;t need a semicolon. Notice also that the arguments in
+the function definition must have names if you want to use the arguments in the
+function body (since they are never used here, they are
+optional).</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><A NAME="Index307"></A><A NAME="Index308"></A><A NAME="Index309"></A><BR></P></DIV>
+<A NAME="Heading76"></A><FONT FACE = "Verdana"><H4 ALIGN="LEFT">
+Variable declaration syntax</H4></FONT>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">The meaning attributed to the phrase
+&#8220;variable declaration&#8221; has historically been confusing and
+contradictory, and it&#8217;s important that you understand the correct
+definition so you can read code properly. A variable declaration tells the
+compiler what a variable looks like. It says, &#8220;I know you haven&#8217;t
+seen this name before, but I promise it exists someplace, and it&#8217;s a
+variable of X type.&#8221; </FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">In a function declaration, you give a
+type (the return value), the function name, the argument list, and a semicolon.
+That&#8217;s enough for the compiler to figure out that it&#8217;s a declaration
+and what the function should look like. By inference, a variable declaration
+might be a type followed by a name. For example:</FONT><BR></P></DIV>
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE><font color=#0000ff>int</font> a;</PRE></FONT></BLOCKQUOTE>
+
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">could declare the variable <B>a</B> as an
+integer, using the logic above. Here&#8217;s the conflict: there is enough
+information in the code above for the compiler to create space for an integer
+called <B>a</B>, and that&#8217;s what happens. To resolve this dilemma, a
+keyword was necessary for C and C++ to say &#8220;This is only a declaration;
+it&#8217;s defined elsewhere.&#8221; The keyword is
+<B>extern<A NAME="Index310"></A><A NAME="Index311"></A></B>. It can mean the
+definition is <B>extern</B>al to the file, or that the definition occurs later
+in the file.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Declaring a variable without defining it
+means using the <B>extern</B> keyword before a description of the variable, like
+this:</FONT><BR></P></DIV>
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE><font color=#0000ff>extern</font> <font color=#0000ff>int</font> a;</PRE></FONT></BLOCKQUOTE>
+
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia"><B>extern</B> can also apply to function
+declarations. For <B>func1(&#160;)</B>, it looks like this:</FONT><BR></P></DIV>
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE><font color=#0000ff>extern</font> <font color=#0000ff>int</font> func1(<font color=#0000ff>int</font> length, <font color=#0000ff>int</font> width);</PRE></FONT></BLOCKQUOTE>
+
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">This statement is equivalent to the
+previous <B>func1(&#160;)</B> declarations. Since there is no function body, the
+compiler must treat it as a function declaration rather than a function
+definition. The <B>extern</B> keyword is thus superfluous and optional for
+function declarations. It is probably unfortunate that the designers of C did
+not require the use of <B>extern</B> for function declarations; it would have
+been more consistent and less confusing (but would have required more typing,
+which probably explains the decision).</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Here are some more examples of
+declarations:</FONT><BR></P></DIV>
+
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE><font color=#009900>//: C02:Declare.cpp</font>
+<font color=#009900>// Declaration &amp; definition examples</font>
+<font color=#0000ff>extern</font> <font color=#0000ff>int</font> i; <font color=#009900>// Declaration without definition</font>
+<font color=#0000ff>extern</font> <font color=#0000ff>float</font> f(<font color=#0000ff>float</font>); <font color=#009900>// Function declaration</font>
+
+<font color=#0000ff>float</font> b;  <font color=#009900>// Declaration &amp; definition</font>
+<font color=#0000ff>float</font> f(<font color=#0000ff>float</font> a) {  <font color=#009900>// Definition</font>
+  <font color=#0000ff>return</font> a + 1.0;
+}
+
+<font color=#0000ff>int</font> i; <font color=#009900>// Definition</font>
+<font color=#0000ff>int</font> h(<font color=#0000ff>int</font> x) { <font color=#009900>// Declaration &amp; definition</font>
+  <font color=#0000ff>return</font> x + 1;
+}
+
+<font color=#0000ff>int</font> main() {
+  b = 1.0;
+  i = 2;
+  f(b);
+  h(i);
+} <font color=#009900>///:~</font></PRE></FONT></BLOCKQUOTE>
+
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">In the function declarations, the
+argument identifiers are optional. In the definitions, they are required (the
+identifiers are required only in C, not C++).</FONT><BR></P></DIV>
+<A NAME="Heading77"></A><FONT FACE = "Verdana"><H4 ALIGN="LEFT">
+Including headers </H4></FONT>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Most libraries contain significant
+numbers of functions and variables. To save work and ensure consistency when
+making the external declarations for these items, C and C++ use a device called
+the <I>header file<A NAME="Index312"></A></I>. A header file is a file
+containing the external declarations for a library; it conventionally has a file
+name extension of &#8216;h&#8217;, such as <B>headerfile.h</B>. (You may also
+see some older code using different extensions, such as <B>.hxx</B> or
+<B>.hpp</B>, but this is becoming rare.)</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">The programmer who creates the library
+provides the header file. To declare the functions and external variables in the
+library, the user simply includes the header file. To include a header file, use
+the <B>#include</B>
+<A NAME="Index313"></A><A NAME="Index314"></A><A NAME="Index315"></A>preprocessor<A NAME="Index316"></A>
+directive. This tells the preprocessor to open the named header file and insert
+its contents where the <B>#include</B> statement appears. A <B>#include</B> may
+name a file in two ways: in angle brackets (<B>&lt; &gt;</B>) or in double
+quotes. </FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">File names in angle brackets, such
+as:</FONT><BR></P></DIV>
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE>#include &lt;header&gt;</PRE></FONT></BLOCKQUOTE>
+
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">cause the preprocessor to search for the
+file in a way that is particular to your implementation, but typically
+there&#8217;s some kind of &#8220;include search path&#8221; that you specify in
+your environment or on the compiler command line. The mechanism for setting the
+search path varies between machines, operating systems, and C++ implementations,
+and may require some investigation on your part.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">File names in double quotes, such
+as:</FONT><BR></P></DIV>
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE>#include <font color=#004488>"local.h"</font></PRE></FONT></BLOCKQUOTE>
+
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">tell the preprocessor to search for the
+file in (according to the specification) an &#8220;implementation-defined
+way.&#8221; What this typically means is to search for the file relative to the
+current directory. If the file is not found, then the include directive is
+reprocessed as if it had angle brackets instead of quotes. </FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">To include the iostream header file, you
+write:</FONT><BR></P></DIV>
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE>#include &lt;iostream&gt;</PRE></FONT></BLOCKQUOTE>
+
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">The preprocessor will find the iostream
+header file (often in a subdirectory called &#8220;include&#8221;) and insert
+it. </FONT><A NAME="_Toc312374158"></A><BR></P></DIV>
+<A NAME="Heading78"></A><FONT FACE = "Verdana"><H4 ALIGN="LEFT">
+Standard C++ include
+format<BR><A NAME="Index317"></A><A NAME="Index318"></A></H4></FONT>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">As C++ evolved, different compiler
+vendors chose different extensions for file names. In addition, various
+operating systems have different restrictions on file names, in particular on
+name length. These issues caused source code portability problems. To smooth
+over these rough edges, the standard uses a format that allows file names longer
+than the notorious eight characters and eliminates the extension. For example,
+instead of  the old style of including <B>iostream.h</B>, which looks like
+this:</FONT><BR></P></DIV>
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE>#include &lt;iostream.h&gt;</PRE></FONT></BLOCKQUOTE>
+
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">you can now write:</FONT><BR></P></DIV>
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE>#include &lt;iostream&gt;</PRE></FONT></BLOCKQUOTE>
+
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">The translator can implement the include
+statements in a way that suits the needs of that particular compiler and
+operating system, if necessary truncating the name and adding an extension. Of
+course, you can also copy the headers given you by your compiler vendor to ones
+without extensions if you want to use this style before a vendor has provided
+support for it.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">The libraries that have been inherited
+from C are still available with the traditional &#8216;<B>.h</B>&#8217;
+extension. However, you can also use them with the more modern C++ include style
+by prepending a &#8220;<B>c</B>&#8221; before the name. Thus: </FONT><BR></P></DIV>
+
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE>#include &lt;stdio.h&gt;
+#include &lt;stdlib.h&gt;</PRE></FONT></BLOCKQUOTE>
+
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">become:</FONT><BR></P></DIV>
+
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE>#include &lt;cstdio&gt;
+#include &lt;cstdlib&gt;</PRE></FONT></BLOCKQUOTE>
+
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">And so on, for all the Standard C
+headers. This provides a nice distinction to the reader indicating when
+you&#8217;re using C versus C++ libraries.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">The effect of the new include format is
+not identical to the old: using the <B>.h</B> gives you the older, non-template
+version, and omitting the <B>.h</B> gives you the new templatized version.
+You&#8217;ll usually have problems if you try to intermix the two forms in a
+single
+program.</FONT><A NAME="_Toc462979719"></A><A NAME="_Toc472654723"></A><BR></P></DIV>
+<A NAME="Heading79"></A><FONT FACE = "Verdana"><H3 ALIGN="LEFT">
+Linking<A NAME="Index319"></A> </H3></FONT>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">The linker collects object modules (which
+often use file name extensions like <B>.o</B> or <B>.obj</B>), generated by the
+compiler, into an executable program the operating system can load and run. It
+is the last phase of the compilation process.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Linker characteristics vary from system
+to system. In general, you just tell the linker the names of the object modules
+and libraries you want linked together, and the name of the executable, and it
+goes to work. Some systems require you to invoke the linker yourself. With most
+C++ packages you invoke the linker through the C++ compiler. In many situations,
+the linker is invoked for you invisibly.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Some older linkers
+<A NAME="Index320"></A><A NAME="Index321"></A>won&#8217;t search object files
+and libraries more than once, and they search through the list you give them
+from left to right. This means that the order of object files and libraries can
+be important. If you have a mysterious problem that doesn&#8217;t show up until
+link time, one possibility is the order in which the files are given to the
+linker.</FONT><A NAME="_Toc462979720"></A><A NAME="_Toc472654724"></A><BR></P></DIV>
+<A NAME="Heading80"></A><FONT FACE = "Verdana"><H3 ALIGN="LEFT">
+Using libraries <A NAME="Index322"></A></H3></FONT>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Now that you know the basic terminology,
+you can understand how to use a library. To use a library:</FONT><BR></P></DIV>
+<OL>
+<LI><FONT FACE="Verdana">	</FONT><FONT FACE="Georgia">Include the
+library&#8217;s header
+file.</FONT><LI><FONT FACE="Verdana">	</FONT><FONT FACE="Georgia">Use the
+functions and variables in the
+library.</FONT><LI><FONT FACE="Verdana">	</FONT><FONT FACE="Georgia">Link the
+library into the executable
+program.</FONT></OL><DIV ALIGN="LEFT"><P><FONT FACE="Georgia">These steps also
+apply when the object modules aren&#8217;t combined into a library. Including a
+header file and linking the object modules are the basic steps for separate
+compilation in both C and C++.</FONT><BR></P></DIV>
+<A NAME="Heading81"></A><FONT FACE = "Verdana"><H4 ALIGN="LEFT">
+How the linker searches a library </H4></FONT>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">When you make an external reference to a
+function or variable in C or C++, the linker, upon encountering this reference,
+can do one of two things. If it has not already encountered the definition for
+the function or variable, it adds the identifier to its list of
+&#8220;unresolved
+references<A NAME="Index323"></A><A NAME="Index324"></A>.&#8221; If the linker
+has already encountered the definition, the reference is
+resolved.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">If the linker cannot find the definition
+in the list of object modules, it searches the libraries<A NAME="Index325"></A>.
+Libraries have some sort of indexing so the linker doesn&#8217;t need to look
+through all the object modules in the library &#8211; it just looks in the
+index. When the linker finds a definition in a library, the entire object
+module, not just the function definition, is linked into the executable program.
+Note that the whole library isn&#8217;t linked, just the object module in the
+library that contains the definition you want (otherwise programs would be
+unnecessarily large). If you want to minimize executable program size, you might
+consider putting a single function in each source code file when you build your
+own libraries. This requires more
+editing</FONT><A NAME="fnB27" HREF="#fn27">[27]</A><A NAME="Index326"></A><A NAME="Index327"></A><FONT FACE="Georgia">,
+but it can be helpful to the user.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Because the linker searches files in the
+order you give them, you can pre-empt the use of a library function
+<A NAME="Index328"></A>by inserting a file with your own function, using the
+same function name, into the list before the library name appears. Since the
+linker will resolve any references to this function by using your function
+before it searches the library, your function is used instead of the library
+function. Note that this can also be a bug, and the kind of thing C++ namespaces
+prevent.</FONT><BR></P></DIV>
+<A NAME="Heading82"></A><FONT FACE = "Verdana"><H4 ALIGN="LEFT">
+Secret additions</H4></FONT>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">When a C or C++ executable program is
+created, certain items are secretly linked in. One of these is the startup
+module<A NAME="Index329"></A>, which contains initialization routines that must
+be run any time a C or C++ program begins to execute. These routines set up the
+stack and initialize certain variables in the program.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">The linker always searches the standard
+library <A NAME="Index330"></A>for the compiled versions of any
+&#8220;standard&#8221; functions called in the program. Because the standard
+library is always searched, you can use anything in that library by simply
+including the appropriate header file in your program; you don&#8217;t have to
+tell it to search the standard library. The iostream functions, for example, are
+in the Standard C++ library. To use them, you just include the
+<B>&lt;iostream&gt; </B>header file.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">If you are using an add-on library, you
+must explicitly add the library name to the list of files handed to the
+linker.</FONT><BR></P></DIV>
+<A NAME="Heading83"></A><FONT FACE = "Verdana"><H4 ALIGN="LEFT">
+Using plain C libraries<A NAME="Index331"></A> </H4></FONT>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Just because you are writing code in C++,
+you are not prevented from using C library functions. In fact, the entire C
+library is included by default into Standard C++. There has been a tremendous
+amount of work done for you in these functions, so they can save you a lot of
+time.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">This book will use Standard C++ (and thus
+also Standard C) library functions when convenient, but only <I>standard</I>
+library functions will be used, to ensure the portability of programs. In the
+few cases in which library functions must be used that are not in the C++
+standard, all attempts will be made to use POSIX-compliant functions. POSIX is a
+standard based on a Unix standardization effort that includes functions that go
+beyond the scope of the C++ library. You can generally expect to find POSIX
+functions on Unix (in particular, Linux) platforms, and often under DOS/Windows.
+For example, if you&#8217;re using multithreading you are better off using the
+POSIX thread library because your code will then be easier to understand, port
+and maintain (and the POSIX thread library will usually just use the underlying
+thread facilities of the operating system, if these are
+provided).</FONT><A NAME="_Toc462979721"></A><A NAME="_Toc472654725"></A><BR></P></DIV>
+<A NAME="Heading84"></A><FONT FACE = "Verdana"><H2 ALIGN="LEFT">
+Your first C++ program<A NAME="Index332"></A></H2></FONT>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">You now know almost enough of the basics
+to create and compile a program. The program will use the Standard C++ iostream
+classes. These read from and write to files and &#8220;standard&#8221; input and
+output (which normally comes from and goes to the console, but may be redirected
+to files or devices). In this simple program, a stream object will be used to
+print a message on the
+screen.</FONT><A NAME="_Toc462979722"></A><A NAME="_Toc472654726"></A><BR></P></DIV>
+<A NAME="Heading85"></A><FONT FACE = "Verdana"><H3 ALIGN="LEFT">
+Using the iostreams class <A NAME="Index333"></A></H3></FONT>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">To declare the functions and external
+data in the iostreams class, include the header file with the
+statement</FONT><BR></P></DIV>
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE>#include &lt;iostream&gt;</PRE></FONT></BLOCKQUOTE>
+
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">The first program uses the concept of
+<A NAME="Index334"></A><A NAME="Index335"></A>standard output, which means
+&#8220;a general-purpose place to send output.&#8221; You will see other
+examples using standard output in different ways, but here it will just go to
+the console. The iostream package automatically defines a variable (an object)
+called <A NAME="Index336"></A><B>cout</B> that accepts all data bound for
+standard output.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">To send data to standard output, you use
+the operator <B>&lt;&lt;</B>. C programmers know this operator as the
+&#8220;bitwise left shift,&#8221; which will be described in the next chapter.
+Suffice it to say that a bitwise left shift has nothing to do with output.
+However, C++ allows operators to be <I>overloaded</I>. When you overload an
+operator<A NAME="Index337"></A><A NAME="Index338"></A>, you give it a new
+meaning when that operator is used with an object of a particular type. With
+iostream objects, the operator <B>&lt;&lt;</B> means &#8220;send to.&#8221; For
+example:</FONT><BR></P></DIV>
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE>cout &lt;&lt; <font color=#004488>"howdy!"</font>;</PRE></FONT></BLOCKQUOTE>
+
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">sends the string &#8220;howdy!&#8221; to
+the object called <B>cout<A NAME="Index339"></A></B> (which is short for
+&#8220;console output&#8221;).</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">That&#8217;s enough operator overloading
+to get you started. Chapter 12 covers operator overloading in
+detail.</FONT><A NAME="_Toc462979723"></A><A NAME="_Toc472654727"></A><BR></P></DIV>
+<A NAME="Heading86"></A><FONT FACE = "Verdana"><H3 ALIGN="LEFT">
+Namespaces<BR><A NAME="Index340"></A><A NAME="Index341"></A></H3></FONT>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">As mentioned in Chapter 1, one of the
+problems encountered in the C language is that you &#8220;run out of
+names&#8221; for functions and identifiers when your programs reach a certain
+size. Of course, you don&#8217;t really run out of names; it does, however,
+become harder to think of new ones after awhile. More importantly, when a
+program reaches a certain size it&#8217;s typically broken up into pieces, each
+of which is built and maintained by a different person or group. Since C
+effectively has a single arena where all the identifier and function names live,
+this means that all the developers must be careful not to accidentally use the
+same names in situations where they can conflict. This rapidly becomes tedious,
+time-wasting, and, ultimately, expensive.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Standard C++ has a mechanism to prevent
+this collision: the <B>namespace</B> keyword. Each set of C++ definitions in a
+library or program is &#8220;wrapped&#8221; in a namespace, and if some other
+definition has an identical name, but is in a different namespace, then there is
+no collision.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Namespaces are a convenient and helpful
+tool, but their presence means that you must be aware of them before you can
+write any programs. If you simply include a header file and use some functions
+or objects from that header, you&#8217;ll probably get strange-sounding errors
+when you try to compile the program, to the effect that the compiler cannot find
+any of the declarations for the items that you just included in the header file!
+After you see this message a few times you&#8217;ll become familiar with its
+meaning (which is &#8220;You included the header file but all the declarations
+are within a namespace and you didn&#8217;t tell the compiler that you wanted to
+use the declarations in that namespace&#8221;).</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">There&#8217;s a keyword that allows you
+to say &#8220;I want to use the declarations and/or definitions in this
+namespace.&#8221; This keyword, appropriately enough, is
+<A NAME="Index342"></A><A NAME="Index343"></A><B>using</B>. All of the Standard
+C++ libraries are wrapped in a single namespace, which is
+<A NAME="Index344"></A><A NAME="Index345"></A><B>std</B> (for
+&#8220;standard&#8221;). As this book uses the standard libraries almost
+exclusively, you&#8217;ll see the following
+<A NAME="Index346"></A><A NAME="Index347"></A><I>using directive</I> in almost
+every program:</FONT><BR></P></DIV>
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE><font color=#0000ff>using</font> <font color=#0000ff>namespace</font> std;</PRE></FONT></BLOCKQUOTE>
+
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">This means that you want to expose all
+the elements from the namespace called <B>std</B>. After this statement, you
+don&#8217;t have to worry that your particular library component is inside a
+namespace, since the <B>using</B> directive makes that namespace available
+throughout the file where the <B>using</B> directive was
+written.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Exposing all the elements from a
+namespace after someone has gone to the trouble to hide them may seem a bit
+counterproductive, and in fact you should be careful about thoughtlessly doing
+this (as you&#8217;ll learn later in the book). However, the <B>using</B>
+directive exposes only those names for the current file, so it is not quite as
+drastic as it first sounds. (But think twice about doing it in a header file
+&#8211; that <I>is</I> reckless.)</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">There&#8217;s a relationship between
+namespaces and the way header files are included. Before the modern header file
+inclusion was standardized (without the trailing &#8216;<B>.h</B>&#8217;, as in
+<B>&lt;iostream&gt;</B>), the typical way to include a header file was with the
+&#8216;<B>.h</B>&#8217;, such as <B>&lt;iostream.h&gt;</B>. At that time,
+namespaces were not part of the language either. So to provide backward
+compatibility with existing code, if you say </FONT><BR></P></DIV>
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE>#include &lt;iostream.h&gt;</PRE></FONT></BLOCKQUOTE>
+
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">it means</FONT><BR></P></DIV>
+
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE>#include &lt;iostream&gt;
+<font color=#0000ff>using</font> <font color=#0000ff>namespace</font> std;</PRE></FONT></BLOCKQUOTE>
+
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">However, in this book the standard
+include format will be used (without the &#8216;<B>.h</B>&#8217;) and so the
+<B>using</B> directive must be explicit.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">For now, that&#8217;s all you need to
+know about namespaces, but in Chapter 10 the subject is covered much more
+thoroughly.</FONT><A NAME="_Toc462979724"></A><A NAME="_Toc472654728"></A><BR></P></DIV>
+<A NAME="Heading87"></A><FONT FACE = "Verdana"><H3 ALIGN="LEFT">
+Fundamentals of program structure
+<A NAME="Index348"></A><A NAME="Index349"></A></H3></FONT>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">A C or C++ program is a collection of
+variables, function definitions, and function calls. When the program starts, it
+executes initialization code and calls a special function,
+&#8220;<B>main(&#160;)<A NAME="Index350"></A></B>.&#8221; You put the primary
+code for the program here.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">As mentioned earlier, a function
+definition consists of a return type (which must be specified in C++), a
+function name, an argument list in parentheses, and the function code contained
+in braces. Here is a sample function definition:</FONT><BR></P></DIV>
+
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE><font color=#0000ff>int</font> function() {
+  <font color=#009900>// Function code here (this is a comment)</font>
+} </PRE></FONT></BLOCKQUOTE>
+
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">The function above has an empty argument
+list and a body that contains only a comment. </FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">There can be many sets of braces within a
+function definition, but there must always be at least one set surrounding the
+function body. Since <B>main(&#160;)</B> is a function, it must follow these
+rules. In C++, <B>main(&#160;) </B>always has return type of
+<B>int</B>.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">C and C++ are free form languages. With
+few exceptions, the compiler ignores newlines and white space, so it must have
+some way to determine the end of a statement. Statements are delimited by
+semicolons.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">C comments start with <B>/* </B>and end
+with <B>*/</B>. They can include newlines. C++ uses C-style comments and has an
+additional type of comment: <B>//</B>. The <B>//</B> starts a comment that
+terminates with a newline. It is more convenient than <B>/* */</B> for one-line
+comments, and is used extensively in this
+book.</FONT><A NAME="_Toc462979725"></A><A NAME="_Toc472654729"></A><BR></P></DIV>
+<A NAME="Heading88"></A><FONT FACE = "Verdana"><H3 ALIGN="LEFT">
+"Hello, world!"</H3></FONT>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">And now, finally, the first
+program:</FONT><BR></P></DIV>
+
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE><font color=#009900>//: C02:Hello.cpp</font>
+<font color=#009900>// Saying Hello with C++</font>
+#include &lt;iostream&gt; <font color=#009900>// Stream declarations</font>
+<font color=#0000ff>using</font> <font color=#0000ff>namespace</font> std;
+
+<font color=#0000ff>int</font> main() {
+  cout &lt;&lt; <font color=#004488>"Hello, World! I am "</font>
+       &lt;&lt; 8 &lt;&lt; <font color=#004488>" Today!"</font> &lt;&lt; endl;
+} <font color=#009900>///:~</font></PRE></FONT></BLOCKQUOTE>
+
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">The <B>cout</B> object is handed a series
+of arguments via the &#8216;<B>&lt;&lt;</B>&#8217; operators. It prints out
+these arguments in left-to-right order. The special iostream function
+<B>endl</B> outputs the line and a newline. With iostreams, you can string
+together a series of arguments like this, which makes the class easy to use.
+</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">In C, text inside double quotes is
+traditionally called a &#8220;string<A NAME="Index351"></A>.&#8221; However, the
+Standard C++ library has a powerful class called <B>string</B> for manipulating
+text, and so I shall use the more precise term <I>character array </I>for text
+inside double quotes.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">The compiler creates storage for
+character arrays and stores the ASCII equivalent for each character in this
+storage. The compiler automatically terminates this array of characters with an
+extra piece of storage containing the value 0 to indicate the end of the
+character array. </FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Inside a character array, you can insert
+special characters by using <I>escape sequences<A NAME="Index352"></A></I>.
+These consist of a backslash (<B>\</B>) followed by a special code. For example
+<B>\n</B> means <A NAME="Index353"></A>newline. Your compiler manual or local C
+guide gives a complete set of escape sequences; others include <B>\t</B>
+(<A NAME="Index354"></A>tab), <B>\\</B> (<A NAME="Index355"></A>backslash), and
+<B>\b</B> (<A NAME="Index356"></A>backspace).</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Notice that the statement can continue
+over multiple lines, and that the entire statement terminates with a
+semicolon</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Character array arguments and constant
+numbers are mixed together in the above <B>cout</B> statement. Because the
+operator <B>&lt;&lt;</B> is overloaded<A NAME="Index357"></A> with a variety of
+meanings when used with <B>cout</B>, you can send <B>cout</B> a variety of
+different arguments and it will &#8220;figure out what to do with the
+message.&#8221;</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Throughout this book you&#8217;ll notice
+that the first line of each file will be a comment that starts with the
+characters that start a comment (typically <B>//</B>), followed by a colon, and
+the last line of the listing will end with a comment followed by
+&#8216;<B>/:~</B>&#8217;. This is a technique I use to allow easy extraction of
+information from code files (the program to do this can be found in volume two
+of this book, at <I>www.BruceEckel.com</I>). The first line also has the name
+and location of the file, so it can be referred to in text and in other files,
+and so you can easily locate it in the source code for this book (which is
+downloadable from
+<I>www.BruceEckel.com</I>).</FONT><A NAME="_Toc462979726"></A><A NAME="_Toc472654730"></A><BR></P></DIV>
+<A NAME="Heading89"></A><FONT FACE = "Verdana"><H3 ALIGN="LEFT">
+Running the compiler<A NAME="Index358"></A> </H3></FONT>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">After downloading and unpacking the
+book&#8217;s source code, find the program in the subdirectory <B>CO2</B>.
+Invoke the compiler with <B>Hello.cpp</B> as the argument. For simple, one-file
+programs like this one, most compilers will take you all the way through the
+process. For example, to use the GNU C++ compiler (which is freely available on
+the Internet), you write:</FONT><BR></P></DIV>
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE>g++ Hello.cpp</PRE></FONT></BLOCKQUOTE>
+
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Other compilers will have a similar
+syntax; consult your compiler&#8217;s documentation for
+details.</FONT><A NAME="_Toc462979727"></A><A NAME="_Toc472654731"></A><BR></P></DIV>
+<A NAME="Heading90"></A><FONT FACE = "Verdana"><H2 ALIGN="LEFT">
+More about iostreams </H2></FONT>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">So far you have seen only the most
+rudimentary aspect of the iostreams class. The output formatting available with
+iostreams also includes features such as number formatting in decimal, octal,
+and hexadecimal. Here&#8217;s another example of the use of
+iostreams:</FONT><BR></P></DIV>
+
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE><font color=#009900>//: C02:Stream2.cpp</font>
+<font color=#009900>// More streams features</font>
+#include &lt;iostream&gt;
+<font color=#0000ff>using</font> <font color=#0000ff>namespace</font> std;
+
+<font color=#0000ff>int</font> main() {
+  <font color=#009900>// Specifying formats with manipulators:</font>
+  cout &lt;&lt; <font color=#004488>"a number in decimal: "</font>
+       &lt;&lt; dec &lt;&lt; 15 &lt;&lt; endl;
+  cout &lt;&lt; <font color=#004488>"in octal: "</font> &lt;&lt; oct &lt;&lt; 15 &lt;&lt; endl;
+  cout &lt;&lt; <font color=#004488>"in hex: "</font> &lt;&lt; hex &lt;&lt; 15 &lt;&lt; endl;
+  cout &lt;&lt; <font color=#004488>"a floating-point number: "</font>
+       &lt;&lt; 3.14159 &lt;&lt; endl;
+  cout &lt;&lt; <font color=#004488>"non-printing char (escape): "</font>
+       &lt;&lt; <font color=#0000ff>char</font>(27) &lt;&lt; endl;
+} <font color=#009900>///:~</font></PRE></FONT></BLOCKQUOTE>
+
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">This example shows the iostreams class
+printing numbers in decimal, octal, and hexadecimal using iostream
+<I>manipulators</I> <A NAME="Index359"></A>(which don&#8217;t print anything,
+but change the state of the output stream). The formatting of floating-point
+numbers is determined automatically by the compiler. In addition, any character
+can be sent to a stream object using a <I>cast</I> to a
+<A NAME="Index360"></A><A NAME="Index361"></A><B>char</B> (a <B>char</B> is a
+data type that holds single characters). This <I>cast </I>looks like a function
+call: <B>char(&#160;)</B>, along with the character&#8217;s ASCII value. In the
+program above, the <B>char(27)</B> sends an &#8220;escape&#8221; to
+<B>cout</B>.</FONT><A NAME="_Toc462979728"></A><A NAME="_Toc472654732"></A><BR></P></DIV>
+<A NAME="Heading91"></A><FONT FACE = "Verdana"><H3 ALIGN="LEFT">
+Character array concatenation</H3></FONT>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">An important feature of the C
+preprocessor is <A NAME="Index362"></A><A NAME="Index363"></A><I>character array
+concatenation<A NAME="Index364"></A></I>. This feature is used in some of the
+examples in this book. If two quoted character arrays are adjacent, and no
+punctuation is between them, the compiler will paste the character arrays
+together into a single character array. This is particularly useful when code
+listings have width restrictions:</FONT><BR></P></DIV>
+
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE><font color=#009900>//: C02:Concat.cpp</font>
+<font color=#009900>// Character array Concatenation</font>
+#include &lt;iostream&gt;
+<font color=#0000ff>using</font> <font color=#0000ff>namespace</font> std;
+
+<font color=#0000ff>int</font> main() {
+  cout &lt;&lt; <font color=#004488>"This is far too long to put on a "</font>
+    <font color=#004488>"single line but it can be broken up with "</font>
+    <font color=#004488>"no ill effects\nas long as there is no "</font>
+    <font color=#004488>"punctuation separating adjacent character "</font>
+    <font color=#004488>"arrays.\n"</font>;
+} <font color=#009900>///:~</font></PRE></FONT></BLOCKQUOTE>
+
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">At first, the code above can look like an
+error because there&#8217;s no familiar semicolon at the end of each line.
+Remember that C and C++ are free-form languages, and although you&#8217;ll
+usually see a semicolon at the end of each line, the actual requirement is for a
+semicolon at the end of each statement, and it&#8217;s possible for a
+<A NAME="Index365"></A>statement to continue over several
+lines.</FONT><A NAME="_Toc462979729"></A><A NAME="_Toc472654733"></A><BR></P></DIV>
+<A NAME="Heading92"></A><FONT FACE = "Verdana"><H3 ALIGN="LEFT">
+Reading input<A NAME="Index366"></A></H3></FONT>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">The iostreams classes provide the ability
+to read input. The object used for
+<A NAME="Index367"></A><A NAME="Index368"></A>standard input is
+<A NAME="Index369"></A><B>cin</B> (for &#8220;console input&#8221;). <B>cin</B>
+normally expects input from the console, but this input can be redirected from
+other sources. An example of redirection is shown later in this
+chapter.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">The iostreams operator used with
+<B>cin</B> is <B>&gt;&gt;</B>. This operator waits for the same kind of input as
+its argument. For example, if you give it an integer argument, it waits for an
+integer from the console. Here&#8217;s an example:</FONT><BR></P></DIV>
+
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE><font color=#009900>//: C02:Numconv.cpp</font>
+<font color=#009900>// Converts decimal to octal and hex</font>
+#include &lt;iostream&gt;
+<font color=#0000ff>using</font> <font color=#0000ff>namespace</font> std;
+
+<font color=#0000ff>int</font> main() {
+  <font color=#0000ff>int</font> number;
+  cout &lt;&lt; <font color=#004488>"Enter a decimal number: "</font>;
+  cin &gt;&gt; number;
+  cout &lt;&lt; <font color=#004488>"value in octal = 0"</font> 
+       &lt;&lt; oct &lt;&lt; number &lt;&lt; endl;
+  cout &lt;&lt; <font color=#004488>"value in hex = 0x"</font> 
+       &lt;&lt; hex &lt;&lt; number &lt;&lt; endl;
+} <font color=#009900>///:~</font></PRE></FONT></BLOCKQUOTE>
+
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">This program converts a number typed in
+by the user into octal and hexadecimal
+representations.</FONT><A NAME="_Toc472654734"></A><BR></P></DIV>
+<A NAME="Heading93"></A><FONT FACE = "Verdana"><H3 ALIGN="LEFT">
+Calling other programs<A NAME="Index370"></A></H3></FONT>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">While the typical way to use a program
+that reads from standard input and writes to standard output is within a Unix
+shell script or DOS batch file, any program can be called from inside a C or C++
+program using the Standard C <B>system(&#160;)</B>
+function<A NAME="Index371"></A>, which is declared in the header file
+<B>&lt;cstdlib&gt;</B>:</FONT><BR></P></DIV>
+
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE><font color=#009900>//: C02:CallHello.cpp</font>
+<font color=#009900>// Call another program</font>
+#include &lt;cstdlib&gt; <font color=#009900>// Declare "system()"</font>
+<font color=#0000ff>using</font> <font color=#0000ff>namespace</font> std;
+
+<font color=#0000ff>int</font> main() {
+  system(<font color=#004488>"Hello"</font>);
+} <font color=#009900>///:~</font></PRE></FONT></BLOCKQUOTE>
+
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">To use the <B>system(&#160;)</B>
+function, you give it a character array that you would normally type at the
+operating system command prompt. This can also include command-line arguments,
+and the character array can be one that you fabricate at run time (instead of
+just using a static character array as shown above). The command executes and
+control returns to the program.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">This program shows you how easy it is to
+use plain C library functions in C++; just include the header file and call the
+function. This upward <A NAME="Index372"></A>compatibility from C to C++ is a
+big advantage if you are learning the language starting from a background in
+C.</FONT><A NAME="_Toc462979731"></A><A NAME="_Toc472654735"></A><BR></P></DIV>
+<A NAME="Heading94"></A><FONT FACE = "Verdana"><H2 ALIGN="LEFT">
+Introducing strings</H2></FONT>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">While a character array can be fairly
+useful, it is quite limited. It&#8217;s simply a group of characters in memory,
+but if you want to do anything with it you must manage all the little details.
+For example, the size of a quoted character array is fixed at compile time. If
+you have a character array and you want to add some more characters to it,
+you&#8217;ll need to understand quite a lot (including dynamic memory
+management, character array copying, and concatenation) before you can get your
+wish. This is exactly the kind of thing we&#8217;d like to have an object do for
+us.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">The Standard C++
+<A NAME="Index373"></A><B>string</B> class is designed to take care of (and
+hide) all the low-level manipulations of character arrays that were previously
+required of the C programmer. These manipulations have been a constant source of
+time-wasting and errors since the inception of the C language. So, although an
+entire chapter is devoted to the <B>string</B> class in Volume 2 of this book,
+the <B>string</B> is so important and it makes life so much easier that it will
+be introduced here and used in much of the early part of the
+book.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">To use <B>string</B>s you include the C++
+header file <B>&lt;string&gt;</B>. The <B>string</B> class is in the namespace
+<B>std</B> so a <B>using</B> directive is necessary. Because of operator
+overloading, the syntax for using <B>string</B>s is quite
+intuitive:</FONT><BR></P></DIV>
+
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE><font color=#009900>//: C02:HelloStrings.cpp</font>
+<font color=#009900>// The basics of the Standard C++ string class</font>
+#include &lt;string&gt;
+#include &lt;iostream&gt;
+<font color=#0000ff>using</font> <font color=#0000ff>namespace</font> std;
+
+<font color=#0000ff>int</font> main() {
+  string s1, s2; <font color=#009900>// Empty strings</font>
+  string s3 = <font color=#004488>"Hello, World."</font>; <font color=#009900>// Initialized</font>
+  string s4(<font color=#004488>"I am"</font>); <font color=#009900>// Also initialized</font>
+  s2 = <font color=#004488>"Today"</font>; <font color=#009900>// Assigning to a string</font>
+  s1 = s3 + <font color=#004488>" "</font> + s4; <font color=#009900>// Combining strings</font>
+  s1 += <font color=#004488>" 8 "</font>; <font color=#009900>// Appending to a string</font>
+  cout &lt;&lt; s1 + s2 + <font color=#004488>"!"</font> &lt;&lt; endl;
+} <font color=#009900>///:~</font></PRE></FONT></BLOCKQUOTE>
+
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">The first two <B>string</B>s, <B>s1</B>
+and <B>s2</B>, start out empty, while <B>s3</B> and <B>s4</B> show two
+equivalent ways to initialize <B>string</B> objects from character arrays (you
+can just as easily initialize <B>string</B> objects from other <B>string</B>
+objects).</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">You can assign to any <B>string</B>
+object using &#8216;<B>=</B>&#8217;. This replaces the previous contents of the
+string with whatever is on the right-hand side, and you don&#8217;t have to
+worry about what happens to the previous contents &#8211; that&#8217;s handled
+automatically for you. To combine <B>string</B>s you simply use the
+&#8216;<B>+</B>&#8217; operator, which also allows you to combine character
+arrays with <B>string</B>s. If you want to append either a <B>string</B> or a
+character array to another <B>string</B>, you can use the operator
+&#8216;<B>+=</B>&#8217;. Finally, note that <A NAME="Index374"></A>iostreams
+already know what to do with <B>string</B>s, so you can just send a
+<B>string</B> (or an expression that produces a <B>string</B>, which happens
+with <B>s1 + s2 + "!"</B>) directly to <B>cout</B> in order to print
+it.</FONT><A NAME="_Toc462979732"></A><A NAME="_Toc472654736"></A><BR></P></DIV>
+<A NAME="Heading95"></A><FONT FACE = "Verdana"><H2 ALIGN="LEFT">
+Reading and writing
+files<BR><A NAME="Index375"></A><A NAME="Index376"></A><A NAME="Index377"></A><A NAME="Index378"></A></H2></FONT>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">In C, the process of opening and
+manipulating files requires a lot of language background to prepare you for the
+complexity of the operations. However, the C++ iostream library provides a
+simple way to manipulate files, and so this functionality can be introduced much
+earlier than it would be in C.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">To open files for reading and writing,
+you must include <A NAME="Index379"></A><B>&lt;fstream&gt;</B>. Although this
+will automatically include <B>&lt;iostream&gt;</B>, it&#8217;s generally prudent
+to explicitly include <B>&lt;iostream&gt;</B> if you&#8217;re planning to use
+<B>cin</B>, <B>cout</B>, etc.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">To open a file for reading, you create an
+<A NAME="Index380"></A><B>ifstream</B> object, which then behaves like
+<B>cin</B>. To open a file for writing, you create an
+<A NAME="Index381"></A><B>ofstream</B> object, which then behaves like
+<B>cout</B>. Once you&#8217;ve opened the file, you can read from it or write to
+it just as you would with any other iostream object. It&#8217;s that simple
+(which is, of course, the whole point).</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">One of the most useful functions in the
+iostream library is
+<A NAME="Index382"></A><A NAME="Index383"></A><B>getline(&#160;)</B>, which
+allows you to read one line (terminated by a newline) into a <B>string</B>
+object</FONT><A NAME="fnB28" HREF="#fn28">[28]</A><FONT FACE="Georgia">. The
+first argument is the <B>ifstream</B> object you&#8217;re reading from and the
+second argument is the <B>string</B> object. When the function call is finished,
+the <B>string</B> object will contain the line.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Here&#8217;s a simple example, which
+copies the contents of one file into another:</FONT><BR></P></DIV>
+
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE><font color=#009900>//: C02:Scopy.cpp</font>
+<font color=#009900>// Copy one file to another, a line at a time</font>
+#include &lt;string&gt;
+#include &lt;fstream&gt;
+<font color=#0000ff>using</font> <font color=#0000ff>namespace</font> std;
+
+<font color=#0000ff>int</font> main() {
+  ifstream in(<font color=#004488>"Scopy.cpp"</font>); <font color=#009900>// Open for reading</font>
+  ofstream out(<font color=#004488>"Scopy2.cpp"</font>); <font color=#009900>// Open for writing</font>
+  string s;
+  <font color=#0000ff>while</font>(getline(in, s)) <font color=#009900>// Discards newline char</font>
+    out &lt;&lt; s &lt;&lt; <font color=#004488>"\n"</font>; <font color=#009900>// ... must add it back</font>
+} <font color=#009900>///:~</font></PRE></FONT></BLOCKQUOTE>
+
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">To open the files, you just hand the
+<B>ifstream</B> and <B>ofstream</B> objects the file names you want to create,
+as seen above.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">There is a new concept introduced here,
+which is the
+<A NAME="Index384"></A><A NAME="Index385"></A><A NAME="Index386"></A><B>while</B>
+loop. Although this will be explained in detail in the next chapter, the basic
+idea is that the expression in parentheses following the <B>while</B> controls
+the execution of the subsequent statement (which can also be multiple
+statements, wrapped inside curly braces). As long as the expression in
+parentheses (in this case, <B>getline(in, s)</B>) produces a &#8220;true&#8221;
+result, then the statement controlled by the <B>while</B> will continue to
+execute. It turns out that <B>getline(&#160;)</B> will return a value that can
+be interpreted as &#8220;true&#8221; if another line has been read successfully,
+and &#8220;false&#8221; upon reaching the end of the input. Thus, the above
+<B>while</B> loop reads every line in the input file and sends each line to the
+output file.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia"><B>getline(&#160;)</B> reads in the
+characters of each line until it discovers a newline (the termination character
+can be changed, but that won&#8217;t be an issue until the iostreams chapter in
+Volume 2). However, it discards the newline and doesn&#8217;t store it in the
+resulting <B>string</B> object. Thus, if we want the copied file to look just
+like the source file, we must add the newline back in, as
+shown.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Another interesting example is to copy
+the entire file into a single <A NAME="Index387"></A><B>string</B>
+object:</FONT><BR></P></DIV>
+
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE><font color=#009900>//: C02:FillString.cpp</font>
+<font color=#009900>// Read an entire file into a single string</font>
+#include &lt;string&gt;
+#include &lt;iostream&gt;
+#include &lt;fstream&gt;
+<font color=#0000ff>using</font> <font color=#0000ff>namespace</font> std;
+
+<font color=#0000ff>int</font> main() {
+  ifstream in(<font color=#004488>"FillString.cpp"</font>);
+  string s, line;
+  <font color=#0000ff>while</font>(getline(in, line))
+    s += line + <font color=#004488>"\n"</font>;
+  cout &lt;&lt; s;
+} <font color=#009900>///:~</font></PRE></FONT></BLOCKQUOTE>
+
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Because of the dynamic nature of
+<B>string</B>s, you don&#8217;t have to worry about how much storage to allocate
+for a <B>string</B>; you can just keep adding things and the <B>string</B> will
+keep expanding to hold whatever you put into it.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">One of the nice things about putting an
+entire file into a <B>string</B> is that the <B>string</B> class has many
+functions for searching and manipulation that would then allow you to modify the
+file as a single string. However, this has its limitations. For one thing, it is
+often convenient to treat a file as a collection of lines instead of just a big
+blob of text. For example, if you want to add line numbering it&#8217;s much
+easier if you have each line as a separate <B>string</B> object. To accomplish
+this, we&#8217;ll need another
+approach.</FONT><A NAME="_Toc462979733"></A><A NAME="_Toc472654737"></A><BR></P></DIV>
+<A NAME="Heading96"></A><FONT FACE = "Verdana"><H2 ALIGN="LEFT">
+Introducing vector<BR><A NAME="Index388"></A><A NAME="Index389"></A></H2></FONT>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">With <B>string</B>s, we can fill up a
+<B>string</B> object without knowing how much storage we&#8217;re going to need.
+The problem with reading lines from a file into individual <B>string </B>objects
+is that you don&#8217;t know up front how many <B>string</B>s you&#8217;re going
+to need &#8211; you only know after you&#8217;ve read the entire file. To solve
+this problem, we need some sort of holder that will automatically expand to
+contain as many <B>string</B> objects as we care to put into
+it.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">In fact, why limit ourselves to holding
+<B>string</B> objects? It turns out that this kind of problem &#8211; not
+knowing how many of something you have while you&#8217;re writing a program
+&#8211; happens a lot. And this &#8220;container&#8221; object sounds like it
+would be more useful if it would hold <I>any kind of object at all!</I>
+Fortunately, the Standard C++ Library has a ready-made solution: the standard
+container classes. The container classes are one of the real powerhouses of
+Standard C++.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">There is often a bit of confusion between
+the containers and algorithms in the Standard C++ Library, and the entity known
+as the <A NAME="Index390"></A>STL. The
+<A NAME="Index391"></A><A NAME="Index392"></A>Standard Template Library was the
+name Alex Stepanov (who was working at Hewlett-Packard at the time) used when he
+presented his library to the C++ Standards Committee at the meeting in San
+Diego, California in Spring 1994. The name stuck, especially after HP decided to
+make it available for public downloads. Meanwhile, the committee integrated it
+into the Standard C++ Library, making a large number of changes. STL's
+development continues at
+<A NAME="Index393"></A><A NAME="Index394"></A><A NAME="Index395"></A>Silicon
+Graphics (SGI; see <I>http://www.sgi.com/Technology/STL</I>). The SGI STL
+diverges from the Standard C++ Library on many subtle points. So although it's a
+popular misconception, the C++ Standard does not &#8220;include&#8221; the STL.
+It can be a bit confusing since the containers and algorithms in the Standard
+C++ Library have the same root (and usually the same names) as the SGI STL. In
+this book, I will say &#8220;The Standard C++ Library&#8221; or &#8220;The
+Standard Library containers,&#8221; or something similar and will avoid the term
+&#8220;STL.&#8221;</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Even though the implementation of the
+Standard C++ Library containers and algorithms uses some advanced concepts and
+the full coverage takes two large chapters in Volume 2 of this book, this
+library can also be potent without knowing a lot about it. It&#8217;s so useful
+that the most basic of the standard containers, the <B>vector</B>, is introduced
+in this early chapter and used throughout the book. You&#8217;ll find that you
+can do a tremendous amount just by using the basics of <B>vector</B> and not
+worrying about the underlying implementation (again, an important goal of OOP).
+Since you&#8217;ll learn much more about this and the other containers when you
+reach the Standard Library chapters in Volume 2, it seems forgivable if the
+programs that use <B>vector </B>in the early portion of the book aren&#8217;t
+exactly what an experienced C++ programmer would do. You&#8217;ll find that in
+most cases, the usage shown here is adequate.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">The <B>vector</B> class is a
+<A NAME="Index396"></A><I>template</I>, which means that it can be efficiently
+applied to different types. That is, we can create a <B>vector</B> of
+<B>shape</B>s, a <B>vector</B> of <B>cat</B>s, a <B>vector</B> of
+<B>string</B>s, etc. Basically, with a template you can create a &#8220;class of
+anything.&#8221; To tell the compiler what it is that the class will work with
+(in this case, what the <B>vector</B> will hold), you put the name of the
+desired type in &#8220;angle brackets,&#8221; which means &#8216;&lt;&#8217; and
+&#8216;&gt;&#8217;. So a <B>vector</B> of <B>string</B> would be denoted
+<B>vector&lt;string&gt;</B>. When you do this, you end up with a customized
+vector that will hold only <B>string</B> objects, and you&#8217;ll get an error
+message from the compiler if you try to put anything else into
+it.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Since <B>vector </B>expresses the concept
+of a &#8220;container,&#8221; there must be a way to put things into the
+<A NAME="Index397"></A>container and get things back out of the container. To
+add a brand-new element on the end of a <B>vector</B>, you use the member
+function <A NAME="Index398"></A><A NAME="Index399"></A><B>push_back(&#160;).</B>
+(Remember that, since it&#8217;s a member function, you use a
+&#8216;<B>.</B>&#8217; to call it for a particular object.) The reason the name
+of this member function might seem a bit verbose &#8211;
+<B>push_back(&#160;)</B> instead of something simpler like &#8220;put&#8221;
+&#8211; is because there are other containers and other member functions for
+putting new elements into containers. For example, there is an
+<A NAME="Index400"></A><A NAME="Index401"></A><B>insert(&#160;)</B> member
+function to put something in the middle of a container. <B>vector</B> supports
+this but its use is more complicated and we won&#8217;t need to explore it until
+Volume 2 of the book. There&#8217;s also a
+<A NAME="Index402"></A><B>push_front(&#160;)</B> (not part of <B>vector</B>) to
+put things at the beginning. There are many more member functions in
+<B>vector</B> and many more containers in the Standard C++ Library, but
+you&#8217;ll be surprised at how much you can do just knowing about a few simple
+features.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">So you can put new elements into a
+<B>vector</B> with <B>push_back(&#160;)</B>, but how do you get these elements
+back out again? This solution is more clever and elegant &#8211; operator
+overloading is used to make the <B>vector</B> look like an <I>array</I>. The
+array (which will be described more fully in the next chapter) is a data type
+that is available in virtually every programming language so you should already
+be somewhat familiar with it. Arrays are
+<A NAME="Index403"></A><I>aggregates</I>, which mean they consist of a number of
+elements clumped together. The distinguishing characteristic of an array is that
+these elements are the same size and are arranged to be one right after the
+other. Most importantly, these elements can be selected by
+&#8220;indexing,&#8221; which means you can say &#8220;I want element number
+n&#8221; and that element will be produced, usually quickly. Although there are
+exceptions in programming languages, the indexing is normally achieved using
+square brackets, so if you have an array <B>a</B> and you want to produce
+element five, you say <B>a[4] </B>(note that
+<A NAME="Index404"></A><A NAME="Index405"></A>indexing always starts at
+zero).</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">This very compact and powerful indexing
+notation is incorporated into the <B>vector</B> using operator overloading, just
+like &#8216;<B>&lt;&lt;</B>&#8217; and &#8216;<B>&gt;&gt;</B>&#8217; were
+incorporated into iostreams. Again, you don&#8217;t need to know how the
+overloading was implemented &#8211; that&#8217;s saved for a later chapter
+&#8211; but it&#8217;s helpful if you&#8217;re aware that there&#8217;s some
+magic going on under the covers in order to make the <B>[&#160;]</B> work with
+<B>vector</B>.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">With that in mind, you can now see a
+program that uses <B>vector</B>. To use a <B>vector</B>, you include the header
+file <B>&lt;vector&gt;</B>:</FONT><BR></P></DIV>
+
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE><font color=#009900>//: C02:Fillvector.cpp</font>
+<font color=#009900>// Copy an entire file into a vector of string</font>
+#include &lt;string&gt;
+#include &lt;iostream&gt;
+#include &lt;fstream&gt;
+#include &lt;vector&gt;
+<font color=#0000ff>using</font> <font color=#0000ff>namespace</font> std;
+
+<font color=#0000ff>int</font> main() {
+  vector&lt;string&gt; v;
+  ifstream in(<font color=#004488>"Fillvector.cpp"</font>);
+  string line;
+  <font color=#0000ff>while</font>(getline(in, line))
+    v.push_back(line); <font color=#009900>// Add the line to the end</font>
+  <font color=#009900>// Add line numbers:</font>
+  <font color=#0000ff>for</font>(<font color=#0000ff>int</font> i = 0; i &lt; v.size(); i++)
+    cout &lt;&lt; i &lt;&lt; <font color=#004488>": "</font> &lt;&lt; v[i] &lt;&lt; endl;
+} <font color=#009900>///:~</font></PRE></FONT></BLOCKQUOTE>
+
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Much of this program is similar to the
+previous one; a file is opened and lines are read into <B>string</B> objects one
+at a time. However, these <B>string</B> objects are pushed onto the back of the
+<B>vector v</B>. Once the <B>while</B> loop completes, the entire file is
+resident in memory, inside <B>v</B>.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">The next statement in the program is
+called a
+<A NAME="Index406"></A><A NAME="Index407"></A><A NAME="Index408"></A><B>for</B>
+loop. It is similar to a <B>while</B> loop except that it adds some extra
+control. After the <B>for</B>, there is a &#8220;<A NAME="Index409"></A>control
+expression&#8221; inside of parentheses, just like the <B>while</B> loop.
+However, this control expression is in three parts: a part which initializes,
+one that tests to see if we should exit the loop, and one that changes
+something, typically to step through a sequence of items. This program shows the
+<B>for</B> loop in the way you&#8217;ll see it most commonly used: the
+<A NAME="Index410"></A>initialization part <B>int i = 0</B> creates an integer
+<B>i</B> to use as a loop counter and gives it an initial value of zero. The
+testing portion says that to stay in the loop, <B>i</B> should be less than the
+number of elements in the <B>vector v</B>. (This is produced using the member
+function <B>size(&#160;),</B> which I just sort of slipped in here, but you must
+admit it has a fairly obvious meaning.) The final portion uses a shorthand for C
+and C++, the
+&#8220;<A NAME="Index411"></A><A NAME="Index412"></A>auto-increment&#8221;
+operator, to add one to the value of <B>i</B>. Effectively, <B>i++</B> says
+&#8220;get the value of <B>i</B>, add one to it, and put the result back into
+<B>i</B>. Thus, the total effect of the <B>for</B> loop is to take a variable
+<B>i</B> and march it through the values from zero to one less than the size of
+the <B>vector</B>. For each value of <B>i</B>, the <B>cout</B> statement is
+executed and this builds a line that consists of the value of <B>i</B>
+(magically converted to a character array by <B>cout</B>), a colon and a space,
+the line from the file, and a newline provided by <B>endl</B>. When you compile
+and run it you&#8217;ll see the effect is to add line numbers to the
+file.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Because of the way that the
+&#8216;<A NAME="Index413"></A><A NAME="Index414"></A><B>&gt;&gt;</B>&#8217;
+operator works with iostreams, you can easily modify the program above so that
+it breaks up the <A NAME="Index415"></A><A NAME="Index416"></A>input into
+whitespace-separated words instead of lines:</FONT><BR></P></DIV>
+
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE><font color=#009900>//: C02:GetWords.cpp</font>
+<font color=#009900>// Break a file into whitespace-separated words</font>
+#include &lt;string&gt;
+#include &lt;iostream&gt;
+#include &lt;fstream&gt;
+#include &lt;vector&gt;
+<font color=#0000ff>using</font> <font color=#0000ff>namespace</font> std;
+
+<font color=#0000ff>int</font> main() {
+  vector&lt;string&gt; words;
+  ifstream in(<font color=#004488>"GetWords.cpp"</font>);
+  string word;
+  <font color=#0000ff>while</font>(in &gt;&gt; word)
+    words.push_back(word); 
+  <font color=#0000ff>for</font>(<font color=#0000ff>int</font> i = 0; i &lt; words.size(); i++)
+    cout &lt;&lt; words[i] &lt;&lt; endl;
+} <font color=#009900>///:~</font></PRE></FONT></BLOCKQUOTE>
+
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">The expression</FONT><BR></P></DIV>
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE><font color=#0000ff>while</font>(in &gt;&gt; word)</PRE></FONT></BLOCKQUOTE>
+
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">is what gets the input one
+&#8220;word&#8221; at a time, and when this expression evaluates to
+&#8220;false&#8221; it means the end of the file has been reached. Of course,
+delimiting words by whitespace is quite crude, but it makes for a simple
+example. Later in the book you&#8217;ll see more sophisticated examples that let
+you break up input just about any way you&#8217;d like.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">To demonstrate how easy it is to use a
+<B>vector</B> with any type, here&#8217;s an example that creates a
+<B>vector&lt;int&gt;</B>:</FONT><BR></P></DIV>
+
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE><font color=#009900>//: C02:Intvector.cpp</font>
+<font color=#009900>// Creating a vector that holds integers</font>
+#include &lt;iostream&gt;
+#include &lt;vector&gt;
+<font color=#0000ff>using</font> <font color=#0000ff>namespace</font> std;
+
+<font color=#0000ff>int</font> main() {
+  vector&lt;<font color=#0000ff>int</font>&gt; v;
+  <font color=#0000ff>for</font>(<font color=#0000ff>int</font> i = 0; i &lt; 10; i++)
+    v.push_back(i);
+  <font color=#0000ff>for</font>(<font color=#0000ff>int</font> i = 0; i &lt; v.size(); i++)
+    cout &lt;&lt; v[i] &lt;&lt; <font color=#004488>", "</font>;
+  cout &lt;&lt; endl;
+  <font color=#0000ff>for</font>(<font color=#0000ff>int</font> i = 0; i &lt; v.size(); i++)
+    v[i] = v[i] * 10; <font color=#009900>// Assignment  </font>
+  <font color=#0000ff>for</font>(<font color=#0000ff>int</font> i = 0; i &lt; v.size(); i++)
+    cout &lt;&lt; v[i] &lt;&lt; <font color=#004488>", "</font>;
+  cout &lt;&lt; endl;
+} <font color=#009900>///:~</font></PRE></FONT></BLOCKQUOTE>
+
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">To create a <B>vector</B> that holds a
+different type, you just put that type in as the template argument (the argument
+in angle brackets). Templates and well-designed template libraries are intended
+to be exactly this easy to use.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">This example goes on to demonstrate
+another essential feature of <B>vector</B>. In the expression</FONT><BR></P></DIV>
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE>v[i] = v[i] * 10;</PRE></FONT></BLOCKQUOTE>
+
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">you can see that the <B>vector</B> is not
+limited to only putting things in and getting things out. You also have the
+ability to <I>assign</I> (and thus to change) to any element of a
+<A NAME="Index417"></A><B>vector</B>, also through the use of the
+square-brackets indexing operator. This means that <B>vector</B> is a
+general-purpose, flexible &#8220;scratchpad&#8221; for working with collections
+of objects, and we will definitely make use of it in coming
+chapters.</FONT><A NAME="_Toc462979734"></A><A NAME="_Toc472654738"></A><BR></P></DIV>
+<A NAME="Heading97"></A><FONT FACE = "Verdana"><H2 ALIGN="LEFT">
+Summary</H2></FONT>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">The intent of this chapter is to show you
+how easy object-oriented programming can be &#8211; <I>if</I> someone else has
+gone to the work of defining the objects for you. In that case, you include a
+header file, create the objects, and send messages to them. If the types you are
+using are powerful and well-designed, then you won&#8217;t have to do much work
+and your resulting program will also be powerful.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">In the process of showing the ease of OOP
+when using library classes, this chapter also introduced some of the most basic
+and useful types in the Standard C++ library: the family of iostreams (in
+particular, those that read from and write to the console and files), the
+<B>string</B> class, and the <B>vector</B> template. You&#8217;ve seen how
+straightforward it is to use these and can now probably imagine many things you
+can accomplish with them, but there&#8217;s actually a lot more that
+they&#8217;re capable
+of</FONT><A NAME="fnB29" HREF="#fn29">[29]</A><FONT FACE="Georgia">. Even though
+we&#8217;ll only be using a limited subset of the functionality of these tools
+in the early part of the book, they nonetheless provide a large step up from the
+primitiveness of learning a low-level language like C. and while learning the
+low-level aspects of C is educational, it&#8217;s also time consuming. In the
+end, you&#8217;ll be much more productive if you&#8217;ve got objects to manage
+the low-level issues. After all, the whole <I>point</I> of OOP is to hide the
+details so you can &#8220;paint with a bigger brush.&#8221;</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">However, as high-level as OOP tries to
+be, there are some fundamental aspects of  C that you can&#8217;t avoid knowing,
+and these will be covered in the next
+chapter.</FONT><A NAME="_Toc462979735"></A><A NAME="_Toc472654739"></A><BR></P></DIV>
+<A NAME="Heading98"></A><FONT FACE = "Verdana"><H2 ALIGN="LEFT">
+Exercises</H2></FONT>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia" SIZE=2>Solutions to selected exercises
+can be found in the electronic document <I>The Thinking in C++ Annotated
+Solution Guide</I>, available for a small fee from
+http://www.BruceEckel.com</FONT><BR></P></DIV>
+<OL>
+<LI><FONT FACE="Verdana">	</FONT><FONT FACE="Georgia">Modify <B>Hello.cpp</B> so
+that it prints out your name and age (or shoe size, or your dog&#8217;s age, if
+that makes you feel better). Compile and run the
+program.</FONT><LI><FONT FACE="Verdana">	</FONT><FONT FACE="Georgia">Using
+<B>Stream2.cpp </B>and <B>Numconv.cpp </B>as guidelines, create a program that
+asks for the radius of a circle and prints the area of that circle. You can just
+use the &#8216;<B>*</B>&#8217; operator to square the radius. Do not try to
+print out the value as octal or hex (these only work with integral
+types).</FONT><LI><FONT FACE="Verdana">	</FONT><FONT FACE="Georgia">Create a
+program that opens a file and counts the whitespace-separated words in that
+file.</FONT><LI><FONT FACE="Verdana">	</FONT><FONT FACE="Georgia">Create a
+program that counts the occurrence of a particular word in a file (use the
+<B>string</B> class&#8217; operator &#8216;<B>==</B>&#8217; to find the
+word).</FONT><LI><FONT FACE="Verdana">	</FONT><FONT FACE="Georgia">Change
+<B>Fillvector.cpp</B> so that it prints the lines (backwards) from last to
+first.</FONT><LI><FONT FACE="Verdana">	</FONT><FONT FACE="Georgia">Change
+<B>Fillvector.cpp</B> so that it concatenates all the elements in the
+<B>vector</B> into a single string before printing it out, but don&#8217;t try
+to add line
+numbering.</FONT><LI><FONT FACE="Verdana">	</FONT><FONT FACE="Georgia">Display a
+file a line at a time, waiting for the user to press the &#8220;Enter&#8221; key
+after each
+line.</FONT><LI><FONT FACE="Verdana">	</FONT><FONT FACE="Georgia">Create a
+<B>vector&lt;float&gt;</B> and put 25 floating-point numbers into it using a
+<B>for</B> loop. Display the
+<B>vector</B>.</FONT><LI><FONT FACE="Verdana">	</FONT><FONT FACE="Georgia">Create
+three <B>vector&lt;float&gt;</B> objects and fill the first two as in the
+previous exercise. Write a <B>for</B> loop that adds each corresponding element
+in the first two <B>vector</B>s and puts the result in the corresponding element
+of the third <B>vector</B>. Display all three
+<B>vector</B>s.</FONT><LI><FONT FACE="Verdana">	</FONT><FONT FACE="Georgia">Create
+a <B>vector&lt;float&gt;</B> and put 25 numbers into it as in the previous
+exercises. Now square each number and put the result back into the same location
+in the <B>vector</B>. Display the <B>vector</B> before and after the
+multiplication.</FONT><A NAME="_Toc465903708"></A><A NAME="_Toc465909109"></A><A NAME="_Toc465909522"></A><A NAME="_Toc466014433"></A><A NAME="_Toc466073343"></A><A NAME="_Toc466083144"></A><A NAME="_Toc468607951"></A><A NAME="_Toc468771272"></A><A NAME="_Toc469811275"></A><A NAME="_Toc469821160"></A><A NAME="_Toc469821576"></A><A NAME="_Toc469825257"></A><A NAME="_Toc469874162"></A><A NAME="_Toc470615818"></A><A NAME="_Toc470654956"></A><A NAME="_Toc470820940"></A><A NAME="_Toc470821357"></A><A NAME="_Toc470911454"></A><A NAME="_Toc471358935"></A><A NAME="_Toc471489354"></A><A NAME="_Toc471528785"></A><A NAME="_Toc471794940"></A><A NAME="_Toc471965517"></A><A NAME="_Toc472045519"></A><A NAME="_Toc472255723"></A><A NAME="_Toc472654326"></A><A NAME="_Toc472654740"></A></OL><FONT FACE = "Verdana"><H1 ALIGN="LEFT">
+</H1></FONT>
+<DIV ALIGN="LEFT"><P><FONT FACE="Verdana"><B></B></FONT><BR></P></DIV>
+<FONT FACE = "Verdana"><H1 ALIGN="LEFT">
+</H1></FONT>
+<HR><DIV ALIGN="LEFT"><P><A NAME="fn25" HREF="#fnB25">[25]</A><FONT FACE="Georgia" SIZE=2>
+The boundary between compilers and interpreters can tend to become a bit fuzzy,
+especially with Python, which has many of the features and power of a compiled
+language but the quick turnaround of an interpreted language.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><A NAME="fn26" HREF="#fnB26">[26]</A><FONT FACE="Georgia" SIZE=2>
+Python is again an exception, since it also provides separate
+compilation.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><A NAME="fn27" HREF="#fnB27">[27]</A><FONT FACE="Georgia" SIZE=2>
+I would recommend using Perl or Python to automate this task as part of your
+library-packaging process (see www.Perl.org or www.Python.org).</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><A NAME="fn28" HREF="#fnB28">[28]</A><FONT FACE="Georgia" SIZE=2>
+There are actually a number of variants of <B>getline(&#160;)</B>, which will be
+discussed thoroughly in the iostreams chapter in Volume 2.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><A NAME="fn29" HREF="#fnB29">[29]</A><FONT FACE="Georgia" SIZE=2>
+If you&#8217;re particularly eager to see all the things that can be done with
+these and other Standard library components, see Volume 2 of this book at 
+www.BruceEckel.com, and also www.dinkumware.com.</FONT><BR></P></DIV>
+
+<DIV ALIGN="CENTER">
+    <FONT FACE="Verdana" size = "-1">
+     [ <a href="Chapter01.html">Previous Chapter</a> ] 
+    [ <a href="Contents.html">Table of Contents</a> ] 
+    [ <a href="DocIndex.html">Index</a> ]
+     [ <a href="Chapter03.html">Next Chapter</a> ] 
+    </FONT>
+    <BR>
+ Last Update:09/27/2001</P></DIV>
+
+</BODY>
+
+</HTML>

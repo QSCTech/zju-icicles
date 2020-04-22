@@ -1,0 +1,1713 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<HTML>
+<!--
+This document was converted from RTF source: 
+By rtftohtml 4.19
+See http://www.sunpack.com/RTF
+Filename:TIC2Vone.rtf
+Application Directory:C:\TOOLS\RTF2HTML\
+Subject:
+Author:Bruce Eckel
+Operator:Bruce Eckel
+Document Comments:
+Version Comments:
+Comments:
+Keywords:
+Translation Date:09/27/2001
+Translation Time:05:25:30
+Translation Platform:Win32
+Number of Output files:22
+This File:Chapter04.html
+SplitDepth=1
+SkipNavPanel=1
+SkipLeadingToc=1
+SkipTrailingToc=1
+GenContents=1
+GenFrames=1
+GenIndex=1
+-->
+<HEAD lang="en"><META http-equiv="Content-Type" content="text/html">
+<TITLE>4: Data Abstraction</TITLE>
+</HEAD>
+
+<BODY  BGCOLOR="#FFFFFF"><DIV ALIGN="CENTER">
+  <a href="http://www.MindView.net">
+  <img src="mindview-head.gif" alt="MindView Inc." BORDER = "0"></a>
+  <CENTER>
+    <FONT FACE="Verdana" size = "-1">
+    [ <a href="README-HTML.txt">Viewing Hints</a> ]
+    [ <a href="http://www.mindview.net/CPPServices/SolutionGuide.html">Exercise Solutions</a> ]
+    [ <a href="http://www.mindview.net/ThinkingInCPP2e.html">Volume 2</a> ]
+    [ <a href="http://www.mindview.net/MailingList.html">Free Newsletter</a> ] <br>
+    [ <a href="http://www.mindview.net/CPPServices/#PublicSeminars">Seminars</a> ]
+    [ <a href="http://www.mindview.net/CPPServices/#SeminarsOnCD">Seminars on CD ROM</a> ]
+    [ <a href="http://www.mindview.net/CPPServices/#ConsultingServices">Consulting</a> ]
+    </FONT>
+  <H2><FONT FACE="Verdana">
+  Thinking in C++, 2nd ed. Volume 1</FONT></H2></FONT>
+  <H3><FONT FACE="Verdana">&copy;2000 by Bruce Eckel</FONT></H3></FONT>
+  
+    <FONT FACE="Verdana" size = "-1">
+     [ <a href="Chapter03.html">Previous Chapter</a> ] 
+    [ <a href="Contents.html">Table of Contents</a> ] 
+    [ <a href="DocIndex.html">Index</a> ]
+     [ <a href="Chapter05.html">Next Chapter</a> ] 
+    </FONT>
+    
+  </CENTER>
+  </P></DIV><A NAME="_Toc472654814"></A><FONT FACE = "Verdana"><H1 ALIGN="LEFT">
+4: Data Abstraction</H1></FONT>
+<A NAME="Heading188"></A><FONT FACE = "Verdana"><H1 ALIGN="LEFT">
+</H1></FONT>
+<DIV ALIGN="LEFT"><P><FONT FACE="Verdana" SIZE=4>C++ is a productivity enhancement
+tool. Why else </FONT><BR><FONT FACE="Verdana" SIZE=4>would you make the effort
+(and it is an effort, </FONT><BR><FONT FACE="Verdana" SIZE=4>regardless of how
+easy we attempt to make the transition)</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">to switch from some language that you
+already know and are productive with to a new language in which you&#8217;re
+going to be <I>less</I> productive for a while, until you get the hang of it?
+It&#8217;s because you&#8217;ve become convinced that you&#8217;re going to get
+big gains by using this new tool.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Productivity, in computer programming
+terms, means that fewer people can make much more complex and impressive
+programs in less time. There are certainly other issues when it comes to
+choosing a language, such as efficiency (does the nature of the language cause
+slowdown and code bloat?), safety (does the language help you ensure that your
+program will always do what you plan, and handle errors gracefully?), and
+maintenance (does the language help you create code that is easy to understand,
+modify, and extend?). These are certainly important factors that will be
+examined in this book.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">But raw productivity means a program that
+formerly took three of you a week to write now takes one of you a day or two.
+This touches several levels of economics. You&#8217;re happy because you get the
+rush of power that comes from building something, your client (or boss) is happy
+because products are produced faster and with fewer people, and the customers
+are happy because they get products more cheaply. The only way to get massive
+increases in productivity is to leverage off other people&#8217;s code. That is,
+to use libraries.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">A library<A NAME="Index964"></A> is
+simply a bunch of code that someone else has written and packaged together.
+Often, the most minimal package is a file with an extension like <B>lib</B> and
+one or more header files to tell your compiler what&#8217;s in the library. The
+linker knows how to search through the library file and extract the appropriate
+compiled code. But that&#8217;s only one way to deliver a library. On platforms
+that span many architectures, such as Linux/Unix, often the only sensible way to
+deliver a library is with source code, so it can be reconfigured and recompiled
+on the new target.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Thus, libraries are probably the most
+important way to improve productivity, and one of the primary design goals of
+C++ is to make library use easier. This implies that there&#8217;s something
+hard about using libraries in C. Understanding this factor will give you a first
+insight into the design of C++, and thus insight into how to use
+it.</FONT><A NAME="_Toc312373821"></A><A NAME="_Toc472654815"></A><BR></P></DIV>
+<A NAME="Heading189"></A><FONT FACE = "Verdana"><H2 ALIGN="LEFT">
+A tiny C-like library</H2></FONT>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">A library usually starts out as a
+collection of functions, but if you have used third-party
+<A NAME="Index965"></A><A NAME="Index966"></A>C libraries you know there&#8217;s
+usually more to it than that because there&#8217;s more to life than
+<A NAME="Index967"></A>behavior, actions, and functions. There are also
+<A NAME="Index968"></A>characteristics (blue, pounds, texture, luminance), which
+are represented by data. And when you start to deal with a set of
+characteristics in C, it is very convenient to clump them together into a
+<A NAME="Index969"></A><B>struct</B>, especially if you want to represent more
+than one similar thing in your problem space. Then you can make a variable of
+this <B>struct</B> for each thing.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Thus, most C libraries have a set of
+<B>struct</B>s and a set of functions that act on those <B>struct</B>s. As an
+example of what such a system looks like, consider a programming tool that acts
+like an array, but whose size can be established at runtime, when it is created.
+I&#8217;ll call it a <B>CStash</B>. Although it&#8217;s written in C++, it has
+the style of what you&#8217;d write in C:
+<A NAME="Index970"></A></FONT><BR></P></DIV>
+
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE><font color=#009900>//: C04:CLib.h</font>
+<font color=#009900>// Header file for a C-like library</font>
+<font color=#009900>// An array-like entity created at runtime</font>
+
+<font color=#0000ff>typedef</font> <font color=#0000ff>struct</font> CStashTag {
+  <font color=#0000ff>int</font> size;      <font color=#009900>// Size of each space</font>
+  <font color=#0000ff>int</font> quantity;  <font color=#009900>// Number of storage spaces</font>
+  <font color=#0000ff>int</font> next;      <font color=#009900>// Next empty space</font>
+  <font color=#009900>// Dynamically allocated array of bytes:</font>
+  <font color=#0000ff>unsigned</font> <font color=#0000ff>char</font>* storage;
+} CStash;
+
+<font color=#0000ff>void</font> initialize(CStash* s, <font color=#0000ff>int</font> size);
+<font color=#0000ff>void</font> cleanup(CStash* s);
+<font color=#0000ff>int</font> add(CStash* s, <font color=#0000ff>const</font> <font color=#0000ff>void</font>* element);
+<font color=#0000ff>void</font>* fetch(CStash* s, <font color=#0000ff>int</font> index);
+<font color=#0000ff>int</font> count(CStash* s);
+<font color=#0000ff>void</font> inflate(CStash* s, <font color=#0000ff>int</font> increase);
+<font color=#009900>///:~ </font></PRE></FONT></BLOCKQUOTE>
+
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">A tag name like <B>CStashTag</B> is
+generally used <A NAME="Index971"></A>for a <B>struct</B> in case you need to
+reference the <B>struct </B>inside itself. For example, when creating a
+<I>linked list</I> (each element in your list contains a pointer to the next
+element), you need a pointer to the next <B>struct</B> variable, so you need a
+way to identify the type of that pointer within the <B>struct</B> body. Also,
+you'll almost universally see the <A NAME="Index972"></A><B>typedef</B> as shown
+above for every <B>struct</B> in a C library. This is done so you can treat the
+<B>struct</B> as if it were a new type and define variables of that
+<B>struct</B> like this:</FONT><BR></P></DIV>
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE>CStash A, B, C;</PRE></FONT></BLOCKQUOTE>
+
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">The <B>storage</B> pointer is an
+<B>unsigned char*</B>. An <B>unsigned char</B> is the smallest piece of storage
+a C compiler supports, <A NAME="Index973"></A><A NAME="Index974"></A>although on
+some machines it can be the same size as the largest. It&#8217;s implementation
+dependent, but is often one byte long. You might think that because the
+<B>CStash</B> is designed to hold any type of variable, a
+<A NAME="Index975"></A><B>void*<A NAME="Index976"></A></B> would be more
+appropriate here. However, the purpose is not to treat this storage as a block
+of some unknown type, but rather as a block of contiguous
+bytes.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">The source code for the implementation
+file (which you may not get if you buy a library commercially &#8211; you might
+get only a compiled <B>obj</B> or <B>lib</B> or <B>dll</B>, etc.) looks like
+this:</FONT><BR></P></DIV>
+
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE><font color=#009900>//: C04:CLib.cpp {O}</font>
+<font color=#009900>// Implementation of example C-like library</font>
+<font color=#009900>// Declare structure and functions:</font>
+#include <font color=#004488>"CLib.h"</font>
+#include &lt;iostream&gt;
+#include &lt;cassert&gt; 
+<font color=#0000ff>using</font> <font color=#0000ff>namespace</font> std;
+<font color=#009900>// Quantity of elements to add</font>
+<font color=#009900>// when increasing storage:</font>
+<font color=#0000ff>const</font> <font color=#0000ff>int</font> increment = 100;
+
+<font color=#0000ff>void</font> initialize(CStash* s, <font color=#0000ff>int</font> sz) {
+  s-&gt;size = sz;
+  s-&gt;quantity = 0;
+  s-&gt;storage = 0;
+  s-&gt;next = 0;
+}
+
+<font color=#0000ff>int</font> add(CStash* s, <font color=#0000ff>const</font> <font color=#0000ff>void</font>* element) {
+  <font color=#0000ff>if</font>(s-&gt;next &gt;= s-&gt;quantity) <font color=#009900>//Enough space left?</font>
+    inflate(s, increment);
+  <font color=#009900>// Copy element into storage,</font>
+  <font color=#009900>// starting at next empty space:</font>
+  <font color=#0000ff>int</font> startBytes = s-&gt;next * s-&gt;size;
+  <font color=#0000ff>unsigned</font> <font color=#0000ff>char</font>* e = (<font color=#0000ff>unsigned</font> <font color=#0000ff>char</font>*)element;
+  <font color=#0000ff>for</font>(<font color=#0000ff>int</font> i = 0; i &lt; s-&gt;size; i++)
+    s-&gt;storage[startBytes + i] = e[i];
+  s-&gt;next++;
+  <font color=#0000ff>return</font>(s-&gt;next - 1); <font color=#009900>// Index number</font>
+}
+
+<font color=#0000ff>void</font>* fetch(CStash* s, <font color=#0000ff>int</font> index) {
+  <font color=#009900>// Check index boundaries:</font>
+  assert(0 &lt;= index);
+  <font color=#0000ff>if</font>(index &gt;= s-&gt;next)
+    <font color=#0000ff>return</font> 0; <font color=#009900>// To indicate the end</font>
+  <font color=#009900>// Produce pointer to desired element:</font>
+  <font color=#0000ff>return</font> &amp;(s-&gt;storage[index * s-&gt;size]);
+}
+
+<font color=#0000ff>int</font> count(CStash* s) {
+  <font color=#0000ff>return</font> s-&gt;next;  <font color=#009900>// Elements in CStash</font>
+}
+
+<font color=#0000ff>void</font> inflate(CStash* s, <font color=#0000ff>int</font> increase) {
+  assert(increase &gt; 0);
+  <font color=#0000ff>int</font> newQuantity = s-&gt;quantity + increase;
+  <font color=#0000ff>int</font> newBytes = newQuantity * s-&gt;size;
+  <font color=#0000ff>int</font> oldBytes = s-&gt;quantity * s-&gt;size;
+  <font color=#0000ff>unsigned</font> <font color=#0000ff>char</font>* b = <font color=#0000ff>new</font> <font color=#0000ff>unsigned</font> <font color=#0000ff>char</font>[newBytes];
+  <font color=#0000ff>for</font>(<font color=#0000ff>int</font> i = 0; i &lt; oldBytes; i++)
+    b[i] = s-&gt;storage[i]; <font color=#009900>// Copy old to new</font>
+  <font color=#0000ff>delete</font> [](s-&gt;storage); <font color=#009900>// Old storage</font>
+  s-&gt;storage = b; <font color=#009900>// Point to new memory</font>
+  s-&gt;quantity = newQuantity;
+}
+
+<font color=#0000ff>void</font> cleanup(CStash* s) {
+  <font color=#0000ff>if</font>(s-&gt;storage != 0) {
+   cout &lt;&lt; <font color=#004488>"freeing storage"</font> &lt;&lt; endl;
+   <font color=#0000ff>delete</font> []s-&gt;storage;
+  }
+} <font color=#009900>///:~</font></PRE></FONT></BLOCKQUOTE>
+
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia"><B>initialize(&#160;)</B> performs the
+necessary setup for <B>struct CStash</B> by setting the internal variables to
+appropriate values. Initially, the <B>storage</B> pointer is set to zero &#8211;
+no initial storage is allocated.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">The <B>add(&#160;)</B> function inserts
+an element into the <B>CStash</B> at the next available location. First, it
+checks to see if there is any available space left. If not, it expands the
+storage using the <B>inflate(&#160;)</B> function, described
+later.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Because the compiler doesn&#8217;t know
+the specific type of the variable being stored (all the function gets is a
+<B>void*</B>), you can&#8217;t just do an assignment, which would certainly be
+the convenient thing. Instead, you must copy the variable byte-by-byte. The most
+straightforward way to perform the copying is with array indexing. Typically,
+there are already data bytes in <B>storage</B>, and this is indicated by the
+value of <B>next</B>. To start with the right byte offset, <B>next</B> is
+multiplied by the size of each element (in bytes) to produce <B>startBytes</B>.
+Then the argument <B>element</B> is cast to an <B>unsigned char</B>* so that it
+can be addressed byte-by-byte and copied into the available <B>storage</B>
+space. <B>next</B> is incremented so that it indicates the next available piece
+of storage, and the &#8220;index number&#8221; where the value was stored so
+that value can be retrieved using this index number with
+<B>fetch(&#160;)</B>.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia"><B>fetch(&#160;) </B>checks to see that
+the index isn&#8217;t out of bounds and then returns the address of the desired
+variable, calculated using the <B>index</B> argument. Since <B>index
+</B>indicates the number of elements to offset into the <B>CStash</B>, it must
+be multiplied by the number of bytes occupied by each piece to produce the
+numerical offset in bytes. When this offset is used to index into <B>storage
+</B>using array indexing, you don&#8217;t get the address, but instead the byte
+at the address. To produce the address, you must use the address-of operator
+<B>&amp;</B>. </FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia"><B>count(&#160;)</B> may look a bit
+strange at first to a seasoned C programmer. It seems like a lot of trouble to
+go through to do something that would probably be a lot easier to do by hand. If
+you have a <B>struct CStash</B> called <B>intStash</B>, for example, it would
+seem much more straightforward to find out how many elements it has by saying
+<B>intStash.next</B> instead of making a function call (which has overhead),
+such as <B>count(&amp;intStash)</B>. However, if you wanted to change the
+internal representation of <B>CStash</B> and thus the way the count was
+calculated, the function call interface allows the necessary flexibility. But
+alas, most programmers won&#8217;t bother to find out about your
+&#8220;better&#8221; design for the library. They&#8217;ll look at the
+<B>struct</B> and grab the <B>next</B> value directly, and possibly even change
+<B>next</B> without your permission. If only there were some way for the library
+designer to have better control over things like this! (Yes, that&#8217;s
+foreshadowing.)</FONT><A NAME="_Toc312373822"></A><A NAME="_Toc472654816"></A><BR></P></DIV>
+<A NAME="Heading190"></A><FONT FACE = "Verdana"><H3 ALIGN="LEFT">
+Dynamic storage
+allocation<BR><A NAME="Index977"></A><A NAME="Index978"></A><A NAME="Index979"></A></H3></FONT>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">You never know the maximum amount of
+storage you might need for a <B>CStash</B>, so the memory pointed to by
+<B>storage</B> is allocated from the <I>heap</I>. The
+heap<A NAME="Index980"></A> is a big block of memory used for allocating smaller
+pieces at runtime. You use the heap when you don&#8217;t know the size of the
+memory you&#8217;ll need while you&#8217;re writing a program. That is, only at
+runtime will you find out that you need space to hold 200 <B>Airplane</B>
+variables instead of 20. In Standard C, dynamic-memory allocation functions
+include <B>malloc(&#160;)<A NAME="Index981"></A></B>,
+<B>calloc(&#160;)<A NAME="Index982"></A></B>,
+<B>realloc(&#160;)<A NAME="Index983"></A></B>, and
+<B>free(&#160;)<A NAME="Index984"></A></B>. Instead of library calls, however,
+C++ has a more sophisticated (albeit simpler to use) approach to dynamic memory
+that is integrated into the language via the keywords
+<A NAME="Index985"></A><A NAME="Index986"></A><B>new</B> and
+<A NAME="Index987"></A><A NAME="Index988"></A><B>delete</B>.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">The <B>inflate(&#160;)</B> function uses
+<B>new</B> to get a bigger chunk of space for the <B>CStash</B>. In this
+situation, we will only expand memory and not shrink it, and the
+<A NAME="Index989"></A><B>assert(&#160;)</B> will guarantee that a negative
+number is not passed to <B>inflate(&#160;)</B> as the <B>increase</B> value. The
+new number of elements that can be held (after <B>inflate(&#160;)</B> completes)
+is calculated as <B>newQuantity</B>, and this is multiplied by the number of
+bytes per element to produce <B>newBytes</B>, which will be the number of bytes
+in the allocation. So that we know how many bytes to copy over from the old
+location, <B>oldBytes</B> is calculated using the old
+<B>quantity</B>.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">The actual storage allocation occurs in
+the <A NAME="Index990"></A><I>new-expression</I>, which is the expression
+involving the <B>new</B> keyword:</FONT><BR></P></DIV>
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE><font color=#0000ff>new</font> <font color=#0000ff>unsigned</font> <font color=#0000ff>char</font>[newBytes];</PRE></FONT></BLOCKQUOTE>
+
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">The general form of the new-expression
+is:</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia"><B>new Type;</B></FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">in which <B>Type</B> describes the type
+of variable you want allocated on the heap. In this case, we want an array of
+<B>unsigned char</B> that is <B>newBytes</B> long, so that is what appears as
+the <B>Type</B>. You can also allocate something as simple as an <B>int</B> by
+saying:</FONT><BR></P></DIV>
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE><font color=#0000ff>new</font> <font color=#0000ff>int</font>;</PRE></FONT></BLOCKQUOTE>
+
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">and although this is rarely done, you can
+see that the form is consistent.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">A new-expression returns a <I>pointer</I>
+to an object of the exact type that you asked for. So if you say <B>new
+Type</B>, you get back a pointer to a <B>Type</B>.<B> </B>If you say <B>new
+int</B>, you get back a pointer to an <B>int</B>. If you want a <B>new</B>
+<B>unsigned char</B> array, you get back a pointer to the first element of that
+array. The compiler will ensure that you assign the return value of the
+new-expression to a pointer of the correct type.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Of course, any time you request memory
+it&#8217;s possible for the request to fail, if there is no more memory. As you
+will learn, C++ has mechanisms that come into play if the memory-allocation
+operation is unsuccessful.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Once the new storage is allocated, the
+data in the old storage must be copied to the new storage; this is again
+accomplished with array indexing, copying one byte at a time in a loop. After
+the data is copied, the old storage must be released so that it can be used by
+other parts of the program if they need new storage. The <B>delete</B> keyword
+is the complement of <B>new</B>, and must be applied to release any storage that
+is allocated with <B>new</B> (if you forget to use <B>delete</B>, that storage
+remains unavailable, and if this so-called
+<A NAME="Index991"></A><A NAME="Index992"></A><I>memory leak </I>happens enough,
+you&#8217;ll run out of memory). In addition, there&#8217;s a special syntax
+when you&#8217;re deleting an array. It&#8217;s as if you must remind the
+compiler that this pointer is not just pointing to one object, but to an array
+of objects: you put a set of empty square brackets in front of the pointer to be
+deleted:</FONT><BR></P></DIV>
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE><font color=#0000ff>delete</font> []myArray;</PRE></FONT></BLOCKQUOTE>
+
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Once the old storage has been deleted,
+the pointer to the new storage can be assigned to the <B>storage</B> pointer,
+the quantity is adjusted, and <B>inflate(&#160;)</B> has completed its
+job.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Note that the heap manager is fairly
+primitive. It gives you chunks of memory and takes them back when you
+<B>delete</B> them. There&#8217;s no inherent facility for
+<A NAME="Index993"></A><I>heap compaction</I>, which compresses the heap to
+provide bigger free chunks. If a program allocates and frees heap storage for a
+while, you can end up with a
+<A NAME="Index994"></A><A NAME="Index995"></A><I>fragmented</I> heap that has
+lots of memory free, but without any pieces that are big enough to allocate the
+size you&#8217;re looking for at the moment. A <A NAME="Index996"></A>heap
+compactor complicates a program because it moves memory chunks around, so your
+pointers won&#8217;t retain their proper values. Some operating environments
+have heap compaction built in, but they require you to use special memory
+<I>handles</I> (which can be temporarily converted to pointers, after locking
+the memory so the heap compactor can&#8217;t move it) instead of pointers. You
+can also build your own heap-compaction scheme, but this is not a task to be
+undertaken lightly.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">When you create a
+<A NAME="Index997"></A><A NAME="Index998"></A>variable on the stack at
+compile-time, the storage for that variable is automatically created and freed
+by the compiler. The compiler knows exactly how much storage is needed, and it
+knows the lifetime of the variables because of scoping. With dynamic memory
+allocation, however, the compiler doesn&#8217;t know how much storage
+you&#8217;re going to need, <I>and</I> it doesn&#8217;t know the lifetime of
+that storage. That is, the storage doesn&#8217;t get cleaned up automatically.
+Therefore, you&#8217;re responsible for releasing the storage using
+<B>delete</B>, which tells the heap manager that storage can be used by the next
+call to <B>new</B>. The logical place for this to happen in the library is in
+the <B>cleanup(&#160;)</B> function because that is where all the closing-up
+housekeeping is done.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">To test the library, two <B>CStash</B>es
+are created. The first holds <B>int</B>s and the second holds arrays of 80
+<B>char</B>s:</FONT><BR></P></DIV>
+
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE><font color=#009900>//: C04:CLibTest.cpp</font>
+<font color=#009900>//{L} CLib</font>
+<font color=#009900>// Test the C-like library</font>
+#include <font color=#004488>"CLib.h"</font>
+#include &lt;fstream&gt;
+#include &lt;iostream&gt;
+#include &lt;string&gt;
+#include &lt;cassert&gt;
+<font color=#0000ff>using</font> <font color=#0000ff>namespace</font> std;
+
+<font color=#0000ff>int</font> main() {
+  <font color=#009900>// Define variables at the beginning</font>
+  <font color=#009900>// of the block, as in C:</font>
+  CStash intStash, stringStash;
+  <font color=#0000ff>int</font> i;
+  <font color=#0000ff>char</font>* cp;
+  ifstream in;
+  string line;
+  <font color=#0000ff>const</font> <font color=#0000ff>int</font> bufsize = 80;
+  <font color=#009900>// Now remember to initialize the variables:</font>
+  initialize(&amp;intStash, <font color=#0000ff>sizeof</font>(<font color=#0000ff>int</font>));
+  <font color=#0000ff>for</font>(i = 0; i &lt; 100; i++)
+    add(&amp;intStash, &amp;i);
+  <font color=#0000ff>for</font>(i = 0; i &lt; count(&amp;intStash); i++)
+    cout &lt;&lt; <font color=#004488>"fetch(&amp;intStash, "</font> &lt;&lt; i &lt;&lt; <font color=#004488>") = "</font>
+         &lt;&lt; *(<font color=#0000ff>int</font>*)fetch(&amp;intStash, i)
+         &lt;&lt; endl;
+  <font color=#009900>// Holds 80-character strings:</font>
+  initialize(&amp;stringStash, <font color=#0000ff>sizeof</font>(<font color=#0000ff>char</font>)*bufsize);
+  in.open(<font color=#004488>"CLibTest.cpp"</font>);
+  assert(in);
+  <font color=#0000ff>while</font>(getline(in, line))
+    add(&amp;stringStash, line.c_str());
+  i = 0;
+  <font color=#0000ff>while</font>((cp = (<font color=#0000ff>char</font>*)fetch(&amp;stringStash,i++))!=0)
+    cout &lt;&lt; <font color=#004488>"fetch(&amp;stringStash, "</font> &lt;&lt; i &lt;&lt; <font color=#004488>") = "</font>
+         &lt;&lt; cp &lt;&lt; endl;
+  cleanup(&amp;intStash);
+  cleanup(&amp;stringStash);
+} <font color=#009900>///:~</font></PRE></FONT></BLOCKQUOTE>
+
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Following the form required by C, all the
+variables are created at the beginning of the scope of <B>main(&#160;)</B>. Of
+course, you must remember to initialize the <B>CStash</B> variables later in the
+block by calling <B>initialize(&#160;)</B>. One of the problems with C libraries
+is that you must carefully convey to the user the importance of the
+initialization <A NAME="Index999"></A>and cleanup
+<A NAME="Index1000"></A>functions. If these functions aren&#8217;t called, there
+will be a lot of trouble. Unfortunately, the user doesn&#8217;t always wonder if
+initialization and cleanup are mandatory. They know what <I>they</I> want to
+accomplish, and they&#8217;re not as concerned about you jumping up and down
+saying, &#8220;Hey, wait, you have to do <I>this</I> first!&#8221; Some users
+have even been known to initialize the elements of a structure themselves.
+There&#8217;s certainly no mechanism in C to prevent it (more
+foreshadowing).</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">The <B>intStash</B> is filled up with
+integers, and the <B>stringStash</B> is filled with character arrays. These
+character arrays are produced by opening the source code file,
+<B>CLibTest.cpp</B>, and reading the lines from it into a
+<A NAME="Index1001"></A><B>string </B>called <B>line</B>, and then producing a
+pointer to the character representation of <B>line</B> using the member function
+<B>c_str(&#160;)</B>.<B> </B></FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">After each <B>Stash</B> is loaded, it is
+displayed. The <B>intStash</B> is printed using a <B>for</B> loop, which uses
+<B>count(&#160;)</B> to establish its limit. The <B>stringStash</B> is printed
+with a <B>while</B>, which breaks out when <B>fetch(&#160;)</B> returns zero to
+indicate it is out of bounds.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">You&#8217;ll also notice an additional
+cast in </FONT><BR></P></DIV>
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE>cp = (<font color=#0000ff>char</font>*)fetch(&amp;stringStash,i++)</PRE></FONT></BLOCKQUOTE>
+
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">This is due to the
+<A NAME="Index1002"></A><A NAME="Index1003"></A>stricter type checking in C++,
+which does not allow you to simply assign a <B>void*</B> to any other type (C
+allows this).</FONT><A NAME="_Toc472654817"></A><BR></P></DIV>
+<A NAME="Heading191"></A><FONT FACE = "Verdana"><H3 ALIGN="LEFT">
+Bad guesses</H3></FONT>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">There is one more important issue you
+should understand before we look at the general problems in creating a C
+library. Note that the <B>CLib.h</B> header file <I>must</I> be included in any
+file that refers to <B>CStash</B> because the compiler can&#8217;t even guess at
+what that structure looks like. However, it <I>can</I> guess at what a function
+looks like; this sounds like a feature but it turns out to be a major
+<A NAME="Index1004"></A>C <A NAME="Index1005"></A>pitfall.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Although you should always declare
+functions by including a header file,
+<A NAME="Index1006"></A><A NAME="Index1007"></A>function declarations
+aren&#8217;t essential in C. It&#8217;s possible in C (but <I>not </I>in C++) to
+call a function that you haven&#8217;t declared. A good compiler will warn you
+that you probably ought to declare a function first, but it isn&#8217;t enforced
+by the C language standard. This is a dangerous practice, because the C compiler
+can assume that a function that you call with an <B>int</B> argument has an
+argument list containing <B>int</B>, even if it may actually contain a
+<B>float</B>.<B> </B>This can produce bugs that are very difficult to find, as
+you will see.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Each separate C implementation file (with
+an extension of <B>.c</B>)<B> </B>is a
+<A NAME="Index1008"></A><A NAME="Index1009"></A><I>translation unit</I>. That
+is, the compiler is run separately on each translation unit, and when it is
+running it is aware of only that unit. Thus, any information you provide by
+including header files is quite important because it determines the
+compiler&#8217;s understanding of the rest of your program. Declarations in
+header files are particularly important, because everywhere the header is
+included, the compiler will know exactly what to do. If, for example, you have a
+declaration in a header file that says <B>void func(float)</B>, the compiler
+knows that if you call that function with an integer argument, it should
+convert<A NAME="Index1010"></A><A NAME="Index1011"></A><A NAME="Index1012"></A>
+the <B>int</B> to a <B>float</B> as it passes the argument (this is called
+<I>promotion</I>). Without the declaration, the C compiler would simply assume
+that a function <B>func(int)</B> existed, it wouldn&#8217;t do the promotion,
+and the wrong data would quietly be passed into
+<B>func(&#160;)</B>.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">For each translation unit, the compiler
+creates an <A NAME="Index1013"></A>object file, with an extension of <B>.o</B>
+or <B>.obj</B> or something similar. These object files, along with the
+necessary start-up code, must be collected by the linker
+<A NAME="Index1014"></A>into the executable program. During linking, all the
+external references must be resolved. For example, in <B>CLibTest.cpp</B>,
+functions such as <B>initialize(&#160;)</B> and <B>fetch(&#160;)</B> are
+declared (that is, the compiler is told what they look like) and used, but not
+defined. They are defined elsewhere, in <B>CLib.cpp</B>. Thus, the calls in
+<B>CLib.cpp</B> are external references. The linker must, when it puts all the
+object files together, take the unresolved external references
+<A NAME="Index1015"></A><A NAME="Index1016"></A>and find the addresses they
+actually refer to. Those addresses are put into the executable program to
+replace the external references.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">It&#8217;s important to realize that in
+C, the external references that the linker searches for are simply function
+names, generally with an underscore in front of them. So all the linker has to
+do is match up the function name where it is called and the function body in the
+object file, and it&#8217;s done. If you accidentally made a call that the
+compiler interpreted as <B>func(int)</B> and there&#8217;s a function body for
+<B>func(float)</B> in some other object file, the linker will see <B>_func</B>
+in one place and <B>_func</B> in another, and it will think everything&#8217;s
+OK. The <B>func(&#160;)</B> at the calling location will push an <B>int</B> onto
+the stack, and the <B>func(&#160;)</B> function body will expect a <B>float</B>
+to be on the stack. If the function only reads the value and doesn&#8217;t write
+to it, it won&#8217;t blow up the stack. In fact, the <B>float</B> value it
+reads off the stack might even make some kind of sense. That&#8217;s worse
+because it&#8217;s harder to find the
+bug.</FONT><A NAME="_Toc312373825"></A><A NAME="_Toc472654818"></A><BR></P></DIV>
+<A NAME="Heading192"></A><FONT FACE = "Verdana"><H2 ALIGN="LEFT">
+What's wrong?</H2></FONT>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">We are remarkably adaptable, even in
+situations in which perhaps we <I>shouldn&#8217;t</I> adapt. The style of the
+<B>CStash</B> library has been a staple for C programmers, but if you look at it
+for a while, you might notice that it&#8217;s rather . . . awkward. When you use
+it, you have to pass the address of the structure to every single function in
+the library. When reading the code, the mechanism of the library gets mixed with
+the meaning of the function calls, which is confusing when you&#8217;re trying
+to understand what&#8217;s going on.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">One of the biggest obstacles, however, to
+using libraries in C is the problem of <I>name
+clashes<A NAME="Index1017"></A></I>.<A NAME="Index1018"></A> C has a single
+<A NAME="Index1019"></A>name space for functions; that is, when the linker looks
+for a function name, it looks in a single master list. In addition, when the
+compiler is working on a translation unit, it can work only with a single
+function with a given name.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Now suppose you decide to buy two
+libraries from two different vendors, and each library has a structure that must
+be initialized and cleaned up. Both vendors decided that
+<B>initialize(&#160;)</B> and <B>cleanup(&#160;)</B> are good names. If you
+include both their header files in a single translation unit, what does the C
+compiler do? Fortunately, C gives you an error, telling you there&#8217;s a type
+mismatch in the two different argument lists of the declared functions. But even
+if you don&#8217;t include them in the same translation unit, the linker will
+still have problems. A good linker will detect that there&#8217;s a name clash,
+but some linkers take the first function name they find, by searching through
+the list of object files in the order you give them in the link list. (This can
+even be thought of as a feature because it allows you to replace a library
+function with your own version.)</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">In either event, you can&#8217;t use two
+C libraries that contain a function with the identical name. To solve this
+problem, C library vendors will often prepend a sequence of unique characters to
+the beginning of all their function names. So <B>initialize(&#160;)</B> and
+<B>cleanup(&#160;)</B> might become <B>CStash_initialize(&#160;)</B> and
+<B>CStash_cleanup(&#160;)</B>. This is a logical thing to do because it
+&#8220;decorates&#8221; the name of the <B>struct</B> the function works on with
+the name of the
+function.<A NAME="Index1020"></A><A NAME="Index1021"></A><A NAME="Index1022"></A><A NAME="Index1023"></A></FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Now it&#8217;s time to take the first
+step toward creating classes in C++. Variable names inside a
+<A NAME="Index1024"></A><A NAME="Index1025"></A><B>struct</B> do not clash with
+global variable names. So why not take advantage of this for function names,
+when those functions operate on a particular <B>struct</B>? That is, why not
+make functions members of
+<B>struct</B>s?</FONT><A NAME="_Toc312373826"></A><A NAME="_Toc472654819"></A><BR></P></DIV>
+<A NAME="Heading193"></A><FONT FACE = "Verdana"><H2 ALIGN="LEFT">
+The basic object</H2></FONT>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Step one is exactly that. C++ functions
+can be placed inside <B>struct</B>s as
+&#8220;<A NAME="Index1026"></A><A NAME="Index1027"></A>member functions.&#8221;
+Here&#8217;s what it looks like after
+<A NAME="Index1028"></A><A NAME="Index1029"></A><A NAME="Index1030"></A>converting
+the C version of <B>CStash</B> to the C++ <B>Stash</B>:
+<A NAME="Index1031"></A></FONT><BR></P></DIV>
+
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE><font color=#009900>//: C04:CppLib.h</font>
+<font color=#009900>// C-like library converted to C++</font>
+
+<font color=#0000ff>struct</font> Stash {
+  <font color=#0000ff>int</font> size;      <font color=#009900>// Size of each space</font>
+  <font color=#0000ff>int</font> quantity;  <font color=#009900>// Number of storage spaces</font>
+  <font color=#0000ff>int</font> next;      <font color=#009900>// Next empty space</font>
+   <font color=#009900>// Dynamically allocated array of bytes:</font>
+  <font color=#0000ff>unsigned</font> <font color=#0000ff>char</font>* storage;
+  <font color=#009900>// Functions!</font>
+  <font color=#0000ff>void</font> initialize(<font color=#0000ff>int</font> size);
+  <font color=#0000ff>void</font> cleanup();
+  <font color=#0000ff>int</font> add(<font color=#0000ff>const</font> <font color=#0000ff>void</font>* element);
+  <font color=#0000ff>void</font>* fetch(<font color=#0000ff>int</font> index);
+  <font color=#0000ff>int</font> count();
+  <font color=#0000ff>void</font> inflate(<font color=#0000ff>int</font> increase);
+}; <font color=#009900>///:~</font></PRE></FONT></BLOCKQUOTE>
+
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">First, notice there is no
+<B>typedef<A NAME="Index1032"></A><A NAME="Index1033"></A></B>. Instead of
+requiring you to create a <B>typedef</B>, the C++ compiler turns the name of the
+structure into a new type name for the program (just as <B>int</B>, <B>char</B>,
+<B>float</B> and <B>double</B> are type names).</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">All the data members are exactly the same
+as before, but now the functions are inside the body of the <B>struct</B>. In
+addition, notice that the first argument from the C version of the library has
+been removed. In <A NAME="Index1034"></A>C++, instead of forcing you to pass the
+address of the structure as the first argument to all the functions that operate
+on that structure, the compiler secretly does this for you. Now the only
+arguments for the functions are concerned with what the function <I>does</I>,
+not the mechanism of the function&#8217;s operation.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">It&#8217;s important to realize that the
+function code is effectively the same as it was with the C version of the
+library. The number of arguments is the same (even though you don&#8217;t see
+the structure address being passed in, it&#8217;s still there), and
+there&#8217;s only one function body for each function. That is, just because
+you say</FONT><BR></P></DIV>
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE>Stash A, B, C;</PRE></FONT></BLOCKQUOTE>
+
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">doesn&#8217;t mean you get a different
+<B>add(&#160;)</B> function for each variable.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">So the code that&#8217;s generated is
+almost identical to what you would have written for the C version of the
+library. Interestingly enough, this includes the
+<A NAME="Index1035"></A><A NAME="Index1036"></A><A NAME="Index1037"></A><A NAME="Index1038"></A>
+&#8220;name decoration&#8221; you probably would have done to produce
+<B>Stash_initialize(&#160;)</B>, <B>Stash_cleanup(&#160;)</B>, and so on. When
+the function name is inside the <B>struct</B>, the compiler effectively does the
+same thing. Therefore, <B>initialize(&#160;)</B> inside the structure
+<B>Stash</B> will not collide with a function named <B>initialize(&#160;)</B>
+inside any other structure, or even a global function named
+<B>initialize(&#160;)</B>. Most of the time you don&#8217;t have to worry about
+the function name decoration &#8211; you use the undecorated name. But sometimes
+you do need to be able to specify that this <B>initialize(&#160;)</B> belongs to
+the <B>struct</B> <B>Stash</B>, and not to any other <B>struct</B>. In
+particular, when you&#8217;re defining the function you need to fully specify
+which one it is. To accomplish this full specification, C++ has an operator
+<A NAME="Index1039"></A>(<A NAME="Index1040"></A><B>::</B>) called the
+<A NAME="Index1041"></A><A NAME="Index1042"></A><A NAME="Index1043"></A><I>scope
+resolution operator</I> (named so because names can now be in different scopes:
+at global scope or within the scope of a <B>struct</B>). For example, if you
+want to specify <B>initialize(&#160;)</B>, which belongs to <B>Stash</B>, you
+say <B>Stash::initialize(int size)</B>. You can see how the scope resolution
+operator is used in the function definitions:</FONT><BR></P></DIV>
+
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE><font color=#009900>//: C04:CppLib.cpp {O}</font>
+<font color=#009900>// C library converted to C++</font>
+<font color=#009900>// Declare structure and functions:</font>
+#include <font color=#004488>"CppLib.h"</font>
+#include &lt;iostream&gt;
+#include &lt;cassert&gt;
+<font color=#0000ff>using</font> <font color=#0000ff>namespace</font> std;
+<font color=#009900>// Quantity of elements to add</font>
+<font color=#009900>// when increasing storage:</font>
+<font color=#0000ff>const</font> <font color=#0000ff>int</font> increment = 100;
+
+<font color=#0000ff>void</font> Stash::initialize(<font color=#0000ff>int</font> sz) {
+  size = sz;
+  quantity = 0;
+  storage = 0;
+  next = 0;
+}
+
+<font color=#0000ff>int</font> Stash::add(<font color=#0000ff>const</font> <font color=#0000ff>void</font>* element) {
+  <font color=#0000ff>if</font>(next &gt;= quantity) <font color=#009900>// Enough space left?</font>
+    inflate(increment);
+  <font color=#009900>// Copy element into storage,</font>
+  <font color=#009900>// starting at next empty space:</font>
+  <font color=#0000ff>int</font> startBytes = next * size;
+  <font color=#0000ff>unsigned</font> <font color=#0000ff>char</font>* e = (<font color=#0000ff>unsigned</font> <font color=#0000ff>char</font>*)element;
+  <font color=#0000ff>for</font>(<font color=#0000ff>int</font> i = 0; i &lt; size; i++)
+    storage[startBytes + i] = e[i];
+  next++;
+  <font color=#0000ff>return</font>(next - 1); <font color=#009900>// Index number</font>
+}
+
+<font color=#0000ff>void</font>* Stash::fetch(<font color=#0000ff>int</font> index) {
+  <font color=#009900>// Check index boundaries:</font>
+  assert(0 &lt;= index);
+  <font color=#0000ff>if</font>(index &gt;= next)
+    <font color=#0000ff>return</font> 0; <font color=#009900>// To indicate the end</font>
+  <font color=#009900>// Produce pointer to desired element:</font>
+  <font color=#0000ff>return</font> &amp;(storage[index * size]);
+}
+
+<font color=#0000ff>int</font> Stash::count() {
+  <font color=#0000ff>return</font> next; <font color=#009900>// Number of elements in CStash</font>
+}
+
+<font color=#0000ff>void</font> Stash::inflate(<font color=#0000ff>int</font> increase) {
+  assert(increase &gt; 0);
+  <font color=#0000ff>int</font> newQuantity = quantity + increase;
+  <font color=#0000ff>int</font> newBytes = newQuantity * size;
+  <font color=#0000ff>int</font> oldBytes = quantity * size;
+  <font color=#0000ff>unsigned</font> <font color=#0000ff>char</font>* b = <font color=#0000ff>new</font> <font color=#0000ff>unsigned</font> <font color=#0000ff>char</font>[newBytes];
+  <font color=#0000ff>for</font>(<font color=#0000ff>int</font> i = 0; i &lt; oldBytes; i++)
+    b[i] = storage[i]; <font color=#009900>// Copy old to new</font>
+  <font color=#0000ff>delete</font> []storage; <font color=#009900>// Old storage</font>
+  storage = b; <font color=#009900>// Point to new memory</font>
+  quantity = newQuantity;
+}
+
+<font color=#0000ff>void</font> Stash::cleanup() {
+  <font color=#0000ff>if</font>(storage != 0) {
+    cout &lt;&lt; <font color=#004488>"freeing storage"</font> &lt;&lt; endl;
+    <font color=#0000ff>delete</font> []storage;
+  }
+} <font color=#009900>///:~</font></PRE></FONT></BLOCKQUOTE>
+
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">There are several other things that are
+different between C and C++. First, the declarations in the header
+files<A NAME="Index1044"></A><A NAME="Index1045"></A> are <I>required</I> by the
+compiler. In C++ you cannot call a function without declaring it first. The
+compiler will issue an error message otherwise. This is an important way to
+ensure that function calls are consistent between the point where they are
+called and the point where they are defined. By forcing you to
+declare<A NAME="Index1046"></A> the <A NAME="Index1047"></A>function before you
+call it, the C++ compiler virtually ensures that you will perform this
+declaration by including the header file. If you also include the same header
+file in the place where the functions are defined, then the compiler checks to
+make sure that the declaration in the header and the function definition match
+up. This means that the header file becomes a validated repository for function
+declarations and ensures that functions are used consistently throughout all
+translation units in the project.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Of course, global functions
+<A NAME="Index1048"></A><A NAME="Index1049"></A>can still be declared by hand
+every place where they are defined and used. (This is so tedious that it becomes
+very unlikely.) However, structures must always be declared before they are
+defined or used, and the most convenient place to put a
+<A NAME="Index1050"></A><A NAME="Index1051"></A><A NAME="Index1052"></A><A NAME="Index1053"></A>structure
+definition is in a header file, except for those you intentionally hide in a
+file.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">You can see that all the member functions
+look almost the same as when they were C functions, except for the scope
+resolution and the fact that the first argument from the C version of the
+library is no longer explicit. It&#8217;s still there, of course, because the
+function has to be able to work on a particular <B>struct</B> variable. But
+notice, inside the member function, that the member selection is also gone!
+Thus, instead of saying <B>s&#8211;&gt;size = sz;</B> you say <B>size = sz;</B>
+and eliminate the tedious <B>s&#8211;&gt;</B>, which didn&#8217;t really add
+anything to the meaning of what you were doing anyway. The C++ compiler is
+apparently doing this for you. Indeed, it is taking the &#8220;secret&#8221;
+first argument (the address of the structure that we were previously passing in
+by hand) and applying the member selector whenever you refer to one of the data
+members of a <B>struct</B>.
+<A NAME="Index1054"></A><A NAME="Index1055"></A><A NAME="Index1056"></A><A NAME="Index1057"></A><A NAME="Index1058"></A>This
+means that whenever you are inside the member function of another <B>struct</B>,
+you can refer to any member (including another member function) by simply giving
+its name. The compiler will search through the local structure&#8217;s names
+before looking for a global version of that name. You&#8217;ll find that this
+feature means that not only is your code easier to write, it&#8217;s a lot
+easier to read.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">But what if, for some reason, you
+<I>want</I> to be able to get your hands on the address of the structure? In the
+C version of the library it was easy because each function&#8217;s first
+argument was a <B>CStash*</B> called <B>s</B>. In C++, things are even more
+consistent. There&#8217;s a special keyword, called
+<A NAME="Index1059"></A><B>this<A NAME="Index1060"></A></B>, which produces the
+address of the <B>struct</B>. It&#8217;s the equivalent of the
+&#8216;<B>s</B>&#8217; in the C version of the library. So we can revert to the
+C style of things by saying</FONT><BR></P></DIV>
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE><font color=#0000ff>this</font>-&gt;size = Size;</PRE></FONT></BLOCKQUOTE>
+
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">The code generated by the compiler is
+exactly the same, so you don&#8217;t need to use <B>this</B> in such a fashion;
+occasionally, you&#8217;ll see code where people explicitly use <B>this-&gt;</B>
+everywhere but it doesn&#8217;t add anything to the meaning of the code and
+often indicates an inexperienced programmer. Usually, you don&#8217;t use
+<B>this</B> often, but when you need it, it&#8217;s there (some of the examples
+later in the book will use <B>this</B>).</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">There&#8217;s one last item to mention.
+In C, you could assign a <B>void*</B> to any other pointer like
+this:</FONT><BR></P></DIV>
+
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE><font color=#0000ff>int</font> i = 10;
+<font color=#0000ff>void</font>* vp = &amp;i; <font color=#009900>// OK in both C and C++</font>
+<font color=#0000ff>int</font>* ip = vp; <font color=#009900>// Only acceptable in C</font></PRE></FONT></BLOCKQUOTE>
+
+<DIV ALIGN="LEFT"><P><A NAME="Index1061"></A><A NAME="Index1062"></A><FONT FACE="Georgia">and
+there was no complaint from the compiler. But in C++, this statement is not
+allowed. Why? Because C is not so particular about type information, so it
+allows you to assign a pointer with an unspecified type to a pointer with a
+specified type. Not so with C++. Type is critical in C++, and the compiler
+stamps its foot when there are any violations of type information. This has
+always been important, but it is especially important in C++ because you have
+member functions in <B>struct</B>s. If you could pass pointers to <B>struct</B>s
+around with impunity in C++, then you could end up calling a member function for
+a <B>struct</B> that doesn&#8217;t even logically exist for that <B>struct</B>!
+A real recipe for disaster. Therefore, while C++ allows the assignment of any
+type of pointer to a <A NAME="Index1063"></A><B>void*</B> (this was the original
+intent of <B>void*</B>, which is required to be large enough to hold a pointer
+to any type), it will <I>not</I> allow you to assign a <B>void</B> pointer to
+any other type of pointer. A cast is always required to tell the reader and the
+compiler that you really do want to treat it as the destination type.
+</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">This brings up an interesting issue. One
+of the important goals for C++ is to compile as much existing C code as possible
+to allow for an easy transition to the new language. However, this doesn&#8217;t
+mean any code that C allows will automatically be allowed in C++.
+<A NAME="Index1064"></A><A NAME="Index1065"></A><A NAME="Index1066"></A>There
+are a number of things the C compiler lets you get away with that are dangerous
+and error-prone. (We&#8217;ll look at them as the book progresses.) The C++
+compiler generates warnings and errors for these situations. This is often much
+more of an advantage than a hindrance. In fact, there are many situations in
+which you are trying to run down an error in C and just can&#8217;t find it, but
+as soon as you <A NAME="Index1067"></A>recompile the program in C++, the
+compiler points out the problem! In C, you&#8217;ll often find that you can get
+the program to compile, but then you have to get it to work. In C++, when the
+program compiles correctly, it often works, too! This is because the language is
+a lot stricter about type.<A NAME="Index1068"></A></FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">You can see a number of new things in the
+way the C++ version of <B>Stash</B> is used in the following test
+program:</FONT><BR></P></DIV>
+
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE><font color=#009900>//: C04:CppLibTest.cpp</font>
+<font color=#009900>//{L} CppLib</font>
+<font color=#009900>// Test of C++ library</font>
+#include <font color=#004488>"CppLib.h"</font>
+#include <font color=#004488>"../require.h"</font>
+#include &lt;fstream&gt;
+#include &lt;iostream&gt;
+#include &lt;string&gt;
+<font color=#0000ff>using</font> <font color=#0000ff>namespace</font> std;
+
+<font color=#0000ff>int</font> main() {
+  Stash intStash;
+  intStash.initialize(<font color=#0000ff>sizeof</font>(<font color=#0000ff>int</font>));
+  <font color=#0000ff>for</font>(<font color=#0000ff>int</font> i = 0; i &lt; 100; i++)
+    intStash.add(&amp;i);
+  <font color=#0000ff>for</font>(<font color=#0000ff>int</font> j = 0; j &lt; intStash.count(); j++)
+    cout &lt;&lt; <font color=#004488>"intStash.fetch("</font> &lt;&lt; j &lt;&lt; <font color=#004488>") = "</font>
+         &lt;&lt; *(<font color=#0000ff>int</font>*)intStash.fetch(j)
+         &lt;&lt; endl;
+  <font color=#009900>// Holds 80-character strings:</font>
+  Stash stringStash;
+  <font color=#0000ff>const</font> <font color=#0000ff>int</font> bufsize = 80;
+  stringStash.initialize(<font color=#0000ff>sizeof</font>(<font color=#0000ff>char</font>) * bufsize);
+  ifstream in(<font color=#004488>"CppLibTest.cpp"</font>);
+  assure(in, <font color=#004488>"CppLibTest.cpp"</font>);
+  string line;
+  <font color=#0000ff>while</font>(getline(in, line))
+    stringStash.add(line.c_str());
+  <font color=#0000ff>int</font> k = 0;
+  <font color=#0000ff>char</font>* cp;
+  <font color=#0000ff>while</font>((cp =(<font color=#0000ff>char</font>*)stringStash.fetch(k++)) != 0)
+    cout &lt;&lt; <font color=#004488>"stringStash.fetch("</font> &lt;&lt; k &lt;&lt; <font color=#004488>") = "</font>
+         &lt;&lt; cp &lt;&lt; endl;
+  intStash.cleanup();
+  stringStash.cleanup();
+} <font color=#009900>///:~</font></PRE></FONT></BLOCKQUOTE>
+
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">One thing you&#8217;ll notice is that the
+variables are all defined &#8220;on the fly&#8221; (as introduced in the
+previous chapter). That is, they are defined at any point in the scope, rather
+than being restricted &#8211; as in C &#8211; to the beginning of the
+scope.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">The code is quite similar to
+<B>CLibTest.cpp</B>, but when a member function is called, the call occurs using
+the member selection operator <A NAME="Index1069"></A><A NAME="Index1070"></A>
+<A NAME="Index1071"></A><A NAME="Index1072"></A> &#8216;<B>.</B>&#8217; preceded
+by the name of the variable. This is a convenient syntax because it mimics the
+selection of a data member of the structure. The difference is that this is a
+function member, so it has an argument list.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Of course, the call that the compiler
+<I>actually</I> generates looks much more like the original C library function.
+Thus, considering name
+decoration<A NAME="Index1073"></A><A NAME="Index1074"></A><A NAME="Index1075"></A><A NAME="Index1076"></A>
+and the passing of <B>this</B>, the C++ function call
+<B>intStash.initialize(sizeof(int), 100)</B> becomes something like
+<B>Stash_initialize(&amp;intStash, sizeof(int), 100)</B>. If you ever wonder
+what&#8217;s going on underneath the covers, remember that the
+<A NAME="Index1077"></A><A NAME="Index1078"></A><A NAME="Index1079"></A>original
+C++ compiler <B>cfront</B> from AT&amp;T produced C code as its output, which
+was then compiled by the underlying C compiler. This approach meant that
+<B>cfront</B> could be quickly ported to any machine that had a C compiler, and
+it helped to rapidly disseminate C++ compiler technology. But because the C++
+compiler had to generate C, you know that there must be some way to represent
+C++ syntax in C (some compilers still allow you to produce C
+code).</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">There&#8217;s one other change from
+<B>ClibTest.cpp</B>, which is the introduction of the
+<A NAME="Index1080"></A><B>require.h</B> header file. This is a header file that
+I created for this book to perform more sophisticated error checking than that
+provided by <B>assert(&#160;)</B>. It contains several functions, including the
+one used here called <A NAME="Index1081"></A><B>assure(&#160;),</B> which is
+used for files. This function checks to see if the file has successfully been
+opened, and if not it reports to standard error that the file could not be
+opened (thus it needs the name of the file as the second argument) and exits the
+program. The <B>require.h</B> functions will be used throughout the book, in
+particular to ensure that there are the right number of command-line arguments
+and that files are opened properly. The <B>require.h</B> functions replace
+repetitive and distracting error-checking code, and yet they provide essentially
+useful error messages. These functions will be fully explained later in the
+book.</FONT><A NAME="_Toc312373827"></A><A NAME="_Toc472654820"></A><BR></P></DIV>
+<A NAME="Heading194"></A><FONT FACE = "Verdana"><H2 ALIGN="LEFT">
+What's an <A NAME="Index1082"></A>object?</H2></FONT>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Now that you&#8217;ve seen an initial
+example, it&#8217;s time to step back and take a look at some terminology. The
+act of bringing functions inside structures is the root of what C++ adds to C,
+and it introduces a new way of thinking about structures: as concepts. In C, a
+<B>struct</B> <A NAME="Index1083"></A>is an agglomeration of data, a way to
+package data so you can treat it in a clump. But it&#8217;s hard to think about
+it as anything but a programming convenience. The functions that operate on
+those structures are elsewhere. However, with functions in the package, the
+structure becomes a new creature, capable of describing both characteristics
+(like a C <B>struct</B> does) <I>and</I> behaviors. The concept of an object, a
+free-standing, bounded entity that can remember <I>and</I> act, suggests
+itself.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">In C++, an object is just a variable, and
+the purest definition is &#8220;a region of storage&#8221; (this is a more
+specific way of saying, &#8220;an object must have a unique
+<A NAME="Index1084"></A>identifier,&#8221; which in the case of C++ is a unique
+memory address). It&#8217;s a place where you can store data, and it&#8217;s
+implied that there are also operations that can be performed on this
+data.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Unfortunately, there&#8217;s not complete
+consistency across languages when it comes to these terms, although they are
+fairly well-accepted. You will also sometimes encounter disagreement about what
+an object-oriented language is, although that seems to be reasonably well sorted
+out by now. There are languages that are
+<I>object-based<A NAME="Index1085"></A></I>, which means that they have objects
+like the C++ structures-with-functions that you&#8217;ve seen so far. This,
+however, is only part of the picture when it comes to an object-oriented
+language, and languages that stop at packaging functions inside data structures
+are object-based, not
+object-oriented.</FONT><A NAME="_Toc312373828"></A><A NAME="_Toc472654821"></A><BR></P></DIV>
+<A NAME="Heading195"></A><FONT FACE = "Verdana"><H2 ALIGN="LEFT">
+Abstract data typing</H2></FONT>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">The ability to package data with
+functions allows you to create a new data type. This is often called
+<I>encapsulation</I></FONT><A NAME="fnB33" HREF="#fn33">[33]</A><A NAME="Index1086"></A><FONT FACE="Georgia">.<I>
+</I>An existing data type may have several pieces of data packaged together. For
+example, a <B>float</B> has an exponent, a mantissa, and a sign bit. You can
+tell it to do things: add to another <B>float</B> or to an <B>int</B>, and so
+on. It has characteristics and behavior.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">The definition of <B>Stash</B> creates a
+new data type. You can <B>add(&#160;)</B>, <B>fetch(&#160;)</B>, and
+<B>inflate(&#160;)</B>. You create one by saying <B>Stash s</B>, just as you
+create a <B>float</B> by saying <B>float f</B>. A <B>Stash</B> also has
+characteristics and behavior. Even though it acts like a real, built-in data
+type, we refer to it as an
+<A NAME="Index1087"></A><A NAME="Index1088"></A><A NAME="Index1089"></A><I>abstract
+data type</I>, perhaps because it allows us to abstract a concept from the
+problem space into the solution space. In addition, the C++ compiler treats it
+like a new data type, and if you say a function expects a <B>Stash</B>, the
+compiler makes sure you pass a <B>Stash</B> to that function. So the same level
+of type checking happens with abstract data types (sometimes called
+<A NAME="Index1090"></A><A NAME="Index1091"></A><I>user-defined types</I>) as
+with built-in types.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">You can immediately see a difference,
+however, in the way you perform operations on objects. You say
+<B>object.memberFunction(arglist)</B>. This is &#8220;calling a member function
+<A NAME="Index1092"></A><A NAME="Index1093"></A><A NAME="Index1094"></A>for an
+object.&#8221; But in object-oriented parlance, this is also referred to as
+&#8220;sending a message <A NAME="Index1095"></A><A NAME="Index1096"></A>to an
+object.&#8221; So for a <B>Stash s</B>, the statement <B>s.add(&amp;i)</B>
+&#8220;sends a message to <B>s</B>&#8221; saying, &#8220;<B>add(&#160;)</B> this
+to yourself.&#8221; <A NAME="Index1097"></A>In fact, object-oriented programming
+can be summed up in a single phrase: <I>sending messages to objects</I>. Really,
+that&#8217;s all you do &#8211; create a bunch of objects and send messages to
+them. The trick, of course, is figuring out what your objects and messages
+<I>are</I>, but once you accomplish this the implementation in C++ is
+surprisingly
+straightforward.</FONT><A NAME="_Toc312373829"></A><A NAME="_Toc472654822"></A><BR></P></DIV>
+<A NAME="Heading196"></A><FONT FACE = "Verdana"><H2 ALIGN="LEFT">
+Object details</H2></FONT>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">A question that often comes up in
+seminars is, &#8220;How big is an object, and what does it look like?&#8221; The
+answer is &#8220;about what you expect from a C <B>struct</B>.&#8221; In fact,
+the code the C compiler produces for a C <B>struct</B> (with no C++ adornments)
+will usually look <I>exactly</I> the same as the code produced by a C++
+compiler. This is reassuring to those C programmers who depend on the details of
+size and layout in their code, and for some reason directly access
+structure<A NAME="Index1098"></A> bytes instead of using identifiers (relying on
+a particular size and layout for a structure is a nonportable
+activity).</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">The size of a
+<B>struct<A NAME="Index1099"></A><A NAME="Index1100"></A></B> is the combined
+size of all of its members. Sometimes when the compiler lays out a
+<B>struct</B>, it adds extra bytes to make the boundaries come out neatly
+&#8211; this may increase execution efficiency. In Chapter 15, you&#8217;ll see
+how in some cases &#8220;secret&#8221; pointers are added to the structure, but
+you don&#8217;t need to worry about that right now.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">You can determine the size of a
+<B>struct</B> using the
+<A NAME="Index1101"></A><A NAME="Index1102"></A><B>sizeof</B> operator.
+Here&#8217;s a small example:</FONT><BR></P></DIV>
+
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE><font color=#009900>//: C04:Sizeof.cpp</font>
+<font color=#009900>// Sizes of structs</font>
+#include <font color=#004488>"CLib.h"</font>
+#include <font color=#004488>"CppLib.h"</font>
+#include &lt;iostream&gt;
+<font color=#0000ff>using</font> <font color=#0000ff>namespace</font> std;
+
+<font color=#0000ff>struct</font> A {
+  <font color=#0000ff>int</font> i[100];
+};
+
+<font color=#0000ff>struct</font> B {
+  <font color=#0000ff>void</font> f();
+};
+
+<font color=#0000ff>void</font> B::f() {}
+
+<font color=#0000ff>int</font> main() {
+  cout &lt;&lt; <font color=#004488>"sizeof struct A = "</font> &lt;&lt; <font color=#0000ff>sizeof</font>(A)
+       &lt;&lt; <font color=#004488>" bytes"</font> &lt;&lt; endl;
+  cout &lt;&lt; <font color=#004488>"sizeof struct B = "</font> &lt;&lt; <font color=#0000ff>sizeof</font>(B)
+       &lt;&lt; <font color=#004488>" bytes"</font> &lt;&lt; endl;
+  cout &lt;&lt; <font color=#004488>"sizeof CStash in C = "</font> 
+       &lt;&lt; <font color=#0000ff>sizeof</font>(CStash) &lt;&lt; <font color=#004488>" bytes"</font> &lt;&lt; endl;
+  cout &lt;&lt; <font color=#004488>"sizeof Stash in C++ = "</font> 
+       &lt;&lt; <font color=#0000ff>sizeof</font>(Stash) &lt;&lt; <font color=#004488>" bytes"</font> &lt;&lt; endl;
+} <font color=#009900>///:~</font></PRE></FONT></BLOCKQUOTE>
+
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">On my machine (your results may vary) the
+first print statement produces 200 because each <B>int</B> occupies two bytes.
+<B>struct B</B> is something of an anomaly because it is a <B>struct</B> with no
+data members. In C, this is illegal, but in C++ we need the option of creating a
+<B>struct</B> whose sole task is to scope function names, so it is allowed.
+Still, the result produced by the second print statement is a somewhat
+surprising nonzero value<A NAME="Index1103"></A><A NAME="Index1104"></A>. In
+early versions of the language, the size was zero, but an awkward situation
+arises when you create such objects: They have the same address as the object
+created directly after them, and so are not distinct. One of the fundamental
+rules of objects is that <A NAME="Index1105"></A><A NAME="Index1106"></A>each
+object must have a unique address, so structures with no data members will
+always have some minimum nonzero size.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">The last two <B>sizeof</B> statements
+show you that the size of the structure in C++ is the same as the size of the
+equivalent version in C. C++ tries not to add any unnecessary
+overhead.</FONT><A NAME="_Toc312373830"></A><A NAME="_Toc472654823"></A><BR></P></DIV>
+<A NAME="Heading197"></A><FONT FACE = "Verdana"><H2 ALIGN="LEFT">
+Header file etiquette</H2></FONT>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">When you create a <B>struct</B>
+containing member functions, you are creating a new data type. In general, you
+want this type to be easily accessible to yourself and others. In addition, you
+want to separate the interface<A NAME="Index1107"></A> (the declaration) from
+the implementation<A NAME="Index1108"></A> (the definition of the member
+functions) so the implementation can be changed without forcing a re-compile of
+the entire system. You achieve this end by putting the declaration for your new
+type in a header file.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">When I first learned to program in C, the
+header file <A NAME="Index1109"></A><A NAME="Index1110"></A>was a mystery to me.
+Many C books don&#8217;t seem to emphasize it, and the compiler didn&#8217;t
+enforce function declarations, so it seemed optional most of the time, except
+when structures were declared. In C++ the use of header files becomes crystal
+clear. They are virtually mandatory for easy program development, and you put
+very specific information in them: <A NAME="Index1111"></A>declarations. The
+header file tells the compiler what is available in your library. You can use
+the library even if you only possess the header file along with the object file
+or library file; you don&#8217;t need the source code for the <B>cpp</B> file.
+The header file is where the interface specification is stored.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Although it is not enforced by the
+compiler, the best approach to building large projects in C is to use libraries;
+collect associated functions into the same object module or library, and use a
+header file to hold all the declarations for the functions. It is <I>de
+rigueur</I> in C++; you could throw any function into a C library, but the C++
+abstract data type determines the functions that are associated by dint of their
+common access to the data in a <B>struct</B>. Any member function must be
+declared in the <B>struct </B>declaration; you cannot put it elsewhere. The use
+of function libraries was encouraged in C and institutionalized in
+C++.</FONT><A NAME="_Toc472654824"></A><BR></P></DIV>
+<A NAME="Heading198"></A><FONT FACE = "Verdana"><H3 ALIGN="LEFT">
+Importance of header file<A NAME="Index1112"></A>s</H3></FONT>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">When using a function from a library, C
+allows you the option of ignoring the header file and simply declaring the
+function by hand. In the past, people would sometimes do this to speed up the
+compiler just a bit by avoiding the task of opening and including the file (this
+is usually not an issue with modern compilers). For example, here&#8217;s an
+extremely lazy declaration of the C function <B>printf(&#160;) </B>(from
+<B>&lt;stdio.h&gt;</B>):</FONT><BR></P></DIV>
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE>printf(...);</PRE></FONT></BLOCKQUOTE>
+
+<DIV ALIGN="LEFT"><P><A NAME="Index1113"></A><FONT FACE="Georgia">The ellipses
+specify a
+<A NAME="Index1114"></A><A NAME="Index1115"></A><A NAME="Index1116"></A><I>variable
+argument
+list</I></FONT><A NAME="fnB34" HREF="#fn34">[34]</A><A NAME="Index1117"></A><FONT FACE="Georgia">,
+which says: <B>printf(&#160;)</B> has some arguments, each of which has a type,
+but ignore that. Just take whatever arguments you see and accept them. By using
+this kind of declaration, you suspend all error checking on the
+arguments.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">This practice can cause subtle problems.
+If you declare functions by hand, in one file you may make a mistake. Since the
+compiler sees only your hand-declaration in that file, it may be able to adapt
+to your mistake. The program will then link correctly, but the use of the
+function in that one file will be faulty. This is a tough error to find, and is
+easily avoided by using a header file.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">If you place all your function
+declarations in a header file, and include that header everywhere you use the
+function and where you define the function, you ensure a consistent declaration
+across the whole system. You also ensure that the
+<A NAME="Index1118"></A><A NAME="Index1119"></A>declaration and the definition
+match by including the header in the definition file.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">If a <B>struct</B> is declared in a
+header file in C++, you <I>must</I> include the header file everywhere a
+<B>struct</B> is used and where <B>struct</B> member functions are defined. The
+C++ compiler will give an error message if you try to call a regular function,
+or to call or define a member function, without declaring it first. By enforcing
+the proper use of <A NAME="Index1120"></A>header files, the language ensures
+consistency in libraries, and reduces bugs by forcing the same interface to be
+used everywhere.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">The header is a contract between you and
+the user of your library. The contract describes your data structures, and
+states the arguments and return values for the function calls. It says,
+&#8220;Here&#8217;s what my library does.&#8221; The user needs some of this
+information to develop the application and the compiler needs all of it to
+generate proper code. The user of the <B>struct</B> simply includes the header
+file, creates objects (instances) of that <B>struct</B>, and links in the object
+module or library (i.e.: the compiled code).</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">The compiler enforces the contract by
+requiring you to declare all structures and functions before they are used and,
+in the case of member functions, before they are defined. Thus, you&#8217;re
+forced to put the declarations in the header and to include the header in the
+file where the member functions are defined and the file(s) where they are used.
+Because a single header file describing your library is included throughout the
+system, the compiler can ensure consistency and <A NAME="Index1121"></A>prevent
+errors.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">There are certain issues that you must be
+aware of in order to organize your code
+properly<A NAME="Index1122"></A><A NAME="Index1123"></A> and write effective
+header files. The first issue concerns what you can put into header files. The
+basic rule is &#8220;only declarations<A NAME="Index1124"></A>,&#8221; that is,
+only information to the compiler but nothing that allocates storage by
+generating code or creating variables. This is because the header file will
+typically be included in several translation units in a project, and if storage
+for one identifier is allocated in more than one place, the linker will come up
+with a multiple definition error (this is C++&#8217;s
+<A NAME="Index1125"></A><A NAME="Index1126"></A><I>one definition rule</I>: You
+can declare things as many times as you want, but there can be only one actual
+definition for each thing).</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">This rule isn&#8217;t completely hard and
+fast. If you define a variable that is &#8220;file
+static&#8221;<A NAME="Index1127"></A> (has visibility only within a file) inside
+a header file, there will be multiple instances of that data across the project,
+but the linker won&#8217;t have a
+collision</FONT><A NAME="fnB35" HREF="#fn35">[35]</A><A NAME="Index1128"></A><A NAME="Index1129"></A><A NAME="Index1130"></A><FONT FACE="Georgia">.
+Basically, you don&#8217;t want to do anything in the header file that will
+cause an ambiguity at link time.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><A NAME="Index1131"></A><A NAME="_Toc472654825"></A><BR></P></DIV>
+<A NAME="Heading199"></A><FONT FACE = "Verdana"><H3 ALIGN="LEFT">
+The multiple-declaration problem<BR><A NAME="Index1132"></A></H3></FONT>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">The second header-file issue is this:
+<A NAME="Index1133"></A><A NAME="Index1134"></A>when you put a <B>struct</B>
+declaration in a header file, it is possible for the file to be included more
+than once in a complicated program. Iostreams are a good example. Any time a
+<B>struct</B> does I/O it may include one of the iostream headers. If the <B>cpp
+</B>file you are working on uses more than one kind of <B>struct</B> (typically
+including a header file for each one), you run the risk of including the
+<B>&lt;iostream&gt;</B> header more than once and re-declaring
+iostreams.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">The compiler considers the
+<A NAME="Index1135"></A>redeclaration of a structure (this includes both
+<B>struct</B>s and <B>class</B>es)<B> </B>to be an error, since it would
+otherwise allow you to use the same name for different types. To prevent this
+error when multiple header files are included, you need to build some
+intelligence into your header files using the preprocessor
+(<A NAME="Index1136"></A>Standard C++ header files like <B>&lt;iostream&gt;</B>
+already have this &#8220;intelligence&#8221;).</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Both C and C++ allow you to redeclare a
+function, as long as the two declarations match, but neither will allow the
+redeclaration of a
+structure<A NAME="Index1137"></A><A NAME="Index1138"></A><A NAME="Index1139"></A>.
+In C++ this rule is especially important because if the compiler allowed you to
+redeclare a structure and the two declarations differed, which one would it
+use?</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">The problem of redeclaration comes up
+quite a bit in C++ because each data type (structure with functions) generally
+has its own header file, and you have to include one header in another if you
+want to create another data type that uses the first one. In any <B>cpp </B>file
+in your project, it&#8217;s likely that you&#8217;ll include several files that
+include the same header file. During a single compilation, the compiler can see
+the same header file several times. Unless you do something about it, the
+compiler will see the redeclaration of your structure and report a compile-time
+error. To solve the problem, you need to know a bit more about the
+preprocessor.</FONT><A NAME="_Toc472654826"></A><BR></P></DIV>
+<A NAME="Heading200"></A><FONT FACE = "Verdana"><H3 ALIGN="LEFT">
+The preprocessor directives
+<BR><A NAME="Index1140"></A><A NAME="Index1141"></A>#define,
+<A NAME="Index1142"></A><A NAME="Index1143"></A>#ifdef, and
+<A NAME="Index1144"></A><A NAME="Index1145"></A>#endif<A NAME="Index1146"></A></H3></FONT>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">The preprocessor directive <B>#define</B>
+can be used to create compile-time flags. You have two choices: you can simply
+tell the preprocessor that the flag is defined, without specifying a
+value:</FONT><BR></P></DIV>
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE>#define FLAG</PRE></FONT></BLOCKQUOTE>
+
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">or you can give it a value (which is the
+typical C way to define a constant):</FONT><BR></P></DIV>
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE>#define PI 3.14159</PRE></FONT></BLOCKQUOTE>
+
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">In either case, the label can now be
+tested by the preprocessor to see if it has been defined:</FONT><BR></P></DIV>
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE>#ifdef FLAG</PRE></FONT></BLOCKQUOTE>
+
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">This will yield a true result, and the
+code following the <B>#ifdef</B> will be included in the package sent to the
+compiler. This inclusion stops when the preprocessor encounters the
+statement</FONT><BR></P></DIV>
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE>#endif</PRE></FONT></BLOCKQUOTE>
+
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">or</FONT><BR></P></DIV>
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE>#endif <font color=#009900>// FLAG</font></PRE></FONT></BLOCKQUOTE>
+
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Any non-comment after the <B>#endif</B>
+on the same line is illegal, even though some compilers may accept it. The
+<B>#ifdef</B>/<B>#endif</B> pairs may be nested within each
+other.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">The complement of <B>#define</B> is
+<B>#undef</B> (short for &#8220;un-define&#8221;), which will make an <B>#ifdef
+</B>statement using the same variable yield a false result. <B>#undef</B> will
+also cause the preprocessor to stop using a macro. The complement of
+<B>#ifdef</B> is <B>#ifndef<A NAME="Index1147"></A></B>, which will yield a true
+<A NAME="Index1148"></A><A NAME="Index1149"></A>if the label has not been
+defined (this is the one we will use in header files).</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">There are other useful features in the C
+preprocessor. You should check your local documentation for the full set.
+</FONT><A NAME="_Toc472654827"></A><BR></P></DIV>
+<A NAME="Heading201"></A><FONT FACE = "Verdana"><H3 ALIGN="LEFT">
+A standard for header
+file<A NAME="Index1150"></A><A NAME="Index1151"></A>s<BR><A NAME="Index1152"></A><A NAME="Index1153"></A></H3></FONT>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">In each header file that contains a
+structure, you should first check to see if this header has already been
+included in this particular <B>cpp</B> file. You do this by testing a
+preprocessor flag. If the flag isn&#8217;t set, the file wasn&#8217;t included
+and you should set the flag (so the structure can&#8217;t get re-declared) and
+declare the structure. If the flag was set then that type has already been
+declared so you should just ignore the code that declares it. Here&#8217;s how
+the header file should look:</FONT><BR></P></DIV>
+
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE>#ifndef HEADER_FLAG
+#define HEADER_FLAG
+<font color=#009900>// Type declaration here...</font>
+#endif <font color=#009900>// HEADER_FLAG</font></PRE></FONT></BLOCKQUOTE>
+
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">As you can see, the first time the header
+file is included, the contents of the header file (including your type
+declaration) will be included by the preprocessor. All the subsequent times it
+is included &#8211; in a single compilation unit &#8211; the type declaration
+will be ignored. The name HEADER_FLAG can be any unique name, but a reliable
+standard to follow is to capitalize the name of the header file and replace
+periods with underscores (leading underscores, however, are reserved for system
+names). Here&#8217;s an example:</FONT><BR></P></DIV>
+
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE><font color=#009900>//: C04:Simple.h</font>
+<font color=#009900>// Simple header that prevents re-definition</font>
+#ifndef SIMPLE_H
+#define SIMPLE_H
+
+<font color=#0000ff>struct</font> Simple {
+  <font color=#0000ff>int</font> i,j,k;
+  initialize() { i = j = k = 0; }
+};
+#endif <font color=#009900>// SIMPLE_H ///:~</font></PRE></FONT></BLOCKQUOTE>
+
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Although the <B>SIMPLE_H</B> after the
+<B>#endif</B> is commented out and thus ignored by the preprocessor, it is
+useful for documentation.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">These preprocessor statements that
+prevent multiple inclusion are often referred to as <I>include
+guards</I>.</FONT><A NAME="_Toc312373831"></A><A NAME="_Toc472654828"></A><BR></P></DIV>
+<A NAME="Heading202"></A><FONT FACE = "Verdana"><H3 ALIGN="LEFT">
+Namespaces in headers</H3></FONT>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">You&#8217;ll notice that
+<A NAME="Index1154"></A><A NAME="Index1155"></A><A NAME="Index1156"></A><I>using
+directives</I> are present in nearly all the <B>cpp</B> files in this book,
+usually in the form: <A NAME="Index1157"></A></FONT><BR></P></DIV>
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE><font color=#0000ff>using</font> <font color=#0000ff>namespace</font> std;</PRE></FONT></BLOCKQUOTE>
+
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Since <B>std </B>is the namespace that
+surrounds the entire Standard C++ library, this particular using directive
+allows the names in the Standard C++ library to be used without qualification.
+However, you&#8217;ll virtually never see a using directive in a header file (at
+least, not outside of a scope). The reason is that the using directive
+eliminates the protection of that particular namespace, and the effect lasts
+until the end of the current compilation unit. If you put a using directive
+(outside of a scope) in a header file, it means that this loss of 
+&#8220;namespace protection&#8221; will occur with any file that includes this
+header, which often means other header files. Thus, if you start putting using
+directives in header files, it&#8217;s very easy to end up &#8220;turning
+off&#8221; namespaces practically everywhere, and thereby neutralizing the
+beneficial effects of namespaces. </FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">In short: don&#8217;t put using
+directives in <A NAME="Index1158"></A>header
+files.</FONT><A NAME="_Toc472654829"></A><BR></P></DIV>
+<A NAME="Heading203"></A><FONT FACE = "Verdana"><H3 ALIGN="LEFT">
+Using headers in
+projects<BR><A NAME="Index1159"></A><A NAME="Index1160"></A></H3></FONT>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">When building a project in C++,
+you&#8217;ll usually create it by bringing together a lot of different types
+(data structures with associated functions). You&#8217;ll usually put the
+declaration for each type or group of associated types in a separate header
+file<A NAME="Index1161"></A><A NAME="Index1162"></A>, then define the functions
+for that type in a translation unit. When you use that type, you must include
+the header file to perform the declarations properly.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Sometimes that pattern will be followed
+in this book, but more often the examples will be very small, so everything
+&#8211; the structure declarations, function definitions, and the
+<B>main(&#160;)</B> function &#8211; may appear in a single file. However, keep
+in mind that you&#8217;ll want to use separate files and header files in
+practice.</FONT><A NAME="_Toc312373832"></A><A NAME="_Toc472654830"></A><BR></P></DIV>
+<A NAME="Heading204"></A><FONT FACE = "Verdana"><H2 ALIGN="LEFT">
+Nested
+structures<BR><A NAME="Index1163"></A><A NAME="Index1164"></A><A NAME="Index1165"></A></H2></FONT>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">The convenience of taking data and
+function names out of the global name space extends to structures. You can nest
+a structure within another structure, and therefore keep associated elements
+together. The declaration syntax is what you would expect, as you can see in the
+following structure, which implements a push-down stack as a simple linked list
+<A NAME="Index1166"></A><A NAME="Index1167"></A>so it &#8220;never&#8221; runs
+out of memory: <A NAME="Index1168"></A></FONT><BR></P></DIV>
+
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE><font color=#009900>//: C04:Stack.h</font>
+<font color=#009900>// Nested struct in linked list</font>
+#ifndef STACK_H
+#define STACK_H
+
+<font color=#0000ff>struct</font> Stack {
+  <font color=#0000ff>struct</font> Link {
+    <font color=#0000ff>void</font>* data;
+    Link* next;
+    <font color=#0000ff>void</font> initialize(<font color=#0000ff>void</font>* dat, Link* nxt);
+  }* head;
+  <font color=#0000ff>void</font> initialize();
+  <font color=#0000ff>void</font> push(<font color=#0000ff>void</font>* dat);
+  <font color=#0000ff>void</font>* peek();
+  <font color=#0000ff>void</font>* pop();
+  <font color=#0000ff>void</font> cleanup();
+};
+#endif <font color=#009900>// STACK_H ///:~</font></PRE></FONT></BLOCKQUOTE>
+
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">The nested <B>struct</B> is called
+<B>Link</B>, and it contains a pointer to the next <B>Link</B> in the list and a
+pointer to the data stored in the <B>Link</B>. If the <B>next</B> pointer is
+zero, it means you&#8217;re at the end of the list.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Notice that the <B>head</B> pointer is
+defined right after the declaration for <B>struct Link</B>, instead of a
+separate definition <B>Link* head</B>. This is a syntax that came from C, but it
+emphasizes the importance of the semicolon after the structure declaration; the
+semicolon indicates the end of the comma-separated list of definitions of that
+structure type. (Usually the list is empty.)</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">The nested structure has its own
+<B>initialize(&#160;)</B> function, like all the structures presented so far, to
+ensure proper initialization. <B>Stack</B> has both an <B>initialize(&#160;)</B>
+and <B>cleanup(&#160;)</B> function, as well as <B>push(&#160;)</B>, which takes
+a pointer to the data you wish to store (it assumes this has been allocated on
+the heap), and <B>pop(&#160;)</B>, which returns the <B>data</B> pointer from
+the top of the <B>Stack</B> and removes the top element. (When you
+<B>pop(&#160;)</B> an element, you are responsible for destroying the object
+pointed to by the <B>data</B>.) The <B>peek(&#160;)</B> function also returns
+the <B>data</B> pointer from the top element, but it leaves the top element on
+the <B>Stack</B>.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Here are the definitions for the member
+functions:</FONT><BR></P></DIV>
+
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE><font color=#009900>//: C04:Stack.cpp {O}</font>
+<font color=#009900>// Linked list with nesting</font>
+#include <font color=#004488>"Stack.h"</font>
+#include <font color=#004488>"../require.h"</font>
+<font color=#0000ff>using</font> <font color=#0000ff>namespace</font> std;
+
+<font color=#0000ff>void</font> 
+Stack::Link::initialize(<font color=#0000ff>void</font>* dat, Link* nxt) {
+  data = dat;
+  next = nxt;
+}
+
+<font color=#0000ff>void</font> Stack::initialize() { head = 0; }
+
+<font color=#0000ff>void</font> Stack::push(<font color=#0000ff>void</font>* dat) {
+  Link* newLink = <font color=#0000ff>new</font> Link;
+  newLink-&gt;initialize(dat, head);
+  head = newLink;
+}
+
+<font color=#0000ff>void</font>* Stack::peek() { 
+  require(head != 0, <font color=#004488>"Stack empty"</font>);
+  <font color=#0000ff>return</font> head-&gt;data; 
+}
+
+<font color=#0000ff>void</font>* Stack::pop() {
+  <font color=#0000ff>if</font>(head == 0) <font color=#0000ff>return</font> 0;
+  <font color=#0000ff>void</font>* result = head-&gt;data;
+  Link* oldHead = head;
+  head = head-&gt;next;
+  <font color=#0000ff>delete</font> oldHead;
+  <font color=#0000ff>return</font> result;
+}
+
+<font color=#0000ff>void</font> Stack::cleanup() {
+  require(head == 0, <font color=#004488>"Stack not empty"</font>);
+} <font color=#009900>///:~</font></PRE></FONT></BLOCKQUOTE>
+
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">The first definition is particularly
+interesting because it shows you how to define a member of a nested structure.
+You simply use an additional level of scope resolution to specify the name of
+the enclosing <B>struct</B>. <B>Stack::Link::initialize(&#160;)</B> takes the
+arguments and assigns them to its members.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia"><B>Stack::initialize(&#160;)</B> sets
+<B>head</B> to zero, so the object knows it has an empty list.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia"><B>Stack::push(&#160;)</B> takes the
+argument, which is a pointer to the variable you want to keep track of, and
+pushes it on the <B>Stack</B>. First, it uses <B>new</B> to allocate storage for
+the <B>Link</B> it will insert at the top. Then it calls <B>Link</B>&#8217;s
+<B>initialize(&#160;)</B> function to assign the appropriate values to the
+members of the <B>Link</B>. Notice that the <B>next</B> pointer is assigned to
+the current <B>head</B>; then <B>head</B> is assigned to the new <B>Link</B>
+pointer. This effectively pushes the <B>Link</B> in at the top of the
+list.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia"><B>Stack::pop(&#160;)</B> captures the
+<B>data</B> pointer at the current top of the <B>Stack</B>; then it moves the
+<B>head</B> pointer down and deletes the old top of the <B>Stack</B>, finally
+returning the captured pointer. When <B>pop(&#160;)</B> removes the last
+element, then <B>head</B> again becomes zero, meaning the <B>Stack</B> is
+empty.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia"><B>Stack::cleanup(&#160;)</B>
+doesn&#8217;t actually do any cleanup. Instead, it establishes a firm policy
+that &#8220;you (the client programmer using this <B>Stack </B>object) are
+responsible for popping all the elements off this <B>Stack </B>and deleting
+them.&#8221; The <B>require(&#160;) </B>is used to indicate that a programming
+error has occurred if the <B>Stack </B>is not empty.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Why couldn&#8217;t the <B>Stack</B>
+destructor be responsible for all the objects that the client programmer
+didn&#8217;t <B>pop(&#160;)</B>? The problem is that the <B>Stack</B> is holding
+<B>void </B>pointers, and you&#8217;ll learn in Chapter 13 that calling
+<B>delete</B> for a <B>void*</B> doesn&#8217;t clean things up properly. The
+subject of &#8220;who&#8217;s responsible for the memory&#8221; is not even
+<I>that</I> simple, as we&#8217;ll see in later chapters.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Here&#8217;s an example to test the
+<B>Stack</B>:</FONT><BR></P></DIV>
+
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE><font color=#009900>//: C04:StackTest.cpp</font>
+<font color=#009900>//{L} Stack</font>
+<font color=#009900>//{T} StackTest.cpp</font>
+<font color=#009900>// Test of nested linked list</font>
+#include <font color=#004488>"Stack.h"</font>
+#include <font color=#004488>"../require.h"</font>
+#include &lt;fstream&gt;
+#include &lt;iostream&gt;
+#include &lt;string&gt;
+<font color=#0000ff>using</font> <font color=#0000ff>namespace</font> std;
+
+<font color=#0000ff>int</font> main(<font color=#0000ff>int</font> argc, <font color=#0000ff>char</font>* argv[]) {
+  requireArgs(argc, 1); <font color=#009900>// File name is argument</font>
+  ifstream in(argv[1]);
+  assure(in, argv[1]);
+  Stack textlines;
+  textlines.initialize();
+  string line;
+  <font color=#009900>// Read file and store lines in the Stack:</font>
+  <font color=#0000ff>while</font>(getline(in, line))
+    textlines.push(<font color=#0000ff>new</font> string(line));
+  <font color=#009900>// Pop the lines from the Stack and print them:</font>
+  string* s;
+  <font color=#0000ff>while</font>((s = (string*)textlines.pop()) != 0) {
+    cout &lt;&lt; *s &lt;&lt; endl;
+    <font color=#0000ff>delete</font> s; 
+  }
+  textlines.cleanup();
+} <font color=#009900>///:~</font></PRE></FONT></BLOCKQUOTE>
+
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">This is similar to the earlier example,
+but it pushes lines from a file (as <B>string</B> pointers)<B> </B>on the
+<B>Stack</B> and then pops them off, which results in the file being printed out
+in reverse order. Note that the <B>pop(&#160;) </B>member function returns a
+<B>void* </B>and this must be cast back to a <B>string* </B>before it can be
+used. To print the <B>string</B>, the pointer is dereferenced.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">As <B>textlines </B>is being filled, the
+contents of <B>line</B> is &#8220;cloned&#8221; for each <B>push(&#160;)</B> by
+making a <B>new string(line)</B>. The value returned from the new-expression is
+a pointer to the new <B>string</B> that was created and that copied the
+information from <B>line</B>. If you had simply passed the address of
+<B>line</B> to <B>push(&#160;)</B>, you would end up with a <B>Stack</B> filled
+with identical addresses, all pointing to <B>line</B>. You&#8217;ll learn more
+about this &#8220;cloning&#8221; process later in the book.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">The file name is taken from the command
+line<A NAME="Index1169"></A>. To guarantee that there are enough arguments on
+the command line, you see a second function used from the
+<A NAME="Index1170"></A><B>require.h</B> header file:
+<A NAME="Index1171"></A><B>requireArgs(&#160;)</B>, which compares <B>argc</B>
+to the desired number of arguments and prints an appropriate error message and
+exits the program if there aren&#8217;t enough
+arguments.<A NAME="Index1172"></A></FONT><A NAME="_Toc312373833"></A><A NAME="_Toc472654831"></A><BR></P></DIV>
+<A NAME="Heading205"></A><FONT FACE = "Verdana"><H3 ALIGN="LEFT">
+Global scope
+resolution<BR><A NAME="Index1173"></A><A NAME="Index1174"></A><A NAME="Index1175"></A><A NAME="Index1176"></A></H3></FONT>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">The scope resolution operator gets you
+out of situations in which the name the compiler chooses by default (the
+&#8220;nearest&#8221; name) isn&#8217;t what you want. For example, suppose you
+have a structure with a local identifier <B>a</B>, and you want to select a
+global identifier <B>a</B> from inside a member function. The compiler would
+default to choosing the local one, so you must tell it to do otherwise. When you
+want to specify a global name using scope resolution, you use the
+<A NAME="Index1177"></A><A NAME="Index1178"></A>operator with nothing in front
+of it. Here&#8217;s an example that shows global scope resolution for both a
+variable and a function:</FONT><BR></P></DIV>
+
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE><font color=#009900>//: C04:Scoperes.cpp</font>
+<font color=#009900>// Global scope resolution</font>
+<font color=#0000ff>int</font> a;
+<font color=#0000ff>void</font> f() {}
+
+<font color=#0000ff>struct</font> S {
+  <font color=#0000ff>int</font> a;
+  <font color=#0000ff>void</font> f();
+};
+
+<font color=#0000ff>void</font> S::f() {
+  ::f();  <font color=#009900>// Would be recursive otherwise!</font>
+  ::a++;  <font color=#009900>// Select the global a</font>
+  a--;    <font color=#009900>// The a at struct scope</font>
+}
+<font color=#0000ff>int</font> main() { S s; f(); } <font color=#009900>///:~</font></PRE></FONT></BLOCKQUOTE>
+
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Without scope resolution in
+<B>S::f(&#160;)</B>, the compiler would default to selecting the member versions
+of <B>f(&#160;)</B> and
+<B>a</B>.</FONT><A NAME="_Toc312373834"></A><A NAME="_Toc472654832"></A><BR></P></DIV>
+<A NAME="Heading206"></A><FONT FACE = "Verdana"><H2 ALIGN="LEFT">
+Summary</H2></FONT>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">In this chapter, you&#8217;ve learned the
+fundamental &#8220;twist&#8221; of C++: that you can place functions inside of
+structures. This new type of structure is called an <I>abstract data type</I>,
+and variables you create using this structure are called <I>objects</I>, or
+<I>instances</I>, of that type. Calling a member function for an object is
+called <I>sending a message</I> to that object. The primary action in
+object-oriented programming is sending messages to objects.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Although packaging data and functions
+together is a significant benefit for code organization and makes library use
+easier because it prevents name clashes by hiding the names, there&#8217;s a lot
+more you can do to make programming safer in C++. In the next chapter,
+you&#8217;ll learn how to protect some members of a <B>struct</B> so that only
+you can manipulate them. This establishes a clear boundary between what the user
+of the structure can change and what only the programmer may
+change.</FONT><A NAME="_Toc312373835"></A><A NAME="_Toc472654833"></A><BR></P></DIV>
+<A NAME="Heading207"></A><FONT FACE = "Verdana"><H2 ALIGN="LEFT">
+Exercises</H2></FONT>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia" SIZE=2>Solutions to selected exercises
+can be found in the electronic document <I>The Thinking in C++ Annotated
+Solution Guide</I>, available for a small fee from
+http://www.BruceEckel.com.</FONT><BR></P></DIV>
+<OL>
+<LI><FONT FACE="Verdana">	</FONT><FONT FACE="Georgia">In the Standard C library,
+the function <B>puts(&#160;)</B> prints a char array to the console (so you can
+say <B>puts("hello")</B>). Write a C program that uses <B>puts(&#160;) </B>but
+does not include <B>&lt;stdio.h&gt; </B>or otherwise declare the function.
+Compile this program with your C compiler. (Some C++ compilers are not distinct
+from their C compilers; in this case you may need to discover a command-line
+flag that forces a C compilation.) Now compile it with the C++ compiler and note
+the
+difference.</FONT><LI><FONT FACE="Verdana">	</FONT><FONT FACE="Georgia">Create a
+<B>struct</B> declaration with a single member function, then create a
+definition for that member function. Create an object of your new data type, and
+call the member
+function.</FONT><LI><FONT FACE="Verdana">	</FONT><FONT FACE="Georgia">Change
+your solution to Exercise 2 so the <B>struct</B> is declared in a properly
+&#8220;guarded&#8221; header file, with the definition in one <B>cpp</B> file
+and your <B>main(&#160;)</B> in
+another.</FONT><LI><FONT FACE="Verdana">	</FONT><FONT FACE="Georgia">Create a
+<B>struct</B> with a single <B>int</B> data member, and two global functions,
+each of which takes a pointer to that <B>struct</B>. The first function has a
+second <B>int</B> argument and sets the <B>struct</B>&#8217;s <B>int</B> to the
+argument value, the second displays the <B>int</B> from the <B>struct</B>. Test
+the functions.
+</FONT><LI><FONT FACE="Verdana">	</FONT><FONT FACE="Georgia">Repeat Exercise 4
+but move the functions so they are member functions of the <B>struct</B>, and
+test again.</FONT><LI><FONT FACE="Verdana">	</FONT><FONT FACE="Georgia">Create a
+class that (redundantly) performs data member selection and a member function
+call using the <B>this</B> keyword (which refers to the address of the current
+object).</FONT><LI><FONT FACE="Verdana">	</FONT><FONT FACE="Georgia">Make a
+<B>Stash</B> that holds <B>double</B>s. Fill it with 25 <B>double</B> values,
+then print them out to the
+console.</FONT><LI><FONT FACE="Verdana">	</FONT><FONT FACE="Georgia">Repeat
+Exercise 7 with
+<B>Stack</B>.</FONT><LI><FONT FACE="Verdana">	</FONT><FONT FACE="Georgia">Create
+a file containing a function <B>f(&#160;)</B> that takes an <B>int</B> argument
+and prints it to the console using the <B>printf(&#160;)</B> function in
+<B>&lt;stdio.h&gt;</B> by saying: <B>printf(&#8220;%d\n&#8221;, i)</B> in
+which<B> i</B> is the <B>int</B> you wish to print. Create a separate file
+containing <B>main(&#160;)</B>, and in this file declare <B>f(&#160;)</B> to
+take a <B>float</B> argument. Call <B>f(&#160;)</B> from inside
+<B>main(&#160;)</B>. Try to compile and link your program with the C++ compiler
+and see what happens. Now compile and link the program using the C compiler, and
+see what happens when it runs. Explain the
+behavior.</FONT><LI><FONT FACE="Verdana">	</FONT><FONT FACE="Georgia">Find out
+how to produce assembly language from your C and C++ compilers. Write a function
+in C and a <B>struct</B> with a single member function in C++. Produce assembly
+language from each and find the function names that are produced by your C
+function and your C++ member function, so you can see what sort of name
+decoration occurs inside the
+compiler.</FONT><LI><FONT FACE="Verdana">	</FONT><FONT FACE="Georgia">Write a
+program with conditionally-compiled code in <B>main(&#160;)</B>, so that when a
+preprocessor value is defined one message is printed, but when it is not defined
+another message is printed. Compile this code experimenting with a
+<B>#define</B> within the program, then discover the way your compiler takes
+preprocessor definitions on the command line and experiment with
+that.</FONT><LI><FONT FACE="Verdana">	</FONT><FONT FACE="Georgia">Write a
+program that uses <B>assert(&#160;)</B> with an argument that is always false
+(zero) to see what happens when you run it. Now compile it with <B>#define
+NDEBUG</B> and run it again to see the
+difference.</FONT><LI><FONT FACE="Verdana">	</FONT><FONT FACE="Georgia">Create
+an abstract data type that represents a videotape in a video rental store. Try
+to consider all the data and operations that may be necessary for the <B>Video
+</B>type to work well within the video rental management system. Include a
+<B>print(&#160;)</B> member function that displays information about the
+<B>Video</B>.</FONT><LI><FONT FACE="Verdana">	</FONT><FONT FACE="Georgia">Create
+a <B>Stack</B> object to hold the <B>Video</B> objects from Exercise 13. Create
+several <B>Video</B> objects, store them in the <B>Stack</B>, then display them
+using
+<B>Video::print(&#160;)</B>.</FONT><LI><FONT FACE="Verdana">	</FONT><FONT FACE="Georgia">Write
+a program that prints out all the sizes for the fundamental data types on your
+computer using
+<B>sizeof</B>.</FONT><LI><FONT FACE="Verdana">	</FONT><FONT FACE="Georgia">Modify
+<B>Stash</B> to use a <B>vector&lt;char&gt;</B> as its underlying data
+structure.</FONT><LI><FONT FACE="Verdana">	</FONT><FONT FACE="Georgia">Dynamically
+create pieces of storage of the following types, using <B>new</B>: <B>int</B>,
+<B>long</B>, an array of 100 <B>char</B>s, an array of 100 <B>float</B>s. Print
+the addresses of these and then free the storage using
+<B>delete</B>.</FONT><LI><FONT FACE="Verdana">	</FONT><FONT FACE="Georgia">Write
+a function that takes a <B>char* </B>argument. Using <B>new</B>, dynamically
+allocate an array of <B>char </B>that is the size of the <B>char</B> array
+that&#8217;s passed to the function. Using array indexing, copy the characters
+from the argument to the dynamically allocated array (don&#8217;t forget the
+null terminator) and return the pointer to the copy. In your
+<B>main(&#160;)</B>, test the function by passing a static quoted character
+array, then take the result of that and pass it back into the function. Print
+both strings and both pointers so you can see they are different storage. Using
+<B>delete</B>, clean up all the dynamic
+storage.</FONT><LI><FONT FACE="Verdana">	</FONT><FONT FACE="Georgia">Show an
+example of a structure declared within another structure (a <I>nested
+structure</I>). Declare data members in both <B>struct</B>s, and declare and
+define member functions in both <B>struct</B>s. Write a <B>main(&#160;)</B> that
+tests your new
+types.</FONT><LI><FONT FACE="Verdana">	</FONT><FONT FACE="Georgia">How big is a
+structure? Write a piece of code that prints the size of various structures.
+Create structures that have data members only and ones that have data members
+and function members. Then create a structure that has no members at all. Print
+out the sizes of all these. Explain the reason for the result of the structure
+with no data members at
+all.</FONT><LI><FONT FACE="Verdana">	</FONT><FONT FACE="Georgia">C++
+automatically creates the equivalent of a <B>typedef</B> for <B>struct</B>s, as
+you&#8217;ve seen in this chapter. It also does this for enumerations and
+unions. Write a small program that demonstrates
+this.</FONT><LI><FONT FACE="Verdana">	</FONT><FONT FACE="Georgia">Create a
+<B>Stack</B> that holds <B>Stash</B>es. Each <B>Stash</B> will hold five lines
+from an input file. Create the <B>Stash</B>es using <B>new</B>. Read a file into
+your <B>Stack</B>, then reprint it in its original form by extracting it from
+the <B>Stack</B>.
+</FONT><LI><FONT FACE="Verdana">	</FONT><FONT FACE="Georgia">Modify Exercise 22
+so that you create a <B>struct</B> that encapsulates the <B>Stack</B> of
+<B>Stash</B>es. The user should only add and get lines via member functions, but
+under the covers the <B>struct </B>happens to use a <B>Stack</B> of
+<B>Stash</B>es.</FONT><LI><FONT FACE="Verdana">	</FONT><FONT FACE="Georgia">Create
+a <B>struct</B> that holds an <B>int</B> and a pointer to another instance of
+the same <B>struct</B>. Write a function that takes the address of one of these
+<B>struct</B>s and an <B>int</B> indicating the length of the list you want
+created. This function will make a whole chain of these <B>struct</B>s (a
+<I>linked list</I>), starting from the argument (the <I>head</I> of the list),
+with each one pointing to the next. Make the new <B>struct</B>s using
+<B>new</B>, and put the count (which object number this is) in the <B>int</B>.
+In the last <B>struct </B>in the list, put a zero value in the pointer to
+indicate that it&#8217;s the end. Write a second function that takes the head of
+your list and moves through to the end, printing out both the pointer value and
+the <B>int</B> value for each
+one.</FONT><LI><FONT FACE="Verdana">	</FONT><FONT FACE="Georgia">Repeat Exercise
+24, but put the functions inside a <B>struct</B> instead of using
+&#8220;raw&#8221; <B>struct</B>s and
+functions.</FONT><A NAME="_Toc465909202"></A><A NAME="_Toc465909615"></A><A NAME="_Toc466014526"></A><A NAME="_Toc466073436"></A><A NAME="_Toc466083237"></A><A NAME="_Toc468608043"></A><A NAME="_Toc468771364"></A><A NAME="_Toc312373836"></A><A NAME="_Toc469811367"></A><A NAME="_Toc469821252"></A><A NAME="_Toc469821668"></A><A NAME="_Toc469825349"></A><A NAME="_Toc469874254"></A><A NAME="_Toc470615910"></A><A NAME="_Toc470655048"></A><A NAME="_Toc470821032"></A><A NAME="_Toc470821449"></A><A NAME="_Toc470911546"></A><A NAME="_Toc471359027"></A><A NAME="_Toc471489447"></A><A NAME="_Toc471528878"></A><A NAME="_Toc471795034"></A><A NAME="_Toc471965611"></A><A NAME="_Toc472045613"></A><A NAME="_Toc472255817"></A><A NAME="_Toc472654420"></A><A NAME="_Toc472654834"></A></OL><FONT FACE = "Verdana"><H1 ALIGN="LEFT">
+</H1></FONT>
+<DIV ALIGN="LEFT"><P><FONT FACE="Verdana"><B></B></FONT><BR></P></DIV>
+<FONT FACE = "Verdana"><H1 ALIGN="LEFT">
+</H1></FONT>
+
+
+
+<FONT FACE = "Verdana"><H1 ALIGN="LEFT">
+</H1></FONT>
+<HR><DIV ALIGN="LEFT"><P><A NAME="fn33" HREF="#fnB33">[33]</A><FONT FACE="Georgia" SIZE=2>
+This term can cause debate. Some people use it as defined here; others use it to
+describe <I>access control</I>, discussed in the following
+chapter.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><A NAME="fn34" HREF="#fnB34">[34]</A><FONT FACE="Georgia" SIZE=2>
+To write a function definition for a function that takes a true variable
+argument list, you must use <I>varargs</I>, although these should be avoided in
+C++. You can find details about the use of varargs in your C
+manual.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><A NAME="fn35" HREF="#fnB35">[35]</A><FONT FACE="Georgia" SIZE=2>
+However, in Standard C++ file static is a deprecated feature.</FONT><BR></P></DIV>
+
+<DIV ALIGN="CENTER">
+    <FONT FACE="Verdana" size = "-1">
+     [ <a href="Chapter03.html">Previous Chapter</a> ] 
+    [ <a href="Contents.html">Table of Contents</a> ] 
+    [ <a href="DocIndex.html">Index</a> ]
+     [ <a href="Chapter05.html">Next Chapter</a> ] 
+    </FONT>
+    <BR>
+ Last Update:09/27/2001</P></DIV>
+
+</BODY>
+
+</HTML>

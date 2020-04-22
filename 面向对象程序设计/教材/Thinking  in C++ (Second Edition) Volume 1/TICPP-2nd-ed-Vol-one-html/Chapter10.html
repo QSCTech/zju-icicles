@@ -1,0 +1,1899 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<HTML>
+<!--
+This document was converted from RTF source: 
+By rtftohtml 4.19
+See http://www.sunpack.com/RTF
+Filename:TIC2Vone.rtf
+Application Directory:C:\TOOLS\RTF2HTML\
+Subject:
+Author:Bruce Eckel
+Operator:Bruce Eckel
+Document Comments:
+Version Comments:
+Comments:
+Keywords:
+Translation Date:09/27/2001
+Translation Time:05:25:41
+Translation Platform:Win32
+Number of Output files:22
+This File:Chapter10.html
+SplitDepth=1
+SkipNavPanel=1
+SkipLeadingToc=1
+SkipTrailingToc=1
+GenContents=1
+GenFrames=1
+GenIndex=1
+-->
+<HEAD lang="en"><META http-equiv="Content-Type" content="text/html">
+<TITLE>10: Name Control</TITLE>
+</HEAD>
+
+<BODY  BGCOLOR="#FFFFFF"><DIV ALIGN="CENTER">
+  <a href="http://www.MindView.net">
+  <img src="mindview-head.gif" alt="MindView Inc." BORDER = "0"></a>
+  <CENTER>
+    <FONT FACE="Verdana" size = "-1">
+    [ <a href="README-HTML.txt">Viewing Hints</a> ]
+    [ <a href="http://www.mindview.net/CPPServices/SolutionGuide.html">Exercise Solutions</a> ]
+    [ <a href="http://www.mindview.net/ThinkingInCPP2e.html">Volume 2</a> ]
+    [ <a href="http://www.mindview.net/MailingList.html">Free Newsletter</a> ] <br>
+    [ <a href="http://www.mindview.net/CPPServices/#PublicSeminars">Seminars</a> ]
+    [ <a href="http://www.mindview.net/CPPServices/#SeminarsOnCD">Seminars on CD ROM</a> ]
+    [ <a href="http://www.mindview.net/CPPServices/#ConsultingServices">Consulting</a> ]
+    </FONT>
+  <H2><FONT FACE="Verdana">
+  Thinking in C++, 2nd ed. Volume 1</FONT></H2></FONT>
+  <H3><FONT FACE="Verdana">&copy;2000 by Bruce Eckel</FONT></H3></FONT>
+  
+    <FONT FACE="Verdana" size = "-1">
+     [ <a href="Chapter09.html">Previous Chapter</a> ] 
+    [ <a href="Contents.html">Table of Contents</a> ] 
+    [ <a href="DocIndex.html">Index</a> ]
+     [ <a href="Chapter11.html">Next Chapter</a> ] 
+    </FONT>
+    
+  </CENTER>
+  </P></DIV><A NAME="_Toc472654914"></A><A NAME="Heading295"></A><FONT FACE = "Verdana"><H1 ALIGN="LEFT">
+10: Name Control</H1></FONT>
+<DIV ALIGN="LEFT"><P><FONT FACE="Verdana" SIZE=4>Creating names is a fundamental
+activity in programming, and when a project gets large, the number of names can
+easily be overwhelming.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">C++ allows you a great deal of control
+over the creation and visibility of names, where storage for those names is
+placed, and linkage for names.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">The <A NAME="Index1688"></A><B>static</B>
+<A NAME="Index1689"></A>keyword was overloaded in C before people knew what the
+term &#8220;overload&#8221; meant, and C++ has added yet another meaning. The
+underlying concept with all uses of <B>static</B> seems to be &#8220;something
+that holds its position&#8221; (like static electricity), whether that means a
+physical location in memory or visibility within a file.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">In this chapter, you&#8217;ll learn how
+<B>static</B> controls storage and visibility, and an improved way to control
+access to names via C++&#8217;s <I>namespace</I> feature. You&#8217;ll also find
+out how to use functions that were written and compiled in
+C.</FONT><A NAME="_Toc305593219"></A><A NAME="_Toc305628691"></A><A NAME="_Toc312373941"></A><A NAME="_Toc472654915"></A><BR></P></DIV>
+<A NAME="Heading296"></A><FONT FACE = "Verdana"><H2 ALIGN="LEFT">
+Static elements from C</H2></FONT>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">In both C and C++ the keyword
+<B>static</B> has two basic meanings, which unfortunately often step on each
+other&#8217;s
+toes<A NAME="Index1690"></A><A NAME="Index1691"></A><A NAME="Index1692"></A><A NAME="Index1693"></A><A NAME="Index1694"></A><A NAME="Index1695"></A>:</FONT><BR></P></DIV>
+<OL>
+<LI><FONT FACE="Verdana">	</FONT><FONT FACE="Georgia">Allocated once at a fixed
+address; that is, the object is created in a special <I>static data area</I>
+rather than on the stack each time a function is called. This is the concept of
+<I>static storage</I>.
+</FONT><LI><FONT FACE="Verdana">	</FONT><FONT FACE="Georgia">Local to a
+particular translation unit (and local to a class scope in C++, as you will see
+later). Here, <B>static</B> controls the <I>visibility</I> of a name, so that
+name cannot be seen outside the translation unit or class. This also describes
+the concept of <I>linkage</I>, which determines what names the linker will
+see.</FONT></OL><DIV ALIGN="LEFT"><P><FONT FACE="Georgia">This section will look at
+the above meanings of <B>static</B> as they were inherited from
+C.</FONT><A NAME="_Toc312373942"></A><A NAME="_Toc472654916"></A><BR></P></DIV>
+<A NAME="Heading297"></A><FONT FACE = "Verdana"><H3 ALIGN="LEFT">
+static variables inside
+functions<BR><A NAME="Index1696"></A><A NAME="Index1697"></A></H3></FONT>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">When you create a local variable inside a
+function, the compiler allocates storage for that variable each time the
+function is called by moving the stack pointer<A NAME="Index1698"></A> down an
+appropriate amount. If there is an initializer for the variable, the
+initialization is performed each time that sequence point is
+passed.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Sometimes, however, you want to retain a
+value between function calls. You could accomplish this by making a global
+variable, but then that variable would not be under the sole control of the
+function. C and C++ allow you to create a <B>static</B> object inside a
+function; the storage for this object is not on the stack but instead in the
+program&#8217;s static data area. This object is initialized only once, the
+first time the function is called, and then retains its value between function
+invocations. For example, the following function returns the next character in
+the array each time the function is called:</FONT><BR></P></DIV>
+
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE><font color=#009900>//: C10:StaticVariablesInfunctions.cpp</font>
+#include <font color=#004488>"../require.h"</font>
+#include &lt;iostream&gt;
+<font color=#0000ff>using</font> <font color=#0000ff>namespace</font> std;
+
+<font color=#0000ff>char</font> oneChar(<font color=#0000ff>const</font> <font color=#0000ff>char</font>* charArray = 0) {
+  <font color=#0000ff>static</font> <font color=#0000ff>const</font> <font color=#0000ff>char</font>* s;
+  <font color=#0000ff>if</font>(charArray) {
+    s = charArray;
+    <font color=#0000ff>return</font> *s;
+  }
+  <font color=#0000ff>else</font>
+    require(s, <font color=#004488>"un-initialized s"</font>);
+  <font color=#0000ff>if</font>(*s == '\0')
+    <font color=#0000ff>return</font> 0;
+  <font color=#0000ff>return</font> *s++;
+}
+
+<font color=#0000ff>char</font>* a = <font color=#004488>"abcdefghijklmnopqrstuvwxyz"</font>;
+
+<font color=#0000ff>int</font> main() {
+  <font color=#009900>// oneChar(); // require() fails</font>
+  oneChar(a); <font color=#009900>// Initializes s to a</font>
+  <font color=#0000ff>char</font> c;
+  <font color=#0000ff>while</font>((c = oneChar()) != 0)
+    cout &lt;&lt; c &lt;&lt; endl;
+} <font color=#009900>///:~</font></PRE></FONT></BLOCKQUOTE>
+
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">The <B>static char* s</B> holds its value
+between calls of <B>oneChar(&#160;)</B> because its storage is not part of the
+stack frame of the function, but is in the static storage area of the program.
+When you call <B>oneChar(&#160;)</B> with a <B>char*</B> argument, <B>s</B> is
+assigned to that argument, and the first character of the array is returned.
+Each subsequent call to <B>oneChar(&#160;)</B> <I>without</I> an argument
+produces the default value of zero for <B>charArray</B>, which indicates to the
+function that you are still extracting characters from the previously
+initialized value of <B>s</B>. The function will continue to produce characters
+until it reaches the null terminator of the character array, at which point it
+stops incrementing the pointer so it doesn&#8217;t overrun the end of the
+array.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">But what happens if you call
+<B>oneChar(&#160;)</B> with no arguments and without previously initializing the
+value of <B>s</B>? In the definition for <B>s</B>, you could have provided an
+initializer,</FONT><BR></P></DIV>
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE><font color=#0000ff>static</font> <font color=#0000ff>char</font>* s = 0;</PRE></FONT></BLOCKQUOTE>
+
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">but if you do not provide an initializer
+for a static variable of a built-in
+type<A NAME="Index1699"></A><A NAME="Index1700"></A><A NAME="Index1701"></A><A NAME="Index1702"></A>,
+the compiler guarantees that variable will be initialized to zero (converted to
+the proper type) at program start-up. So in <B>oneChar(&#160;)</B>, the first
+time the function is called, <B>s</B> is zero. In this case, the <B>if(!s)</B>
+conditional will catch it.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">The initialization above for <B>s</B> is
+very simple, but initialization for static objects (like all other objects) can
+be arbitrary expressions involving constants and previously declared variables
+and functions.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">You should be aware that the function
+above is very vulnerable to multithreading problems; whenever you design
+functions containing static variables you should keep multithreading issues in
+mind.</FONT><BR></P></DIV>
+<A NAME="Heading298"></A><FONT FACE = "Verdana"><H4 ALIGN="LEFT">
+static class objects inside
+functions<BR><A NAME="Index1703"></A><A NAME="Index1704"></A><A NAME="Index1705"></A><A NAME="Index1706"></A></H4></FONT>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">The rules are the same for static objects
+of user-defined types, including the fact that some initialization is required
+for the object. However, assignment to zero has meaning only for built-in types;
+user-defined types must be initialized with constructor calls. Thus, if you
+don&#8217;t specify constructor arguments when you define the static object, the
+class must have a default
+constructor<A NAME="Index1707"></A><A NAME="Index1708"></A>. For
+example,</FONT><BR></P></DIV>
+
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE><font color=#009900>//: C10:StaticObjectsInFunctions.cpp</font>
+#include &lt;iostream&gt;
+<font color=#0000ff>using</font> <font color=#0000ff>namespace</font> std;
+
+<font color=#0000ff>class</font> X {
+  <font color=#0000ff>int</font> i;
+<font color=#0000ff>public</font>:
+  X(<font color=#0000ff>int</font> ii = 0) : i(ii) {} <font color=#009900>// Default</font>
+  ~X() { cout &lt;&lt; <font color=#004488>"X::~X()"</font> &lt;&lt; endl; }
+};
+
+<font color=#0000ff>void</font> f() {
+  <font color=#0000ff>static</font> X x1(47);
+  <font color=#0000ff>static</font> X x2; <font color=#009900>// Default constructor required</font>
+}
+
+<font color=#0000ff>int</font> main() {
+  f();
+} <font color=#009900>///:~</font></PRE></FONT></BLOCKQUOTE>
+
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">The static objects of type <B>X</B>
+inside <B>f(&#160;)</B> can be initialized either with the constructor argument
+list or with the default constructor. This construction occurs the first time
+control passes through the definition, and only the first time.</FONT><BR></P></DIV>
+<A NAME="Heading299"></A><FONT FACE = "Verdana"><H4 ALIGN="LEFT">
+Static object destructors</H4></FONT>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Destructors for static objects (that is,
+all objects with static storage, not just local static objects as in the example
+above) are called when <B>main(&#160;)</B> exits or when the Standard C library
+function
+<B>exit(&#160;)<A NAME="Index1709"></A><A NAME="Index1710"></A><A NAME="Index1711"></A>
+</B>is explicitly called. In most implementations, <B>main(&#160;)</B> just
+calls <B>exit(&#160;)</B> when it terminates. This means that it can be
+dangerous to call <B>exit(&#160;)</B> inside a destructor because you can end up
+with infinite recursion. Static object destructors are <I>not</I> called if you
+exit the program using the Standard C library function
+<B>abort(&#160;)<A NAME="Index1712"></A><A NAME="Index1713"></A><A NAME="Index1714"></A></B>.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">You can specify actions to take place
+when leaving <B>main(&#160;)</B> (or calling <B>exit(&#160;)</B>) by using the
+Standard C library function
+<B>atexit(&#160;)<A NAME="Index1715"></A><A NAME="Index1716"></A><A NAME="Index1717"></A></B>.
+In this case, the functions registered by <B>atexit(&#160;) </B>may be called
+before the destructors for any objects constructed before leaving
+<B>main(&#160;)</B> (or calling <B>exit(&#160;)</B>).</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Like ordinary destruction, destruction of
+static objects
+<A NAME="Index1718"></A><A NAME="Index1719"></A><A NAME="Index1720"></A>occurs
+in the reverse order of initialization. However, only objects that have been
+constructed are destroyed. Fortunately, the C++ development tools keep track of
+initialization order and the objects that have been constructed. Global objects
+are always
+constructed<A NAME="Index1721"></A><A NAME="Index1722"></A><A NAME="Index1723"></A>
+before <B>main(&#160;)</B> is entered and destroyed as <B>main(&#160;)</B>
+exits, but if a function containing a local static object
+<A NAME="Index1724"></A><A NAME="Index1725"></A><A NAME="Index1726"></A>is never
+called, the constructor for that object is never executed, so the destructor is
+also not executed. For example,</FONT><BR></P></DIV>
+
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE><font color=#009900>//: C10:StaticDestructors.cpp</font>
+<font color=#009900>// Static object destructors</font>
+#include &lt;fstream&gt;
+<font color=#0000ff>using</font> <font color=#0000ff>namespace</font> std;
+ofstream out(<font color=#004488>"statdest.out"</font>); <font color=#009900>// Trace file</font>
+
+<font color=#0000ff>class</font> Obj {
+  <font color=#0000ff>char</font> c; <font color=#009900>// Identifier</font>
+<font color=#0000ff>public</font>:
+  Obj(<font color=#0000ff>char</font> cc) : c(cc) {
+    out &lt;&lt; <font color=#004488>"Obj::Obj() for "</font> &lt;&lt; c &lt;&lt; endl;
+  }
+  ~Obj() {
+    out &lt;&lt; <font color=#004488>"Obj::~Obj() for "</font> &lt;&lt; c &lt;&lt; endl;
+  }
+};
+
+Obj a('a'); <font color=#009900>// Global (static storage)</font>
+<font color=#009900>// Constructor &amp; destructor always called</font>
+
+<font color=#0000ff>void</font> f() {
+  <font color=#0000ff>static</font> Obj b('b');
+}
+
+<font color=#0000ff>void</font> g() {
+  <font color=#0000ff>static</font> Obj c('c');
+}
+
+<font color=#0000ff>int</font> main() {
+  out &lt;&lt; <font color=#004488>"inside main()"</font> &lt;&lt; endl;
+  f(); <font color=#009900>// Calls static constructor for b</font>
+  <font color=#009900>// g() not called</font>
+  out &lt;&lt; <font color=#004488>"leaving main()"</font> &lt;&lt; endl;
+} <font color=#009900>///:~</font></PRE></FONT></BLOCKQUOTE>
+
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">In <B>Obj</B>, the <B>char c</B> acts as
+an identifier so the constructor and destructor can print out information about
+the object they&#8217;re working on. The <B>Obj a</B> is a global object, so the
+constructor is always called for it before <B>main(&#160;)</B> is entered, but
+the constructors for the <B>static Obj b</B> inside <B>f(&#160;)</B> and the
+<B>static Obj c</B> inside <B>g(&#160;)</B> are called only if those functions
+are called.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">To demonstrate which constructors and
+destructors are called, only <B>f(&#160;)</B> is called. The output of the
+program is</FONT><BR></P></DIV>
+
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE>Obj::Obj() <font color=#0000ff>for</font> a
+inside main()
+Obj::Obj() <font color=#0000ff>for</font> b
+leaving main()
+Obj::~Obj() <font color=#0000ff>for</font> b
+Obj::~Obj() <font color=#0000ff>for</font> a</PRE></FONT></BLOCKQUOTE>
+
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">The constructor for <B>a</B> is called
+before <B>main(&#160;)</B> is entered, and the constructor for <B>b</B> is
+called only because <B>f(&#160;)</B> is called. When <B>main(&#160;)</B> exits,
+the destructors for the objects that have been constructed are called in reverse
+order of their construction. This means that if <B>g(&#160;)</B> <I>is</I>
+called, the order in which the destructors for <B>b</B> and <B>c</B> are called
+depends on whether <B>f(&#160;)</B> or <B>g(&#160;) </B>is called
+first.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Notice that the trace file
+<B>ofstream</B> object <B>out</B> is also a static object &#8211; since it is
+defined outside of all functions, it lives in the static storage
+area<A NAME="Index1727"></A>. It is important that its definition (as opposed to
+an <B>extern</B> declaration) appear at the beginning of the file, before there
+is any possible use of <B>out</B>. Otherwise, you&#8217;ll be using an object
+before it is properly initialized.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">In C++, the constructor for a global
+static object is called before <B>main(&#160;)</B> is entered, so you now have a
+simple and portable way to execute code before entering
+<B>main(&#160;)<A NAME="Index1728"></A><A NAME="Index1729"></A></B> and to
+execute code with the destructor after exiting
+<B>main(&#160;)<A NAME="Index1730"></A><A NAME="Index1731"></A><A NAME="Index1732"></A></B>.
+In C, this was always a trial that required you to root around in the compiler
+vendor&#8217;s assembly-language startup
+code.</FONT><A NAME="_Toc312373943"></A><A NAME="_Toc472654917"></A><BR></P></DIV>
+<A NAME="Heading300"></A><FONT FACE = "Verdana"><H3 ALIGN="LEFT">
+Controlling linkage<BR><A NAME="Index1733"></A><A NAME="Index1734"></A></H3></FONT>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Ordinarily, any name at <I>file scope</I>
+<A NAME="Index1735"></A><A NAME="Index1736"></A>(that is, not nested inside a
+class or function) is visible throughout all translation units in a program.
+This is often called <I>external linkage</I>
+<A NAME="Index1737"></A><A NAME="Index1738"></A>because at link time the name is
+visible to the linker everywhere, external to that translation unit. Global
+variables and ordinary functions have external linkage.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">There are times when you&#8217;d like to
+limit the visibility of a name. You might like to have a variable at file scope
+so all the functions in that file can use it, but you don&#8217;t want functions
+outside that file to see or access that variable, or to inadvertently cause name
+clashes with identifiers outside the file.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">An object or function name at file scope
+that is explicitly declared <B>static</B> is local to its translation unit (in
+the terms of this book, the<B> cpp</B> file where the declaration occurs). That
+name has <I>internal
+linkage<A NAME="Index1739"></A><A NAME="Index1740"></A></I>. This means that you
+can use the same name in other translation units without a name
+clash.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">One advantage to internal linkage is that
+the name can be placed in a <A NAME="Index1741"></A>header file without worrying
+that there will be a clash at link time. Names that are commonly placed in
+header files, such as <B>const</B> definitions and <B>inline</B> functions,
+default to internal linkage. (However, <B>const</B> defaults to internal linkage
+only in C++; in C it defaults to external linkage.) Note that linkage refers
+only to elements that have addresses at link/load time; thus, class declarations
+and local variables have no
+linkage<A NAME="Index1742"></A><A NAME="Index1743"></A>.</FONT><BR></P></DIV>
+<A NAME="Heading301"></A><FONT FACE = "Verdana"><H4 ALIGN="LEFT">
+Confusion</H4></FONT>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Here&#8217;s an example of how the two
+meanings of <A NAME="Index1744"></A><B>static</B> <A NAME="Index1745"></A>can
+cross over each other. All global objects implicitly have static storage
+class<A NAME="Index1746"></A>, so if you say (at file scope),</FONT><BR></P></DIV>
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE><font color=#0000ff>int</font> a = 0;</PRE></FONT></BLOCKQUOTE>
+
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">then storage for <B>a</B> will be in the
+program&#8217;s static data area, and the initialization for <B>a</B> will occur
+once, before <B>main(&#160;)</B> is entered. In addition, the visibility of
+<B>a</B> is global across all translation units. In terms of visibility, the
+opposite of <B>static</B> (visible only in this translation unit) is
+<A NAME="Index1747"></A><B>extern<A NAME="Index1748"></A><A NAME="Index1749"></A></B>,
+which explicitly states that the visibility of the name is across all
+translation units. So the definition above is equivalent to
+saying</FONT><BR></P></DIV>
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE><font color=#0000ff>extern</font> <font color=#0000ff>int</font> a = 0;</PRE></FONT></BLOCKQUOTE>
+
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">But if you say instead,</FONT><BR></P></DIV>
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE><font color=#0000ff>static</font> <font color=#0000ff>int</font> a = 0;</PRE></FONT></BLOCKQUOTE>
+
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">all you&#8217;ve done is change the
+visibility, so <B>a</B> has internal linkage. The storage class is unchanged
+&#8211; the object resides in the static data area whether the visibility is
+<B>static</B> or <B>extern</B>.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Once you get into local variables,
+<B>static</B> stops altering the visibility and instead alters the storage
+class. </FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">If you declare what appears to be a local
+variable as <B>extern</B>, it means that the storage exists elsewhere (so the
+variable is actually global to the function). For example:</FONT><BR></P></DIV>
+
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE><font color=#009900>//: C10:LocalExtern.cpp</font>
+<font color=#009900>//{L} LocalExtern2</font>
+#include &lt;iostream&gt;
+
+<font color=#0000ff>int</font> main() {
+  <font color=#0000ff>extern</font> <font color=#0000ff>int</font> i;
+  std::cout &lt;&lt; i;
+} <font color=#009900>///:~</font>
+
+<font color=#009900>//: C10:LocalExtern2.cpp {O}</font>
+<font color=#0000ff>int</font> i = 5;
+<font color=#009900>///:~ </font></PRE></FONT></BLOCKQUOTE>
+
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">With function names (for non-member
+functions), <B>static</B> and <B>extern</B> can only alter visibility, so if you
+say</FONT><BR></P></DIV>
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE><font color=#0000ff>extern</font> <font color=#0000ff>void</font> f();</PRE></FONT></BLOCKQUOTE>
+
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">it&#8217;s the same as the unadorned
+declaration</FONT><BR></P></DIV>
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE><font color=#0000ff>void</font> f();</PRE></FONT></BLOCKQUOTE>
+
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">and if you say,</FONT><BR></P></DIV>
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE><font color=#0000ff>static</font> <font color=#0000ff>void</font> f();</PRE></FONT></BLOCKQUOTE>
+
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">it means <B>f(&#160;)</B> is visible only
+within this translation unit &#8211; this is sometimes called <I>file
+static<A NAME="Index1750"></A><A NAME="Index1751"></A></I>.</FONT><A NAME="_Toc312373944"></A><A NAME="_Toc472654918"></A><BR></P></DIV>
+<A NAME="Heading302"></A><FONT FACE = "Verdana"><H3 ALIGN="LEFT">
+Other storage class specifiers</H3></FONT>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">You will see <B>static</B> and
+<B>extern</B> used commonly. There are two other storage class specifiers that
+occur less often. The <A NAME="Index1752"></A><B>auto</B>
+<A NAME="Index1753"></A><A NAME="Index1754"></A>specifier is almost never used
+because it tells the compiler that this is a local variable. <B>auto</B> is
+short for &#8220;automatic&#8221; and it refers to the way the compiler
+automatically allocates storage for the variable. The compiler can always
+determine this fact from the context in which the variable is defined, so
+<B>auto</B> is redundant.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">A <A NAME="Index1755"></A><B>register</B>
+<A NAME="Index1756"></A><A NAME="Index1757"></A>variable is a local
+(<B>auto</B>) variable, along with a hint to the compiler that this particular
+variable will be heavily used so the compiler ought to keep it in a register if
+it can. Thus, it is an optimization aid. Various compilers respond differently
+to this hint; they have the option to ignore it. If you take the address of the
+variable, the <B>register</B> specifier will almost certainly be ignored. You
+should avoid using <B>register</B> because the compiler can usually do a better
+job of optimization than
+you.</FONT><A NAME="_Toc305593220"></A><A NAME="_Toc305628692"></A><A NAME="_Toc312373945"></A><A NAME="_Toc472654919"></A><BR></P></DIV>
+<A NAME="Heading303"></A><FONT FACE = "Verdana"><H2 ALIGN="LEFT">
+Namespaces</H2></FONT>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Although names can be nested inside
+classes, the names of global functions, global variables, and classes are still
+in a single global name space. The <B>static</B> keyword gives you some control
+over this by allowing you to give variables and functions internal linkage (that
+is, to make them file static<A NAME="Index1758"></A><A NAME="Index1759"></A>).
+But in a large project, lack of control over the global name space can cause
+problems. To solve these problems for classes, vendors often create long
+complicated names that are unlikely to clash, but then you&#8217;re stuck typing
+those names. (A <A NAME="Index1760"></A><B>typedef</B> is often used to simplify
+this.) It&#8217;s not an elegant, language-supported solution.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">You can subdivide the global name space
+into more manageable pieces using the <I>namespace</I>
+<A NAME="Index1761"></A>feature of C++. The
+<A NAME="Index1762"></A><B>namespace</B> keyword, similar to <B>class</B>,
+<B>struct</B>, <B>enum</B>, and <B>union</B>, puts the names of its members in a
+distinct space. While the other keywords have additional purposes, the creation
+of a new name space is the only purpose for
+<B>namespace</B>.</FONT><A NAME="_Toc312373946"></A><A NAME="_Toc472654920"></A><BR></P></DIV>
+<A NAME="Heading304"></A><FONT FACE = "Verdana"><H3 ALIGN="LEFT">
+Creating a namespace</H3></FONT>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">The creation of a namespace is notably
+similar to the creation of a <B>class</B>:</FONT><BR></P></DIV>
+
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE><font color=#009900>//: C10:MyLib.cpp</font>
+<font color=#0000ff>namespace</font> MyLib {
+  <font color=#009900>// Declarations</font>
+}
+<font color=#0000ff>int</font> main() {} <font color=#009900>///:~</font></PRE></FONT></BLOCKQUOTE>
+
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">This produces a new namespace containing
+the enclosed declarations. There are significant differences from <B>class</B>,
+<B>struct</B>, <B>union</B> and <B>enum</B>,
+however<A NAME="Index1763"></A><A NAME="Index1764"></A><A NAME="Index1765"></A><A NAME="Index1766"></A>:</FONT><BR></P></DIV>
+<UL>
+<LI><FONT FACE="Symbol">	</FONT><FONT FACE="Georgia">A namespace definition can
+appear only at global scope, or nested within another
+namespace.</FONT><LI><FONT FACE="Symbol">	</FONT><FONT FACE="Georgia">No
+terminating semicolon is necessary after the closing brace of a namespace
+definition.</FONT><LI><FONT FACE="Symbol">	</FONT><FONT FACE="Georgia">A
+namespace definition can be &#8220;continued&#8221; over multiple header files
+using a syntax that, for a class, would appear to be a redefinition:</FONT></UL>
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE><font color=#009900>//: C10:Header1.h</font>
+#ifndef HEADER1_H
+#define HEADER1_H
+<font color=#0000ff>namespace</font> MyLib {
+  <font color=#0000ff>extern</font> <font color=#0000ff>int</font> x;
+  <font color=#0000ff>void</font> f();
+  <font color=#009900>// ...</font>
+} </PRE></FONT></BLOCKQUOTE>
+
+
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE>#endif <font color=#009900>// HEADER1_H ///:~</font>
+<font color=#009900>//: C10:Header2.h</font>
+#ifndef HEADER2_H
+#define HEADER2_H
+#include <font color=#004488>"Header1.h"</font>
+<font color=#009900>// Add more names to MyLib</font>
+<font color=#0000ff>namespace</font> MyLib { <font color=#009900>// NOT a redefinition!</font>
+  <font color=#0000ff>extern</font> <font color=#0000ff>int</font> y;
+  <font color=#0000ff>void</font> g();
+  <font color=#009900>// ...</font>
+} </PRE></FONT></BLOCKQUOTE>
+
+
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE>#endif <font color=#009900>// HEADER2_H ///:~</font>
+<font color=#009900>//: C10:Continuation.cpp</font>
+#include <font color=#004488>"Header2.h"</font>
+<font color=#0000ff>int</font> main() {} <font color=#009900>///:~</font></PRE></FONT></BLOCKQUOTE>
+
+<UL>
+<LI><FONT FACE="Symbol">	</FONT><FONT FACE="Georgia">A namespace name can be
+<I>aliased</I> to another name, so you don&#8217;t have to type an unwieldy name
+created by a library vendor:</FONT></UL>
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE><font color=#009900>//: C10:BobsSuperDuperLibrary.cpp</font>
+<font color=#0000ff>namespace</font> BobsSuperDuperLibrary {
+  <font color=#0000ff>class</font> Widget { <font color=#009900>/* ... */</font> };
+  <font color=#0000ff>class</font> Poppit { <font color=#009900>/* ... */</font> };
+  <font color=#009900>// ...</font>
+}
+<font color=#009900>// Too much to type! I&#8217;ll alias it:</font>
+<font color=#0000ff>namespace</font> Bob = BobsSuperDuperLibrary;
+<font color=#0000ff>int</font> main() {} <font color=#009900>///:~</font></PRE></FONT></BLOCKQUOTE>
+
+<UL>
+<LI><FONT FACE="Symbol">	</FONT><FONT FACE="Georgia">You cannot create an
+instance of a namespace as you can with a
+class.</FONT></UL><A NAME="Heading305"></A><FONT FACE = "Verdana"><H4 ALIGN="LEFT">
+Unnamed namespaces</H4></FONT>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Each translation unit contains an unnamed
+namespace <A NAME="Index1767"></A><A NAME="Index1768"></A>that you can add to by
+saying &#8220;<B>namespace</B>&#8221; without an identifier:</FONT><BR></P></DIV>
+
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE><font color=#009900>//: C10:UnnamedNamespaces.cpp</font>
+<font color=#0000ff>namespace</font> {
+  <font color=#0000ff>class</font> Arm  { <font color=#009900>/* ... */</font> };
+  <font color=#0000ff>class</font> Leg  { <font color=#009900>/* ... */</font> };
+  <font color=#0000ff>class</font> Head { <font color=#009900>/* ... */</font> };
+  <font color=#0000ff>class</font> Robot {
+    Arm arm[4];
+    Leg leg[16];
+    Head head[3];
+    <font color=#009900>// ...</font>
+  } xanthan;
+  <font color=#0000ff>int</font> i, j, k;
+}
+<font color=#0000ff>int</font> main() {} <font color=#009900>///:~</font></PRE></FONT></BLOCKQUOTE>
+
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">The names in this space are automatically
+available in that translation unit without qualification. It is guaranteed that
+an unnamed space is unique for each translation unit. If you put local names in
+an unnamed namespace, you don&#8217;t need to give them internal linkage by
+making them <B>static</B>.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">C++ deprecates the use of file statics in
+favor of the unnamed namespace.</FONT><BR></P></DIV>
+<A NAME="Heading306"></A><FONT FACE = "Verdana"><H4 ALIGN="LEFT">
+Friends</H4></FONT>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">You can <I>inject</I>
+<A NAME="Index1769"></A>a <B>friend</B> <A NAME="Index1770"></A>declaration into
+a namespace <A NAME="Index1771"></A>by declaring it within an enclosed
+class:</FONT><BR></P></DIV>
+
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE><font color=#009900>//: C10:FriendInjection.cpp</font>
+<font color=#0000ff>namespace</font> Me {
+  <font color=#0000ff>class</font> Us {
+    <font color=#009900>//...</font>
+    <font color=#0000ff>friend</font> <font color=#0000ff>void</font> you();
+  };
+} 
+<font color=#0000ff>int</font> main() {} <font color=#009900>///:~</font></PRE></FONT></BLOCKQUOTE>
+
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Now the function <B>you(&#160;)</B> is a
+member of the namespace <B>Me</B>.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">If you introduce a friend within a class
+in the global namespace, the friend is injected
+globally.</FONT><A NAME="_Toc312373947"></A><A NAME="_Toc472654921"></A><BR></P></DIV>
+<A NAME="Heading307"></A><FONT FACE = "Verdana"><H3 ALIGN="LEFT">
+Using a namespace</H3></FONT>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">You can refer to a name within a
+namespace <A NAME="Index1772"></A>in three ways: by specifying the name using
+the scope resolution operator, with a <B>using</B> directive to introduce all
+names in the namespace, or with a <A NAME="Index1773"></A><B>using</B>
+<A NAME="Index1774"></A><A NAME="Index1775"></A>declaration to introduce names
+one at a time.</FONT><BR></P></DIV>
+<A NAME="Heading308"></A><FONT FACE = "Verdana"><H4 ALIGN="LEFT">
+Scope resolution</H4></FONT>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Any name in a namespace can be explicitly
+specified using the
+<A NAME="Index1776"></A><A NAME="Index1777"></A><A NAME="Index1778"></A>scope
+resolution operator in the same way that you can refer to the names within a
+class:</FONT><BR></P></DIV>
+
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE><font color=#009900>//: C10:ScopeResolution.cpp</font>
+<font color=#0000ff>namespace</font> X {
+  <font color=#0000ff>class</font> Y {
+    <font color=#0000ff>static</font> <font color=#0000ff>int</font> i;
+  <font color=#0000ff>public</font>:
+    <font color=#0000ff>void</font> f();
+  };
+  <font color=#0000ff>class</font> Z;
+  <font color=#0000ff>void</font> func();
+}
+<font color=#0000ff>int</font> X::Y::i = 9;</PRE></FONT></BLOCKQUOTE>
+
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE><font color=#0000ff>class</font> X::Z {
+  <font color=#0000ff>int</font> u, v, w;
+<font color=#0000ff>public</font>:
+  Z(<font color=#0000ff>int</font> i);
+  <font color=#0000ff>int</font> g();
+}; </PRE></FONT></BLOCKQUOTE>
+
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE>X::Z::Z(<font color=#0000ff>int</font> i) { u = v = w = i; }
+<font color=#0000ff>int</font> X::Z::g() { <font color=#0000ff>return</font> u = v = w = 0; }</PRE></FONT></BLOCKQUOTE>
+
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE><font color=#0000ff>void</font> X::func() {
+  X::Z a(1);
+  a.g();
+}
+<font color=#0000ff>int</font> main(){} <font color=#009900>///:~</font></PRE></FONT></BLOCKQUOTE>
+
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Notice that the definition <B>X::Y::i</B>
+could just as easily be referring to a data member of a class <B>Y</B> nested in
+a class <B>X</B> instead of a namespace <B>X</B>.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">So far, namespaces look very much like
+classes.</FONT><BR></P></DIV>
+<A NAME="Heading309"></A><FONT FACE = "Verdana"><H4 ALIGN="LEFT">
+The using directive</H4></FONT>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Because it can rapidly get tedious to
+type the full qualification for an identifier in a namespace, the <B>using</B>
+keyword allows you to import an entire namespace at once. When used in
+conjunction with the <B>namespace</B> keyword this is called a
+<A NAME="Index1779"></A><I>using
+directive<A NAME="Index1780"></A><A NAME="Index1781"></A></I>. The <B>using</B>
+directive makes names appear as if they belong to the nearest enclosing
+namespace scope, so you can conveniently use the unqualified names. Consider a
+simple namespace:</FONT><BR></P></DIV>
+
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE><font color=#009900>//: C10:NamespaceInt.h</font>
+#ifndef NAMESPACEINT_H
+#define NAMESPACEINT_H
+<font color=#0000ff>namespace</font> Int {
+  <font color=#0000ff>enum</font> sign { positive, negative };
+  <font color=#0000ff>class</font> Integer {
+    <font color=#0000ff>int</font> i;
+    sign s;
+  <font color=#0000ff>public</font>:
+    Integer(<font color=#0000ff>int</font> ii = 0) 
+      : i(ii),
+        s(i &gt;= 0 ? positive : negative)
+    {}
+    sign getSign() <font color=#0000ff>const</font> { <font color=#0000ff>return</font> s; }
+    <font color=#0000ff>void</font> setSign(sign sgn) { s = sgn; }
+    <font color=#009900>// ...</font>
+  };
+} 
+#endif <font color=#009900>// NAMESPACEINT_H ///:~</font></PRE></FONT></BLOCKQUOTE>
+
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">One use of the <B>using </B>directive is
+to bring all of the names in <B>Int</B> into another namespace, leaving those
+names nested within the namespace:</FONT><BR></P></DIV>
+
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE><font color=#009900>//: C10:NamespaceMath.h</font>
+#ifndef NAMESPACEMATH_H
+#define NAMESPACEMATH_H
+#include <font color=#004488>"NamespaceInt.h"</font>
+<font color=#0000ff>namespace</font> Math {
+  <font color=#0000ff>using</font> <font color=#0000ff>namespace</font> Int;
+  Integer a, b;
+  Integer divide(Integer, Integer);
+  <font color=#009900>// ...</font>
+} 
+#endif <font color=#009900>// NAMESPACEMATH_H ///:~</font></PRE></FONT></BLOCKQUOTE>
+
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">You can also declare all of the names in
+<B>Int</B> inside a function, but leave those names nested within the
+function:</FONT><BR></P></DIV>
+
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE><font color=#009900>//: C10:Arithmetic.cpp</font>
+#include <font color=#004488>"NamespaceInt.h"</font>
+<font color=#0000ff>void</font> arithmetic() {
+  <font color=#0000ff>using</font> <font color=#0000ff>namespace</font> Int;
+  Integer x;
+  x.setSign(positive);
+}
+<font color=#0000ff>int</font> main(){} <font color=#009900>///:~</font></PRE></FONT></BLOCKQUOTE>
+
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Without the <B>using</B> directive, all
+the names in the namespace would need to be fully qualified.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">One aspect of the <B>using</B> directive
+may seem slightly counterintuitive at first. The visibility of the names
+introduced with a <B>using</B> directive is the scope in which the directive is
+made. But you can override the names from the <B>using</B> directive as if
+they&#8217;ve been declared globally to that scope! </FONT><BR></P></DIV>
+
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE><font color=#009900>//: C10:NamespaceOverriding1.cpp</font>
+#include <font color=#004488>"NamespaceMath.h"</font>
+<font color=#0000ff>int</font> main() {
+  <font color=#0000ff>using</font> <font color=#0000ff>namespace</font> Math;
+  Integer a; <font color=#009900>// Hides Math::a;</font>
+  a.setSign(negative);
+  <font color=#009900>// Now scope resolution is necessary</font>
+  <font color=#009900>// to select Math::a :</font>
+  Math::a.setSign(positive);
+} <font color=#009900>///:~</font></PRE></FONT></BLOCKQUOTE>
+
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Suppose you have a second namespace that
+contains some of the names in <B>namespace Math</B>:</FONT><BR></P></DIV>
+
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE><font color=#009900>//: C10:NamespaceOverriding2.h</font>
+#ifndef NAMESPACEOVERRIDING2_H
+#define NAMESPACEOVERRIDING2_H
+#include <font color=#004488>"NamespaceInt.h"</font>
+<font color=#0000ff>namespace</font> Calculation {
+  <font color=#0000ff>using</font> <font color=#0000ff>namespace</font> Int;
+  Integer divide(Integer, Integer);
+  <font color=#009900>// ...</font>
+} 
+#endif <font color=#009900>// NAMESPACEOVERRIDING2_H ///:~</font></PRE></FONT></BLOCKQUOTE>
+
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Since this namespace is also introduced
+with a <B>using</B> directive, you have the possibility of a collision. However,
+the ambiguity <A NAME="Index1782"></A><A NAME="Index1783"></A>appears at the
+point of <I>use</I> of the name, not at the <B>using</B>
+directive:</FONT><BR></P></DIV>
+
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE><font color=#009900>//: C10:OverridingAmbiguity.cpp</font>
+#include <font color=#004488>"NamespaceMath.h"</font>
+#include <font color=#004488>"NamespaceOverriding2.h"</font>
+<font color=#0000ff>void</font> s() {
+  <font color=#0000ff>using</font> <font color=#0000ff>namespace</font> Math;
+  <font color=#0000ff>using</font> <font color=#0000ff>namespace</font> Calculation;
+  <font color=#009900>// Everything's ok until:</font>
+  <font color=#009900>//! divide(1, 2); // Ambiguity</font>
+}
+<font color=#0000ff>int</font> main() {} <font color=#009900>///:~</font></PRE></FONT></BLOCKQUOTE>
+
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Thus, it&#8217;s possible to write
+<B>using</B> directives to introduce a number of namespaces with conflicting
+names without ever producing an ambiguity.</FONT><BR></P></DIV>
+<A NAME="Heading310"></A><FONT FACE = "Verdana"><H4 ALIGN="LEFT">
+The using declaration</H4></FONT>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">You can inject names one at a time into
+the current scope with a <I>using
+declaration<A NAME="Index1784"></A><A NAME="Index1785"></A><A NAME="Index1786"></A></I>.
+Unlike the <B>using</B> directive, which treats names as if they were declared
+globally to the scope, a <B>using</B> declaration is a declaration within the
+current scope. This means it can override names from a <B>using</B>
+directive:</FONT><BR></P></DIV>
+
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE><font color=#009900>//: C10:UsingDeclaration.h</font>
+#ifndef USINGDECLARATION_H
+#define USINGDECLARATION_H
+<font color=#0000ff>namespace</font> U {
+  <font color=#0000ff>inline</font> <font color=#0000ff>void</font> f() {}
+  <font color=#0000ff>inline</font> <font color=#0000ff>void</font> g() {}
+}
+<font color=#0000ff>namespace</font> V {
+  <font color=#0000ff>inline</font> <font color=#0000ff>void</font> f() {}
+  <font color=#0000ff>inline</font> <font color=#0000ff>void</font> g() {}
+} 
+#endif <font color=#009900>// USINGDECLARATION_H ///:~</font></PRE></FONT></BLOCKQUOTE>
+
+
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE><font color=#009900>//: C10:UsingDeclaration1.cpp</font>
+#include <font color=#004488>"UsingDeclaration.h"</font>
+<font color=#0000ff>void</font> h() {
+  <font color=#0000ff>using</font> <font color=#0000ff>namespace</font> U; <font color=#009900>// Using directive</font>
+  <font color=#0000ff>using</font> V::f; <font color=#009900>// Using declaration</font>
+  f(); <font color=#009900>// Calls V::f();</font>
+  U::f(); <font color=#009900>// Must fully qualify to call</font>
+}
+<font color=#0000ff>int</font> main() {} <font color=#009900>///:~</font></PRE></FONT></BLOCKQUOTE>
+
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">The <B>using</B> declaration just gives
+the fully specified name of the identifier, but no type information. This means
+that if the namespace contains a set of
+<A NAME="Index1787"></A><A NAME="Index1788"></A>overloaded functions with the
+same name, the <B>using</B> declaration declares all the functions in the
+overloaded set.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">You can put a <B>using</B> declaration
+anywhere a normal declaration can occur. A <B>using</B> declaration works like a
+normal declaration in all ways but one: because you don&#8217;t give an argument
+list, it&#8217;s possible for a <B>using</B> declaration to cause the overload
+<A NAME="Index1789"></A>of a function with the same argument types (which
+isn&#8217;t allowed with normal overloading). This ambiguity, however,
+doesn&#8217;t show up until the point of use, rather than the point of
+declaration.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">A <B>using</B> declaration can also
+appear within a namespace, and it has the same effect as anywhere else &#8211;
+that name is declared within the space:</FONT><BR></P></DIV>
+
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE><font color=#009900>//: C10:UsingDeclaration2.cpp</font>
+#include <font color=#004488>"UsingDeclaration.h"</font>
+<font color=#0000ff>namespace</font> Q {
+  <font color=#0000ff>using</font> U::f;
+  <font color=#0000ff>using</font> V::g;
+  <font color=#009900>// ...</font>
+}
+<font color=#0000ff>void</font> m() {
+  <font color=#0000ff>using</font> <font color=#0000ff>namespace</font> Q;
+  f(); <font color=#009900>// Calls U::f();</font>
+  g(); <font color=#009900>// Calls V::g();</font>
+}
+<font color=#0000ff>int</font> main() {} <font color=#009900>///:~</font></PRE></FONT></BLOCKQUOTE>
+
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">A <B>using</B> declaration is an alias,
+and it allows you to declare the same function in separate namespaces. If you
+end up re-declaring the same function by importing different namespaces,
+it&#8217;s OK &#8211; there won&#8217;t be any ambiguities or
+duplications.</FONT><A NAME="_Toc472654922"></A><BR></P></DIV>
+<A NAME="Heading311"></A><FONT FACE = "Verdana"><H3 ALIGN="LEFT">
+The use of namespaces</H3></FONT>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Some of the rules above may seem a bit
+daunting at first, especially if you get the impression that you&#8217;ll be
+using them all the time. In general, however, you can get away with very simple
+usage of namespaces as long as you understand how they work. The key thing to
+remember is that when you introduce a global <B>using</B> directive (via a
+&#8220;<B>using namespace</B>&#8221; outside of any scope) you have thrown open
+the namespace for that file. This is usually fine for an implementation file (a
+&#8220;<B>cpp</B>&#8221; file) because the <B>using</B> directive is only in
+effect until the end of the compilation of that file. That is, it doesn&#8217;t
+affect any other files, so you can adjust the control of the namespaces one
+implementation file at a time. For example, if you discover a name clash because
+of too many <B>using</B> directives in a particular implementation file, it is a
+simple matter to change that file so that it uses explicit qualifications or
+<B>using</B> declarations to eliminate the clash, without modifying other
+implementation files.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><A NAME="Index1790"></A><A NAME="Index1791"></A><FONT FACE="Georgia">Header
+files are a different issue. You virtually never want to introduce a global
+<B>using</B> directive into a header file, because that would mean that any
+other file that included your header would also have the namespace thrown open
+(and header files can include other header files). </FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">So, in header files you should either use
+explicit qualification or scoped <B>using</B> directives and <B>using</B>
+declarations. This is the practice that you will find in this book, and by
+following it you will not &#8220;pollute&#8221; the global namespace and throw
+yourself back into the pre-namespace world of C++.
+</FONT><A NAME="_Toc305593221"></A><A NAME="_Toc305628693"></A><A NAME="_Toc312373948"></A><A NAME="_Toc472654923"></A><BR></P></DIV>
+<A NAME="Heading312"></A><FONT FACE = "Verdana"><H2 ALIGN="LEFT">
+Static members in
+C++<BR><A NAME="Index1792"></A><A NAME="Index1793"></A><A NAME="Index1794"></A><A NAME="Index1795"></A></H2></FONT>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">There are times when you need a single
+storage space to be used by all objects of a class. In C, you would use a global
+variable, but this is not very safe. Global data can be modified by anyone, and
+its name can clash with other identical names in a large project. It would be
+ideal if the data could be stored as if it were global, but be hidden inside a
+class, and clearly associated with that class.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">This is accomplished with <B>static</B>
+data members inside a class. There is a single piece of storage for a
+<B>static</B> data member, regardless of how many objects of that class you
+create. All objects share the same <B>static</B> storage space for that data
+member, so it is a way for them to &#8220;communicate&#8221; with each other.
+But the <B>static</B> data belongs to the class; its name is scoped inside the
+class and it can be <B>public</B>, <B>private</B>, or
+<B>protected</B>.</FONT><A NAME="_Toc312373949"></A><A NAME="_Toc472654924"></A><BR></P></DIV>
+<A NAME="Heading313"></A><FONT FACE = "Verdana"><H3 ALIGN="LEFT">
+Defining storage for static data
+members<BR><A NAME="Index1796"></A><A NAME="Index1797"></A><A NAME="Index1798"></A><A NAME="Index1799"></A><A NAME="Index1800"></A></H3></FONT>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Because <B>static</B> data has a single
+piece of storage regardless of how many objects are created, that storage must
+be defined in a single place. The compiler will not allocate storage for you.
+The linker will report an error if a <B>static</B> data member is declared but
+not defined.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">The definition must occur outside the
+class (no inlining is allowed), and only one definition is allowed. Thus, it is
+common to put it in the implementation file for the class. The syntax sometimes
+gives people trouble, but it is actually quite logical. For example, if you
+create a static data member inside a class like this:</FONT><BR></P></DIV>
+
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE><font color=#0000ff>class</font> A {
+  <font color=#0000ff>static</font> <font color=#0000ff>int</font> i;
+<font color=#0000ff>public</font>:
+  <font color=#009900>//...</font>
+}; </PRE></FONT></BLOCKQUOTE>
+
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Then you must define storage for that
+static data member in the definition file like this:</FONT><BR></P></DIV>
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE><font color=#0000ff>int</font> A::i = 1;</PRE></FONT></BLOCKQUOTE>
+
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">If you were to define an ordinary global
+variable, you would say</FONT><BR></P></DIV>
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE><font color=#0000ff>int</font> i = 1;</PRE></FONT></BLOCKQUOTE>
+
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">but here, the scope resolution operator
+and the class name are used to specify <B>A::i</B>.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Some people have trouble with the idea
+that <B>A::i</B> is <B>private</B>, and yet here&#8217;s something that seems to
+be manipulating it right out in the open. Doesn&#8217;t this break the
+protection mechanism? It&#8217;s a completely safe practice for two reasons.
+First, the only place this initialization is legal is in the definition. Indeed,
+if the <B>static</B> data were an object with a constructor, you would call the
+constructor instead of using the <B>=</B> operator. Second, once the definition
+has been made, the end-user cannot make a second definition &#8211; the linker
+will report an error. And the class creator is forced to create the definition
+or the code won&#8217;t link during testing. This ensures that the definition
+happens only once and that it&#8217;s in the hands of the class
+creator.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">The entire initialization expression for
+a static member <A NAME="Index1801"></A><A NAME="Index1802"></A>is in the scope
+of the class. For example,</FONT><BR></P></DIV>
+
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE><font color=#009900>//: C10:Statinit.cpp</font>
+<font color=#009900>// Scope of static initializer</font>
+#include &lt;iostream&gt;
+<font color=#0000ff>using</font> <font color=#0000ff>namespace</font> std;
+
+<font color=#0000ff>int</font> x = 100;
+
+<font color=#0000ff>class</font> WithStatic {
+  <font color=#0000ff>static</font> <font color=#0000ff>int</font> x;
+  <font color=#0000ff>static</font> <font color=#0000ff>int</font> y;
+<font color=#0000ff>public</font>:
+  <font color=#0000ff>void</font> print() <font color=#0000ff>const</font> {
+    cout &lt;&lt; <font color=#004488>"WithStatic::x = "</font> &lt;&lt; x &lt;&lt; endl;
+    cout &lt;&lt; <font color=#004488>"WithStatic::y = "</font> &lt;&lt; y &lt;&lt; endl;
+  }
+};
+
+<font color=#0000ff>int</font> WithStatic::x = 1;
+<font color=#0000ff>int</font> WithStatic::y = x + 1;
+<font color=#009900>// WithStatic::x NOT ::x</font>
+
+<font color=#0000ff>int</font> main() {
+  WithStatic ws;
+  ws.print();
+} <font color=#009900>///:~</font></PRE></FONT></BLOCKQUOTE>
+
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Here, the qualification
+<B>WithStatic::</B> extends the scope of <B>WithStatic</B> to the entire
+definition.</FONT><BR></P></DIV>
+<A NAME="Heading314"></A><FONT FACE = "Verdana"><H4 ALIGN="LEFT">
+static array initialization</H4></FONT>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Chapter 8 introduced the <B>static
+const</B> variable that allows you to define a constant value inside a class
+body.
+<A NAME="Index1803"></A><A NAME="Index1804"></A><A NAME="Index1805"></A>It&#8217;s
+also possible to create arrays of <B>static</B> objects, both <B>const</B> and
+non-<B>const</B>. The syntax is reasonably consistent:</FONT><BR></P></DIV>
+
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE><font color=#009900>//: C10:StaticArray.cpp</font>
+<font color=#009900>// Initializing static arrays in classes</font>
+<font color=#0000ff>class</font> Values {
+  <font color=#009900>// static consts are initialized in-place:</font>
+  <font color=#0000ff>static</font> <font color=#0000ff>const</font> <font color=#0000ff>int</font> scSize = 100;
+  <font color=#0000ff>static</font> <font color=#0000ff>const</font> <font color=#0000ff>long</font> scLong = 100;
+  <font color=#009900>// Automatic counting works with static arrays.</font>
+  <font color=#009900>// Arrays, Non-integral and non-const statics </font>
+  <font color=#009900>// must be initialized externally:</font>
+  <font color=#0000ff>static</font> <font color=#0000ff>const</font> <font color=#0000ff>int</font> scInts[];
+  <font color=#0000ff>static</font> <font color=#0000ff>const</font> <font color=#0000ff>long</font> scLongs[];
+  <font color=#0000ff>static</font> <font color=#0000ff>const</font> <font color=#0000ff>float</font> scTable[];
+  <font color=#0000ff>static</font> <font color=#0000ff>const</font> <font color=#0000ff>char</font> scLetters[];
+  <font color=#0000ff>static</font> <font color=#0000ff>int</font> size;
+  <font color=#0000ff>static</font> <font color=#0000ff>const</font> <font color=#0000ff>float</font> scFloat;
+  <font color=#0000ff>static</font> <font color=#0000ff>float</font> table[];
+  <font color=#0000ff>static</font> <font color=#0000ff>char</font> letters[];
+};
+
+<font color=#0000ff>int</font> Values::size = 100;
+<font color=#0000ff>const</font> <font color=#0000ff>float</font> Values::scFloat = 1.1;
+
+<font color=#0000ff>const</font> <font color=#0000ff>int</font> Values::scInts[] = {
+  99, 47, 33, 11, 7
+};
+
+<font color=#0000ff>const</font> <font color=#0000ff>long</font> Values::scLongs[] = {
+  99, 47, 33, 11, 7
+};
+
+<font color=#0000ff>const</font> <font color=#0000ff>float</font> Values::scTable[] = {
+  1.1, 2.2, 3.3, 4.4
+};
+
+<font color=#0000ff>const</font> <font color=#0000ff>char</font> Values::scLetters[] = {
+  'a', 'b', 'c', 'd', 'e',
+  'f', 'g', 'h', 'i', 'j'
+};
+
+<font color=#0000ff>float</font> Values::table[4] = {
+  1.1, 2.2, 3.3, 4.4
+};
+
+<font color=#0000ff>char</font> Values::letters[10] = {
+  'a', 'b', 'c', 'd', 'e',
+  'f', 'g', 'h', 'i', 'j'
+};
+
+<font color=#0000ff>int</font> main() { Values v; } <font color=#009900>///:~</font></PRE></FONT></BLOCKQUOTE>
+
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">With <B>static const</B>s of integral
+types you can provide the definitions inside the class, but for everything else
+(including arrays of integral types, even if they are <B>static const</B>)<B>
+</B>you must provide a single external definition for the member. These
+definitions have internal linkage, so they can be placed in header files. The
+syntax for initializing static arrays is the same as for any aggregate,
+including automatic counting.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">You can also create <B>static const</B>
+objects of class types and arrays of such objects. However, you cannot
+initialize them using the &#8220;inline syntax&#8221; allowed for <B>static</B>
+<B>const</B>s of integral built-in types:</FONT><BR></P></DIV>
+
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE><font color=#009900>//: C10:StaticObjectArrays.cpp</font>
+<font color=#009900>// Static arrays of class objects</font>
+<font color=#0000ff>class</font> X {
+  <font color=#0000ff>int</font> i;
+<font color=#0000ff>public</font>:
+  X(<font color=#0000ff>int</font> ii) : i(ii) {}
+};
+
+<font color=#0000ff>class</font> Stat {
+  <font color=#009900>// This doesn't work, although </font>
+  <font color=#009900>// you might want it to:</font>
+<font color=#009900>//!  static const X x(100);</font>
+  <font color=#009900>// Both const and non-const static class </font>
+  <font color=#009900>// objects must be initialized externally:</font>
+  <font color=#0000ff>static</font> X x2;
+  <font color=#0000ff>static</font> X xTable2[];
+  <font color=#0000ff>static</font> <font color=#0000ff>const</font> X x3;
+  <font color=#0000ff>static</font> <font color=#0000ff>const</font> X xTable3[];
+};
+
+X Stat::x2(100);
+
+X Stat::xTable2[] = {
+  X(1), X(2), X(3), X(4)
+};
+
+<font color=#0000ff>const</font> X Stat::x3(100);
+
+<font color=#0000ff>const</font> X Stat::xTable3[] = {
+  X(1), X(2), X(3), X(4)
+};
+
+<font color=#0000ff>int</font> main() { Stat v; } <font color=#009900>///:~</font></PRE></FONT></BLOCKQUOTE>
+
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">The initialization of both <B>const</B>
+and non-<B>const</B> <B>static</B> arrays of class objects must be performed the
+same way, following the typical <B>static</B> definition
+syntax.</FONT><A NAME="_Toc312373950"></A><A NAME="_Toc472654925"></A><BR></P></DIV>
+<A NAME="Heading315"></A><FONT FACE = "Verdana"><H3 ALIGN="LEFT">
+Nested and local classes</H3></FONT>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">You can easily put static data members in
+classes that are nested <A NAME="Index1806"></A><A NAME="Index1807"></A>inside
+other classes. The definition of such members is an intuitive and obvious
+extension &#8211; you simply use another level of scope resolution. However, you
+cannot have <B>static</B> data members inside local classes
+<A NAME="Index1808"></A><A NAME="Index1809"></A>(a local class is a class
+defined inside a function<A NAME="Index1810"></A>). Thus,</FONT><BR></P></DIV>
+
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE><font color=#009900>//: C10:Local.cpp</font>
+<font color=#009900>// Static members &amp; local classes</font>
+#include &lt;iostream&gt;
+<font color=#0000ff>using</font> <font color=#0000ff>namespace</font> std;
+
+<font color=#009900>// Nested class CAN have static data members:</font>
+<font color=#0000ff>class</font> Outer {
+  <font color=#0000ff>class</font> Inner {
+    <font color=#0000ff>static</font> <font color=#0000ff>int</font> i; <font color=#009900>// OK</font>
+  };
+};
+
+<font color=#0000ff>int</font> Outer::Inner::i = 47;
+
+<font color=#009900>// Local class cannot have static data members:</font>
+<font color=#0000ff>void</font> f() {
+  <font color=#0000ff>class</font> Local {
+  <font color=#0000ff>public</font>:
+<font color=#009900>//! static int i;  // Error</font>
+    <font color=#009900>// (How would you define i?)</font>
+  } x;
+} 
+
+<font color=#0000ff>int</font> main() { Outer x; f(); } <font color=#009900>///:~</font></PRE></FONT></BLOCKQUOTE>
+
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">You can see the immediate problem with a
+<B>static</B> member in a local class: How do you describe the data member at
+file scope in order to define it? In practice, local classes are used very
+rarely.</FONT><A NAME="_Toc312373951"></A><A NAME="_Toc472654926"></A><BR></P></DIV>
+<A NAME="Heading316"></A><FONT FACE = "Verdana"><H3 ALIGN="LEFT">
+static member functions</H3></FONT>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">You can also create <B>static</B> member
+functions<A NAME="Index1811"></A>
+<A NAME="Index1812"></A><A NAME="Index1813"></A><A NAME="Index1814"></A>that,
+like <B>static</B> data members, work for the class as a whole rather than for a
+particular object of a class. Instead of making a global function that lives in
+and &#8220;pollutes&#8221; the global or local namespace, you bring the function
+inside the class. When you create a <B>static</B> member function, you are
+expressing an association with a particular class.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">You can call a <B>static</B> member
+function in the ordinary way, with the dot or the arrow, in association with an
+object. However, it&#8217;s more typical to call a <B>static</B> member function
+by itself, without any specific object, using the scope-resolution operator,
+like
+this:<A NAME="Index1815"></A><A NAME="Index1816"></A><A NAME="Index1817"></A></FONT><BR></P></DIV>
+
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE><font color=#009900>//: C10:SimpleStaticMemberFunction.cpp </font>
+<font color=#0000ff>class</font> X {
+<font color=#0000ff>public</font>:
+  <font color=#0000ff>static</font> <font color=#0000ff>void</font> f(){};
+};
+
+<font color=#0000ff>int</font> main() {
+  X::f();
+} <font color=#009900>///:~</font></PRE></FONT></BLOCKQUOTE>
+
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">When you see static member functions in a
+class, remember that the designer intended that function to be conceptually
+associated with the class as a whole.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">A <B>static</B> member function cannot
+access ordinary data members, only <B>static</B> data members. It can call only
+other <B>static</B> member functions. Normally, the address of the current
+object (<B>this<A NAME="Index1818"></A></B>) is quietly passed in when any
+member function is called, but a <B>static</B> member has no
+<A NAME="Index1819"></A><B>this</B>, which is the reason it cannot access
+ordinary members. Thus, you get the tiny increase in speed afforded by a global
+function because a <B>static</B> member function doesn&#8217;t have the extra
+overhead of passing <B>this</B>. At the same time you get the benefits of having
+the function inside the class.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">For data members, <B>static</B> indicates
+that only one piece of storage for member data exists for all objects of a
+class. This parallels the use of <B>static</B> to define objects <I>inside</I> a
+function to mean that only one copy of a local variable is used for all calls of
+that function.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Here&#8217;s an example showing
+<A NAME="Index1820"></A><B>static</B> data members and <B>static</B> member
+functions used together:</FONT><BR></P></DIV>
+
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE><font color=#009900>//: C10:StaticMemberFunctions.cpp</font>
+<font color=#0000ff>class</font> X {
+  <font color=#0000ff>int</font> i;
+  <font color=#0000ff>static</font> <font color=#0000ff>int</font> j;
+<font color=#0000ff>public</font>:
+  X(<font color=#0000ff>int</font> ii = 0) : i(ii) {
+     <font color=#009900>// Non-static member function can access</font>
+     <font color=#009900>// static member function or data:</font>
+    j = i;
+  }
+  <font color=#0000ff>int</font> val() <font color=#0000ff>const</font> { <font color=#0000ff>return</font> i; }
+  <font color=#0000ff>static</font> <font color=#0000ff>int</font> incr() {
+    <font color=#009900>//! i++; // Error: static member function</font>
+    <font color=#009900>// cannot access non-static member data</font>
+    <font color=#0000ff>return</font> ++j;
+  }
+  <font color=#0000ff>static</font> <font color=#0000ff>int</font> f() {
+    <font color=#009900>//! val(); // Error: static member function</font>
+    <font color=#009900>// cannot access non-static member function</font>
+    <font color=#0000ff>return</font> incr(); <font color=#009900>// OK -- calls static</font>
+  }
+};
+
+<font color=#0000ff>int</font> X::j = 0;
+
+<font color=#0000ff>int</font> main() {
+  X x;
+  X* xp = &amp;x;
+  x.f();
+  xp-&gt;f();
+  X::f(); <font color=#009900>// Only works with static members</font>
+} <font color=#009900>///:~</font></PRE></FONT></BLOCKQUOTE>
+
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Because they have no <B>this</B> pointer,
+<B>static</B> member functions can neither access non-<B>static</B> data members
+nor call non-<B>static</B> member functions.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Notice in <B>main(&#160;)</B> that a
+<B>static</B> member can be selected using the usual dot or arrow syntax,
+associating that function with an object, but also with no object (because a
+<B>static</B> member is associated with a class, not a particular object), using
+the class name and scope resolution operator.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Here&#8217;s an interesting feature:
+Because of the way initialization happens for <B>static</B> member objects, you
+can put a <B>static</B> data member of the same class <I>inside</I> that class.
+Here&#8217;s an example that allows only a single object of type <B>Egg</B> to
+exist by making the constructor private. You can access that object, but you
+can&#8217;t create any new <B>Egg</B> objects:</FONT><BR></P></DIV>
+
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE><font color=#009900>//: C10:Singleton.cpp</font>
+<font color=#009900>// Static member of same type, ensures that</font>
+<font color=#009900>// only one object of this type exists.</font>
+<font color=#009900>// Also referred to as the "singleton" pattern.</font>
+#include &lt;iostream&gt;
+<font color=#0000ff>using</font> <font color=#0000ff>namespace</font> std;
+
+<font color=#0000ff>class</font> Egg {
+  <font color=#0000ff>static</font> Egg e;
+  <font color=#0000ff>int</font> i;
+  Egg(<font color=#0000ff>int</font> ii) : i(ii) {}
+  Egg(<font color=#0000ff>const</font> Egg&amp;); <font color=#009900>// Prevent copy-construction</font>
+<font color=#0000ff>public</font>:
+  <font color=#0000ff>static</font> Egg* instance() { <font color=#0000ff>return</font> &amp;e; }
+  <font color=#0000ff>int</font> val() <font color=#0000ff>const</font> { <font color=#0000ff>return</font> i; }
+};
+
+Egg Egg::e(47);
+
+<font color=#0000ff>int</font> main() {
+<font color=#009900>//!  Egg x(1); // Error -- can't create an Egg</font>
+  <font color=#009900>// You can access the single instance:</font>
+  cout &lt;&lt; Egg::instance()-&gt;val() &lt;&lt; endl;
+} <font color=#009900>///:~</font></PRE></FONT></BLOCKQUOTE>
+
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">The initialization for <B>E</B> happens
+after the class declaration is complete, so the compiler has all the information
+it needs to allocate storage and make the constructor call.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">To completely prevent the creation of any
+other objects, something else has been added: a second private constructor
+called the
+<A NAME="Index1821"></A><A NAME="Index1822"></A><I>copy-constructor</I>. At this
+point in the book, you cannot know why this is necessary since the copy
+constructor will not be introduced until the next chapter. However, as a sneak
+preview, if you were to remove the copy-constructor defined in the example
+above, you&#8217;d be able to create an <B>Egg</B> object like
+this:</FONT><BR></P></DIV>
+
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE>Egg e = *Egg::instance();
+Egg e2(*Egg::instance());</PRE></FONT></BLOCKQUOTE>
+
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Both of these use the copy-constructor,
+so to seal off that possibility the copy-constructor is declared as private (no
+definition is necessary because it never gets called). A large portion of the
+next chapter is a discussion of the copy-constructor so it should become clear
+to you
+then.</FONT><A NAME="_Toc305593222"></A><A NAME="_Toc305628694"></A><A NAME="_Toc312373952"></A><A NAME="_Toc472654927"></A><BR></P></DIV>
+<A NAME="Heading317"></A><FONT FACE = "Verdana"><H2 ALIGN="LEFT">
+Static initialization
+dependency<BR><A NAME="Index1823"></A><A NAME="Index1824"></A><A NAME="Index1825"></A><A NAME="Index1826"></A><A NAME="Index1827"></A></H2></FONT>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Within a specific translation unit, the
+order of initialization of static objects is guaranteed to be the order in which
+the object definitions appear in that translation unit<A NAME="Index1828"></A>.
+The order of destruction is guaranteed to be the reverse of the order of
+initialization.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">However, there is no guarantee concerning
+the order of initialization of static objects <I>across</I> translation units,
+and the language provides no way to specify this order. This can cause
+significant problems. As an example of an instant disaster (which will halt
+primitive operating systems and kill the process on sophisticated ones), if one
+file contains</FONT><BR></P></DIV>
+
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE><font color=#009900>//: C10:Out.cpp {O}</font>
+<font color=#009900>// First file</font>
+#include &lt;fstream&gt;
+std::ofstream out(<font color=#004488>"out.txt"</font>);<U> <font color=#009900>///:~</U></font></PRE></FONT></BLOCKQUOTE>
+
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">and another file uses the <B>out</B>
+object in one of its initializers</FONT><BR></P></DIV>
+
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE><font color=#009900>//: C10:Oof.cpp</font>
+<font color=#009900>// Second file</font>
+<font color=#009900>//{L} Out</font>
+#include &lt;fstream&gt;
+<font color=#0000ff>extern</font> std::ofstream out;
+<font color=#0000ff>class</font> Oof {
+<font color=#0000ff>public</font>:
+  Oof() { std::out &lt;&lt; <font color=#004488>"ouch"</font>; }
+} oof;</PRE></FONT></BLOCKQUOTE>
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE><U><font color=#0000ff>int</font> main() {} <font color=#009900>///:~</U></font></PRE></FONT></BLOCKQUOTE>
+
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">the program may work, and it may not. If
+the programming environment builds the program so that the first file is
+initialized before the second file, then there will be no problem. However, if
+the second file is initialized before the first, the constructor for <B>Oof</B>
+relies upon the existence of <B>out</B>, which hasn&#8217;t been constructed yet
+and this causes chaos. </FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">This problem only occurs with static
+object initializers <I>that depend </I>on each other. The statics in a
+translation unit are initialized before the first invocation of a function in
+that unit &#8211; but it could be after <B>main(&#160;)</B>. You can&#8217;t be
+sure about the order of initialization of static objects if they&#8217;re in
+different files.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">A subtler example can be found in the
+ARM.</FONT><A NAME="fnB47" HREF="#fn47">[47]</A><A NAME="Index1829"></A><A NAME="Index1830"></A><FONT FACE="Georgia">
+In one file you have at the global scope:</FONT><BR></P></DIV>
+
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE><font color=#0000ff>extern</font> <font color=#0000ff>int</font> y;
+<font color=#0000ff>int</font> x = y + 1;</PRE></FONT></BLOCKQUOTE>
+
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">and in a second file you have at the
+global scope:</FONT><BR></P></DIV>
+
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE><font color=#0000ff>extern</font> <font color=#0000ff>int</font> x;
+<font color=#0000ff>int</font> y = x + 1;</PRE></FONT></BLOCKQUOTE>
+
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">For all static objects, the
+linking-loading mechanism guarantees a static initialization to
+zero<A NAME="Index1831"></A><A NAME="Index1832"></A> before the dynamic
+initialization specified by the programmer takes place. In the previous example,
+zeroing of the storage occupied by the <B>fstream out</B> object has no special
+meaning, so it is truly undefined until the constructor is called. However, with
+built-in types, initialization to zero <I>does</I> have meaning, and if the
+files are initialized in the order they are shown above, <B>y</B> begins as
+statically initialized to zero, so <B>x</B> becomes one, and <B>y</B> is
+dynamically initialized to two. However, if the files are initialized in the
+opposite order, <B>x</B> is statically initialized to zero, <B>y</B> is
+dynamically initialized to one, and <B>x</B> then becomes two.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Programmers must be aware of this because
+they can create a program with static initialization dependencies and get it
+working on one platform, but move it to another compiling environment where it
+suddenly, mysteriously, doesn&#8217;t
+work.</FONT><A NAME="_Toc312373953"></A><A NAME="_Toc472654928"></A><BR></P></DIV>
+<A NAME="Heading318"></A><FONT FACE = "Verdana"><H3 ALIGN="LEFT">
+What to do</H3></FONT>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">There are three approaches to dealing
+with this problem:</FONT><BR></P></DIV>
+<OL>
+<LI><FONT FACE="Verdana">	</FONT><FONT FACE="Georgia">Don&#8217;t do it.
+Avoiding static initialization dependencies is the best
+solution.</FONT><LI><FONT FACE="Verdana">	</FONT><FONT FACE="Georgia">If you
+must do it, put the critical static object definitions in a single file, so you
+can portably control their initialization by putting them in the correct
+order.</FONT><LI><FONT FACE="Verdana">	</FONT><FONT FACE="Georgia">If
+you&#8217;re convinced it&#8217;s unavoidable to scatter static objects across
+translation units &#8211; as in the case of a library, where you can&#8217;t
+control the programmer who uses it &#8211; there are two programmatic techniques
+to solve the problem.</FONT></OL><A NAME="Heading319"></A><FONT FACE = "Verdana"><H4 ALIGN="LEFT">
+Technique one</H4></FONT>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">This technique was pioneered by Jerry
+Schwarz<A NAME="Index1833"></A> while creating the iostream library (because the
+definitions for <B>cin</B>, <B>cout</B>, and <B>cerr</B> are <B>static </B>and
+live in a separate file). It&#8217;s actually inferior to the second technique
+but it&#8217;s been around a long time and so you may come across code that uses
+it; thus it&#8217;s important that you understand how it works.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">This technique requires an additional
+class in your library header file. This class is responsible for the dynamic
+initialization of your library&#8217;s static objects. Here is a simple
+example:</FONT><BR></P></DIV>
+
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE><font color=#009900>//: C10:Initializer.h</font>
+<font color=#009900>// Static initialization technique</font>
+#ifndef INITIALIZER_H
+#define INITIALIZER_H
+#include &lt;iostream&gt;
+<font color=#0000ff>extern</font> <font color=#0000ff>int</font> x; <font color=#009900>// Declarations, not definitions</font>
+<font color=#0000ff>extern</font> <font color=#0000ff>int</font> y;
+
+<font color=#0000ff>class</font> Initializer {
+  <font color=#0000ff>static</font> <font color=#0000ff>int</font> initCount;
+<font color=#0000ff>public</font>:
+  Initializer() {
+    std::cout &lt;&lt; <font color=#004488>"Initializer()"</font> &lt;&lt; std::endl;
+    <font color=#009900>// Initialize first time only</font>
+    <font color=#0000ff>if</font>(initCount++ == 0) {
+      std::cout &lt;&lt; <font color=#004488>"performing initialization"</font>
+                &lt;&lt; std::endl;
+      x = 100;
+      y = 200;
+    }
+  }
+  ~Initializer() {
+    std::cout &lt;&lt; <font color=#004488>"~Initializer()"</font> &lt;&lt; std::endl;
+    <font color=#009900>// Clean up last time only</font>
+    <font color=#0000ff>if</font>(--initCount == 0) {
+      std::cout &lt;&lt; <font color=#004488>"performing cleanup"</font> 
+                &lt;&lt; std::endl;
+      <font color=#009900>// Any necessary cleanup here</font>
+    }
+  }
+};
+
+<font color=#009900>// The following creates one object in each</font>
+<font color=#009900>// file where Initializer.h is included, but that</font>
+<font color=#009900>// object is only visible within that file:</font>
+<font color=#0000ff>static</font> Initializer init;
+#endif <font color=#009900>// INITIALIZER_H ///:~</font></PRE></FONT></BLOCKQUOTE>
+
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">The declarations for <B>x</B> and
+<B>y</B> announce only that these objects exist, but they don&#8217;t allocate
+storage for the objects. However, the definition for the <B>Initializer init</B>
+allocates storage for that object in every file where the header is included.
+But because the name is <B>static</B> (controlling visibility this time, not the
+way storage is allocated; storage is at file scope by default), it is visible
+only within that translation unit, so the linker will not complain about
+multiple definition errors.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Here is the file containing the
+definitions for <B>x</B>, <B>y</B>, and <B>initCount</B>:</FONT><BR></P></DIV>
+
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE><font color=#009900>//: C10:InitializerDefs.cpp {O}</font>
+<font color=#009900>// Definitions for Initializer.h</font>
+#include <font color=#004488>"Initializer.h"</font>
+<font color=#009900>// Static initialization will force</font>
+<font color=#009900>// all these values to zero:</font>
+<font color=#0000ff>int</font> x;
+<font color=#0000ff>int</font> y;
+<font color=#0000ff>int</font> Initializer::initCount;
+<font color=#009900>///:~ </font></PRE></FONT></BLOCKQUOTE>
+
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">(Of course, a file static instance of
+<B>init</B> is also placed in this file when the header is included.) Suppose
+that two other files are created by the library user:</FONT><BR></P></DIV>
+
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE><font color=#009900>//: C10:Initializer.cpp {O}</font>
+<font color=#009900>// Static initialization</font>
+#include <font color=#004488>"Initializer.h"</font>
+<font color=#009900>///:~ </font></PRE></FONT></BLOCKQUOTE>
+
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">and</FONT><BR></P></DIV>
+
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE><font color=#009900>//: C10:Initializer2.cpp</font>
+<font color=#009900>//{L} InitializerDefs Initializer</font>
+<font color=#009900>// Static initialization</font>
+#include <font color=#004488>"Initializer.h"</font>
+<font color=#0000ff>using</font> <font color=#0000ff>namespace</font> std;
+
+<font color=#0000ff>int</font> main() {
+  cout &lt;&lt; <font color=#004488>"inside main()"</font> &lt;&lt; endl;
+  cout &lt;&lt; <font color=#004488>"leaving main()"</font> &lt;&lt; endl;
+} <font color=#009900>///:~</font></PRE></FONT></BLOCKQUOTE>
+
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Now it doesn&#8217;t matter which
+translation unit is initialized first. The first time a translation unit
+containing <B>Initializer.h </B>is initialized, <B>initCount</B> will be zero so
+the initialization will be performed. (This depends heavily on the fact that the
+static storage area is set to zero before any dynamic initialization takes
+place.) For all the rest of the translation units, <B>initCount </B>will be
+nonzero and the initialization will be skipped. Cleanup happens in the reverse
+order, and <B>~Initializer(&#160;)</B> ensures that it will happen only
+once.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">This example used built-in types as the
+global static objects. The technique also works with classes, but those objects
+must then be dynamically initialized by the <B>Initializer</B> class. One way to
+do this is to create the classes without constructors and destructors, but
+instead with initialization and cleanup member functions using different names.
+A more common approach, however, is to have pointers to objects and to create
+them using <B>new</B> inside <B>Initializer(&#160;)</B>.</FONT><BR></P></DIV>
+<A NAME="Heading320"></A><FONT FACE = "Verdana"><H4 ALIGN="LEFT">
+Technique two</H4></FONT>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Long after technique one was in use,
+someone (I don&#8217;t know who) came up with the technique explained in this
+section, which is much simpler and cleaner than technique one. The fact that it
+took so long to discover is a tribute to the complexity of C++.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">This technique relies on the fact that
+<A NAME="Index1834"></A><A NAME="Index1835"></A><A NAME="Index1836"></A>static
+objects inside functions are initialized the first time (only) that the function
+is called. Keep in mind that the problem we&#8217;re really trying to solve here
+is not <I>when</I> the static objects are initialized (that can be controlled
+separately) but rather making sure that the initialization happens in the proper
+order.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">This technique is very neat and clever.
+For any initialization dependency, you place a static object inside a function
+that returns a reference to that object. This way, the only way you can access
+the static object is by calling the function, and if that object needs to access
+other static objects on which it is dependent it must call <I>their</I>
+functions. And the first time a function is called, it forces the initialization
+to take place. The order of static initialization is guaranteed to be correct
+because of the design of the code, not because of an arbitrary order established
+by the linker.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">To set up an example, here are two
+classes that depend on each other. The first one contains a <B>bool </B>that is
+initialized only by the constructor, so you can tell if the constructor has been
+called for a static instance of the class (the static storage area is
+initialized to zero at program startup, which produces a <B>false</B> value for
+the <B>bool</B> if the constructor has not been called):</FONT><BR></P></DIV>
+
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE><font color=#009900>//: C10:Dependency1.h</font>
+#ifndef DEPENDENCY1_H
+#define DEPENDENCY1_H
+#include &lt;iostream&gt;
+
+<font color=#0000ff>class</font> Dependency1 {
+  <font color=#0000ff>bool</font> init;
+<font color=#0000ff>public</font>:
+  Dependency1() : init(<font color=#0000ff>true</font>) {
+    std::cout &lt;&lt; <font color=#004488>"Dependency1 construction"</font> 
+              &lt;&lt; std::endl;
+  }
+  <font color=#0000ff>void</font> print() <font color=#0000ff>const</font> {
+    std::cout &lt;&lt; <font color=#004488>"Dependency1 init: "</font> 
+              &lt;&lt; init &lt;&lt; std::endl;
+  }
+};
+#endif <font color=#009900>// DEPENDENCY1_H ///:~</font></PRE></FONT></BLOCKQUOTE>
+
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">The constructor also announces when it is
+being called, and you can <B>print(&#160;)</B> the state of the object to find
+out if it has been initialized.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">The second class is initialized from an
+object of the first class, which is what will cause the
+dependency:</FONT><BR></P></DIV>
+
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE><font color=#009900>//: C10:Dependency2.h</font>
+#ifndef DEPENDENCY2_H
+#define DEPENDENCY2_H
+#include <font color=#004488>"Dependency1.h"</font>
+
+<font color=#0000ff>class</font> Dependency2 {
+  Dependency1 d1;
+<font color=#0000ff>public</font>:
+  Dependency2(<font color=#0000ff>const</font> Dependency1&amp; dep1): d1(dep1){
+    std::cout &lt;&lt; <font color=#004488>"Dependency2 construction "</font>;
+    print();
+  }
+  <font color=#0000ff>void</font> print() <font color=#0000ff>const</font> { d1.print(); }
+};
+#endif <font color=#009900>// DEPENDENCY2_H ///:~</font></PRE></FONT></BLOCKQUOTE>
+
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">The constructor announces itself and
+prints the state of the <B>d1</B> object so you can see if it has been
+initialized by the time the constructor is called.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">To demonstrate what can go wrong, the
+following file first puts the static object definitions in the wrong order, as
+they would occur if the linker happened to initialize the <B>Dependency2</B>
+object before the <B>Dependency1</B> object. Then the order is reversed to show
+how it works correctly if the order happens to be &#8220;right.&#8221; Lastly,
+technique two is demonstrated.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">To provide more readable output, the
+function <B>separator(&#160;)</B> is created. The trick is that you can&#8217;t
+call a function globally unless that function is being used to perform the
+initialization of a variable, so <B>separator(&#160;)</B> returns a dummy value
+that is used to initialize a couple of global variables.</FONT><BR></P></DIV>
+
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE><font color=#009900>//: C10:Technique2.cpp</font>
+#include <font color=#004488>"Dependency2.h"</font>
+<font color=#0000ff>using</font> <font color=#0000ff>namespace</font> std;
+
+<font color=#009900>// Returns a value so it can be called as</font>
+<font color=#009900>// a global initializer:</font>
+<font color=#0000ff>int</font> separator() {
+  cout &lt;&lt; <font color=#004488>"---------------------"</font> &lt;&lt; endl;
+  <font color=#0000ff>return</font> 1;
+}
+
+<font color=#009900>// Simulate the dependency problem:</font>
+<font color=#0000ff>extern</font> Dependency1 dep1;
+Dependency2 dep2(dep1);
+Dependency1 dep1;
+<font color=#0000ff>int</font> x1 = separator();
+
+<font color=#009900>// But if it happens in this order it works OK:</font>
+Dependency1 dep1b;
+Dependency2 dep2b(dep1b);
+<font color=#0000ff>int</font> x2 = separator();
+
+<font color=#009900>// Wrapping static objects in functions succeeds</font>
+Dependency1&amp; d1() {
+  <font color=#0000ff>static</font> Dependency1 dep1;
+  <font color=#0000ff>return</font> dep1;
+}
+
+Dependency2&amp; d2() {
+  <font color=#0000ff>static</font> Dependency2 dep2(d1());
+  <font color=#0000ff>return</font> dep2;
+}
+
+<font color=#0000ff>int</font> main() {
+  Dependency2&amp; dep2 = d2();
+} <font color=#009900>///:~</font></PRE></FONT></BLOCKQUOTE>
+
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">The functions <B>d1(&#160;)</B> and
+<B>d2(&#160;)</B> wrap static instances of <B>Dependency1</B> and
+<B>Dependency2</B> objects. Now, the only way you can get to the static objects
+is by calling the functions and that forces static initialization on the first
+function call. This means that initialization is guaranteed to be correct, which
+you&#8217;ll see when you run the program and look at the
+output.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Here&#8217;s how you would actually
+organize the code to use the technique. Ordinarily, the static objects would be
+defined in separate files (because you&#8217;re forced to for some reason;
+remember that defining the static objects in separate files is what causes the
+problem), so instead you define the wrapping functions in separate files. But
+they&#8217;ll need to be declared in header files:</FONT><BR></P></DIV>
+
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE><font color=#009900>//: C10:Dependency1StatFun.h</font>
+#ifndef DEPENDENCY1STATFUN_H
+#define DEPENDENCY1STATFUN_H
+#include <font color=#004488>"Dependency1.h"</font>
+<font color=#0000ff>extern</font> Dependency1&amp; d1();
+#endif <font color=#009900>// DEPENDENCY1STATFUN_H ///:~</font></PRE></FONT></BLOCKQUOTE>
+
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Actually, the &#8220;extern&#8221; is
+redundant for the function declaration. Here&#8217;s the second header
+file:</FONT><BR></P></DIV>
+
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE><font color=#009900>//: C10:Dependency2StatFun.h</font>
+#ifndef DEPENDENCY2STATFUN_H
+#define DEPENDENCY2STATFUN_H
+#include <font color=#004488>"Dependency2.h"</font>
+<font color=#0000ff>extern</font> Dependency2&amp; d2();
+#endif <font color=#009900>// DEPENDENCY2STATFUN_H ///:~</font></PRE></FONT></BLOCKQUOTE>
+
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Now, in the implementation files where
+you would previously have placed the static object definitions, you instead
+place the wrapping function definitions:</FONT><BR></P></DIV>
+
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE><font color=#009900>//: C10:Dependency1StatFun.cpp {O}</font>
+#include <font color=#004488>"Dependency1StatFun.h"</font>
+Dependency1&amp; d1() {
+  <font color=#0000ff>static</font> Dependency1 dep1;
+  <font color=#0000ff>return</font> dep1;
+} <font color=#009900>///:~</font></PRE></FONT></BLOCKQUOTE>
+
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Presumably, other code might also be
+placed in these files. Here&#8217;s the other file:</FONT><BR></P></DIV>
+
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE><font color=#009900>//: C10:Dependency2StatFun.cpp {O}</font>
+#include <font color=#004488>"Dependency1StatFun.h"</font>
+#include <font color=#004488>"Dependency2StatFun.h"</font>
+Dependency2&amp; d2() {
+  <font color=#0000ff>static</font> Dependency2 dep2(d1());
+  <font color=#0000ff>return</font> dep2;
+} <font color=#009900>///:~</font></PRE></FONT></BLOCKQUOTE>
+
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">So now there are two files that could be
+linked in any order and if they contained ordinary static objects could produce
+any order of initialization. But since they contain the wrapping functions,
+there&#8217;s no threat of incorrect initialization:</FONT><BR></P></DIV>
+
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE><font color=#009900>//: C10:Technique2b.cpp</font>
+<font color=#009900>//{L} Dependency1StatFun Dependency2StatFun</font>
+#include <font color=#004488>"Dependency2StatFun.h"</font>
+<font color=#0000ff>int</font> main() { d2(); } <font color=#009900>///:~</font></PRE></FONT></BLOCKQUOTE>
+
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">When you run this program you&#8217;ll
+see that the initialization of the <B>Dependency1</B> static object always
+happens before the initialization of the <B>Dependency2</B> static object. You
+can also see that this is a much simpler approach than technique
+one.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">You might be tempted to write
+<B>d1(&#160;)</B> and <B>d2(&#160;)</B> as inline functions inside their
+respective header files, but this is something you must definitely not do. An
+inline function can be duplicated in every file in which it appears &#8211; and
+this duplication <I>includes</I> the static object definition. Because inline
+functions automatically default to internal linkage, this would result in having
+multiple static objects across the various translation units, which would
+certainly cause problems. So you must ensure that there is only one definition
+of each wrapping function, and this means not making the wrapping functions
+inline.</FONT><A NAME="_Toc305593223"></A><A NAME="_Toc305628695"></A><A NAME="_Toc312373954"></A><A NAME="_Toc472654929"></A><BR></P></DIV>
+<A NAME="Heading321"></A><FONT FACE = "Verdana"><H2 ALIGN="LEFT">
+Alternate linkage
+specifications<BR><A NAME="Index1837"></A><A NAME="Index1838"></A><A NAME="Index1839"></A><A NAME="Index1840"></A></H2></FONT>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">What happens if you&#8217;re writing a
+program in C++ and you want to use a C library? If you make the C function
+declaration,</FONT><BR></P></DIV>
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE><font color=#0000ff>float</font> f(<font color=#0000ff>int</font> a, <font color=#0000ff>char</font> b);</PRE></FONT></BLOCKQUOTE>
+
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">the C++ compiler will decorate this name
+to something like <B>_f_int_char</B> to support function overloading (and
+type-safe linkage). However, the C compiler that compiled your C library has
+most definitely <I>not</I> decorated the name, so its internal name will be
+<B>_f</B>. Thus, the linker will not be able to resolve your C++ calls to
+<B>f(&#160;)</B>.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">The escape mechanism provided in C++ is
+the <I>alternate linkage specification</I>, which was produced in the language
+by overloading the <A NAME="Index1841"></A><B>extern</B>
+<A NAME="Index1842"></A>keyword. The <B>extern</B> is followed by a string that
+specifies the linkage you want for the declaration, followed by the
+declaration:</FONT><BR></P></DIV>
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE><font color=#0000ff>extern</font> <font color=#004488>"C"</font> <font color=#0000ff>float</font> f(<font color=#0000ff>int</font> a, <font color=#0000ff>char</font> b);</PRE></FONT></BLOCKQUOTE>
+
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">This tells the compiler to give C linkage
+to <B>f(&#160;)</B> so that the compiler doesn&#8217;t decorate the
+name<A NAME="Index1843"></A><A NAME="Index1844"></A>. The only two types of
+linkage specifications supported by the standard are <B>&#8220;C&#8221;</B> and
+<B>&#8220;C++,&#8221;</B> but compiler vendors have the option of supporting
+other languages in the same way.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">If you have a group of declarations with
+alternate linkage, put them inside braces, like this:</FONT><BR></P></DIV>
+
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE><font color=#0000ff>extern</font> <font color=#004488>"C"</font> {
+  <font color=#0000ff>float</font> f(<font color=#0000ff>int</font> a, <font color=#0000ff>char</font> b);
+  <font color=#0000ff>double</font> d(<font color=#0000ff>int</font> a, <font color=#0000ff>char</font> b);
+} </PRE></FONT></BLOCKQUOTE>
+
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Or, for a header file,</FONT><BR></P></DIV>
+
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE><font color=#0000ff>extern</font> <font color=#004488>"C"</font> {
+#include <font color=#004488>"Myheader.h"</font>
+} </PRE></FONT></BLOCKQUOTE>
+
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Most C++ compiler vendors handle the
+alternate linkage specifications inside their header files that work with both C
+and C++, so you don&#8217;t have to worry about
+it.</FONT><A NAME="_Toc305593224"></A><A NAME="_Toc305628696"></A><A NAME="_Toc312373955"></A><A NAME="_Toc472654930"></A><BR></P></DIV>
+<A NAME="Heading322"></A><FONT FACE = "Verdana"><H2 ALIGN="LEFT">
+Summary</H2></FONT>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">The <B>static</B> keyword can be
+confusing because in some situations it controls the location of storage, and in
+others it controls visibility and linkage of a name.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">With the introduction of C++ namespaces,
+you have an improved and more flexible alternative to control the proliferation
+of names in large projects.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">The use of <B>static</B> inside classes
+is one more way to control names in a program. The names do not clash with
+global names, and the visibility and access is kept within the program, giving
+you greater control in the maintenance of your
+code.</FONT><A NAME="_Toc312373956"></A><A NAME="_Toc472654931"></A><BR></P></DIV>
+<A NAME="Heading323"></A><FONT FACE = "Verdana"><H2 ALIGN="LEFT">
+Exercises</H2></FONT>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia" SIZE=2>Solutions to selected exercises
+can be found in the electronic document <I>The Thinking in C++ Annotated
+Solution Guide</I>, available for a small fee from
+www.BruceEckel.com.</FONT><BR></P></DIV>
+<OL>
+<LI><FONT FACE="Verdana">	</FONT><FONT FACE="Georgia">Create a function with a
+static variable that is a pointer (with a default argument of zero). When the
+caller provides a value for this argument it is used to point at the beginning
+of an array of <B>int</B>. If you call the function with a zero argument (using
+the default argument), the function returns the next value in the array, until
+it sees a &#8220;-1&#8221; value in the array (to act as an end-of-array
+indicator). Exercise this function in
+<B>main(&#160;)</B>.</FONT><LI><FONT FACE="Verdana">	</FONT><FONT FACE="Georgia">Create
+a function that returns the next value in a Fibonacci sequence every time you
+call it. Add an argument that is a <B>bool</B> with a default value of
+<B>false</B> such that when you give the argument with <B>true</B> it
+&#8220;resets&#8221; the function to the beginning of the Fibonacci sequence.
+Exercise this function in
+<B>main(&#160;)</B>.</FONT><LI><FONT FACE="Verdana">	</FONT><FONT FACE="Georgia">Create
+a class that holds an array of <B>int</B>s. Set the size of the array using
+<B>static const int</B> inside the class. Add a <B>const</B> <B>int</B>
+variable, and initialize it in the constructor initializer list; make the
+constructor <B>inline</B>. Add a <B>static</B> <B>int</B> member variable and
+initialize it to a specific value. Add a <B>static</B> member function that
+prints the <B>static</B> data member. Add an <B>inline</B> member function
+called <B>print(&#160;)</B> to print out all the values in the array and to call
+the <B>static</B> member function. Exercise this class in
+<B>main(&#160;)</B>.</FONT><LI><FONT FACE="Verdana">	</FONT><FONT FACE="Georgia">Create
+a class called <B>Monitor </B>that keeps track of the number of times that its
+<B>incident(&#160;)</B> member function has been called. Add a
+<B>print(&#160;)</B> member function that displays the number of incidents. Now
+create a global function (not a member function) containing a <B>static</B>
+<B>Monitor</B> object. Each time you call the function it should call
+<B><U>incident( )</U></B><U>,<B> </B></U>the<U>n</U> <B>print(&#160;)</B>
+<STRIKE>member function </STRIKE>to display the incident count. Exercise the
+function in
+<B>main(&#160;)</B>.</FONT><LI><FONT FACE="Verdana">	</FONT><FONT FACE="Georgia">Modify
+the <B>Monitor</B> class from Exercise 4 so that you can
+<B>decrement(&#160;)</B> the incident count. Make a class <B>Monitor2</B> that
+takes as a constructor argument a pointer to a <B>Monitor1</B>, and which stores
+that pointer and calls <B>incident(&#160;)</B> and <B>print(&#160;)</B>. In the
+destructor for <B>Monitor2</B>, call <B>decrement(&#160;)</B> and
+<B>print(&#160;)</B>. Now make a <B>static</B> object of <B>Monitor2</B> inside
+a function. Inside <B>main(&#160;)</B>, experiment with calling the function and
+not calling the function to see what happens with the destructor of
+<B>Monitor2</B>.</FONT><LI><FONT FACE="Verdana">	</FONT><FONT FACE="Georgia">Make
+a global object of <B>Monitor2</B> and see what
+happens.</FONT><LI><FONT FACE="Verdana">	</FONT><FONT FACE="Georgia">Create a
+class with a destructor that prints a message and then calls
+<B>exit(&#160;)</B>. Create a global object of this class and see what
+happens.</FONT><LI><FONT FACE="Verdana">	</FONT><FONT FACE="Georgia">In
+<B>StaticDestructors.cpp</B>, experiment with the order of constructor and
+destructor calls by calling <B>f(&#160;)</B> and <B>g(&#160;)</B>  inside
+<B>main(&#160;)</B> in different orders. Does your compiler get it
+right?</FONT><LI><FONT FACE="Verdana">	</FONT><FONT FACE="Georgia">In
+<B>StaticDestructors.cpp</B>, test the default error handling of your
+implementation by turning the original definition of <B>out</B> into an
+<B>extern</B> declaration and putting the actual definition after the definition
+of <B>a</B> (whose <B>Obj</B> constructor sends information to <B>out</B>). Make
+sure there&#8217;s nothing else important running on your machine when you run
+the program or that your machine will handle faults
+robustly.</FONT><LI><FONT FACE="Verdana">	</FONT><FONT FACE="Georgia">Prove that
+file static variables in header files don&#8217;t clash with each other when
+included in more than one <B>cpp</B>
+file.</FONT><LI><FONT FACE="Verdana">	</FONT><FONT FACE="Georgia">Create a
+simple class containing an <B>int</B>, a constructor that initializes the
+<B>int</B> from its argument, a member function to set the <B>int</B> from its
+argument, and a <B>print(&#160;)</B> function that prints the <B>int</B>. Put
+your class in a header file, and include the header file in two <B>cpp</B>
+files. In one <B>cpp</B> file make an instance of your class, and in the other
+declare that identifier <B>extern</B> and test it inside <B>main(&#160;)</B>.
+Remember, you&#8217;ll have to link the two object files or else the linker
+won&#8217;t find the
+object.</FONT><LI><FONT FACE="Verdana">	</FONT><FONT FACE="Georgia">Make the
+instance of the object in Exercise 11 <B>static</B> and verify that it cannot be
+found by the linker because of
+this.</FONT><LI><FONT FACE="Verdana">	</FONT><FONT FACE="Georgia">Declare a
+function in a header file. Define the function in one <B>cpp</B> file and call
+it inside <B>main(&#160;)</B> in a second <B>cpp</B> file. Compile and verify
+that it works. Now change the function definition so that it is <B>static</B>
+and verify that the linker cannot find
+it.</FONT><LI><FONT FACE="Verdana">	</FONT><FONT FACE="Georgia">Modify
+<B>Volatile.cpp</B> from Chapter 8 to make <B>comm::isr(&#160;)</B> something
+that could actually work as an interrupt service routine. Hint: an interrupt
+service routine doesn&#8217;t take any
+arguments.</FONT><LI><FONT FACE="Verdana">	</FONT><FONT FACE="Georgia">Write and
+compile a simple program that uses the <B>auto</B> and <B>register</B>
+keywords.</FONT><LI><FONT FACE="Verdana">	</FONT><FONT FACE="Georgia">Create a
+header file containing a <B>namespace</B>. Inside the <B>namespace</B> create
+several function declarations. Now create a second header file that includes the
+first one and continues the <B>namespace</B>, adding several more function
+declarations. Now create a <B>cpp</B> file that includes the second header file.
+Alias your namespace to another (shorter) name. Inside a function definition,
+call one of your functions using scope resolution. Inside a separate function
+definition, write a <B>using</B> directive to introduce your namespace into that
+function scope, and show that you don&#8217;t need scope resolution to call the
+functions from your
+namespace.</FONT><LI><FONT FACE="Verdana">	</FONT><FONT FACE="Georgia">Create a
+header file with an unnamed namespace. Include the header in two separate
+<B>cpp</B> files and show that an unnamed space is unique for each translation
+unit.</FONT><LI><FONT FACE="Verdana">	</FONT><FONT FACE="Georgia">Using the
+header file from Exercise 17, show that the names in an unnamed namespace are
+automatically available in a translation unit without
+qualification.</FONT><LI><FONT FACE="Verdana">	</FONT><FONT FACE="Georgia">Modify
+<B>FriendInjection.cpp</B> to add a definition for the friend function and to
+call the function inside
+<B>main(&#160;)</B>.</FONT><LI><FONT FACE="Verdana">	</FONT><FONT FACE="Georgia">In
+<B>Arithmetic.cpp</B>, demonstrate that the <B>using</B> directive does not
+extend outside the function in which the directive was
+made.</FONT><LI><FONT FACE="Verdana">	</FONT><FONT FACE="Georgia">Repair the
+problem in <B>OverridingAmbiguity.cpp</B>, first with scope resolution, then
+instead with a <B>using</B> declaration that forces the compiler to choose one
+of the identical function
+names.</FONT><LI><FONT FACE="Verdana">	</FONT><FONT FACE="Georgia">In two header
+files, create two namespaces, each containing a class (with all inline
+definitions) with a name identical to that in the other namespace. Create a
+<B>cpp</B> file that includes both header files. Create a function, and inside
+the function use the <B>using</B> directive to introduce both namespaces. Try
+creating an object of the class and see what happens. Make the <B>using</B>
+directives global (outside of the function) to see if it makes any difference.
+Repair the problem using scope resolution, and create objects of both
+classes.</FONT><LI><FONT FACE="Verdana">	</FONT><FONT FACE="Georgia">Repair the
+problem in Exercise 22 with a <B>using</B> declaration that forces the compiler
+to choose one of the identical class
+names.</FONT><LI><FONT FACE="Verdana">	</FONT><FONT FACE="Georgia">Extract the
+namespace declarations in <B>BobsSuperDuperLibrary.cpp</B> and
+<B>UnnamedNamespaces.cpp</B> and put them in separate header files, giving the
+unnamed namespace a name in the process. In a third header file create a new
+namespace that combines the elements of the other two namespaces with
+<B>using</B> declarations. In <B>main(&#160;)</B>, introduce your new namespace
+with a <B>using</B> directive and access all the elements of your
+namespace.</FONT><LI><FONT FACE="Verdana">	</FONT><FONT FACE="Georgia">Create a
+header file that includes <B>&lt;string&gt;</B> and <B>&lt;iostream&gt;</B> but
+does not use any <B>using</B> directives or <B>using</B> declarations. Add
+&#8220;include guards&#8221; as you&#8217;ve seen in the header files in this
+book. Create a class with all inline functions that contains a <B>string</B>
+member, with a constructor that initializes that <B>string</B> from its argument
+and a <B>print(&#160;)</B> function that displays the <B>string</B>. Create a
+<B>cpp</B> file and exercise your class in
+<B>main(&#160;)</B>.</FONT><LI><FONT FACE="Verdana">	</FONT><FONT FACE="Georgia">Create
+a class containing a <B>static</B> <B>double</B> and <B>long</B>. Write a
+<B>static</B> member function that prints out the
+values.</FONT><LI><FONT FACE="Verdana">	</FONT><FONT FACE="Georgia">Create a
+class containing an <B>int</B>, a constructor that initializes the <B>int</B>
+from its argument, and a <B>print(&#160;)</B> function to display the
+<B>int</B>. Now create a second class that contains a <B>static</B> object of
+the first one. Add a <B>static</B> member function that calls the <B>static</B>
+object&#8217;s <B>print(&#160;)</B> function. Exercise your class in
+<B>main(&#160;)</B>.</FONT><LI><FONT FACE="Verdana">	</FONT><FONT FACE="Georgia">Create
+a class containing both a <B>const</B> and a non-<B>const</B> <B>static</B>
+array of <B>int</B>. Write <B>static</B> methods to print out the arrays.
+Exercise your class in
+<B>main(&#160;)</B>.</FONT><LI><FONT FACE="Verdana">	</FONT><FONT FACE="Georgia">Create
+a class containing a <B>string</B>, with a constructor that initializes the
+<B>string</B> from its argument, and a <B>print(&#160;)</B> function to display
+the <B>string</B>. Create another class that contains both <B>const </B>and
+non-<B>const</B> <B>static</B> arrays of objects of the first class, and
+<B>static</B> methods to print out these arrays. Exercise this second class in
+<B>main(&#160;)</B>.
+</FONT><LI><FONT FACE="Verdana">	</FONT><FONT FACE="Georgia">Create a
+<B>struct</B> that contains an <B>int</B> and a default constructor that
+initializes the <B>int</B> to zero. Make this <B>struct</B> local to a function.
+Inside that function, create an array of objects of your <B>struct</B> and
+demonstrate that each <B>int</B> in the array has automatically been initialized
+to zero.</FONT><LI><FONT FACE="Verdana">	</FONT><FONT FACE="Georgia">Create a
+class that represents a printer connection, and that only allows you to have one
+printer.</FONT><LI><FONT FACE="Verdana">	</FONT><FONT FACE="Georgia">In a header
+file, create a class <B>Mirror </B>that contains two data members: a pointer to
+a <B>Mirror </B>object and a <B>bool</B>. Give it two constructors: the default
+constructor initializes the <B>bool</B> to <B>true</B> and the <B>Mirror
+</B>pointer to zero. The second constructor takes as an argument a pointer to a
+<B>Mirror </B>object, which it assigns to the object&#8217;s internal pointer;
+it sets the <B>bool</B> to <B>false</B>. Add a member function
+<B>test(&#160;)</B>: if the object&#8217;s pointer is nonzero, it returns the
+value of <B>test(&#160;) </B>called through the pointer. If the pointer is zero,
+it returns the <B>bool</B>. Now create five <B>cpp</B> files, each of which
+includes the <B>Mirror </B>header. The first <B>cpp</B> file defines a global
+<B>Mirror </B>object using the default constructor. The second file declares the
+object in the first file as <B>extern</B>, and defines a global <B>Mirror
+</B>object using the second constructor, with a pointer to the first object.
+Keep doing this until you reach the last file, which will also contain a global
+object definition. In that file, <B>main(&#160;)</B> should call the
+<B>test(&#160;)</B> function and report the result. If the result is
+<B>true</B>, find out how to change the linking order for your linker and change
+it until the result is
+<B>false</B>.</FONT><LI><FONT FACE="Verdana">	</FONT><FONT FACE="Georgia">Repair
+the problem in Exercise 32 using technique one shown in this
+book.</FONT><LI><FONT FACE="Verdana">	</FONT><FONT FACE="Georgia">Repair the
+problem in Exercise 32 using technique two shown in this
+book.</FONT><LI><FONT FACE="Verdana">	</FONT><FONT FACE="Georgia">Without
+including a header file, declare the function <B>puts(&#160;)</B> from the
+Standard C Library. Call this function from
+<B>main(&#160;)</B>.</FONT></OL><DIV ALIGN="LEFT"><P><A NAME="_Toc305593226"></A><A NAME="_Toc305628698"></A><A NAME="_Toc312373957"></A><BR></P></DIV>
+<FONT FACE = "Verdana"><H1 ALIGN="LEFT">
+</H1></FONT>
+
+
+
+<FONT FACE = "Verdana"><H1 ALIGN="LEFT">
+</H1></FONT>
+
+
+<HR><DIV ALIGN="LEFT"><P><A NAME="fn47" HREF="#fnB47">[47]</A><FONT FACE="Georgia" SIZE=2>Bjarne
+Stroustrup and Margaret Ellis, <I>The Annotated C++ Reference Manual</I>,
+Addison-Wesley, 1990, pp. 20-21.</FONT><BR></P></DIV>
+
+<DIV ALIGN="CENTER">
+    <FONT FACE="Verdana" size = "-1">
+     [ <a href="Chapter09.html">Previous Chapter</a> ] 
+    [ <a href="Contents.html">Table of Contents</a> ] 
+    [ <a href="DocIndex.html">Index</a> ]
+     [ <a href="Chapter11.html">Next Chapter</a> ] 
+    </FONT>
+    <BR>
+ Last Update:09/27/2001</P></DIV>
+
+</BODY>
+
+</HTML>

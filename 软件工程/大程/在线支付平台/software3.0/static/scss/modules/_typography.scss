@@ -1,0 +1,31 @@
+
+// TYPOGRAPHY
+
+ul{
+	padding: 0;
+	margin: 0;
+	list-style: none;
+}
+a{ 
+	text-decoration: none;
+	color:$base-color;  
+}
+a:hover,
+a:focus{
+	outline: none;
+	text-decoration: none;
+}
+h1,h2,h3,h4,h5,h6{
+	font-family:$heading-font;
+}
+h2 {
+	color: $theme-color;  
+	font-size: 30px;
+	font-weight:$font-bold;
+	line-height: 40px;
+	margin: 0;
+	padding-bottom: 10px;  
+}
+img{
+ border:none;
+}

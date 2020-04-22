@@ -1,0 +1,1973 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<HTML>
+<!--
+This document was converted from RTF source: 
+By rtftohtml 4.19
+See http://www.sunpack.com/RTF
+Filename:TIC2Vone.rtf
+Application Directory:C:\TOOLS\RTF2HTML\
+Subject:
+Author:Bruce Eckel
+Operator:Bruce Eckel
+Document Comments:
+Version Comments:
+Comments:
+Keywords:
+Translation Date:09/27/2001
+Translation Time:05:25:23
+Translation Platform:Win32
+Number of Output files:22
+This File:Chapter01.html
+SplitDepth=1
+SkipNavPanel=1
+SkipLeadingToc=1
+SkipTrailingToc=1
+GenContents=1
+GenFrames=1
+GenIndex=1
+-->
+<HEAD lang="en"><META http-equiv="Content-Type" content="text/html">
+<TITLE>1: Introduction to Objects</TITLE>
+</HEAD>
+
+<BODY  BGCOLOR="#FFFFFF"><DIV ALIGN="CENTER">
+  <a href="http://www.MindView.net">
+  <img src="mindview-head.gif" alt="MindView Inc." BORDER = "0"></a>
+  <CENTER>
+    <FONT FACE="Verdana" size = "-1">
+    [ <a href="README-HTML.txt">Viewing Hints</a> ]
+    [ <a href="http://www.mindview.net/CPPServices/SolutionGuide.html">Exercise Solutions</a> ]
+    [ <a href="http://www.mindview.net/ThinkingInCPP2e.html">Volume 2</a> ]
+    [ <a href="http://www.mindview.net/MailingList.html">Free Newsletter</a> ] <br>
+    [ <a href="http://www.mindview.net/CPPServices/#PublicSeminars">Seminars</a> ]
+    [ <a href="http://www.mindview.net/CPPServices/#SeminarsOnCD">Seminars on CD ROM</a> ]
+    [ <a href="http://www.mindview.net/CPPServices/#ConsultingServices">Consulting</a> ]
+    </FONT>
+  <H2><FONT FACE="Verdana">
+  Thinking in C++, 2nd ed. Volume 1</FONT></H2></FONT>
+  <H3><FONT FACE="Verdana">&copy;2000 by Bruce Eckel</FONT></H3></FONT>
+  
+    <FONT FACE="Verdana" size = "-1">
+     [ <a href="Preface.html">Previous Chapter</a> ] 
+    [ <a href="Contents.html">Table of Contents</a> ] 
+    [ <a href="DocIndex.html">Index</a> ]
+     [ <a href="Chapter02.html">Next Chapter</a> ] 
+    </FONT>
+    
+  </CENTER>
+  </P></DIV><A NAME="_Toc472654681"></A><FONT FACE = "Verdana"><H1 ALIGN="LEFT">
+1: Introduction to Objects</H1></FONT>
+<A NAME="Heading20"></A><FONT FACE = "Verdana"><H1 ALIGN="LEFT">
+</H1></FONT>
+<DIV ALIGN="LEFT"><P><FONT FACE="Verdana" SIZE=4>The genesis of the computer
+revolution was in a machine. The genesis of our programming languages thus tends
+to look like that machine.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">But computers are not so much machines as
+they are mind amplification tools (&#8220;bicycles for the mind,&#8221; as Steve
+Jobs is fond of saying) and a different kind of expressive medium. As a result,
+the tools are beginning to look less like machines and more like parts of our
+minds, and also like other expressive mediums such as writing, painting,
+sculpture, animation, and filmmaking. Object-oriented programming is part of
+this movement toward using the computer as an expressive
+medium.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">This chapter will introduce you to the
+<A NAME="Index58"></A><A NAME="Index59"></A><A NAME="Index60"></A><A NAME="Index61"></A>basic
+concepts of object-oriented programming (OOP), including an overview of OOP
+development methods. This chapter, and this <A NAME="Index62"></A>book, assume
+that you have had experience in a procedural programming language, although not
+necessarily C. If you think you need more preparation in programming and the
+syntax of C before tackling this book, you should work through the
+&#8220;Thinking in C: Foundations for C++ and Java&#8221; training CD ROM, bound
+in with this book and also available at <I>www.BruceEckel.com</I>.
+</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">This chapter is background and
+supplementary material. Many people do not feel comfortable wading into
+object-oriented programming without understanding the big picture first. Thus,
+there are many concepts that are introduced here to give you a solid overview of
+OOP. However, many other people don&#8217;t get the big picture concepts until
+they&#8217;ve seen some of the mechanics first; these people may become bogged
+down and lost without some code to get their hands on. If you&#8217;re part of
+this latter group and are eager to get to the specifics of the language, feel
+free to jump past this chapter &#8211; skipping it at this point will not
+prevent you from writing programs or learning the language. However, you will
+want to come back here eventually to fill in your knowledge so you can
+understand why objects are important and how to design with
+them.</FONT><A NAME="_Toc375545188"></A><A NAME="_Toc408018385"></A><A NAME="_Toc472654682"></A><BR></P></DIV>
+<A NAME="Heading21"></A><FONT FACE = "Verdana"><H2 ALIGN="LEFT">
+The progress of abstraction<A NAME="mark"></A></H2></FONT>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">All programming languages provide
+abstractions. It can be argued that the complexity of the problems you&#8217;re
+able to solve is directly related to the kind and quality of
+<A NAME="Index63"></A>abstraction. By &#8220;kind&#8221; I mean, &#8220;What is
+it that you are abstracting?&#8221; Assembly language is a small abstraction of
+the underlying machine. Many so-called &#8220;imperative&#8221; languages that
+followed (such as Fortran, BASIC, and C) were abstractions of assembly language.
+These languages are big improvements over assembly language, but their primary
+abstraction still requires you to think in terms of the structure of the
+computer rather than the structure of the problem you are trying to solve. The
+programmer must establish the association between the machine model (in the
+&#8220;<A NAME="Index64"></A><A NAME="Index65"></A>solution space,&#8221; which
+is the place where you&#8217;re modeling that problem, such as a computer) and
+the model of the problem that is actually being solved (in the
+&#8220;<A NAME="Index66"></A><A NAME="Index67"></A>problem space,&#8221; which
+is the place where the problem exists). The effort required to perform this
+mapping, and the fact that it is extrinsic to the programming language, produces
+programs that are difficult to write and expensive to maintain, and as a side
+effect created the entire &#8220;programming methods&#8221;
+industry.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">The alternative to modeling the machine
+is to model the problem you&#8217;re trying to solve. Early languages such as
+LISP and APL chose particular views of the world (&#8220;All problems are
+ultimately lists&#8221; or &#8220;All problems are algorithmic&#8221;). PROLOG
+casts all problems into chains of decisions. Languages have been created for
+constraint-based programming and for programming exclusively by manipulating
+graphical symbols. (The latter proved to be too restrictive.) Each of these
+approaches is a good solution to the particular class of problem they&#8217;re
+designed to solve, but when you step outside of that domain they become awkward.
+</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">The object-oriented approach goes a step
+farther by providing tools for the programmer to represent elements in the
+problem space. This representation is general enough that the programmer is not
+constrained to any particular type of problem. We refer to the elements in the
+problem space and their representations in the solution space
+as<A NAME="Index68"></A> &#8220;objects.&#8221; (Of course, you will also need
+other objects that don&#8217;t have problem-space analogs.) The idea is that the
+program is allowed to adapt itself to the lingo of the problem by adding new
+types of objects, so when you read the code describing the solution,
+you&#8217;re reading words that also express the problem. This is a more
+flexible and powerful language abstraction than what we&#8217;ve had before.
+Thus, OOP allows you to describe the problem in terms of the problem, rather
+than in terms of the computer where the solution will run. There&#8217;s still a
+connection back to the computer, though. Each object looks quite a bit like a
+little computer; it has a state, and it has operations that you can ask it to
+perform. However, this doesn&#8217;t seem like such a bad analogy to objects in
+the real world; they all have characteristics and behaviors. </FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Some language designers have decided that
+object-oriented programming by itself is not adequate to easily solve all
+programming problems, and advocate the combination of various approaches into
+<I>multiparadigm</I> programming
+languages.</FONT><A NAME="fnB4" HREF="#fn4">[4]</A><A NAME="Index69"></A><A NAME="Index70"></A><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Alan Kay summarized five
+<A NAME="Index71"></A>basic characteristics of <A NAME="Index72"></A>Smalltalk,
+the first successful object-oriented language and one of the languages upon
+which C++ is based. These characteristics represent a pure approach to
+object-oriented
+programming<A NAME="Index73"></A><A NAME="Index74"></A><A NAME="Index75"></A><A NAME="Index76"></A>:</FONT><BR></P></DIV>
+<OL>
+<LI><FONT FACE="Verdana"><B>	Everything is an
+object.</B></FONT><FONT FACE="Georgia"> Think of an object as a fancy variable;
+it stores data, but you can &#8220;make requests&#8221; to that object, asking
+it to perform operations on itself. In theory, you can take any conceptual
+component in the problem you&#8217;re trying to solve (dogs, buildings,
+services, etc.) and represent it as an object in your
+program.</FONT><LI><FONT FACE="Verdana"><B>	A program is a bunch of objects
+telling each other what to do by sending
+messages</B></FONT><FONT FACE="Georgia">. To make a request of an object, you
+&#8220;send a message&#8221; to that object. More concretely, you can think of a
+message as a request to call a function that belongs to a particular
+object.</FONT><LI><FONT FACE="Verdana"><B>	Each object has its own memory made
+up of other objects</B></FONT><FONT FACE="Georgia">. Put another way, you create
+a new kind of object by making a package containing existing objects. Thus, you
+can build complexity in a program while hiding it behind the simplicity of
+objects.</FONT><LI><FONT FACE="Verdana"><B>	Every object has a
+type</B></FONT><FONT FACE="Georgia">. Using the parlance, each object is an
+<I>instance</I> of a <I>class</I>, in which &#8220;class&#8221; is synonymous
+with &#8220;type.&#8221; The most important distinguishing characteristic of a
+class is &#8220;What messages can you send to
+it?&#8221;</FONT><LI><FONT FACE="Verdana"><B>	All objects of a particular type
+can receive the same messages</B></FONT><FONT FACE="Georgia">. This is actually
+a loaded statement, as you will see later. Because an object of type
+&#8220;circle&#8221; is also an object of type &#8220;shape,&#8221; a circle is
+guaranteed to accept shape messages. This means you can write code that talks to
+shapes and automatically handles anything that fits the description of a shape.
+This <I>substitutability</I> is one of the most powerful concepts in
+OOP.</FONT><A NAME="_Toc375545189"></A><A NAME="_Toc408018386"></A><A NAME="_Toc472654683"></A></OL><A NAME="Heading22"></A><FONT FACE = "Verdana"><H2 ALIGN="LEFT">
+An object has an interface<BR><A NAME="Index77"></A><A NAME="Index78"></A></H2></FONT>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Aristotle was probably the first to begin
+a careful study of the concept of <I>type</I>; he spoke of &#8220;the class of
+fishes and the class of birds.&#8221; The idea that all objects, while being
+unique, are also part of a class of objects that have characteristics and
+behaviors in common was used directly in the first object-oriented language,
+Simula-67, with its fundamental keyword <B>class</B> that introduces a new type
+into a program.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><A NAME="Index79"></A><A NAME="Index80"></A><FONT FACE="Georgia">Simula,
+as its name implies, was created for developing simulations such as the classic
+&#8220;bank teller
+problem</FONT><A NAME="fnB5" HREF="#fn5">[5]</A><FONT FACE="Georgia">.&#8221; In
+this, you have a bunch of tellers, customers, accounts, transactions, and units
+of money &#8211; a lot of &#8220;objects.&#8221; Objects that are identical
+except for their state during a program&#8217;s execution are grouped together
+into &#8220;classes of objects&#8221; and that&#8217;s where the
+<A NAME="Index81"></A><A NAME="Index82"></A>keyword <B>class</B> came from.
+Creating abstract data types (classes) is a fundamental concept in
+object-oriented programming. Abstract data types work almost exactly like
+built-in types: You can create variables of a type (called <I>objects </I>or
+<I>instances</I> in object-oriented parlance) and manipulate those variables
+(called <A NAME="Index83"></A><A NAME="Index84"></A><I>sending messages</I> or
+<A NAME="Index85"></A><I>requests</I>; you send a message and the object figures
+out what to do with it). The members (elements) of each class share some
+commonality: every account has a balance, every teller can accept a deposit,
+etc. At the same time, each member has its own state, each account has a
+different balance, each teller has a name. Thus, the tellers, customers,
+accounts, transactions, etc., can each be represented with a unique entity in
+the computer program. This entity is the object, and each object belongs to a
+particular class that defines its characteristics and
+behaviors.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">So, although what we really do in
+object-oriented programming is create new data types, virtually all
+object-oriented programming languages use the &#8220;class&#8221; keyword. When
+you see the word &#8220;type&#8221; think &#8220;class&#8221; and vice
+versa</FONT><A NAME="fnB6" HREF="#fn6">[6]</A><FONT FACE="Georgia">.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Since a class describes a set of objects
+that have identical characteristics (data elements) and behaviors
+(functionality), a class is really a
+<A NAME="Index86"></A><A NAME="Index87"></A>data type because a floating point
+number, for example, also has a set of characteristics and behaviors. The
+difference is that a programmer defines a class to fit a problem rather than
+being forced to use an existing data type that was designed to represent a unit
+of storage in a machine. You extend the programming language by adding new data
+types specific to your needs. The programming system welcomes the new classes
+and gives them all the care and type-checking that it gives to built-in
+types.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">The object-oriented approach is not
+limited to building simulations. Whether or not you agree that any program is a
+simulation of the system you&#8217;re designing, the use of OOP techniques can
+easily reduce a large set of problems to a simple solution.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Once a class is established, you can make
+as many objects of that class as you like, and then manipulate those objects as
+if they are the elements that exist in the problem you are trying to solve.
+Indeed, one of the challenges of object-oriented programming is to create a
+one-to-one mapping between the elements in the problem space and objects in the
+solution space.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">But how do you get an object to do useful
+work for you? There must be a way to make a request of the object so that it
+will do something, such as complete a transaction, draw something on the screen
+or turn on a switch. And each object can satisfy only certain requests. The
+requests you can make of an object are defined by its <I>interface</I>, and the
+type is what determines the interface. A simple example might be a
+representation of a light bulb: </FONT><BR></P></DIV>
+<DIV ALIGN="CENTER"><FONT FACE="Georgia"><IMG SRC="TIC2Vo03.gif"></FONT><BR></P></DIV>
+
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE>Light lt;
+lt.on(); </PRE></FONT></BLOCKQUOTE>
+
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">The interface establishes <I>what</I>
+requests you can make for a particular object. However, there must be code
+somewhere to satisfy that request. This, along with the hidden data, comprises
+the <A NAME="Index88"></A><I>implementation</I>. From a procedural programming
+standpoint, it&#8217;s not that complicated. A type has a function associated
+with each possible request, and when you make a particular request to an object,
+that function is called. This process is usually summarized by saying that you
+&#8220;send a message&#8221; (make a request) to an object, and the object
+figures out what to do with that message (it executes code).</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Here, the name of the type/class is
+<B>Light</B>, the name of this particular <B>Light </B>object is <B>lt</B>,<B>
+</B>and the requests that you can make of a <B>Light</B> object are to turn it
+on, turn it off, make it brighter or make it dimmer. You create a <B>Light
+</B>object by declaring a name (<B>lt</B>) for that object. To send a message to
+the object, you state the name of the object and connect it to the message
+request with a period (dot). From the standpoint of the user of a pre-defined
+class, that&#8217;s pretty much all there is to programming with
+objects.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">The diagram shown above follows the
+format of the <A NAME="Index89"></A><A NAME="Index90"></A><I>Unified Modeling
+Language</I> (UML). Each class is represented by a box, with the type name in
+the top portion of the box, any data members that you care to describe in the
+middle portion of the box, and the
+<A NAME="Index91"></A><A NAME="Index92"></A><I>member functions</I> (the
+functions that belong to this object, which receive any messages you send to
+that object) in the bottom portion of the box. Often, only the name of the class
+and the public member functions are shown in UML design diagrams, and so the
+middle portion is not shown. If you&#8217;re interested only in the class name,
+then the bottom portion doesn&#8217;t need to be shown,
+either.</FONT><A NAME="_Toc375545190"></A><A NAME="_Toc408018387"></A><A NAME="_Toc472654684"></A><BR></P></DIV>
+<A NAME="Heading23"></A><FONT FACE = "Verdana"><H2 ALIGN="LEFT">
+The hidden implementation</H2></FONT>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">It is helpful to break up the playing
+field into <A NAME="Index93"></A><I>class creators</I> (those who create new
+data types) and <A NAME="Index94"></A><A NAME="Index95"></A><I>client
+programmers</I></FONT><A NAME="fnB7" HREF="#fn7">[7]</A><A NAME="Index96"></A><FONT FACE="Georgia">
+(the class consumers who use the data types in their applications). The goal of
+the client programmer is to collect a toolbox full of classes to use for rapid
+application development. The goal of the class creator is to build a class that
+exposes only what&#8217;s necessary to the client programmer and keeps
+everything else hidden. Why? Because if it&#8217;s hidden, the client programmer
+can&#8217;t use it, which means that the class creator can change the hidden
+portion at will without worrying about the impact to anyone else. The hidden
+portion usually represents the tender insides of an object that could easily be
+corrupted by a careless or uninformed client programmer, so hiding the
+implementation reduces program bugs. The concept of
+<A NAME="Index97"></A><A NAME="Index98"></A>implementation hiding cannot be
+overemphasized.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">In any relationship it&#8217;s important
+to have boundaries that are respected by all parties involved. When you create a
+library, you establish a relationship with the client<I> </I>programmer, who is
+also a programmer, but one who is putting together an application by using your
+library, possibly to build a bigger library.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">If all the members of a class are
+available to everyone, then the client programmer can do anything with that
+class and there&#8217;s no way to enforce rules. Even though you might really
+prefer that the client programmer not directly manipulate some of the members of
+your class, without access control there&#8217;s no way to prevent it.
+Everything&#8217;s naked to the world.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">So the first reason for access control is
+to keep client programmers&#8217; hands off portions they shouldn&#8217;t touch
+&#8211; parts that are necessary for the internal machinations of the data type
+but not part of the interface that users need in order to solve their particular
+problems. This is actually a service to users because they can easily see
+what&#8217;s important to them and what they can ignore.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">The second reason for access control is
+to allow the library designer to change the internal workings of the class
+without worrying about how it will affect the client programmer. For example,
+you might implement a particular class in a simple fashion to ease development,
+and then later discover that you need to rewrite it in order to make it run
+faster. If the interface and implementation are clearly separated and protected,
+you can accomplish this easily and require only a relink by the
+user.<A NAME="Index99"></A><A NAME="Index100"></A><A NAME="Index101"></A></FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">C++ uses three explicit keywords to set
+the boundaries in a class: <B>public</B>, <B>private</B>, and <B>protected</B>.
+Their use and meaning are quite straightforward. These <I>access specifiers</I>
+<A NAME="Index102"></A><A NAME="Index103"></A><A NAME="Index104"></A>determine
+who can use the definitions that follow. <B>public</B>
+<A NAME="Index105"></A>means the following definitions are available to
+everyone. The <B>private</B> <A NAME="Index106"></A>keyword, on the other hand,
+means that no one can access those definitions except you, the creator of the
+type, inside member functions of that type. <B>private</B> is a brick wall
+between you and the client programmer. If someone tries to access a
+<B>private</B> member, they&#8217;ll get a compile-time error.
+<A NAME="Index107"></A><B>protected</B> acts just like <B>private</B>, with the
+exception that an inheriting class has access to <B>protected</B> members, but
+not <B>private</B> members. Inheritance will be introduced
+shortly.</FONT><A NAME="_Toc375545191"></A><A NAME="_Toc408018388"></A><A NAME="_Toc472654685"></A><BR></P></DIV>
+<A NAME="Heading24"></A><FONT FACE = "Verdana"><H2 ALIGN="LEFT">
+Reusing the implementation</H2></FONT>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Once a class has been created and tested,
+it should (ideally) represent a useful unit of code. It turns out that this
+<A NAME="Index108"></A>reusability is not nearly so easy to achieve as many
+would hope; it takes experience and insight to produce a good design. But once
+you have such a design, it begs to be reused. Code reuse is one of the greatest
+advantages that object-oriented programming languages provide.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">The simplest way to reuse a class is to
+just use an object of that class directly, but you can also place an object of
+that class inside a new class. We call this &#8220;creating a
+<A NAME="Index109"></A><A NAME="Index110"></A>member object.&#8221; Your new
+class can be made up of any number and type of other objects, in any combination
+that you need to achieve the functionality desired in your new class. Because
+you are composing a new class from existing classes, this concept is called
+<A NAME="Index111"></A><I>composition</I> (or more generally,
+<A NAME="Index112"></A><I>aggregation</I>). Composition is often referred to as
+a &#8220;<A NAME="Index113"></A>has-a&#8221; relationship, as in &#8220;a car
+has an engine.&#8221;</FONT><BR></P></DIV>
+<DIV ALIGN="CENTER"><FONT FACE="Georgia"><IMG SRC="TIC2Vo04.gif"></FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">(The above <A NAME="Index114"></A>UML
+diagram indicates composition with the filled diamond, which states there is one
+car. I will typically use a simpler form: just a line, without the diamond, to
+indicate an
+association.</FONT><A NAME="fnB8" HREF="#fn8">[8]</A><FONT FACE="Georgia">)</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Composition comes with a great deal of
+flexibility. The member objects of your new class are usually private, making
+them inaccessible to the client programmers who are using the class. This allows
+you to change those members without disturbing existing client code. You can
+also change the member objects at runtime, to dynamically change the behavior of
+your program. Inheritance, which is described next, does not have this
+flexibility since the compiler must place compile-time restrictions on classes
+created with inheritance.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Because inheritance is so important in
+object-oriented programming it is often highly emphasized, and the new
+programmer can get the idea that inheritance should be used everywhere. This can
+result in awkward and overly-complicated designs. Instead, you should first look
+to composition when creating new classes, since it is simpler and more flexible.
+If you take this approach, your designs will stay cleaner. Once you&#8217;ve had
+some experience, it will be reasonably obvious when you need
+inheritance.</FONT><A NAME="_Toc375545192"></A><A NAME="_Toc408018389"></A><A NAME="_Toc472654686"></A><BR></P></DIV>
+<A NAME="Heading25"></A><FONT FACE = "Verdana"><H2 ALIGN="LEFT">
+Inheritance:<BR>reusing the interface</H2></FONT>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">By itself, the idea of an object is a
+convenient tool. It allows you to package data and functionality together by
+<I>concept</I>, so you can represent an appropriate problem-space idea rather
+than being forced to use the idioms of the underlying machine. These concepts
+are expressed as fundamental units in the programming language by using the
+<A NAME="Index115"></A><A NAME="Index116"></A><B>class</B>
+keyword.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">It seems a pity, however, to go to all
+the trouble to create a class and then be forced to create a brand new one that
+might have similar functionality. It&#8217;s nicer if we can take the existing
+class, clone it, and then make additions and modifications to the clone. This is
+effectively what you get with <A NAME="Index117"></A><I>inheritance</I>, with
+the exception that if the original class (called the <I>base</I> or <I>super</I>
+or <I>parent</I> class) is changed, the modified &#8220;clone&#8221; (called the
+<I>derived </I>or <I>inherited</I> or <I>sub</I> or <I>child</I><B> </B>class)
+also reflects those changes.</FONT><BR></P></DIV>
+<DIV ALIGN="CENTER"><FONT FACE="Georgia"><IMG SRC="TIC2Vo05.gif"></FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">(The arrow in the above UML diagram
+points from the derived class to the base class. As you will see, there can be
+more than one derived class.)</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">A type does more than describe the
+constraints on a set of objects; it also has a relationship with other types.
+Two types can have characteristics and behaviors in common, but one type may
+contain more characteristics than another and may also handle more messages (or
+handle them differently). Inheritance expresses this similarity between types
+using the concept of <A NAME="Index118"></A><A NAME="Index119"></A>base types
+and <A NAME="Index120"></A><A NAME="Index121"></A>derived types. A base type
+contains all of the characteristics and behaviors that are shared among the
+types derived from it. You create a base type to represent the core of your
+ideas about some objects in your system. From the base type, you derive other
+types to express the different ways that this core can be
+realized.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">For example, a trash-recycling machine
+sorts pieces of trash. The base type is &#8220;trash,&#8221; and each piece of
+trash has a weight, a value, and so on, and can be shredded, melted, or
+decomposed. From this, more specific types of trash are derived that may have
+additional characteristics (a bottle has a color) or behaviors (an aluminum can
+may be crushed, a steel can is magnetic). In addition, some behaviors may be
+different (the value of paper depends on its type and condition). Using
+inheritance, you can build a type hierarchy that expresses the problem
+you&#8217;re trying to solve in terms of its types.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">A second example is the classic
+&#8220;<A NAME="Index122"></A>shape&#8221; example, perhaps used in a
+computer-aided design system or game simulation. The base type is
+&#8220;shape,&#8221; and each shape has a size, a color, a position, and so on.
+Each shape can be drawn, erased, moved, colored, etc. From this, specific types
+of shapes are derived (inherited): circle, square, triangle, and so on, each of
+which may have additional characteristics and behaviors. Certain shapes can be
+flipped, for example. Some behaviors may be different, such as when you want to
+calculate the area of a shape. The type hierarchy embodies both the similarities
+and differences between the shapes.</FONT><BR></P></DIV>
+<DIV ALIGN="CENTER"><FONT FACE="Georgia"><IMG SRC="TIC2Vo06.gif"></FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Casting the solution in the same terms as
+the problem is tremendously beneficial because you don&#8217;t need a lot of
+intermediate models to get from a description of the problem to a description of
+the solution. With objects, the type hierarchy is the primary model, so you go
+directly from the description of the system in the real world to the description
+of the system in code. Indeed, one of the difficulties people have with
+object-oriented design is that it&#8217;s too simple to get from the beginning
+to the end. A mind trained to look for complex solutions is often stumped by
+this simplicity at first.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">When you inherit from an existing type,
+you create a new type. This new type contains not only all the members of the
+existing type (although the <B>private</B> ones are hidden away and
+inaccessible), but more importantly it duplicates the interface of the base
+class. That is, all the messages you can send to objects of the base class you
+can also send to objects of the derived class. Since we know the type of a class
+by the messages we can send to it, this means that the derived class <I>is the
+same type as the base class</I>. In the previous example, &#8220;a circle is a
+shape.&#8221; This type equivalence via inheritance is one of the fundamental
+gateways in understanding the meaning of object-oriented
+programming.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Since both the base class and derived
+class have the same interface, there must be some implementation to go along
+with that interface. That is, there must be some code to execute when an object
+receives a particular message. If you simply inherit a class and don&#8217;t do
+anything else, the methods from the base-class interface come right along into
+the derived class. That means objects of the derived class have not only the
+same type, they also have the same behavior, which isn&#8217;t particularly
+interesting.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">You have two ways to differentiate your
+new derived class from the original base class. The first is quite
+straightforward: You simply add brand new functions to the derived class. These
+new functions are not part of the base class interface. This means that the base
+class simply didn&#8217;t do as much as you wanted it to, so you added more
+functions. This simple and primitive use for
+<A NAME="Index123"></A><A NAME="Index124"></A>inheritance is, at times, the
+perfect solution to your problem. However, you should look closely for the
+possibility that your base class might also need these additional functions.
+This process of discovery and iteration of your design happens regularly in
+object-oriented programming.</FONT><BR></P></DIV>
+<DIV ALIGN="CENTER"><FONT FACE="Georgia"><IMG SRC="TIC2Vo07.gif"></FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Although inheritance may sometimes imply
+that you are going to add new functions to the interface, that&#8217;s not
+necessarily true. The second and more important way to differentiate your new
+class is to <I>change</I> the behavior of an existing base-class function. This
+is referred to as
+<A NAME="Index125"></A><A NAME="Index126"></A><I>overriding</I> that
+function.</FONT><BR></P></DIV>
+<DIV ALIGN="CENTER"><FONT FACE="Georgia"><IMG SRC="TIC2Vo08.gif"></FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">To override a function, you simply create
+a new definition for the function in the derived class. You&#8217;re saying,
+&#8220;I&#8217;m using the same interface function here, but I want it to do
+something different for my new
+type.&#8221;</FONT><A NAME="_Toc375545194"></A><A NAME="_Toc408018391"></A><A NAME="_Toc472654687"></A><BR></P></DIV>
+<A NAME="Heading26"></A><FONT FACE = "Verdana"><H3 ALIGN="LEFT">
+Is-a vs. is-like-a relationships<BR><A NAME="Index127"></A></H3></FONT>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">There&#8217;s a certain debate that can
+occur about inheritance: Should inheritance override <I>only</I> base-class
+functions (and not add new member functions that aren&#8217;t in the base
+class)? This would mean that the derived type is <I>exactly</I> the same type as
+the base class since it has exactly the same interface. As a result, you can
+exactly substitute an object of the derived class for an object of the base
+class. This can be thought of as <A NAME="Index128"></A><I>pure
+substitution</I>, and it&#8217;s often referred to as the
+<A NAME="Index129"></A><I>substitution principle</I>. In a sense, this is the
+ideal way to treat inheritance. We often refer to the relationship between the
+base class and derived classes in this case as an <I>is-a</I> relationship,
+because you can say &#8220;a circle <I>is a</I> shape.&#8221; A test for
+inheritance is to determine whether you can state the is-a relationship about
+the classes and have it make sense.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">There are times when you must add new
+interface elements to a derived type, thus extending the interface and creating
+a new type. The new type can still be substituted for the base type, but the
+substitution isn&#8217;t perfect because your new functions are not accessible
+from the base type. This can be described as an <I>is-like-a</I> relationship;
+the new type has the interface of the old type but it also contains other
+functions, so you can&#8217;t really say it&#8217;s exactly the same. For
+example, consider an air conditioner. Suppose your house is wired with all the
+controls for cooling; that is, it has an interface that allows you to control
+cooling. Imagine that the air conditioner breaks down and you replace it with a
+heat pump, which can both heat and cool. The heat pump <I>is-like-an</I> air
+conditioner, but it can do more. Because the control system of your house is
+designed only to control cooling, it is restricted to communication with the
+cooling part of the new object. The interface of the new object has been
+extended, and the existing system doesn&#8217;t know about anything except the
+original interface.</FONT><BR></P></DIV>
+<DIV ALIGN="CENTER"><FONT FACE="Georgia"><IMG SRC="TIC2Vo09.gif"></FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Of course, once you see this design it
+becomes clear that the base class &#8220;cooling system&#8221; is not general
+enough, and should be renamed to &#8220;temperature control system&#8221; so
+that it can also include heating &#8211; at which point the substitution
+principle will work. However, the diagram above is an example of what can happen
+in design and in the real world. </FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">When you see the substitution principle
+it&#8217;s easy to feel like this approach (pure substitution) is the only way
+to do things, and in fact it <I>is</I> nice if your design works out that way.
+But you&#8217;ll find that there are times when it&#8217;s equally clear that
+you must add new functions to the interface of a derived class. With inspection
+both cases should be reasonably
+obvious.</FONT><A NAME="_Toc375545195"></A><A NAME="_Toc408018392"></A><A NAME="_Toc472654688"></A><BR></P></DIV>
+<A NAME="Heading27"></A><FONT FACE = "Verdana"><H2 ALIGN="LEFT">
+Interchangeable objects <BR>with polymorphism<BR><A NAME="Index130"></A></H2></FONT>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">When dealing with type hierarchies, you
+often want to treat an object not as the specific type that it is but instead as
+its base type. This allows you to write code that doesn&#8217;t depend on
+specific types. In the shape example, functions manipulate generic shapes
+without respect to whether they&#8217;re circles, squares, triangles, and so on.
+All shapes can be drawn, erased, and moved, so these functions simply send a
+message to a shape object; they don&#8217;t worry about how the object copes
+with the message.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Such code is unaffected by the addition
+of new types, and adding new types is the most common way to extend an
+object-oriented program to handle new situations. For example, you can derive a
+new subtype of shape called pentagon<I> </I>without modifying the functions that
+deal only with generic shapes. This ability to extend a program easily by
+deriving new subtypes is important because it greatly improves designs while
+reducing the cost of software maintenance.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">There&#8217;s a problem, however, with
+attempting to treat derived-type objects as their generic base types (circles as
+shapes, bicycles as vehicles, cormorants as birds, etc.). If a function is going
+to tell a generic shape to draw itself, or a generic vehicle to steer, or a
+generic bird to move, the compiler cannot know at compile-time precisely what
+piece of code will be executed. That&#8217;s the whole point &#8211; when the
+message is sent, the programmer doesn&#8217;t <I>want</I> to know what piece of
+code will be executed; the draw function can be applied equally to a circle, a
+square, or a triangle, and the object will execute the proper code depending on
+its specific type. If you don&#8217;t have to know what piece of code will be
+executed, then when you add a new subtype, the code it executes can be different
+without requiring changes to the function call. Therefore, the compiler cannot
+know precisely what piece of code is executed, so what does it do? For example,
+in the following diagram the <B>BirdController</B> object just works with
+generic <B>Bird</B> objects, and does not know what exact type they are. This is
+convenient from <B>BirdController</B>&#8217;s perspective, because it
+doesn&#8217;t have to write special code to determine the exact type of
+<B>Bird</B> it&#8217;s working with, or that <B>Bird</B>&#8217;s behavior. So
+how does it happen that, when <B>move(&#160;)</B> is called while ignoring the
+specific type of <B>Bird</B>, the right behavior will occur (a <B>Goose
+</B>runs, flies, or swims, and a <B>Penguin</B> runs or swims)?</FONT><BR></P></DIV>
+<DIV ALIGN="CENTER"><FONT FACE="Georgia"><IMG SRC="TIC2Vo10.gif"></FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">The answer is the primary twist in
+object-oriented programming: The compiler cannot make a function call in the
+traditional sense. The function call generated by a non-OOP compiler causes what
+is called <A NAME="Index131"></A><A NAME="Index132"></A><I>early binding</I>, a
+term you may not have heard before because you&#8217;ve never thought about it
+any other way. It means the compiler generates a call to a specific function
+name, and the linker resolves this call to the absolute address of the code to
+be executed. In OOP, the program cannot determine the address of the code until
+runtime, so some other scheme is necessary when a message is sent to a generic
+object.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">To solve the problem, object-oriented
+languages use the concept of
+<A NAME="Index133"></A><A NAME="Index134"></A><I>late binding</I>. When you send
+a message to an object, the code being called isn&#8217;t determined until
+runtime. The compiler does ensure that the function exists and performs type
+checking on the arguments and return value (a language in which this isn&#8217;t
+true is called <A NAME="Index135"></A><A NAME="Index136"></A><I>weakly
+typed</I>), but it doesn&#8217;t know the exact code to
+execute.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">To perform late binding, the C++ compiler
+inserts a special bit of code in lieu of the absolute call. This code calculates
+the address of the function body, using information stored in the object (this
+process is covered in great detail in Chapter 15). Thus, each object can behave
+differently according to the contents of that special bit of code. When you send
+a message to an object, the object actually does figure out what to do with that
+message.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">You state that you want a function to
+have the flexibility of late-binding properties using the
+<A NAME="Index137"></A><A NAME="Index138"></A>keyword <B>virtual</B>. You
+don&#8217;t need to understand the mechanics of <B>virtual</B> to use it, but
+without it you can&#8217;t do object-oriented programming in C++. In C++, you
+must remember to add the <B>virtual</B> keyword because, by default, member
+functions are <I>not</I> dynamically bound. Virtual functions allow you to
+express the differences in behavior of classes in the same family. Those
+differences are what cause polymorphic behavior.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Consider the shape example. The family of
+classes (all based on the same uniform interface) was diagrammed earlier in the
+chapter. To demonstrate polymorphism, we want to write a single piece of code
+that ignores the specific details of type and talks only to the base class. That
+code is <A NAME="Index139"></A><I>decoupled</I> from type-specific information,
+and thus is simpler to write and easier to understand. And, if a new type
+&#8211; a <B>Hexagon</B>, for example &#8211;<B> </B>is added through
+inheritance, the code you write will work just as well for the new type of
+<B>Shape</B> as it did on the existing types. Thus, the program is
+<I>extensible</I>.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">If you write a function in C++ (as you
+will soon learn how to do):</FONT><BR></P></DIV>
+
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE><font color=#0000ff>void</font> doStuff(Shape&amp; s) {
+  s.erase();
+  <font color=#009900>// ...</font>
+  s.draw();
+} </PRE></FONT></BLOCKQUOTE>
+
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">This function speaks to any <B>Shape</B>,
+so it is independent of the specific type of object that it&#8217;s drawing and
+erasing (the &#8216;<B>&amp;</B>&#8217; means &#8220;Take the address of the
+object that&#8217;s passed to <B>doStuff(&#160;)</B>,&#8221; but it&#8217;s not
+important that you understand the details of that right now). If in some other
+part of the program we use the <B>doStuff(&#160;)</B> function:</FONT><BR></P></DIV>
+
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE>Circle c;
+Triangle t;
+Line l;
+doStuff(c);
+doStuff(t);
+doStuff(l); </PRE></FONT></BLOCKQUOTE>
+
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">The calls to <B>doStuff(&#160;)
+</B>automatically work right, regardless of the exact type of the object.
+</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">This is actually a pretty amazing trick.
+Consider the line:</FONT><BR></P></DIV>
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE>doStuff(c);</PRE></FONT></BLOCKQUOTE>
+
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">What&#8217;s happening here is that a
+<B>Circle</B> is being passed into a function that&#8217;s expecting a
+<B>Shape</B>. Since a <B>Circle</B> <I>is</I> a <B>Shape</B> it can be treated
+as one by <B>doStuff(&#160;)</B>. That is, any message that
+<B>doStuff(&#160;)</B> can send to a <B>Shape</B>, a <B>Circle</B> can accept.
+So it is a completely safe and logical thing to do.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">We call this process of treating a
+derived type as though it were its base type
+<A NAME="Index140"></A><I>upcasting</I>. The name <A NAME="Index141"></A><I>cast
+</I>is used in the sense of casting into a mold and the <I>up</I> comes from the
+way the <A NAME="Index142"></A><A NAME="Index143"></A>inheritance diagram is
+typically arranged, with the base type at the top and the derived classes
+fanning out downward. Thus, casting to a base type is moving up the inheritance
+diagram: &#8220;upcasting.&#8221;</FONT><BR></P></DIV>
+<DIV ALIGN="CENTER"><FONT FACE="Georgia"><IMG SRC="TIC2Vo11.gif"></FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">An object-oriented program contains some
+upcasting somewhere, because that&#8217;s how you decouple yourself from knowing
+about the exact type you&#8217;re working with. Look at the code in
+<B>doStuff(&#160;)</B>:</FONT><BR></P></DIV>
+
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE>  s.erase();
+  <font color=#009900>// ...</font>
+  s.draw();</PRE></FONT></BLOCKQUOTE>
+
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Notice that it doesn&#8217;t say
+&#8220;If you&#8217;re a <B>Circle</B>, do this, if you&#8217;re a
+<B>Square</B>, do that, etc.&#8221; If you write that kind of code, which checks
+for all the possible types that a <B>Shape</B> can actually be, it&#8217;s messy
+and you need to change it every time you add a new kind of <B>Shape</B>. Here,
+you just say &#8220;You&#8217;re a shape, I know you can <B>erase(&#160;)
+</B>and <B>draw(&#160;) </B>yourself, do it, and take care of the details
+correctly.&#8221; </FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">What&#8217;s impressive about the code in
+<B>doStuff(&#160;)</B> is that, somehow, the right thing happens. Calling
+<B>draw(&#160;)</B> for <B>Circle</B> causes different code to be executed than
+when calling <B>draw(&#160;) </B>for a <B>Square</B> or a <B>Line</B>, but when
+the <B>draw(&#160;)</B> message is sent to an anonymous <B>Shape</B>, the
+correct behavior occurs based on the actual type of the <B>Shape</B>. This is
+amazing because, as mentioned earlier, when the C++ compiler is compiling the
+code for <B>doStuff(&#160;)</B>, it cannot know exactly what types it is dealing
+with. So ordinarily, you&#8217;d expect it to end up calling the version of
+<B>erase(&#160;)</B> and <B>draw(&#160;) </B>for <B>Shape</B>, and not for the
+specific <B>Circle</B>, <B>Square</B>, or <B>Line</B>. And yet the right thing
+happens because of polymorphism. The compiler and runtime system handle the
+details; all you need to know is that it happens and more importantly how to
+design with it. If a member function is <B>virtual</B>, then<B> </B>when you
+send a message to an object, the object will do the right thing, even when
+upcasting is involved.</FONT><A NAME="_Toc472654689"></A><BR></P></DIV>
+<A NAME="Heading28"></A><FONT FACE = "Verdana"><H2 ALIGN="LEFT">
+Creating and destroying objects</H2></FONT>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Technically, the domain of OOP is
+abstract data typing, inheritance, and polymorphism, but other issues can be at
+least as important. This section gives an overview of these
+issues.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Especially important is the way objects
+are created and destroyed. Where is the data for an object and how is the
+lifetime of that object controlled? Different programming languages use
+different philosophies here. C++ takes the approach that control of efficiency
+is the most important issue, so it gives the programmer a choice. For maximum
+runtime speed, the storage and lifetime can be determined while the program is
+being written, by placing the objects on the <A NAME="Index144"></A>stack or in
+<A NAME="Index145"></A><A NAME="Index146"></A>static storage. The stack is an
+area in memory that is used directly by the microprocessor to store data during
+program execution. Variables on the stack are sometimes called
+<A NAME="Index147"></A><A NAME="Index148"></A><I>automatic </I>or
+<A NAME="Index149"></A><A NAME="Index150"></A><I>scoped</I> variables. The
+static storage area is simply a fixed patch of memory that is allocated before
+the program begins to run. Using the stack or static storage area places a
+priority on the speed of storage allocation and release, which can be valuable
+in some situations. However, you sacrifice flexibility because you must know the
+exact quantity, lifetime, and type of objects <I>while</I> you&#8217;re writing
+the program. If you are trying to solve a more general problem, such as
+computer-aided design, warehouse management, or air-traffic control, this is too
+restrictive.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">The second approach is to create objects
+<A NAME="Index151"></A><A NAME="Index152"></A>dynamically in a pool of memory
+called the <A NAME="Index153"></A><I>heap</I>. In this approach you don&#8217;t
+know until runtime how many objects you need, what their lifetime is, or what
+their exact type is. Those decisions are made at the spur of the moment while
+the program is running. If you need a new object, you simply make it on the heap
+when you need it, using the <A NAME="Index154"></A><A NAME="Index155"></A><B>new
+</B>keyword. When you&#8217;re finished with the storage, you must release it
+using the <A NAME="Index156"></A><A NAME="Index157"></A><B>delete </B>keyword.
+</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Because the storage is managed
+dynamically at runtime, the amount of time required to allocate storage on the
+heap is significantly longer than the time to create storage on the stack.
+(Creating storage on the stack is often a single microprocessor instruction to
+move the stack pointer down, and another to move it back up.) The dynamic
+approach makes the generally logical assumption that objects tend to be
+complicated, so the extra overhead of finding storage and releasing that storage
+will not have an important impact on the creation of an object. In addition, the
+greater flexibility is essential to solve general programming
+problems.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">There&#8217;s another issue, however, and
+that&#8217;s the <A NAME="Index158"></A><A NAME="Index159"></A>lifetime of an
+object. If you create an object on the stack or in static storage, the compiler
+determines how long the object lasts and can automatically destroy it. However,
+if you create it on the heap, the compiler has no knowledge of its lifetime. In
+C++, the programmer must determine programmatically when to destroy the object,
+and then perform the destruction using the <B>delete</B> keyword. As an
+alternative, the environment can provide a feature called a
+<A NAME="Index160"></A><A NAME="Index161"></A><I>garbage collector</I> that
+automatically discovers when an object is no longer in use and destroys it. Of
+course, writing programs using a garbage collector is much more convenient, but
+it requires that all applications must be able to tolerate the existence of the
+garbage collector and the overhead for garbage collection. This does not meet
+the design requirements of the C++ language and so it was not included, although
+third-party garbage collectors exist for
+C++.</FONT><A NAME="_Toc375545203"></A><A NAME="_Toc408018400"></A><A NAME="_Toc375545198"></A><A NAME="_Toc408018395"></A><A NAME="_Toc408018408"></A><A NAME="_Toc312373795"></A><A NAME="_Toc472654690"></A><BR></P></DIV>
+<A NAME="Heading29"></A><FONT FACE = "Verdana"><H2 ALIGN="LEFT">
+Exception handling: <BR>dealing with errors</H2></FONT>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Ever since the beginning of programming
+languages, error handling has been one of the most difficult issues. Because
+it&#8217;s so hard to design a good error-handling scheme, many languages simply
+ignore the issue, passing the problem on to library designers who come up with
+halfway measures that can work in many situations but can easily be
+circumvented, generally by just ignoring them. A major problem with most
+error-handling schemes is that they rely on programmer vigilance in following an
+agreed-upon convention that is not enforced by the language. If programmers are
+not vigilant, which often occurs when they are in a hurry, these schemes can
+easily be forgotten.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><A NAME="Index162"></A><A NAME="Index163"></A><FONT FACE="Georgia"><I>Exception
+handling</I> wires error handling directly into the programming language and
+sometimes even the operating system. An exception is an object that is
+&#8220;thrown&#8221; from the site of the error and can be &#8220;caught&#8221;
+by an appropriate <I>exception handler</I> designed to handle that particular
+type of error. It&#8217;s as if exception handling is a different, parallel path
+of execution that can be taken when things go wrong. And because it uses a
+separate execution path, it doesn&#8217;t need to interfere with your
+normally-executing code. This makes that code simpler to write since you
+aren&#8217;t constantly forced to check for errors. In addition, a thrown
+exception is unlike an error value that&#8217;s returned from a function or a
+flag that&#8217;s set by a function in order to indicate an error condition
+&#8211; these can be ignored. An exception cannot be ignored so it&#8217;s
+guaranteed to be dealt with at some point. Finally, exceptions provide a way to
+recover reliably from a bad situation. Instead of just exiting the program, you
+are often able to set things right and restore the execution of a program, which
+produces much more robust systems.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">It&#8217;s worth noting that exception
+handling isn&#8217;t an object-oriented feature, although in object-oriented
+languages the exception is normally represented with an object. Exception
+handling existed before object-oriented languages.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Exception handling is only lightly
+introduced and used in this Volume; Volume 2 (available from
+<I>www.BruceEckel.com</I>) has thorough coverage of exception
+handling.</FONT><A NAME="_Toc472654691"></A><BR></P></DIV>
+<A NAME="Heading30"></A><FONT FACE = "Verdana"><H2 ALIGN="LEFT">
+Analysis and
+design<BR><A NAME="Index164"></A><A NAME="Index165"></A><A NAME="Index166"></A><A NAME="Index167"></A></H2></FONT>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">The object-oriented paradigm is a new and
+different way of thinking about programming and many folks have trouble at first
+knowing how to approach an OOP project. Once you know that everything is
+supposed to be an object, and as you learn to think more in an object-oriented
+style, you can begin to create &#8220;good&#8221; designs that take advantage of
+all the benefits that OOP has to offer.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><A NAME="Index168"></A><FONT FACE="Georgia">A <I>method</I>
+(often called a <I>methodology</I>)<I> </I>is a set of processes and heuristics
+used to break down the complexity of a programming problem. Many OOP methods
+have been formulated since the dawn of object-oriented programming. This section
+will give you a feel for what you&#8217;re trying to accomplish when using a
+method.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Especially in OOP, methodology is a field
+of many experiments, so it is important to understand what problem the method is
+trying to solve before you consider adopting one. This is particularly true with
+C++, in which the programming language is intended to reduce the complexity
+(compared to C) involved in expressing a program. This may in fact alleviate the
+need for ever-more-complex methodologies. Instead, simpler ones may suffice in
+C++ for a much larger class of problems than you could handle using simple
+methodologies with procedural languages.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">It&#8217;s also important to realize that
+the term &#8220;methodology&#8221; is often too grand and promises too much.
+Whatever you do now when you design and write a program is a method. It may be
+your own method, and you may not be conscious of doing it, but it is a process
+you go through as you create. If it is an effective process, it may need only a
+small tune-up to work with C++. If you are not satisfied with your productivity
+and the way your programs turn out, you may want to consider adopting a formal
+method, or choosing pieces from among the many formal methods.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">While you&#8217;re going through the
+development process, the most important issue is this: Don&#8217;t get lost.
+It&#8217;s easy to do. Most of the analysis and design
+<A NAME="Index169"></A>methods are intended to solve the largest of problems.
+Remember that most projects don&#8217;t fit into that category, so you can
+usually have successful analysis and design with a relatively small subset of
+what a method
+recommends</FONT><A NAME="fnB9" HREF="#fn9">[9]</A><A NAME="Index170"></A><FONT FACE="Georgia">.
+But some sort of process, no matter how limited, will generally get you on your
+way in a much better fashion than simply beginning to code.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">It&#8217;s also easy to get stuck, to
+fall into &#8220;<A NAME="Index171"></A><A NAME="Index172"></A>analysis
+paralysis,&#8221; where you feel like you can&#8217;t move forward because you
+haven&#8217;t nailed down every little detail at the current stage. Remember, no
+matter how much analysis you do, there are some things about a system that
+won&#8217;t reveal themselves until design time, and more things that
+won&#8217;t reveal themselves until you&#8217;re coding, or not even until a
+program is up and running. Because of this, it&#8217;s crucial to move fairly
+quickly through analysis and design, and to implement a test of the proposed
+system.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">This point is worth emphasizing. Because
+of the history we&#8217;ve had with procedural languages, it is commendable that
+a team will want to proceed carefully and understand every minute detail before
+moving to design and implementation. Certainly, when creating a DBMS, it pays to
+understand a customer&#8217;s needs thoroughly. But a DBMS is in a class of
+problems that is very well-posed and well-understood; in many such programs, the
+database structure <I>is</I> the problem to be tackled. The class of programming
+problem discussed in this chapter is of the &#8220;wild-card&#8221; (my term)
+variety, in which the solution isn&#8217;t simply re-forming a well-known
+solution, but instead involves one or more
+&#8220;wild-card<A NAME="Index173"></A> factors&#8221; &#8211; elements for
+which there is no well-understood previous solution, and for which research is
+necessary</FONT><A NAME="fnB10" HREF="#fn10">[10]</A><FONT FACE="Georgia">.
+Attempting to thoroughly analyze a wild-card problem before moving into design
+and implementation results in analysis paralysis because you don&#8217;t have
+enough information to solve this kind of problem during the analysis phase.
+Solving such a problem requires iteration through the whole cycle, and that
+requires risk-taking behavior (which makes sense, because you&#8217;re trying to
+do something new and the potential rewards are higher). It may seem like the
+risk is compounded by &#8220;rushing&#8221; into a preliminary implementation,
+but it can instead reduce the risk in a wild-card project because you&#8217;re
+finding out early whether a particular approach to the problem is viable.
+Product development is risk management.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">It&#8217;s often proposed that you
+&#8220;build one to throw away.&#8221; With OOP, you may still throw <I>part</I>
+of it away, but because code is encapsulated into classes, during the first
+iteration you will inevitably produce some useful class designs and develop some
+worthwhile ideas about the system design that do not need to be thrown away.
+Thus, the first rapid pass at a problem not only produces critical information
+for the next analysis, design, and implementation iteration, it also creates a
+code foundation for that iteration.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">That said, if you&#8217;re looking at a
+methodology that contains tremendous detail and suggests many steps and
+documents, it&#8217;s still difficult to know when to stop. Keep in mind what
+you&#8217;re trying to discover:</FONT><BR></P></DIV>
+<OL>
+<LI><FONT FACE="Verdana">	</FONT><FONT FACE="Georgia">What are the objects? (How
+do you partition your project into its component
+parts?)</FONT><LI><FONT FACE="Verdana">	</FONT><FONT FACE="Georgia">What are
+their interfaces? (What messages do you need to be able to send to each
+object?)</FONT></OL><DIV ALIGN="LEFT"><P><FONT FACE="Georgia">If you come up with
+nothing more than the objects and their interfaces, then you can write a
+program. For various reasons you might need more descriptions and documents than
+this, but you can&#8217;t get away with any less.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">The process can be undertaken in five
+phases, and a phase 0 that is just the initial commitment to using some kind of
+structure.</FONT><A NAME="_Toc408018410"></A><A NAME="_Toc472654692"></A><BR></P></DIV>
+<A NAME="Heading31"></A><FONT FACE = "Verdana"><H3 ALIGN="LEFT">
+Phase 0: Make a plan</H3></FONT>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">You must first decide what steps
+you&#8217;re going to have in your process. It sounds simple (in fact,
+<I>all</I> of this sounds simple) and yet people often don&#8217;t make this
+decision before they start coding. If your plan is &#8220;let&#8217;s jump in
+and start coding,&#8221; fine. (Sometimes that&#8217;s appropriate when you have
+a well-understood problem.) At least agree that this is the
+<A NAME="Index174"></A>plan.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">You might also decide at this phase that
+some additional process structure is necessary, but not the whole nine yards.
+Understandably enough, some programmers like to work in &#8220;vacation
+mode&#8221; in which no structure is imposed on the process of developing their
+work; &#8220;It will be done when it&#8217;s done.&#8221; This can be appealing
+for awhile, but I&#8217;ve found that having a few milestones along the way
+helps to focus and galvanize your efforts around those milestones instead of
+being stuck with the single goal of &#8220;finish the project.&#8221; In
+addition, it divides the project into more bite-sized pieces and makes it seem
+less threatening (plus the milestones offer more opportunities for
+celebration).</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">When I began to study story structure (so
+that I will someday write a novel) I was initially resistant to the idea of
+structure, feeling that when I wrote I simply let it flow onto the page. But I
+later realized that when I write about computers the structure is clear enough
+so that I don&#8217;t think much about it. But I still structure my work, albeit
+only semi-consciously in my head. So even if you think that your plan is to just
+start coding, you still somehow go through the subsequent phases while asking
+and answering certain questions.</FONT><A NAME="_Toc408018411"></A><BR></P></DIV>
+<A NAME="Heading32"></A><FONT FACE = "Verdana"><H4 ALIGN="LEFT">
+The mission statement<BR><A NAME="Index175"></A><A NAME="Index176"></A></H4></FONT>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Any system you build, no matter how
+complicated, has a fundamental purpose, the business that it&#8217;s in, the
+basic need that it satisfies. If you can look past the user interface, the
+hardware- or system-specific details, the coding algorithms and the efficiency
+problems, you will eventually find the core of its being, simple and
+straightforward. Like the so-called
+<A NAME="Index177"></A><A NAME="Index178"></A><I>high concept</I> from a
+Hollywood movie, you can describe it in one or two sentences. This pure
+description is the starting point.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">The high concept is quite important
+because it sets the tone for your project; it&#8217;s a mission statement. You
+won&#8217;t necessarily get it right the first time (you may be in a later phase
+of the project before it becomes completely clear), but keep trying until it
+feels right. For example, in an air-traffic control system you may start out
+with a high concept focused on the system that you&#8217;re building: &#8220;The
+tower program keeps track of the aircraft.&#8221; But consider what happens when
+you shrink the system to a very small airfield; perhaps there&#8217;s only a
+human controller or none at all. A more useful model won&#8217;t concern the
+solution you&#8217;re creating as much as it describes the problem:
+&#8220;Aircraft arrive, unload, service and reload, and
+depart.&#8221;</FONT><A NAME="_Toc472654693"></A><BR></P></DIV>
+<A NAME="Heading33"></A><FONT FACE = "Verdana"><H3 ALIGN="LEFT">
+Phase 1: What are we making?</H3></FONT>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">In the previous generation of program
+design (called <I>procedural design</I>), this is called &#8220;creating the
+<A NAME="Index179"></A><A NAME="Index180"></A><I>requirements analysis</I> and
+<A NAME="Index181"></A><A NAME="Index182"></A><I>system
+specification</I>.&#8221; These, of course, were places to get lost;
+intimidatingly-named documents that could become big projects in their own
+right. Their intention was good, however. The requirements analysis says
+&#8220;Make a list of the guidelines we will use to know when the job is done
+and the customer is satisfied.&#8221; The system specification says
+&#8220;Here&#8217;s a description of <I>what</I> the program will do (not
+<I>how</I>) to satisfy the requirements.&#8221; The requirements analysis is
+really a contract between you and the customer (even if the customer works
+within your company or is some other object or system). The system specification
+is a top-level exploration into the problem and in some sense a discovery of
+whether it can be done and how long it will take. Since both of these will
+require consensus among people (and because they will usually change over time),
+I think it&#8217;s best to keep them as bare as possible &#8211; ideally, to
+lists and basic diagrams &#8211; to save time. You might have other constraints
+that require you to expand them into bigger documents, but by keeping the
+initial document small and concise, it can be created in a few sessions of group
+brainstorming with a leader who dynamically creates the description. This not
+only solicits input from everyone, it also fosters initial buy-in and agreement
+by everyone on the team. Perhaps most importantly, it can kick off a project
+with a lot of enthusiasm.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">It&#8217;s necessary to stay focused on
+the heart of what you&#8217;re trying to accomplish in this phase: determine
+what the system is supposed to do. The most valuable tool for this is a
+collection of what are called &#8220;<A NAME="Index183"></A>use cases.&#8221;
+Use cases identify key features in the system that will reveal some of the
+fundamental classes you&#8217;ll be using. These are essentially descriptive
+answers to questions
+like</FONT><A NAME="fnB11" HREF="#fn11">[11]</A><FONT FACE="Georgia">:</FONT><BR></P></DIV>
+<UL>
+<LI><FONT FACE="Symbol">	</FONT><FONT FACE="Georgia">"Who will use this system?"
+</FONT><LI><FONT FACE="Symbol">	</FONT><FONT FACE="Georgia">"What can those
+actors do with the system?"  
+</FONT><LI><FONT FACE="Symbol">	</FONT><FONT FACE="Georgia">"How does this actor
+do that with this
+system?"</FONT><LI><FONT FACE="Symbol">	</FONT><FONT FACE="Georgia">"How else
+might this work if someone else were doing this, or if the same actor had a
+different objective?" (to reveal
+variations)</FONT><LI><FONT FACE="Symbol">	</FONT><FONT FACE="Georgia">"What
+problems might happen while doing this with the system?" (to reveal
+exceptions)</FONT></UL><DIV ALIGN="LEFT"><P><FONT FACE="Georgia">If you are
+designing an auto-teller, for example, the use case for a particular aspect of
+the functionality of the system is able to describe what the auto-teller does in
+every possible situation. Each of these &#8220;situations&#8221; is referred to
+as a <A NAME="Index184"></A><I>scenario</I>, and a use case can be considered a
+collection of scenarios. You can think of a scenario as a question that starts
+with: &#8220;What does the system do if...?&#8221; For example, &#8220;What does
+the auto-teller do if a customer has just deposited a check within 24 hours and
+there&#8217;s not enough in the account without the check to provide the desired
+withdrawal?&#8221; </FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><A NAME="Index185"></A><FONT FACE="Georgia">Use case diagrams
+are intentionally simple to prevent you from getting bogged down in system
+implementation details prematurely:</FONT><BR></P></DIV>
+<DIV ALIGN="CENTER"><FONT FACE="Georgia"><IMG SRC="TIC2Vo12.gif"></FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Each stick person represents an
+&#8220;<A NAME="Index186"></A>actor,&#8221; which is typically a human or some
+other kind of free agent. (These can even be other computer systems, as is the
+case with &#8220;ATM.&#8221;) The box represents the boundary of your system.
+The ellipses represent the use cases, which are descriptions of valuable work
+that can be performed with the system. The lines between the actors and the use
+cases represent the interactions.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">It doesn&#8217;t matter how the system is
+actually implemented, as long as it looks like this to the
+user.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">A use case does not need to be terribly
+complex, even if the underlying system is complex. It is only intended to show
+the system as it appears to the user. For example:</FONT><BR></P></DIV>
+<DIV ALIGN="CENTER"><FONT FACE="Georgia"><IMG SRC="TIC2Vo13.gif"></FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">The use cases produce the requirements
+specifications by determining all the interactions that the user may have with
+the system. You try to discover a full set of use cases for your system, and
+once you&#8217;ve done that you have the core of what the system is supposed to
+do. The nice thing about focusing on use cases is that they always bring you
+back to the essentials and keep you from drifting off into issues that
+aren&#8217;t critical for getting the job done. That is, if you have a full set
+of use cases you can describe your system and move onto the next phase. You
+probably won&#8217;t get it all figured out perfectly on the first try, but
+that&#8217;s OK. Everything will reveal itself in time, and if you demand a
+perfect system specification at this point you&#8217;ll get
+stuck.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">If you get stuck, you can kick-start this
+phase by using a rough approximation tool: describe the system in a few
+paragraphs and then look for nouns and verbs. The nouns can suggest actors,
+context of the use case (e.g. &#8220;lobby&#8221;), or artifacts manipulated in
+the use case. Verbs can suggest interactions between actors and use cases, and
+specify steps within the use case. You&#8217;ll also discover that nouns and
+verbs produce objects and messages during the design phase (and note that use
+cases describe interactions between subsystems, so the &#8220;noun and
+verb&#8221; technique can be used only as a brainstorming tool as it does not
+generate use cases)</FONT><SUP><FONT FACE="Georgia" SIZE=2><B>
+</B></FONT></SUP><A NAME="fnB12" HREF="#fn12">[12]</A><FONT FACE="Georgia">.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">The boundary between a use case and an
+actor can point out the existence of a
+<A NAME="Index187"></A><A NAME="Index188"></A>user interface, but it does not
+define such a user interface. For a process of defining and creating user
+interfaces, see <I>Software for Use</I> by Larry Constantine and Lucy Lockwood,
+(Addison Wesley Longman, 1999) or go to <I>www.ForUse.com</I>.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Although it&#8217;s a black art, at this
+point some kind of basic <A NAME="Index189"></A>scheduling is important. You now
+have an overview of what you&#8217;re building so you&#8217;ll probably be able
+to get some idea of how long it will take. A lot of factors come into play here.
+If you estimate a long schedule then the company might decide not to build it
+(and thus use their resources on something more reasonable &#8211; that&#8217;s
+a <I>good</I> thing). Or a manager might have already decided how long the
+project should take and will try to influence your estimate. But it&#8217;s best
+to have an honest schedule from the beginning and deal with the tough decisions
+early. There have been a lot of attempts to come up with accurate scheduling
+techniques (like techniques to predict the stock market), but probably the best
+approach is to rely on your experience and intuition. Get a gut feeling for how
+long it will really take, then double that and add 10 percent. Your gut feeling
+is probably correct; you <I>can</I> get something working in that time. The
+&#8220;doubling&#8221; will turn that into something decent, and the 10 percent
+will deal with the final polishing and
+details</FONT><A NAME="fnB13" HREF="#fn13">[13]</A><FONT FACE="Georgia">.
+However you want to explain it, and regardless of the moans and manipulations
+that happen when you reveal such a schedule, it just seems to work out that
+way.</FONT><A NAME="_Toc408018412"></A><A NAME="_Toc472654694"></A><BR></P></DIV>
+<A NAME="Heading34"></A><FONT FACE = "Verdana"><H3 ALIGN="LEFT">
+Phase 2: How will we build it?</H3></FONT>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">In this phase you must come up with a
+design that describes what the classes look like and how they will interact. An
+excellent technique in determining classes and interactions is the
+<A NAME="Index190"></A><A NAME="Index191"></A><I>Class-Responsibility-Collaboration</I>
+(CRC) card. Part of the value of this tool is that it&#8217;s so low-tech: you
+start out with a set of blank 3&#8221; by 5&#8221; cards, and you write on them.
+Each card represents a single class, and on the card you write:</FONT><BR></P></DIV>
+<OL>
+<LI><FONT FACE="Verdana">	</FONT><FONT FACE="Georgia">The name of the class.
+It&#8217;s important that this name capture the essence of what the class does,
+so that it makes sense at a
+glance.</FONT><LI><FONT FACE="Verdana">	</FONT><FONT FACE="Georgia">The
+&#8220;responsibilities&#8221; of the class: what it should do. This can
+typically be summarized by just stating the names of the member functions (since
+those names should be descriptive in a good design), but it does not preclude
+other notes. If you need to seed the process, look at the problem from a lazy
+programmer&#8217;s standpoint: What objects would you like to magically appear
+to solve your
+problem?</FONT><LI><FONT FACE="Verdana">	</FONT><FONT FACE="Georgia">The
+&#8220;collaborations&#8221; of the class: what other classes does it interact
+with? &#8220;Interact&#8221; is an intentionally broad term; it could mean
+aggregation or simply that some other object exists that will perform services
+for an object of the class. Collaborations should also consider the audience for
+this class. For example, if you create a class <B>Firecracker</B>, who is going
+to observe it, a <B>Chemist</B> or a <B>Spectator</B>? The former will want to
+know what chemicals go into the construction, and the latter will respond to the
+colors and shapes released when it
+explodes.</FONT></OL><DIV ALIGN="LEFT"><P><FONT FACE="Georgia">You may feel like
+the cards should be bigger because of all the information you&#8217;d like to
+get on them, but they are intentionally small, not only to keep your classes
+small but also to keep you from getting into too much detail too early. If you
+can&#8217;t fit all you need to know about a class on a small card, the class is
+too complex (either you&#8217;re getting too detailed, or you should create more
+than one class). The ideal class should be understood at a glance. The idea of
+CRC cards is to assist you in coming up with a first cut of the design so that
+you can get the big picture and then refine your design.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">One of the great benefits of CRC cards is
+in communication. It&#8217;s best done real-time, in a group, without computers.
+Each person takes responsibility for several classes (which at first have no
+names or other information). You run a live simulation by solving one scenario
+at a time, deciding which messages are sent to the various objects to satisfy
+each scenario. As you go through this process, you discover the classes that you
+need along with their responsibilities and collaborations, and you fill out the
+cards as you do this. When you&#8217;ve moved through all the use cases, you
+should have a fairly complete first cut of your design.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Before I began using CRC cards, the most
+successful consulting experiences I had when coming up with an initial design
+involved standing in front of a team, who hadn&#8217;t built an OOP project
+before, and drawing objects on a whiteboard. We talked about how the objects
+should communicate with each other, and erased some of them and replaced them
+with other objects. Effectively, I was managing all the &#8220;CRC cards&#8221;
+on the whiteboard. The team (who knew what the project was supposed to do)
+actually created the design; they &#8220;owned&#8221; the design rather than
+having it given to them. All I was doing was guiding the process by asking the
+right questions, trying out the assumptions, and taking the feedback from the
+team to modify those assumptions. The true beauty of the process was that the
+team learned how to do object-oriented design not by reviewing abstract
+examples, but by working on the one design that was most interesting to them at
+that moment: theirs.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Once you&#8217;ve come up with a set of
+CRC cards, you may want to create a more formal description of your design using
+UML</FONT><A NAME="fnB14" HREF="#fn14">[14]</A><FONT FACE="Georgia">. You
+don&#8217;t need to use <A NAME="Index192"></A>UML, but it can be helpful,
+especially if you want to put up a diagram on the wall for everyone to ponder,
+which is a good idea. An alternative to UML is a textual description of the
+objects and their interfaces, or, depending on your programming language, the
+code
+itself</FONT><A NAME="fnB15" HREF="#fn15">[15]</A><A NAME="Index193"></A><FONT FACE="Georgia">.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">UML also provides an additional
+diagramming notation for describing the dynamic model of your system. This is
+helpful in situations in which the state transitions of a system or subsystem
+are dominant enough that they need their own diagrams (such as in a control
+system). You may also need to describe the data structures, for systems or
+subsystems in which data is a dominant factor (such as a
+database).</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">You&#8217;ll know you&#8217;re done with
+phase 2 when you have described the objects and their interfaces. Well, most of
+them &#8211; there are usually a few that slip through the cracks and
+don&#8217;t make themselves known until phase 3. But that&#8217;s OK. All you
+are concerned with is that you eventually discover all of your objects.
+It&#8217;s nice to discover them early in the process but OOP provides enough
+structure so that it&#8217;s not so bad if you discover them later. In fact, the
+design of an object tends to happen in five stages, throughout the process of
+program
+development.</FONT><A NAME="_Toc312373799"></A><A NAME="_Toc408018413"></A><BR></P></DIV>
+<A NAME="Heading35"></A><FONT FACE = "Verdana"><H4 ALIGN="LEFT">
+Five stages of object
+design<BR><A NAME="Index194"></A><A NAME="Index195"></A></H4></FONT>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">The design life of an object is not
+limited to the time when you&#8217;re writing the program. Instead, the design
+of an object appears over a sequence of stages. It&#8217;s helpful to have this
+perspective because you stop expecting perfection right away; instead, you
+realize that the understanding of what an object does and what it should look
+like happens over time. This view also applies to the design of various types of
+programs; the pattern for a particular type of program emerges through
+struggling again and again with that problem (<I>Design Patterns </I>are covered
+in Volume 2). Objects, too, have their patterns that emerge through
+understanding, use, and reuse.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Verdana"><B>1. Object
+discovery.</B></FONT><FONT FACE="Georgia"><B> </B>This stage occurs during the
+initial analysis of a program. Objects may be discovered by looking for external
+factors and boundaries, duplication of elements in the system, and the smallest
+conceptual units. Some objects are obvious if you already have a set of class
+libraries. Commonality between classes suggesting base classes and inheritance
+may appear right away, or later in the design process.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Verdana"><B>2. Object
+assembly.</B></FONT><FONT FACE="Georgia"><B> </B>As you&#8217;re building an
+object you&#8217;ll discover the need for new members that didn&#8217;t appear
+during discovery. The internal needs of the object may require other classes to
+support it.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Verdana"><B>3. System
+construction.</B></FONT><FONT FACE="Georgia"><B> </B>Once again, more
+requirements for an object may appear at this later stage. As you learn, you
+evolve your objects. The need for communication and interconnection with other
+objects in the system may change the needs of your classes or require new
+classes. For example, you may discover the need for facilitator or helper
+classes, such as a linked list, that contain little or no state information and
+simply help other classes function.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Verdana"><B>4. System
+extension.</B></FONT><FONT FACE="Georgia"><B> </B>As you add new features to a
+system you may discover that your previous design doesn&#8217;t support easy
+system extension. With this new information, you can restructure parts of the
+system, possibly adding new classes or class hierarchies.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Verdana"><B>5. Object
+reuse.</B></FONT><FONT FACE="Georgia"><B> <A NAME="Index196"></A></B>This is the
+real stress test for a class. If someone tries to reuse it in an entirely new
+situation, they&#8217;ll probably discover some shortcomings. As you change a
+class to adapt to more new programs, the general principles of the class will
+become clearer, until you have a truly reusable type. However, don&#8217;t
+expect most objects from a system design to be reusable &#8211; it is perfectly
+acceptable for the bulk of your objects to be system-specific. Reusable types
+tend to be less common, and they must solve more general problems in order to be
+reusable.</FONT><BR></P></DIV>
+<A NAME="Heading36"></A><FONT FACE = "Verdana"><H4 ALIGN="LEFT">
+Guidelines for object
+development<BR><A NAME="Index197"></A><A NAME="Index198"></A></H4></FONT>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">These stages suggest some guidelines when
+thinking about developing your classes:</FONT><BR></P></DIV>
+<OL>
+<LI><FONT FACE="Verdana">	</FONT><FONT FACE="Georgia">Let a specific problem
+generate a class, then let the class grow and mature during the solution of
+other
+problems.</FONT><LI><FONT FACE="Verdana">	</FONT><FONT FACE="Georgia">Remember,
+discovering the classes you need (and their interfaces) is the majority of the
+system design. If you already had those classes, this would be an easy
+project.</FONT><LI><FONT FACE="Verdana">	</FONT><FONT FACE="Georgia">Don&#8217;t
+force yourself to know everything at the beginning; learn as you go. This will
+happen anyway.</FONT><LI><FONT FACE="Verdana">	</FONT><FONT FACE="Georgia">Start
+programming; get something working so you can prove or disprove your design.
+Don&#8217;t fear that you&#8217;ll end up with procedural-style spaghetti code
+&#8211; classes partition the problem and help control anarchy and entropy. Bad
+classes do not break good
+classes.</FONT><LI><FONT FACE="Verdana">	</FONT><FONT FACE="Georgia">Always keep
+it simple. Little clean objects with obvious utility are better than big
+complicated interfaces. When decision points come up, use an Occam&#8217;s Razor
+approach: Consider the choices and select the one that is simplest, because
+simple classes are almost always best. Start small and simple, and you can
+expand the class interface when you understand it better, but as time goes on,
+it&#8217;s difficult to remove elements from a
+class.</FONT><A NAME="_Toc472654695"></A></OL><A NAME="Heading37"></A><FONT FACE = "Verdana"><H3 ALIGN="LEFT">
+Phase 3: Build the core</H3></FONT>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">This is the initial conversion from the
+rough design into a compiling and executing body of code that can be tested, and
+especially that will prove or disprove your architecture. This is not a one-pass
+process, but rather the beginning of a series of steps that will iteratively
+build the system, as you&#8217;ll see in phase 4.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Your goal is to find the core of your
+system architecture that needs to be implemented in order to generate a running
+system, no matter how incomplete that system is in this initial pass.
+You&#8217;re creating a framework that you can build upon with further
+iterations. You&#8217;re also performing the first of many system integrations
+and tests, and giving the stakeholders feedback about what their system will
+look like and how it is progressing. Ideally, you are also exposing some of the
+critical risks. You&#8217;ll probably also discover changes and improvements
+that can be made to your original architecture &#8211; things you would not have
+learned without implementing the system.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Part of building the system is the
+reality check that you get from testing against your requirements analysis and
+system specification (in whatever form they exist). Make sure that your tests
+verify the requirements and use cases. When the core of the system is stable,
+you&#8217;re ready to move on and add more
+functionality.</FONT><A NAME="_Toc408018414"></A><A NAME="_Toc472654696"></A><BR></P></DIV>
+<A NAME="Heading38"></A><FONT FACE = "Verdana"><H3 ALIGN="LEFT">
+Phase 4: Iterate the <A NAME="Index199"></A>use cases</H3></FONT>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Once the core framework is running, each
+feature set you add is a small project in itself. You add a feature set during
+an <A NAME="Index200"></A><I>iteration</I>, a reasonably short period of
+development.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">How big is an iteration? Ideally, each
+iteration lasts one to three weeks (this can vary based on the implementation
+language). At the end of that period, you have an integrated, tested system with
+more functionality than it had before. But what&#8217;s particularly interesting
+is the basis for the iteration: a single use case. Each use case is a package of
+related functionality that you build into the system all at once, during one
+iteration. Not only does this give you a better idea of what the
+<A NAME="Index201"></A><A NAME="Index202"></A>scope of a use case should be, but
+it also gives more validation to the idea of a use case, since the concept
+isn&#8217;t discarded after analysis and design, but instead it is a fundamental
+unit of development throughout the software-building process. </FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">You stop iterating when you achieve
+target functionality or an external deadline arrives and the customer can be
+satisfied with the current version. (Remember, software is a subscription
+business.) Because the process is iterative, you have many opportunities to ship
+a product instead of a single endpoint; open-source projects work exclusively in
+an iterative, high-feedback environment, which is precisely what makes them
+successful.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">An iterative development process is
+valuable for many reasons. You can reveal and resolve critical risks early, the
+customers have ample opportunity to change their minds, programmer satisfaction
+is higher, and the project can be steered with more precision. But an additional
+important benefit is the feedback to the stakeholders, who can see by the
+current state of the product exactly where everything lies. This may reduce or
+eliminate the need for mind-numbing status meetings and increase the confidence
+and support from the stakeholders.</FONT><A NAME="_Toc472654697"></A><BR></P></DIV>
+<A NAME="Heading39"></A><FONT FACE = "Verdana"><H3 ALIGN="LEFT">
+Phase 5: <A NAME="Index203"></A>Evolution</H3></FONT>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">This is the point in the development
+cycle that has traditionally been called
+&#8220;<A NAME="Index204"></A><A NAME="Index205"></A>maintenance,&#8221; a
+catch-all term that can mean everything from &#8220;getting it to work the way
+it was really supposed to in the first place&#8221; to &#8220;adding features
+that the customer forgot to mention&#8221; to the more traditional &#8220;fixing
+the bugs that show up&#8221; and &#8220;adding new features as the need
+arises.&#8221; So many misconceptions have been applied to the term
+&#8220;maintenance&#8221; that it has taken on a slightly deceiving quality,
+partly because it suggests that you&#8217;ve actually built a pristine program
+and all you need to do is change parts, oil it, and keep it from rusting.
+Perhaps there&#8217;s a better term to describe what&#8217;s going
+on.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">I&#8217;ll use the term
+<I>evolution</I></FONT><A NAME="fnB16" HREF="#fn16">[16]</A><A NAME="Index206"></A><A NAME="Index207"></A><FONT FACE="Georgia">.
+That is, &#8220;You won&#8217;t get it right the first time, so give yourself
+the latitude to learn and to go back and make changes.&#8221; You might need to
+make a lot of changes as you learn and understand the problem more deeply. The
+elegance you&#8217;ll produce if you evolve until you get it right will pay off,
+both in the short and the long term. Evolution is where your program goes from
+good to great, and where those issues that you didn&#8217;t really understand in
+the first pass become clear. It&#8217;s also where your classes can evolve from
+single-project usage to reusable resources.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">What it means to &#8220;get it
+right&#8221; isn&#8217;t just that the program works according to the
+requirements and the use cases. It also means that the internal structure of the
+code makes sense to you, and feels like it fits together well, with no awkward
+syntax, oversized objects, or ungainly exposed bits of code. In addition, you
+must have some sense that the program structure will survive the changes that it
+will inevitably go through during its lifetime, and that those changes can be
+made easily and cleanly. This is no small feat. You must not only understand
+what you&#8217;re building, but also how the program will evolve (what I call
+the <A NAME="Index208"></A><I>vector of
+change</I></FONT><A NAME="fnB17" HREF="#fn17">[17]</A><FONT FACE="Georgia">).
+Fortunately, object-oriented programming languages are particularly adept at
+supporting this kind of continuing modification &#8211; the boundaries created
+by the objects are what tend to keep the structure from breaking down. They also
+allow you to make changes &#8211; ones that would seem drastic in a procedural
+program &#8211; without causing earthquakes throughout your code. In fact,
+support for evolution might be the most important benefit of
+OOP.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">With evolution, you create something that
+at least approximates what you think you&#8217;re building, and then you kick
+the tires, compare it to your requirements and see where it falls short. Then
+you can go back and fix it by redesigning and re-implementing the portions of
+the program that didn&#8217;t work
+right</FONT><A NAME="fnB18" HREF="#fn18">[18]</A><A NAME="Index209"></A><A NAME="Index210"></A><FONT FACE="Georgia">.
+You might actually need to solve the problem, or an aspect of the problem,
+several times before you hit on the right solution. (A study of
+<A NAME="Index211"></A><A NAME="Index212"></A><I>Design Patterns</I>, described
+in Volume 2, is usually helpful here.)</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Evolution also occurs when you build a
+system, see that it matches your requirements, and then discover it wasn&#8217;t
+actually what you wanted. When you see the system in operation, you find that
+you really wanted to solve a different problem. If you think this kind of
+evolution is going to happen, then you owe it to yourself to build your first
+version as quickly as possible so you can find out if it is indeed what you
+want.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Perhaps the most important thing to
+remember is that by default &#8211; by definition, really &#8211; if you modify
+a class then its super- and subclasses will still function. You need not fear
+modification (especially if you have a built-in set of unit tests to verify the
+correctness of your modifications). Modification won&#8217;t necessarily break
+the program, and any change in the outcome will be limited to subclasses and/or
+specific collaborators of the class you
+change.</FONT><A NAME="_Toc408018415"></A><A NAME="_Toc472654698"></A><BR></P></DIV>
+<A NAME="Heading40"></A><FONT FACE = "Verdana"><H3 ALIGN="LEFT">
+Plans pay off</H3></FONT>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Of course you wouldn&#8217;t build a
+house without a lot of carefully-drawn plans. If you build a deck or a dog
+house, your plans won&#8217;t be so elaborate but you&#8217;ll probably still
+start with some kind of sketches to guide you on your way. Software development
+has gone to extremes. For a long time, people didn&#8217;t have much structure
+in their development, but then big projects began failing. In reaction, we ended
+up with methodologies that had an intimidating amount of structure and detail,
+primarily intended for those big projects. These methodologies were too scary to
+use &#8211; it looked like you&#8217;d spend all your time writing documents and
+no time programming. (This was often the case.) I hope that what I&#8217;ve
+shown you here suggests a middle path &#8211; a sliding scale. Use an approach
+that fits your needs (and your personality). No matter how minimal you choose to
+make it, <I>some</I> kind of plan will make a big improvement in your project as
+opposed to no plan at all. Remember that, by most estimates, over 50 percent of
+projects fail (some estimates go up to 70 percent!).<A NAME="_Toc312373783"></A>
+</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">By following a plan &#8211; preferably
+one that is simple and brief &#8211; and coming up with design structure before
+coding, you&#8217;ll discover that things fall together far more easily than if
+you dive in and start hacking, and you&#8217;ll also realize a great deal of
+satisfaction. It&#8217;s my experience that coming up with an elegant solution
+is deeply satisfying at an entirely different level; it feels closer to art than
+technology. And <A NAME="Index213"></A>elegance always pays off; it&#8217;s not
+a frivolous pursuit. Not only does it give you a program that&#8217;s easier to
+build and debug, but it&#8217;s also easier to understand and maintain, and
+that&#8217;s where the financial value
+lies.</FONT><A NAME="_Toc312373787"></A><A NAME="_Toc472654699"></A><BR></P></DIV>
+<A NAME="Heading41"></A><FONT FACE = "Verdana"><H2 ALIGN="LEFT">
+Extreme programming</H2></FONT>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">I have studied analysis and design
+techniques, on and off, since I was in graduate school. The concept of
+<A NAME="Index214"></A><A NAME="Index215"></A><A NAME="Index216"></A><I>Extreme
+Programming</I> (XP) is the most radical, and delightful, that I&#8217;ve seen.
+You can find it chronicled in <I>Extreme Programming Explained</I> by Kent Beck
+(Addison-Wesley 2000) and on the Web at
+<I>www.xprogramming.com</I>.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">XP is both a philosophy about programming
+work and a set of guidelines to do it. Some of these guidelines are reflected in
+other recent methodologies, but the two most important and distinct
+contributions, in my opinion, are &#8220;write tests first&#8221; and
+&#8220;pair programming.&#8221; Although he argues strongly for the whole
+process, Beck points out that if you adopt only these two practices you&#8217;ll
+greatly improve your productivity and
+reliability.</FONT><A NAME="_Toc472654700"></A><BR></P></DIV>
+<A NAME="Heading42"></A><FONT FACE = "Verdana"><H3 ALIGN="LEFT">
+Write tests first<BR><A NAME="Index217"></A></H3></FONT>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Testing has traditionally been relegated
+to the last part of a project, after you&#8217;ve &#8220;gotten everything
+working, but just to be sure.&#8221; It&#8217;s implicitly had a low priority,
+and people who specialize in it have not been given a lot of status and have
+often even been cordoned off in a basement, away from the &#8220;real
+programmers.&#8221; Test teams have responded in kind, going so far as to wear
+black clothing and cackling with glee whenever they broke something (to be
+honest, I&#8217;ve had this feeling myself when breaking C++
+compilers).</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">XP completely revolutionizes the concept
+of testing by giving it equal (or even greater) priority than the code. In fact,
+you write the tests <I>before</I> you write the code that&#8217;s being tested,
+and the tests stay with the code forever. The tests must be executed
+successfully every time you do an integration of the project (which is often,
+sometimes more than once a day).</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Writing tests first has two extremely
+important effects.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">First, it forces a clear definition of
+the <A NAME="Index218"></A><A NAME="Index219"></A>interface of a class.
+I&#8217;ve often suggested that people &#8220;imagine the perfect class to solve
+a particular problem&#8221; as a tool when trying to design the system. The XP
+testing strategy goes further than that &#8211; it specifies exactly what the
+class must look like, to the consumer of that class, and exactly how the class
+must behave. In no uncertain terms. You can write all the prose, or create all
+the diagrams you want describing how a class should behave and what it looks
+like, but nothing is as real as a set of tests. The former is a wish list, but
+the tests are a contract that is enforced by the compiler and the running
+program. It&#8217;s hard to imagine a more concrete description of a class than
+the tests.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">While creating the tests, you are forced
+to completely think out the class and will often discover needed functionality
+that might be missed during the thought experiments of UML diagrams, CRC cards,
+use cases, etc.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><A NAME="Index220"></A><FONT FACE="Georgia">The second
+important effect of writing the tests first comes from running the tests every
+time you do a build of your software. This activity gives you the other half of
+the testing that&#8217;s performed by the compiler. If you look at the evolution
+of programming languages from this perspective, you&#8217;ll see that the real
+improvements in the technology have actually revolved around testing. Assembly
+language checked only for syntax, but C imposed some semantic restrictions, and
+these prevented you from making certain types of mistakes. OOP languages impose
+even more semantic restrictions, which if you think about it are actually forms
+of testing. &#8220;Is this data type being used properly? Is this function being
+called properly?&#8221; are the kinds of tests that are being performed by the
+compiler or run-time system. We&#8217;ve seen the results of having these tests
+built into the language: people have been able to write more complex systems,
+and get them to work, with much less time and effort. I&#8217;ve puzzled over
+why this is, but now I realize it&#8217;s the tests: you do something wrong, and
+the safety net of the built-in tests tells you there&#8217;s a problem and
+points you to where it is.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">But the built-in testing afforded by the
+design of the language can only go so far. At some point, <I>you</I> must step
+in and add the rest of the tests that produce a full suite (in cooperation with
+the compiler and run-time system) that verifies all of your program. And, just
+like having a compiler watching over your shoulder, wouldn&#8217;t you want
+these tests helping you right from the beginning? That&#8217;s why you write
+them first, and run them automatically with every build of your system. Your
+tests become an extension of the safety net provided by the
+language.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">One of the things that I&#8217;ve
+discovered about the use of more and more powerful programming languages is that
+I am emboldened to try more brazen experiments, because I know that the language
+will keep me from wasting my time chasing bugs. The XP test scheme does the same
+thing for your entire project. Because you know your tests will always catch any
+problems that you introduce (and you regularly add any new tests as you think of
+them), you can make big changes when you need to without worrying that
+you&#8217;ll throw the whole project into complete disarray. This is incredibly
+powerful.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><A NAME="Index221"></A><A NAME="Index222"></A><A NAME="_Toc472654701"></A><BR></P></DIV>
+<A NAME="Heading43"></A><FONT FACE = "Verdana"><H3 ALIGN="LEFT">
+Pair programming</H3></FONT>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Pair programming goes against the rugged
+individualism that we&#8217;ve been indoctrinated into from the beginning,
+through school (where we succeed or fail on our own, and working with our
+neighbors is considered &#8220;cheating&#8221;) and media, especially Hollywood
+movies in which the hero is usually fighting against mindless
+conformity</FONT><A NAME="fnB19" HREF="#fn19">[19]</A><FONT FACE="Georgia">.
+Programmers, too, are considered paragons of individuality &#8211; &#8220;cowboy
+coders&#8221; as Larry Constantine likes to say. And yet XP, which is itself
+battling against conventional thinking, says that code should be written with
+two people per workstation. And that this should be done in an area with a group
+of workstations, without the barriers that the facilities design people are so
+fond of. In fact, Beck says that the first task of converting to XP is to arrive
+with screwdrivers and Allen wrenches and take apart everything that gets in the
+way.</FONT><A NAME="fnB20" HREF="#fn20">[20]</A><FONT FACE="Georgia"> (This will
+require a manager who can deflect the ire of the facilities
+department.)</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">The value of pair programming is that one
+person is actually doing the coding while the other is thinking about it. The
+thinker keeps the big picture in mind, not only the picture of the problem at
+hand, but the guidelines of XP. If two people are working, it&#8217;s less
+likely that one of them will get away with saying, &#8220;I don&#8217;t want to
+write the tests first,&#8221; for example. And if the coder gets stuck, they can
+swap places. If both of them get stuck, their musings may be overheard by
+someone else in the work area who can contribute. Working in pairs keeps things
+flowing and on track. Probably more important, it makes programming a lot more
+social and fun.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">I&#8217;ve begun using pair programming
+during the exercise periods in some of my seminars and it seems to significantly
+improve everyone&#8217;s
+experience.</FONT><A NAME="_Toc472654702"></A><BR></P></DIV>
+<A NAME="Heading44"></A><FONT FACE = "Verdana"><H2 ALIGN="LEFT">
+Why C++ succeeds</H2></FONT>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Part of the reason
+<A NAME="Index223"></A>C++ has been so successful is that the goal was not just
+to turn C into an OOP language (although it started that way), but also to solve
+many other problems facing developers today, especially those who have large
+investments in C. Traditionally, OOP languages have suffered from the attitude
+that you should abandon everything you know and start from scratch with a new
+set of concepts and a new syntax, arguing that it&#8217;s better in the long run
+to lose all the old baggage that comes with procedural languages. This may be
+true, in the long run. But in the short run, a lot of that baggage was valuable.
+The most valuable elements may not be the existing code base (which, given
+adequate tools, could be translated), but instead the existing <I>mind base</I>.
+If you&#8217;re a functioning C programmer and must drop everything you know
+about C in order to adopt a new language, you immediately become much less
+productive for many months, until your mind fits around the new paradigm.
+Whereas if you can leverage off of your existing C knowledge and expand on it,
+you can continue to be productive with what you already know while moving into
+the world of object-oriented programming. As everyone has his or her own mental
+model of programming, this move is messy enough as it is without the added
+expense of starting with a new language model from square one. So the reason for
+the success of C++, in a nutshell, is economic: It still costs to move to OOP,
+but C++ may cost
+less</FONT><A NAME="fnB21" HREF="#fn21">[21]</A><A NAME="Index224"></A><FONT FACE="Georgia">.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">The goal of C++ is improved productivity.
+This productivity comes in many ways, but the language is designed to aid you as
+much as possible, while hindering you as little as possible with arbitrary rules
+or any requirement that you use a particular set of features. C++ is designed to
+be practical; C++ language design decisions were based on providing the maximum
+benefits to the programmer (at least, from the world view of
+C).</FONT><A NAME="_Toc312373788"></A><A NAME="_Toc472654703"></A><BR></P></DIV>
+<A NAME="Heading45"></A><FONT FACE = "Verdana"><H3 ALIGN="LEFT">
+A better C</H3></FONT>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">You get an instant win even if you
+continue to write C code because C++ has closed many holes in the C language and
+provides better type checking and compile-time analysis. You&#8217;re forced to
+declare functions so that the compiler can check their use. The need for the
+preprocessor has virtually been eliminated for value substitution and macros,
+which removes a set of difficult-to-find bugs. C++ has a feature called
+<I>references</I> that allows more convenient handling of addresses for function
+arguments and return values. The handling of names is improved through a feature
+called <I>function overloading</I>, which allows you to use the same name for
+different functions. A feature called <I>namespaces </I>also improves the
+control of names. There are numerous smaller features that improve the safety of
+C.</FONT><A NAME="_Toc312373789"></A><A NAME="_Toc472654704"></A><BR></P></DIV>
+<A NAME="Heading46"></A><FONT FACE = "Verdana"><H3 ALIGN="LEFT">
+You&#8217;re already on the learning curve</H3></FONT>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">The problem with learning a new language
+is productivity. No company can afford to suddenly lose a productive software
+engineer because he or she is learning a new language. C++ is an extension to C,
+not a complete new syntax and programming model. It allows you to continue
+creating useful code, applying the features gradually as you learn and
+understand them. This may be one of the most important reasons for the success
+of C++.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">In addition, all of your existing C code
+is still viable in C++, but because the C++ compiler is pickier, you&#8217;ll
+often find hidden C errors when recompiling the code in
+C++.</FONT><A NAME="_Toc312373790"></A><A NAME="_Toc472654705"></A><BR></P></DIV>
+<A NAME="Heading47"></A><FONT FACE = "Verdana"><H3 ALIGN="LEFT">
+Efficiency</H3></FONT>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Sometimes it is appropriate to trade
+execution speed for programmer productivity. A financial model, for example, may
+be useful for only a short period of time, so it&#8217;s more important to
+create the model rapidly than to execute it rapidly. However, most applications
+require some degree of efficiency, so C++ always errs on the side of greater
+<A NAME="Index225"></A><A NAME="Index226"></A>efficiency. Because C programmers
+tend to be very efficiency-conscious, this is also a way to ensure that they
+won&#8217;t be able to argue that the language is too fat and slow. A number of
+features in C++ are intended to allow you to tune for performance when the
+generated code isn&#8217;t efficient enough.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Not only do you have the same low-level
+control as in C (and the ability to directly write assembly language within a
+C++ program), but anecdotal evidence suggests that the program speed for an
+object-oriented C++ program tends to be within &#177;10% of a program written in
+C, and often much
+closer</FONT><A NAME="fnB22" HREF="#fn22">[22]</A><A NAME="Index227"></A><FONT FACE="Georgia">.
+The design produced for an OOP program may actually be more efficient than the C
+counterpart.</FONT><A NAME="_Toc312373791"></A><A NAME="_Toc472654706"></A><BR></P></DIV>
+<A NAME="Heading48"></A><FONT FACE = "Verdana"><H3 ALIGN="LEFT">
+Systems are easier <BR>to express and understand</H3></FONT>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Classes designed to fit the problem tend
+to express it better. This means that when you write the code, you&#8217;re
+describing your solution in the terms of the problem space (&#8220;Put the
+grommet in the bin&#8221;) rather than the terms of the computer, which is the
+solution space (&#8220;Set the bit in the chip that means that the relay will
+close&#8221;). You deal with higher-level concepts and can do much more with a
+single line of code.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">The other benefit of this ease of
+expression is maintenance, which (if reports can be believed) takes a huge
+portion of the cost over a program&#8217;s lifetime. If a program is easier to
+understand, then it&#8217;s easier to maintain. This can also reduce the cost of
+creating and maintaining the
+documentation.</FONT><A NAME="_Toc312373792"></A><A NAME="_Toc472654707"></A><BR></P></DIV>
+<A NAME="Heading49"></A><FONT FACE = "Verdana"><H3 ALIGN="LEFT">
+Maximal leverage with libraries</H3></FONT>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">The fastest way to create a program is to
+use code that&#8217;s already written: a library. A major goal in C++ is to make
+library use easier. This is accomplished by casting libraries into new data
+types (classes), so that bringing in a library means adding new types to the
+language. Because the C++ compiler takes care of how the library is used &#8211;
+guaranteeing proper initialization and cleanup, and ensuring that functions are
+called properly &#8211; you can focus on what you want the library to do, not
+how you have to do it. </FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Because names can be sequestered to
+portions of your program via C++ namespaces, you can use as many libraries as
+you want without the kinds of name clashes you&#8217;d run into with
+C.</FONT><A NAME="_Toc472654708"></A><BR></P></DIV>
+<A NAME="Heading50"></A><FONT FACE = "Verdana"><H3 ALIGN="LEFT">
+Source-code reuse with templates</H3></FONT>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">There is a significant class of types
+that require source-code modification in order to reuse them effectively. The
+<I>template</I> feature in C++ performs the source code modification
+automatically, making it an especially powerful tool for reusing library code. A
+type that you design using templates will work effortlessly with many other
+types. Templates are especially nice because they hide the complexity of this
+kind of code reuse from the client
+programmer.</FONT><A NAME="_Toc312373793"></A><A NAME="_Toc472654709"></A><BR></P></DIV>
+<A NAME="Heading51"></A><FONT FACE = "Verdana"><H3 ALIGN="LEFT">
+Error handling</H3></FONT>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Error handling in C is a notorious
+problem, and one that is often ignored &#8211; finger-crossing is usually
+involved. If you&#8217;re building a large, complex program, there&#8217;s
+nothing worse than having an error buried somewhere with no clue as to where it
+came from. C++ <I>exception handling</I> (introduced in this Volume, and fully
+covered in Volume 2, which is downloadable from <I>www.BruceEckel.com</I>) is a
+way to guarantee that an error is noticed and that something happens as a
+result.</FONT><A NAME="_Toc312373794"></A><A NAME="_Toc472654710"></A><BR></P></DIV>
+<A NAME="Heading52"></A><FONT FACE = "Verdana"><H3 ALIGN="LEFT">
+Programming in the large</H3></FONT>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Many traditional languages have built-in
+limitations to program size and complexity. BASIC<A NAME="Index228"></A>, for
+example, can be great for pulling together quick solutions for certain classes
+of problems, but if the program gets more than a few pages long or ventures out
+of the normal problem domain of that language, it&#8217;s like trying to swim
+through an ever-more viscous fluid. C, too, has these limitations. For example,
+when a program gets beyond perhaps 50,000 lines of code,
+<A NAME="Index229"></A><A NAME="Index230"></A>name collisions start to become a
+problem &#8211; effectively, you run out of function and variable names. Another
+particularly bad problem is the little holes in the C language &#8211; errors
+buried in a large program can be extremely difficult to find.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">There&#8217;s no clear line that tells
+you when your language is failing you, and even if there were, you&#8217;d
+ignore it. You don&#8217;t say, &#8220;My BASIC program just got too big;
+I&#8217;ll have to rewrite it in C!&#8221; Instead, you try to shoehorn a few
+more lines in to add that one new feature. So the extra costs come creeping up
+on you.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">C++ is designed to aid
+<A NAME="Index231"></A><I>programming in the large</I>, that is, to erase those
+creeping-complexity boundaries between a small program and a large one. You
+certainly don&#8217;t need to use OOP, templates, namespaces, and exception
+handling when you&#8217;re writing a hello-world style utility program, but
+those features are there when you need them. And the compiler is aggressive
+about ferreting out bug-producing errors for small and large programs
+alike.</FONT><A NAME="_Toc312373815"></A><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><A NAME="Index232"></A><A NAME="_Toc472654711"></A><BR></P></DIV>
+<A NAME="Heading53"></A><FONT FACE = "Verdana"><H2 ALIGN="LEFT">
+Strategies for transition</H2></FONT>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">If you buy into OOP, your next question
+is probably, &#8220;How can I get my manager/colleagues/department/peers to
+start using objects?&#8221; Think about how you &#8211; one independent
+programmer &#8211; would go about learning to use a new language and a new
+programming paradigm. You&#8217;ve done it before. First comes education and
+examples; then comes a trial project to give you a feel for the basics without
+doing anything too confusing. Then comes a &#8220;real world&#8221; project that
+actually does something useful. Throughout your first projects you continue your
+education by reading, asking questions of experts, and trading hints with
+friends. This is the approach many experienced programmers suggest for the
+switch from C to C++. Switching an entire company will of course introduce
+certain group dynamics, but it will help at each step to remember how one person
+would do it. </FONT><A NAME="_Toc472654712"></A><BR></P></DIV>
+<A NAME="Heading54"></A><FONT FACE = "Verdana"><H3 ALIGN="LEFT">
+Guidelines</H3></FONT>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Here are some guidelines to consider when
+making the transition to OOP and C++:</FONT><BR></P></DIV>
+<A NAME="Heading55"></A><FONT FACE = "Verdana"><H4 ALIGN="LEFT">
+1. <A NAME="Index233"></A>Training</H4></FONT>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">The first step is some form of education.
+Remember the company&#8217;s investment in plain C code, and try not to throw
+everything into disarray for six to nine months while everyone puzzles over how
+multiple inheritance works. Pick a small group for indoctrination, preferably
+one composed of people who are curious, work well together, and can function as
+their own support network while they&#8217;re learning C++.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">An alternative approach that is sometimes
+suggested is the education of all company levels at once, including overview
+courses for strategic managers as well as design and programming courses for
+project builders. This is especially good for smaller companies making
+fundamental shifts in the way they do things, or at the division level of larger
+companies. Because the cost is higher, however, some may choose to start with
+project-level training, do a pilot project (possibly with an outside mentor),
+and let the project team become the teachers for the rest of the
+company.</FONT><BR></P></DIV>
+<A NAME="Heading56"></A><FONT FACE = "Verdana"><H4 ALIGN="LEFT">
+2. Low-risk project</H4></FONT>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Try a low-risk project first and allow
+for mistakes. Once you&#8217;ve gained some experience, you can either seed
+other projects from members of this first team or use the team members as an OOP
+technical support staff. This first project may not work right the first time,
+so it should not be mission-critical for the company. It should be simple,
+self-contained, and instructive; this means that it should involve creating
+classes that will be meaningful to the other programmers in the company when
+they get their turn to learn C++.</FONT><BR></P></DIV>
+<A NAME="Heading57"></A><FONT FACE = "Verdana"><H4 ALIGN="LEFT">
+3. Model from success</H4></FONT>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Seek out examples of good object-oriented
+design before starting from scratch. There&#8217;s a good probability that
+someone has solved your problem already, and if they haven&#8217;t solved it
+exactly you can probably apply what you&#8217;ve learned about abstraction to
+modify an existing design to fit your needs. This is the general concept of
+<I>design patterns, </I>covered in Volume
+2.<A NAME="Index234"></A><A NAME="Index235"></A></FONT><BR></P></DIV>
+<A NAME="Heading58"></A><FONT FACE = "Verdana"><H4 ALIGN="LEFT">
+4. Use <A NAME="Index236"></A>existing class libraries</H4></FONT>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">The primary economic motivation for
+switching to OOP is the easy use of existing code in the form of class libraries
+(in particular, the Standard C++ libraries, which are covered in depth in Volume
+two of this book). The shortest application development cycle will result when
+you don&#8217;t have to write anything but <B>main(&#160;)</B>, creating and
+using objects from off-the-shelf libraries. However, some new programmers
+don&#8217;t understand this, are unaware of existing class libraries, or,
+through fascination with the language, desire to write classes that may already
+exist. Your success with OOP and C++ will be optimized if you make an effort to
+seek out and reuse other people&#8217;s code early in the transition
+process.</FONT><BR></P></DIV>
+<A NAME="Heading59"></A><FONT FACE = "Verdana"><H4 ALIGN="LEFT">
+5. Don&#8217;t rewrite existing code in C++</H4></FONT>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Although <I>compiling</I> your C code
+with a C++ compiler usually produces (sometimes tremendous) benefits by
+<A NAME="Index237"></A>finding problems in the old code, it is not usually the
+best use of your time to take existing, functional code and rewrite it in C++.
+(If you must turn it into objects, you can &#8220;wrap&#8221; the C code in C++
+classes.) There are incremental benefits, especially if the code is slated for
+reuse. But chances are you aren&#8217;t going to see the dramatic increases in
+productivity that you hope for in your first few projects unless that project is
+a new one. C++ and OOP shine best when taking a project from concept to
+reality.</FONT><A NAME="_Toc312373817"></A><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><A NAME="Index238"></A><A NAME="Index239"></A><A NAME="_Toc472654713"></A><BR></P></DIV>
+<A NAME="Heading60"></A><FONT FACE = "Verdana"><H3 ALIGN="LEFT">
+Management obstacles</H3></FONT>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">If you&#8217;re a manager, your job is to
+acquire resources for your team, to overcome barriers to your team&#8217;s
+success, and in general to try to provide the most productive and enjoyable
+environment so your team is most likely to perform those miracles that are
+always being asked of you. Moving to C++ falls in all three of these categories,
+and it would be wonderful if it didn&#8217;t cost you anything as well. Although
+moving to C++ may be cheaper &#8211; depending on your
+constraints</FONT><A NAME="fnB23" HREF="#fn23">[23]</A><A NAME="Index240"></A><FONT FACE="Georgia">
+&#8211; than the OOP alternatives for a team of C programmers (and probably for
+programmers in other procedural languages), it isn&#8217;t free, and there are
+obstacles you should be aware of before trying to sell the move to C++ within
+your company and embarking on the move itself.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><A NAME="Index241"></A><A NAME="Index242"></A><BR></P></DIV>
+<A NAME="Heading61"></A><FONT FACE = "Verdana"><H4 ALIGN="LEFT">
+Startup costs</H4></FONT>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">The cost of moving to C++ is more than
+just the acquisition of C++ compilers (the
+<A NAME="Index243"></A><A NAME="Index244"></A>GNU C++ compiler, one of the very
+best, is free). Your medium- and long-term costs will be minimized if you invest
+in training (and possibly mentoring for your first project) and also if you
+identify and purchase class libraries that solve your problem rather than trying
+to build those libraries yourself. These are hard-money costs that must be
+factored into a realistic proposal. In addition, there are the hidden costs in
+loss of productivity while learning a new language and possibly a new
+programming environment. <A NAME="Index245"></A><A NAME="Index246"></A>Training
+and mentoring can certainly minimize these, but team members must overcome their
+own struggles to understand the new technology. During this process they will
+make more mistakes (this is a feature, because acknowledged mistakes are the
+fastest path to learning) and be less productive. Even then, with some types of
+programming problems, the right classes, and the right development environment,
+it&#8217;s possible to be more productive while you&#8217;re learning C++ (even
+considering that you&#8217;re making more mistakes and writing fewer lines of
+code per day) than if you&#8217;d stayed with C.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><A NAME="Index247"></A><BR></P></DIV>
+<A NAME="Heading62"></A><FONT FACE = "Verdana"><H4 ALIGN="LEFT">
+Performance issues</H4></FONT>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">A common question is,
+&#8220;Doesn&#8217;t OOP automatically make my programs a lot bigger and
+slower?&#8221; The answer is, &#8220;It depends.&#8221; Most traditional OOP
+languages were designed with experimentation and rapid prototyping in mind
+rather than lean-and-mean operation. Thus, they virtually guaranteed a
+significant increase in size and decrease in speed. C++, however, is designed
+with production programming in mind. When your focus is on rapid prototyping,
+you can throw together components as fast as possible while ignoring efficiency
+issues. If you&#8217;re using any third party libraries, these are usually
+already optimized by their vendors; in any case it&#8217;s not an issue while
+you&#8217;re in rapid-development mode. When you have a system that you like, if
+it&#8217;s small and fast enough, then you&#8217;re done. If not, you begin
+tuning with a profiling tool, looking first for speedups that can be done with
+simple applications of built-in C++ features. If that doesn&#8217;t help, you
+look for modifications that can be made in the underlying implementation so no
+code that uses a particular class needs to be changed. Only if nothing else
+solves the problem do you need to change the design. The fact that performance
+is so critical in that portion of the design is an indicator that it must be
+part of the primary design criteria. You have the benefit of finding this out
+early using rapid development.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">As mentioned earlier, the number that is
+most often given for the difference in size and speed between C and C++ is
+&#177;10%, and often much closer to par. You might even get a significant
+improvement in size and speed when using C++ rather than C because the design
+you make for C++ could be quite different from the one you&#8217;d make for
+C.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">The evidence for size and speed
+comparisons between C and C++ tends to be anecdotal and is likely to remain so.
+Regardless of the number of people who suggest that a company try the same
+project using C and C++, no company is likely to waste money that way unless
+it&#8217;s very big and interested in such research projects. Even then, it
+seems like the money could be better spent. Almost universally, programmers who
+have moved from C (or some other procedural language) to C++ (or some other OOP
+language) have had the personal experience of a great acceleration in their
+programming productivity, and that&#8217;s the most compelling argument you can
+find.</FONT><BR></P></DIV>
+<A NAME="Heading63"></A><FONT FACE = "Verdana"><H4 ALIGN="LEFT">
+Common design errors</H4></FONT>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">When starting your team into OOP and C++,
+programmers will typically go through a series of common design errors. This
+often happens because of too little feedback from experts during the design and
+implementation of early projects, because no experts have been developed within
+the company and there may be resistance to retaining consultants. It&#8217;s
+easy to feel that you understand OOP too early in the cycle and go off on a bad
+tangent. Something that&#8217;s obvious to someone experienced with the language
+may be a subject of great internal debate for a novice. Much of this trauma can
+be skipped by using an experienced outside expert for
+<A NAME="Index248"></A><A NAME="Index249"></A>training and
+mentoring.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">On the other hand, the fact that it is
+easy to make these design errors points to C++&#8217;s main drawback: its
+<A NAME="Index250"></A>backward compatibility with C (of course, that&#8217;s
+also its main strength). To accomplish the feat of being able to compile C code,
+the language had to make some compromises, which have resulted in a number of
+&#8220;dark corners.&#8221; These are a reality, and comprise much of the
+learning curve for the language. In this book and the subsequent volume (and in
+other books; see Appendix C), I try to reveal most of the pitfalls you are
+likely to encounter when working with C++. You should always be aware that there
+are some holes in the safety
+net.</FONT><A NAME="_Toc312373818"></A><A NAME="_Toc472654714"></A><BR></P></DIV>
+<A NAME="Heading64"></A><FONT FACE = "Verdana"><H2 ALIGN="LEFT">
+Summary</H2></FONT>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">This chapter attempts to give you a feel
+for the broad issues of object-oriented programming and C++, including why OOP
+is different, and why C++ in particular is different, concepts of OOP
+methodologies, and finally the kinds of issues you will encounter when moving
+your own company to OOP and C++.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">OOP and C++ may not be for everyone.
+It&#8217;s important to evaluate your own needs and decide whether C++ will
+optimally satisfy those needs, or if you might be better off with another
+programming system (including the one you&#8217;re currently using). If you know
+that your needs will be very specialized for the foreseeable future and if you
+have specific constraints that may not be satisfied by C++, then you owe it to
+yourself to investigate the
+alternatives</FONT><A NAME="fnB24" HREF="#fn24">[24]</A><A NAME="Index251"></A><A NAME="Index252"></A><FONT FACE="Georgia">.
+Even if you eventually choose C++ as your language, you&#8217;ll at least
+understand what the options were and have a clear vision of why you took that
+direction.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">You know what a procedural program looks
+like: data definitions and function calls. To find the meaning of such a program
+you have to work a little, looking through the function calls and low-level
+concepts to create a model in your mind. This is the reason we need intermediate
+representations when designing procedural programs &#8211; by themselves, these
+programs tend to be confusing because the terms of expression are oriented more
+toward the computer than to the problem you&#8217;re solving.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Because C++ adds many new concepts to the
+C language, your natural assumption may be that the <B>main(&#160;)</B> in a C++
+program will be far more complicated than for the equivalent C program. Here,
+you&#8217;ll be pleasantly surprised: A well-written C++ program is generally
+far simpler and much easier to understand than the equivalent C program. What
+you&#8217;ll see are the definitions of the objects that represent concepts in
+your problem space (rather than the issues of the computer representation) and
+messages sent to those objects to represent the activities in that space. One of
+the delights of object-oriented programming is that, with a well-designed
+program, it&#8217;s easy to understand the code by reading it. Usually
+there&#8217;s a lot less code, as well, because many of your problems will be
+solved by reusing existing library
+code.</FONT><A NAME="_Toc312373819"></A><BR></P></DIV>
+<FONT FACE = "Verdana"><H1 ALIGN="LEFT">
+<A NAME="_Toc472654716"></A></H1></FONT>
+<DIV ALIGN="LEFT"><P><FONT FACE="Verdana"><B></B></FONT><BR></P></DIV>
+<FONT FACE = "Verdana"><H1 ALIGN="LEFT">
+2: Making &amp; Using Objects </H1></FONT>
+<HR><DIV ALIGN="LEFT"><P><A NAME="fn4" HREF="#fnB4">[4]</A><FONT FACE="Georgia" SIZE=2>
+See <I>Multiparadigm Programming in Leda</I> by Timothy Budd (Addison-Wesley
+1995).</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><A NAME="fn5" HREF="#fnB5">[5]</A><FONT FACE="Georgia" SIZE=2>
+You can find an interesting implementation of this problem in Volume 2 of this
+book, available at www.BruceEckel.com.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><A NAME="fn6" HREF="#fnB6">[6]</A><FONT FACE="Georgia" SIZE=2>
+Some people make a distinction, stating that type determines the interface while
+class is a particular implementation of that interface.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><A NAME="fn7" HREF="#fnB7">[7]</A><FONT FACE="Georgia" SIZE=2>
+I&#8217;m indebted to my friend Scott Meyers for this term.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><A NAME="fn8" HREF="#fnB8">[8]</A><FONT FACE="Georgia" SIZE=2>
+This is usually enough detail for most diagrams, and you don&#8217;t need to get
+specific about whether you&#8217;re using aggregation or
+composition.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><A NAME="fn9" HREF="#fnB9">[9]</A><FONT FACE="Georgia" SIZE=2>
+An excellent example of this is <I>UML Distilled</I>, by Martin Fowler
+(Addison-Wesley 2000), which reduces the sometimes-overwhelming UML process to a
+manageable subset.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><A NAME="fn10" HREF="#fnB10">[10]</A><FONT FACE="Georgia" SIZE=2>
+My rule of thumb for estimating such projects: If there&#8217;s more than one
+wild card, don&#8217;t even try to plan how long it&#8217;s going to take or how
+much it will cost until you&#8217;ve created a working prototype. There are too
+many degrees of freedom.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><A NAME="fn11" HREF="#fnB11">[11]</A><FONT FACE="Georgia" SIZE=2>
+Thanks for help from James H Jarrett.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><A NAME="fn12" HREF="#fnB12">[12]</A><FONT FACE="Georgia" SIZE=2>
+More information on use cases can be found in <I>Applying Use Cases</I> by
+Schneider &amp; Winters (Addison-Wesley 1998) and <I>Use Case Driven Object
+Modeling with UML</I> by Rosenberg (Addison-Wesley 1999).</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><A NAME="fn13" HREF="#fnB13">[13]</A><FONT FACE="Georgia" SIZE=2>
+My personal take on this has changed lately. Doubling and adding 10 percent will
+give you a reasonably accurate estimate (assuming there are not too many
+wild-card factors), but you still have to work quite diligently to finish in
+that time. If you want time to really make it elegant and to enjoy yourself in
+the process, the correct multiplier is more like three or four times, I
+believe.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><A NAME="fn14" HREF="#fnB14">[14]</A><FONT FACE="Georgia" SIZE=2>
+For starters, I recommend the aforementioned <I>UML
+Distilled</I>.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><A NAME="fn15" HREF="#fnB15">[15]</A><FONT FACE="Georgia" SIZE=2>
+Python (www.Python.org) is often used as &#8220;executable
+pseudocode.&#8221;</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><A NAME="fn16" HREF="#fnB16">[16]</A><FONT FACE="Georgia" SIZE=2>
+At least one aspect of evolution is covered in Martin Fowler&#8217;s book
+<I>Refactoring: improving the design of existing code</I> (Addison-Wesley 1999).
+Be forewarned that this book uses Java examples exclusively.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><A NAME="fn17" HREF="#fnB17">[17]</A><FONT FACE="Georgia" SIZE=2>
+This term is explored in the <I>Design Patterns</I> chapter in Volume
+2.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><A NAME="fn18" HREF="#fnB18">[18]</A><FONT FACE="Georgia" SIZE=2>
+This is something like &#8220;rapid prototyping,&#8221; where you were supposed
+to build a quick-and-dirty version so that you could learn about the system, and
+then throw away your prototype and build it right. The trouble with rapid
+prototyping is that people didn&#8217;t throw away the prototype, but instead
+built upon it. Combined with the lack of structure in procedural programming,
+this often produced messy systems that were expensive to
+maintain.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><A NAME="fn19" HREF="#fnB19">[19]</A><FONT FACE="Georgia" SIZE=2>
+Although this may be a more American perspective, the stories of Hollywood reach
+everywhere.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><A NAME="fn20" HREF="#fnB20">[20]</A><FONT FACE="Georgia" SIZE=2>
+Including (especially) the PA system. I once worked in a company that insisted
+on broadcasting every phone call that arrived for every executive, and it
+constantly interrupted our productivity (but the managers couldn&#8217;t begin
+to conceive of stifling such an important service as the PA). Finally, when no
+one was looking I started snipping speaker wires.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><A NAME="fn21" HREF="#fnB21">[21]</A><FONT FACE="Georgia" SIZE=2>
+I say &#8220;may&#8221; because, due to the complexity of C++, it might actually
+be cheaper to move to Java. But the decision of which language to choose has
+many factors, and in this book I&#8217;ll assume that you&#8217;ve chosen
+C++.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><A NAME="fn22" HREF="#fnB22">[22]</A><FONT FACE="Georgia" SIZE=2>
+However, look at Dan Saks&#8217; columns in the <I>C/C++ User&#8217;s
+Journal</I> for some important investigations into C++ library
+performance.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><A NAME="fn23" HREF="#fnB23">[23]</A><FONT FACE="Georgia" SIZE=2>
+Because of its productivity improvements, the Java language should also be
+considered here.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><A NAME="fn24" HREF="#fnB24">[24]</A><FONT FACE="Georgia" SIZE=2>
+In particular, I recommend looking at Java (http://java.sun.com) and Python
+(http://www.Python.org).</FONT><BR></P></DIV>
+
+<DIV ALIGN="CENTER">
+    <FONT FACE="Verdana" size = "-1">
+     [ <a href="Preface.html">Previous Chapter</a> ] 
+    [ <a href="Contents.html">Table of Contents</a> ] 
+    [ <a href="DocIndex.html">Index</a> ]
+     [ <a href="Chapter02.html">Next Chapter</a> ] 
+    </FONT>
+    <BR>
+ Last Update:09/27/2001</P></DIV>
+
+</BODY>
+
+</HTML>

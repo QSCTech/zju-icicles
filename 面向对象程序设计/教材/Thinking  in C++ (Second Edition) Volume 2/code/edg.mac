@@ -1,0 +1,5 @@
+CPP = $(SXLCMD)
+CPPFLAGS = \dinkum\sxl\lib\sxl.lib
+OFLAGS = -c
+EXEFLAG = -o
+OBJEXT = o

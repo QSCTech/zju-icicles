@@ -1,0 +1,2413 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<HTML>
+<!--
+This document was converted from RTF source: 
+By rtftohtml 4.19
+See http://www.sunpack.com/RTF
+Filename:C:\TEMP\TicV2\html\TicV2.rtf
+Application Directory:C:\TOOLS\RTF2HTML\
+Subject:
+Author:Bruce Eckel
+Operator:Bruce Eckel
+Document Comments:
+Version Comments:
+Comments:
+Keywords:
+Translation Date:08/19/2001
+Translation Time:14:24:53
+Translation Platform:Win32
+Number of Output files:19
+This File:C:\TEMP\TicV2\html\Chap04.htm
+SplitDepth=1
+SkipNavPanel=1
+SkipLeadingToc=1
+SkipTrailingToc=1
+GenContents=1
+GenFrames=1
+GenIndex=1
+-->
+<HEAD lang="en"><META http-equiv="Content-Type" content="text/html">
+<TITLE>4: Strings in Depth</TITLE>
+</HEAD>
+
+<BODY  BGCOLOR="#FFFFFF"><DIV ALIGN="CENTER">
+  <a href="http://www.MindView.net">
+  <img src="mindview.gif" alt="MindView Inc." BORDER = "0"></a>
+  <CENTER>
+    <FONT FACE="Verdana, Tahoma, Arial, Helvetica, Sans" size = "-1">
+    [ <a href="README.txt">Viewing Hints</a> ]
+    [ <a href="RevisionHistory.htm">Revision History</a> ]
+    [ <a href="http://www.mindview.net/Books/TICPP/ThinkingInCPP2e.html">Book Home Page</a> ]
+    [ <a href="http://www.mindview.net/Etc/MailingList.html">Free Newsletter</a> ] <br>
+    [ <a href="http://www.mindview.net/Seminars">Seminars</a> ]
+    [ <a href="http://www.mindview.net/CDs">Seminars on CD ROM</a> ]
+    [ <a href="http://www.mindview.net/Services">Consulting</a> ]
+    </FONT>
+  <H2><FONT FACE="Verdana, Tahoma, Arial, Helvetica, Sans">
+  Thinking in C++, 2nd edition, Volume 2<br>
+  <small>Revision 4.0</small></FONT></H2>
+  <H3><FONT FACE="Verdana, Tahoma, Arial, Helvetica, Sans">
+  by Bruce Eckel &amp; Chuck Allison<br>&copy;2001 MindView, Inc.</FONT></H3>
+  
+    <FONT FACE="Verdana, Tahoma, Arial, Helvetica, Sans" size = "-1">
+     [ <a href="Part2.htm">Previous Chapter</a> ] 
+    
+    [ <a href="SimpCont.htm">Short TOC</a> ] 
+    [ <a href="Contents.htm">Table of Contents</a> ] 
+  
+        [ <a href="DocIdx.htm">Index</a> ]
+        
+     [ <a href="Chap05.htm">Next Chapter</a> ] 
+    </FONT>
+    
+  </CENTER>
+  </P></DIV><A NAME="_Toc519041924"></A><A NAME="Heading83"></A><FONT FACE = "Verdana, Tahoma, Arial, Helvetica, Sans"><H1 ALIGN="LEFT">
+4: Strings in Depth</H1></FONT>
+<DIV ALIGN="LEFT"><P><FONT FACE="Verdana" SIZE=4><a NAME="TIC2V2_CHAPTER4_I1"></a>
+</FONT><A NAME="fnB8" HREF="#fn8">[8]</A><FONT FACE="Verdana" SIZE=4>One
+of the biggest time-wasters in C is character arrays: keeping track of the
+difference between static quoted strings and arrays created on the stack and the
+heap, and the fact that sometimes you&#8217;re passing around a <B>char*</B> and
+sometimes you must copy the whole
+array.</FONT><A NAME="StringsChapter"></A><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">(This is the general problem of
+<I>shallow copy</I> vs. <I>deep copy</I>.) Especially because string
+manipulation is so common, character arrays are a great source of
+misunderstandings and
+bugs.
+[&nbsp;<a HREF="mailto:cda@freshsources.com?subject=[TICV2] TIC2V2_CHAPTER4_I1">Comment</a>&nbsp;]
+
+<a NAME="TIC2V2_CHAPTER4_I2"></a>
+</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Despite this, creating string classes
+remained a common exercise for beginning C++ programmers for many years. The
+Standard C++ library <B>string</B> class solves the problem of character array
+manipulation once and for all<B>,</B> keeping track of memory even during
+assignments and copy-constructions. You simply don&#8217;t need to think about
+it.
+[&nbsp;<a HREF="mailto:cda@freshsources.com?subject=[TICV2] TIC2V2_CHAPTER4_I2">Comment</a>&nbsp;]
+
+<a NAME="TIC2V2_CHAPTER4_I3"></a>
+</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">This chapter examines the Standard C++
+<B>string</B> class, beginning with a look at what constitutes a C++ string and
+how the C++ version differs from a traditional C character array.  You&#8217;ll
+learn about operations and manipulations using <B>string</B> objects, and see
+how C++ <B>string</B>s accommodate variation in character sets and string data
+conversion.
+[&nbsp;<a HREF="mailto:cda@freshsources.com?subject=[TICV2] TIC2V2_CHAPTER4_I3">Comment</a>&nbsp;]
+
+<a NAME="TIC2V2_CHAPTER4_I4"></a>
+</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Handling text is perhaps one of the
+oldest of all programming applications, so it&#8217;s not surprising that the
+C++ <B>string</B> draws heavily on the ideas and terminology that have long been
+used for this purpose in C and other languages. As you begin to acquaint
+yourself with C++ <B>string</B>s this fact should be reassuring, in the respect
+that no matter what programming idiom you choose, there are really only about
+three things you can do with a <B>string</B>: create or modify the sequence of
+characters stored in the <B>string</B>, detect the presence or absence of
+elements within the <B>string</B>, and translate between various schemes for
+representing <B>string</B>
+characters.
+[&nbsp;<a HREF="mailto:cda@freshsources.com?subject=[TICV2] TIC2V2_CHAPTER4_I4">Comment</a>&nbsp;]
+
+<a NAME="TIC2V2_CHAPTER4_I5"></a>
+</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">You&#8217;ll see how each of these jobs
+is accomplished using C++ <B>string</B>
+objects.
+[&nbsp;<a HREF="mailto:cda@freshsources.com?subject=[TICV2] TIC2V2_CHAPTER4_I5">Comment</a>&nbsp;]
+
+<a NAME="TIC2V2_CHAPTER4_I6"></a>
+</FONT><A NAME="_Toc519041925"></A><BR></P></DIV>
+<A NAME="Heading84"></A><FONT FACE = "Verdana, Tahoma, Arial, Helvetica, Sans"><H2 ALIGN="LEFT">
+What&#8217;s in a string</H2></FONT>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">In C, a string is simply an array of
+characters that always includes a binary zero (often called the <I>null
+terminator</I>) as its final array element. There are two significant
+differences between C++ <B>string</B>s and their C progenitors. First, C++
+<B>string</B> objects associate the array of characters which constitute the
+<B>string</B> with methods useful for managing and operating on it. A
+<B>string</B> also contains certain &#8220;housekeeping&#8221; information about
+the size and storage location of its data. Specifically, a C++ <B>string</B>
+object knows its starting location in memory, its content, its length in
+characters, and the length in characters to which it can grow before the
+<B>string</B> object must resize its internal data buffer. This gives rise to
+the second big difference between C <B>char</B> arrays and C++ <B>string</B>s.
+C++ <B>string</B>s do not include a null terminator, nor do the C++
+<B>string</B> handling member functions rely on the existence of a null
+terminator to perform their jobs. C++ <B>string</B>s greatly reduce the
+likelihood of making three of the most common and destructive C programming
+errors: overwriting array bounds, trying to access arrays through uninitialized
+or incorrectly valued pointers, and leaving pointers &#8220;dangling&#8221;
+after an array ceases to occupy the storage that was once allocated to
+it.
+[&nbsp;<a HREF="mailto:cda@freshsources.com?subject=[TICV2] TIC2V2_CHAPTER4_I6">Comment</a>&nbsp;]
+
+<a NAME="TIC2V2_CHAPTER4_I7"></a>
+</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">The exact implementation of memory layout
+for the string class is not defined by the C++ Standard. This architecture is
+intended to be flexible enough to allow differing implementations by compiler
+vendors, yet guarantee predictable behavior for users. In particular, the exact
+conditions under which storage is allocated to hold data for a string object are
+not defined. String allocation rules were formulated to allow but not require a
+reference-counted implementation, but whether or not the implementation uses
+reference counting, the semantics must be the same. To put this a bit
+differently, in C, every <B>char</B> array occupies a unique physical region of
+memory. In C++, individual <B>string</B> objects may or may not occupy unique
+physical regions of memory, but if reference counting is used to avoid storing
+duplicate copies of data, the individual objects must look and act as though
+they do exclusively own unique regions of storage. For
+example:
+[&nbsp;<a HREF="mailto:cda@freshsources.com?subject=[TICV2] TIC2V2_CHAPTER4_I7">Comment</a>&nbsp;]
+
+<a NAME="TIC2V2_CHAPTER4_I8"></a>
+</FONT><BR></P></DIV>
+
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE><font color=#009900>//: C04:StringStorage.cpp</font>
+<font color=#009900>//{L} ../TestSuite/Test</font>
+#include &lt;string&gt;
+#include &lt;iostream&gt;
+#include <font color=#004488>"..</font><font color=#004488>/TestSuite</font><font color=#004488>/Test.h"</font>
+<font color=#0000ff>using</font> <font color=#0000ff>namespace</font> std;
+
+<font color=#0000ff>class</font> StringStorageTest : <font color=#0000ff>public</font> Test {
+<font color=#0000ff>public</font>:
+  <font color=#0000ff>void</font> run() {
+    string s1(<font color=#004488>"12345"</font>);
+    <font color=#009900>// Set the iterator indicate the first element</font>
+    string::iterator it = s1.begin();
+    <font color=#009900>// This may copy the first to the second or </font>
+    <font color=#009900>// use reference counting to simulate a copy </font>
+    string s2 = s1;
+    test_(s1 == s2);
+    <font color=#009900>// Either way, this statement may ONLY modify first</font>
+    *it = '0';
+    cout &lt;&lt; <font color=#004488>"s1 = "</font> &lt;&lt; s1 &lt;&lt; endl;
+    cout &lt;&lt; <font color=#004488>"s2 = "</font> &lt;&lt; s2 &lt;&lt; endl;
+    test_(s1 != s2);
+  }
+};
+
+<font color=#0000ff>int</font> main() {
+  StringStorageTest sst;
+  sst.setStream(&amp;cout);
+  sst.run();
+  <font color=#0000ff>return</font> sst.report();
+} <font color=#009900>///:~</font></PRE></FONT></BLOCKQUOTE>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Reference counting may serve to make an
+implementation more memory efficient, but it is transparent to users of the
+<B>string</B>
+class.
+[&nbsp;<a HREF="mailto:cda@freshsources.com?subject=[TICV2] TIC2V2_CHAPTER4_I8">Comment</a>&nbsp;]
+
+<a NAME="TIC2V2_CHAPTER4_I9"></a>
+</FONT><A NAME="_Toc424692472"></A><A NAME="_Toc519041926"></A><BR></P></DIV>
+<A NAME="Heading85"></A><FONT FACE = "Verdana, Tahoma, Arial, Helvetica, Sans"><H3 ALIGN="LEFT">
+Creating and initializing C++ strings</H3></FONT>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Creating and initializing <B>string</B>s
+is a straightforward proposition, and fairly flexible as well. In the example
+shown below, the first <B>string</B>, <B>imBlank</B>, is declared but contains
+no initial value. Unlike a C <B>char</B> array, which would contain a random and
+meaningless bit pattern until initialization, <B>imBlank</B> does contain
+meaningful information. This <B>string</B> object has been initialized to hold
+&#8220;no characters,&#8221; and can properly report its 0 length and absence of
+data elements through the use of class member
+functions.
+[&nbsp;<a HREF="mailto:cda@freshsources.com?subject=[TICV2] TIC2V2_CHAPTER4_I9">Comment</a>&nbsp;]
+
+<a NAME="TIC2V2_CHAPTER4_I10"></a>
+</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">The next <B>string</B>, <B>heyMom</B>, is
+initialized by the literal argument "Where are my socks?". This form of
+initialization uses a quoted character array as a parameter to the <B>string</B>
+constructor. By contrast, <B>standardReply</B> is simply initialized with an
+assignment. The last <B>string</B> of the group, <B>useThisOneAgain</B>, is
+initialized using an existing C++ <B>string</B> object. Put another way, this
+example illustrates that <B>string</B> objects let
+you:
+[&nbsp;<a HREF="mailto:cda@freshsources.com?subject=[TICV2] TIC2V2_CHAPTER4_I10">Comment</a>&nbsp;]
+
+<a NAME="TIC2V2_CHAPTER4_I11"></a>
+</FONT><BR></P></DIV>
+<UL>
+<LI><FONT FACE="Symbol">	</FONT><FONT FACE="Georgia">Create an empty
+<B>string</B> and defer initializing it with character
+data.</FONT><LI><FONT FACE="Symbol">	</FONT><FONT FACE="Georgia">Initialize a
+<B>string</B> by passing a literal, quoted character array as an argument to the
+constructor.</FONT><LI><FONT FACE="Symbol">	</FONT><FONT FACE="Georgia">Initialize
+a <B>string</B> using
+&#8216;<B>=</B>&#8217;.</FONT><LI><FONT FACE="Symbol">	</FONT><FONT FACE="Georgia">Use
+one <B>string</B> to initialize another.</FONT><A NAME="_Toc424692473"></A></UL>
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE><font color=#009900>//: C04:SmallString.cpp</font>
+<font color=#009900>//{L} ../TestSuite/Test</font>
+<font color=#009900>//{-msc} Execution error</font>
+#include &lt;string&gt;
+<font color=#0000ff>using</font> <font color=#0000ff>namespace</font> std;
+
+<font color=#0000ff>int</font> main() {
+  string imBlank;
+  string heyMom(<font color=#004488>"Where are my socks?"</font>);
+  string standardReply = <font color=#004488>"Beamed into deep "</font>
+    <font color=#004488>"space on wide angle dispersion?"</font>;
+  string useThisOneAgain(standardReply);
+} <font color=#009900>///:~</font></PRE></FONT></BLOCKQUOTE>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">These are the simplest forms of
+<B>string</B> initialization, but there are other variations which offer more
+flexibility and control. You can
+:
+[&nbsp;<a HREF="mailto:cda@freshsources.com?subject=[TICV2] TIC2V2_CHAPTER4_I11">Comment</a>&nbsp;]
+
+<a NAME="TIC2V2_CHAPTER4_I12"></a>
+</FONT><BR></P></DIV>
+<UL>
+<LI><FONT FACE="Symbol">	</FONT><FONT FACE="Georgia">Use a portion of either a C
+<B>char</B> array or a C++ <B>string</B>.
+</FONT><LI><FONT FACE="Symbol">	</FONT><FONT FACE="Georgia">Combine different
+sources of initialization data using
+<B>operator+</B>.</FONT><LI><FONT FACE="Symbol">	</FONT><FONT FACE="Georgia">Use
+the <B>string</B> object&#8217;s <B>substr(&#160;)</B> member function to create
+a substring.</FONT></UL>
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE><font color=#009900>//: C04:SmallString2.cpp</font>
+<font color=#009900>//{L} ../TestSuite/Test</font>
+<font color=#009900>//{-msc} Execution error</font>
+#include &lt;string&gt;
+#include &lt;iostream&gt;
+<font color=#0000ff>using</font> <font color=#0000ff>namespace</font> std;
+
+<font color=#0000ff>int</font> main() {
+  string s1
+    (<font color=#004488>"What is the sound of one clam napping?"</font>);
+  string s2
+    (<font color=#004488>"Anything worth doing is worth overdoing."</font>);
+  string s3(<font color=#004488>"I saw Elvis in a UFO."</font>);
+  <font color=#009900>// Copy the first 8 chars</font>
+  string s4(s1, 0, 8);
+  <font color=#009900>// Copy 6 chars from the middle of the source</font>
+  string s5(s2, 15, 6);
+  <font color=#009900>// Copy from middle to end</font>
+  string s6(s3, 6, 15);
+  <font color=#009900>// Copy all sorts of stuff</font>
+  string quoteMe = s4 + <font color=#004488>"that"</font> +  
+  <font color=#009900>// substr() copies 10 chars at element 20</font>
+  s1.substr(20, 10) + s5 +
+  <font color=#009900>// substr() copies up to either 100 char</font>
+  <font color=#009900>// or eos starting at element 5 </font>
+  <font color=#004488>"with"</font> + s3.substr(5, 100) +
+  <font color=#009900>// OK to copy a single char this way </font>
+  s1.substr(37, 1);
+  cout &lt;&lt; quoteMe &lt;&lt; endl;
+} <font color=#009900>///:~</font></PRE></FONT></BLOCKQUOTE>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">The <B>string</B> member function
+<B>substr(&#160;)</B> takes a starting position as its first argument and the
+number of characters to select as the second argument. Both of these arguments
+have default values and if you say <B>substr(&#160;)</B> with an empty argument
+list you produce a copy of the entire <B>string</B>, so this is a convenient way
+to duplicate a <B>string</B>.
+
+[&nbsp;<a HREF="mailto:cda@freshsources.com?subject=[TICV2] TIC2V2_CHAPTER4_I12">Comment</a>&nbsp;]
+
+<a NAME="TIC2V2_CHAPTER4_I13"></a>
+</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Here&#8217;s what the <B>string</B>
+<B>quoteMe </B>contains after the initialization shown above
+:
+[&nbsp;<a HREF="mailto:cda@freshsources.com?subject=[TICV2] TIC2V2_CHAPTER4_I13">Comment</a>&nbsp;]
+
+<a NAME="TIC2V2_CHAPTER4_I14"></a>
+</FONT><BR></P></DIV>
+
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE><font color=#004488>"What is that one clam doing with Elvis in a UFO.?"</font></PRE></FONT></BLOCKQUOTE>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Notice the final line of example above.
+C++ allows <B>string</B> initialization techniques to be mixed in a single
+statement, a flexible and convenient feature. Also note that the last
+initializer copies <I>just one character</I> from the source
+<B>string</B>.
+[&nbsp;<a HREF="mailto:cda@freshsources.com?subject=[TICV2] TIC2V2_CHAPTER4_I14">Comment</a>&nbsp;]
+
+<a NAME="TIC2V2_CHAPTER4_I15"></a>
+</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Another slightly more subtle
+initialization technique involves the use of the <B>string</B> iterators
+<B>string.begin(&#160;)</B> and <B>string.end(&#160;).</B> This treats a
+<B>string</B> like a <I>container</I> object (which you&#8217;ve seen primarily
+in the form of <B>vector</B> so far in this book &#8211; you&#8217;ll see many
+more containers soon) which has <I>iterators</I> indicating the start and end of
+the &#8220;container.&#8221; This way you can hand a <B>string</B> constructor
+two iterators and it will copy from one to the other into the new
+<B>string</B>:
+[&nbsp;<a HREF="mailto:cda@freshsources.com?subject=[TICV2] TIC2V2_CHAPTER4_I15">Comment</a>&nbsp;]
+
+<a NAME="TIC2V2_CHAPTER4_I16"></a>
+</FONT><BR></P></DIV>
+
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE><font color=#009900>//: C04:StringIterators.cpp</font>
+<font color=#009900>//{L} ../TestSuite/Test</font>
+<font color=#009900>//{-msc} Execution error</font>
+#include &lt;string&gt;
+#include &lt;iostream&gt;
+<font color=#0000ff>using</font> <font color=#0000ff>namespace</font> std;
+
+<font color=#0000ff>int</font> main() {
+  string source(<font color=#004488>"xxx"</font>);
+  string s(source.begin(), source.end());
+  cout &lt;&lt; s &lt;&lt; endl;
+} <font color=#009900>///:~</font></PRE></FONT></BLOCKQUOTE>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">The iterators are not restricted to
+<B>begin(&#160;)</B> and <B>end(&#160;)</B>, so you can choose a subset of
+characters from the source
+<B>string</B>.
+[&nbsp;<a HREF="mailto:cda@freshsources.com?subject=[TICV2] TIC2V2_CHAPTER4_I16">Comment</a>&nbsp;]
+
+<a NAME="TIC2V2_CHAPTER4_I17"></a>
+</FONT><BR></P></DIV>
+<A NAME="Heading86"></A><FONT FACE = "Verdana, Tahoma, Arial, Helvetica, Sans"><H4 ALIGN="LEFT">
+Initialization limitations</H4></FONT>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">C++ <B>string</B>s may <I>not</I> be
+initialized with single characters or with ASCII or other integer values.
+
+[&nbsp;<a HREF="mailto:cda@freshsources.com?subject=[TICV2] TIC2V2_CHAPTER4_I17">Comment</a>&nbsp;]
+
+<a NAME="TIC2V2_CHAPTER4_I18"></a>
+</FONT><BR></P></DIV>
+
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE><font color=#009900>//: C04:UhOh.cpp</font>
+<font color=#009900>//{L} ../TestSuite/Test</font>
+<font color=#009900>//{-msc} Execution error</font>
+#include &lt;string&gt;
+<font color=#0000ff>using</font> <font color=#0000ff>namespace</font> std;
+
+<font color=#0000ff>int</font> main() {
+  <font color=#009900>// Error: no single char inits</font>
+  <font color=#009900>//! string nothingDoing1('a');</font>
+  <font color=#009900>// Error: no integer inits</font>
+  <font color=#009900>//! string nothingDoing2(0x37);</font>
+} <font color=#009900>///:~</font></PRE></FONT></BLOCKQUOTE>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">This is true both for initialization by
+assignment and by copy
+constructor.
+[&nbsp;<a HREF="mailto:cda@freshsources.com?subject=[TICV2] TIC2V2_CHAPTER4_I18">Comment</a>&nbsp;]
+
+<a NAME="TIC2V2_CHAPTER4_I19"></a>
+</FONT><A NAME="_Toc519041927"></A><BR></P></DIV>
+<A NAME="Heading87"></A><FONT FACE = "Verdana, Tahoma, Arial, Helvetica, Sans"><H2 ALIGN="LEFT">
+Operating on strings</H2></FONT>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">If you&#8217;ve programmed in C, you are
+accustomed to the convenience of a large family of functions for writing,
+searching, rearranging, and copying <B>char</B> arrays. However, there are two
+unfortunate aspects of the Standard C library functions for handling <B>char</B>
+arrays. First, there are three loosely organized families of them: the
+&#8220;plain&#8221; group, the group that manipulates the characters
+<I>without</I> respect to case, and the ones which require you to supply a count
+of the number of characters to be considered in the operation at hand. The
+roster of function names in the C <B>char</B> array handling library literally
+runs to several pages, and though the kind and number of arguments to the
+functions are somewhat consistent within each of the three groups, to use them
+properly you must be very attentive to details of function naming and parameter
+passing.
+[&nbsp;<a HREF="mailto:cda@freshsources.com?subject=[TICV2] TIC2V2_CHAPTER4_I19">Comment</a>&nbsp;]
+
+<a NAME="TIC2V2_CHAPTER4_I20"></a>
+</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">The second inherent trap of the standard
+C <B>char</B> array tools is that they all rely explicitly on the assumption
+that the character array includes a null terminator. If by oversight or error
+the null is omitted or overwritten, there&#8217;s very little to keep the C
+<B>char</B> array handling functions from manipulating the memory beyond the
+limits of the allocated space, sometimes with disastrous results.
+
+[&nbsp;<a HREF="mailto:cda@freshsources.com?subject=[TICV2] TIC2V2_CHAPTER4_I20">Comment</a>&nbsp;]
+
+<a NAME="TIC2V2_CHAPTER4_I21"></a>
+</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">C++ provides a vast improvement in the
+convenience and safety of <B>string</B> objects. For purposes of actual string
+handling operations, there are a modest two or three dozen member function
+names. It&#8217;s worth your while to become acquainted with these. Each
+function is overloaded, so you don&#8217;t have to learn a new <B>string</B>
+member function name simply because of small differences in their
+parameters.
+[&nbsp;<a HREF="mailto:cda@freshsources.com?subject=[TICV2] TIC2V2_CHAPTER4_I21">Comment</a>&nbsp;]
+
+<a NAME="TIC2V2_CHAPTER4_I22"></a>
+</FONT><A NAME="_Toc519041928"></A><BR></P></DIV>
+<A NAME="Heading88"></A><FONT FACE = "Verdana, Tahoma, Arial, Helvetica, Sans"><H3 ALIGN="LEFT">
+Appending, inserting and concatenating strings</H3></FONT>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">One of the most valuable and convenient
+aspects of C++ strings is that they grow as needed, without intervention on the
+part of the programmer. Not only does this make string handling code inherently
+more trustworthy, it also almost entirely eliminates a tedious
+&#8220;housekeeping&#8221; chore &#8211; keeping track of the bounds of the
+storage in which your strings live. For example, if you create a string object
+and initialize it with a string of 50 copies of &#8216;X&#8217;, and later store
+in it 50 copies of &#8220;Zowie&#8221;, the object itself will reallocate
+sufficient storage to accommodate the growth of the data. Perhaps nowhere is
+this property more appreciated than when the strings manipulated in your code
+change in size, and you don&#8217;t know how big the change is. Appending,
+concatenating, and inserting strings often give rise to this circumstance, but
+the string member functions <B>append(&#160;)</B> and <B>insert(&#160;)</B>
+transparently reallocate storage when a string
+grows.
+[&nbsp;<a HREF="mailto:cda@freshsources.com?subject=[TICV2] TIC2V2_CHAPTER4_I22">Comment</a>&nbsp;]
+
+<a NAME="TIC2V2_CHAPTER4_I23"></a>
+</FONT><BR></P></DIV>
+
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE><font color=#009900>//: C04:StrSize.cpp</font>
+<font color=#009900>//{L} ../TestSuite/Test</font>
+#include &lt;string&gt;
+#include &lt;iostream&gt;
+<font color=#0000ff>using</font> <font color=#0000ff>namespace</font> std;
+
+<font color=#0000ff>int</font> main() {
+  string bigNews(<font color=#004488>"I saw Elvis in a UFO. "</font>);
+  cout &lt;&lt; bigNews &lt;&lt; endl;
+  <font color=#009900>// How much data have we actually got?</font>
+  cout &lt;&lt; <font color=#004488>"Size = "</font> &lt;&lt; bigNews.size() &lt;&lt; endl;
+  <font color=#009900>// How much can we store without reallocating</font>
+  cout &lt;&lt; <font color=#004488>"Capacity = "</font> 
+    &lt;&lt; bigNews.capacity() &lt;&lt; endl;
+  <font color=#009900>// Insert this string in bigNews immediately</font>
+  <font color=#009900>// before bigNews[1]</font>
+  bigNews.insert(1, <font color=#004488>" thought I "</font>);
+  cout &lt;&lt; bigNews &lt;&lt; endl;
+  cout &lt;&lt; <font color=#004488>"Size = "</font> &lt;&lt; bigNews.size() &lt;&lt; endl;
+  cout &lt;&lt; <font color=#004488>"Capacity = "</font> 
+    &lt;&lt; bigNews.capacity() &lt;&lt; endl;
+  <font color=#009900>// Make sure that there will be this much space</font>
+  bigNews.reserve(500);
+  <font color=#009900>// Add this to the end of the string</font>
+  bigNews.append(<font color=#004488>"I've been working too hard."</font>);
+  cout &lt;&lt; bigNews &lt;&lt; endl;
+  cout &lt;&lt; <font color=#004488>"Size = "</font> &lt;&lt; bigNews.size() &lt;&lt; endl;
+  cout &lt;&lt; <font color=#004488>"Capacity = "</font> 
+    &lt;&lt; bigNews.capacity() &lt;&lt; endl;
+} <font color=#009900>///:~</font></PRE></FONT></BLOCKQUOTE>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Here is the
+output:
+[&nbsp;<a HREF="mailto:cda@freshsources.com?subject=[TICV2] TIC2V2_CHAPTER4_I23">Comment</a>&nbsp;]
+
+<a NAME="TIC2V2_CHAPTER4_I24"></a>
+</FONT><BR></P></DIV>
+
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE>I saw Elvis in a UFO.
+Size = 21
+Capacity = 31
+I thought I saw Elvis in a UFO.
+Size = 32
+Capacity = 63
+I thought I saw Elvis in a UFO. I've been 
+working too hard.
+Size = 66
+Capacity = 511</PRE></FONT></BLOCKQUOTE>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">This example demonstrates that even
+though you can safely relinquish much of the responsibility for allocating and
+managing the memory your <B>string</B>s occupy, C++ <B>string</B>s provide you
+with several tools to monitor and manage their size. The <B>size(&#160;)</B>,
+<B>resize(&#160;)</B>, <B>capacity(&#160;)</B>, and <B>reserve(&#160;)</B>
+member functions can be very useful when its necessary to work back and forth
+between data contained in C++ style strings and traditional null terminated C
+<B>char</B> arrays. Note the ease with which we changed the size of the storage
+allocated to the string.
+[&nbsp;<a HREF="mailto:cda@freshsources.com?subject=[TICV2] TIC2V2_CHAPTER4_I24">Comment</a>&nbsp;]
+
+<a NAME="TIC2V2_CHAPTER4_I25"></a>
+</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">The exact fashion in which the
+<B>string</B> member functions will allocate space for your data is dependent on
+the implementation of the library. When one implementation was tested with the
+example above, it appeared that reallocations occurred on even word boundaries,
+with one byte held back. The architects of the <B>string</B> class have
+endeavored to make it possible to mix the use of C <B>char</B> arrays and C++
+string objects, so it is likely that figures reported by <B>StrSize.cpp</B> for
+capacity reflect that in this particular implementation, a byte is set aside to
+easily accommodate the insertion of a null terminator.
+
+[&nbsp;<a HREF="mailto:cda@freshsources.com?subject=[TICV2] TIC2V2_CHAPTER4_I25">Comment</a>&nbsp;]
+
+<a NAME="TIC2V2_CHAPTER4_I26"></a>
+</FONT><A NAME="_Toc519041929"></A><BR></P></DIV>
+<A NAME="Heading89"></A><FONT FACE = "Verdana, Tahoma, Arial, Helvetica, Sans"><H3 ALIGN="LEFT">
+Replacing string characters</H3></FONT>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia"><B>insert(&#160;) </B>is particularly
+nice because it absolves you of making sure the insertion of characters in a
+string won&#8217;t overrun the storage space or overwrite the characters
+immediately following the insertion point. Space grows and existing characters
+politely move over to accommodate the new elements. Sometimes, however, this
+might not be what you want to happen. If the data in string needs to retain the
+ordering of the original characters relative to one another or must be a
+specific constant size, use the <B>replace(&#160;)</B> function to overwrite a
+particular sequence of characters with another group of characters. There are
+quite a number of overloaded versions of <B>replace(&#160;)</B>, but the
+simplest one takes three arguments: an integer telling where to start in the
+string, an integer telling how many characters to eliminate from the original
+string, and the replacement string (which can be a different number of
+characters than the eliminated quantity). Here&#8217;s a very simple
+example:
+[&nbsp;<a HREF="mailto:cda@freshsources.com?subject=[TICV2] TIC2V2_CHAPTER4_I26">Comment</a>&nbsp;]
+
+<a NAME="TIC2V2_CHAPTER4_I27"></a>
+</FONT><BR></P></DIV>
+
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE><font color=#009900>//: C04:StringReplace.cpp</font>
+<font color=#009900>// Simple find-and-replace in strings</font>
+<font color=#009900>//{L} ../TestSuite/Test</font>
+#include &lt;string&gt;
+#include &lt;iostream&gt;
+<font color=#0000ff>using</font> <font color=#0000ff>namespace</font> std;
+
+<font color=#0000ff>int</font> main() {
+  string s(<font color=#004488>"A piece of text"</font>);
+  string tag(<font color=#004488>"$tag$"</font>);
+  s.insert(8, tag + ' ');
+  cout &lt;&lt; s &lt;&lt; endl;
+  <font color=#0000ff>int</font> start = s.find(tag);
+  cout &lt;&lt; <font color=#004488>"start = "</font> &lt;&lt; start &lt;&lt; endl;
+  cout &lt;&lt; <font color=#004488>"size = "</font> &lt;&lt; tag.size() &lt;&lt; endl;
+  s.replace(start, tag.size(), <font color=#004488>"hello there"</font>);
+  cout &lt;&lt; s &lt;&lt; endl;
+} <font color=#009900>///:~</font></PRE></FONT></BLOCKQUOTE>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">The <B>tag</B> is first inserted into
+<B>s</B> (notice that the insert happens <I>before</I> the value indicating the
+insert point, and that an extra space was added after <B>tag</B>), then it is
+found and replaced.
+[&nbsp;<a HREF="mailto:cda@freshsources.com?subject=[TICV2] TIC2V2_CHAPTER4_I27">Comment</a>&nbsp;]
+
+<a NAME="TIC2V2_CHAPTER4_I28"></a>
+</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">You should actually check to see if
+you&#8217;ve found anything before you perform a <B>replace(&#160;)</B>.<B>
+</B>The above example replaces with a <B>char*</B>, but there&#8217;s an
+overloaded version that replaces with a <B>string</B>.<B> </B>Here&#8217;s a
+more complete demonstration
+<B>replace(&#160;)</B>
+[&nbsp;<a HREF="mailto:cda@freshsources.com?subject=[TICV2] TIC2V2_CHAPTER4_I28">Comment</a>&nbsp;]
+
+<a NAME="TIC2V2_CHAPTER4_I29"></a>
+</FONT><BR></P></DIV>
+
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE><font color=#009900>//: C04:Replace.cpp</font>
+<font color=#009900>//{L} ../TestSuite/Test</font>
+#include &lt;string&gt;
+#include &lt;iostream&gt;
+<font color=#0000ff>using</font> <font color=#0000ff>namespace</font> std;
+
+<font color=#0000ff>void</font> replaceChars(string&amp; modifyMe, 
+  string findMe, string newChars){
+  <font color=#009900>// Look in modifyMe for the "find string"</font>
+  <font color=#009900>// starting at position 0</font>
+  <font color=#0000ff>int</font> i = modifyMe.find(findMe, 0);
+  <font color=#009900>// Did we find the string to replace?</font>
+  <font color=#0000ff>if</font>(i != string::npos)
+    <font color=#009900>// Replace the find string with newChars</font>
+    modifyMe.replace(i,newChars.size(),newChars);
+}
+
+<font color=#0000ff>int</font> main() {
+  string bigNews = 
+   <font color=#004488>"I thought I saw Elvis in a UFO. "</font>
+   <font color=#004488>"I have been working too hard."</font>;
+  string replacement(<font color=#004488>"wig"</font>);
+  string findMe(<font color=#004488>"UFO"</font>);
+  <font color=#009900>// Find "UFO" in bigNews and overwrite it:</font>
+  replaceChars(bigNews, findMe,  replacement);
+  cout &lt;&lt; bigNews &lt;&lt; endl;
+} <font color=#009900>///:~</font></PRE></FONT></BLOCKQUOTE>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Now the last line of output from
+<B>replace.cpp</B> looks like
+this:
+[&nbsp;<a HREF="mailto:cda@freshsources.com?subject=[TICV2] TIC2V2_CHAPTER4_I29">Comment</a>&nbsp;]
+
+<a NAME="TIC2V2_CHAPTER4_I30"></a>
+</FONT><BR></P></DIV>
+
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE>I thought I saw Elvis in a wig. I have been
+working too hard.</PRE></FONT></BLOCKQUOTE>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">If replace doesn&#8217;t find the search
+string, it returns <B>npos</B>. <B>npos</B> is a static constant member of the
+<B>basic_string</B>
+class.
+[&nbsp;<a HREF="mailto:cda@freshsources.com?subject=[TICV2] TIC2V2_CHAPTER4_I30">Comment</a>&nbsp;]
+
+<a NAME="TIC2V2_CHAPTER4_I31"></a>
+</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Unlike <B>insert(&#160;)</B>,
+<B>replace(&#160;)</B> won&#8217;t grow the <B>string</B>&#8217;s storage space
+if you copy new characters into the middle of an existing series of array
+elements. However, it <I>will</I> grow the storage space if you make a
+&#8220;replacement&#8221; that writes beyond the end of an existing array.
+Here&#8217;s an example:
+[&nbsp;<a HREF="mailto:cda@freshsources.com?subject=[TICV2] TIC2V2_CHAPTER4_I31">Comment</a>&nbsp;]
+
+<a NAME="TIC2V2_CHAPTER4_I32"></a>
+</FONT><BR></P></DIV>
+
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE><font color=#009900>//: C04:ReplaceAndGrow.cpp</font>
+<font color=#009900>//{L} ../TestSuite/Test</font>
+#include &lt;string&gt;
+#include &lt;iostream&gt;
+<font color=#0000ff>using</font> <font color=#0000ff>namespace</font> std;
+
+<font color=#0000ff>int</font> main() {
+  string bigNews(<font color=#004488>"I saw Elvis in a UFO. "</font>
+    <font color=#004488>"I have Been working too hard."</font>);
+  string replacement(<font color=#004488>"wig"</font>);
+  <font color=#009900>// The first arg says "replace chars </font>
+  <font color=#009900>// beyond the end of the existing string":</font>
+  bigNews.replace(bigNews.size(), 
+    replacement.size(), replacement);
+  cout &lt;&lt; bigNews &lt;&lt; endl;
+} <font color=#009900>///:~</font></PRE></FONT></BLOCKQUOTE>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">The call to <B>replace(&#160;) </B>begins
+&#8220;replacing&#8221; beyond the end of the existing array. The output looks
+like this:
+[&nbsp;<a HREF="mailto:cda@freshsources.com?subject=[TICV2] TIC2V2_CHAPTER4_I32">Comment</a>&nbsp;]
+
+<a NAME="TIC2V2_CHAPTER4_I33"></a>
+</FONT><BR></P></DIV>
+
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE>I saw Elvis in a UFO. I have 
+been working too hard.wig</PRE></FONT></BLOCKQUOTE>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Notice that <B>replace(&#160;)</B>
+expands the array to accommodate the growth of the string due to
+&#8220;replacement&#8221; beyond the bounds of the existing
+array.
+[&nbsp;<a HREF="mailto:cda@freshsources.com?subject=[TICV2] TIC2V2_CHAPTER4_I33">Comment</a>&nbsp;]
+
+<a NAME="TIC2V2_CHAPTER4_I34"></a>
+</FONT><BR></P></DIV>
+<A NAME="Heading90"></A><FONT FACE = "Verdana, Tahoma, Arial, Helvetica, Sans"><H4 ALIGN="LEFT">
+Simple character replacement using the STL replace(&#160;) algorithm</H4></FONT>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">You may have been hunting through this
+chapter trying to do something relatively simple like replace all the instances
+of one character with a different character. Upon finding the above section on
+replacing, you thought you found the answer but then you started seeing groups
+of characters and counts and other things that looked a bit too complex.
+Doesn&#8217;t <B>string</B> have a way to just replace one character with
+another everywhere?
+[&nbsp;<a HREF="mailto:cda@freshsources.com?subject=[TICV2] TIC2V2_CHAPTER4_I34">Comment</a>&nbsp;]
+
+<a NAME="TIC2V2_CHAPTER4_I35"></a>
+</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">The <B>string</B> class by itself
+doesn&#8217;t solve all possible problems. The remainder are relegated to the
+STL algorithms, because the <B>string</B> class can look just like an STL
+container (the STL algorithms work with anything that looks like an STL
+container). All the STL algorithms work on a &#8220;range&#8221; of elements
+within a container. Usually that range is just &#8220;from the beginning of the
+container to the end.&#8221; A <B>string</B> object looks like a container of
+characters: to get the beginning of the range you use
+<B>string::begin(&#160;)</B> and to get the end of the range you use
+<B>string::end(&#160;)</B>. The following example shows the use of the STL
+<B>replace(&#160;)</B> algorithm to replace all the instances of &#8216;X&#8217;
+with &#8216;Y&#8217;:
+[&nbsp;<a HREF="mailto:cda@freshsources.com?subject=[TICV2] TIC2V2_CHAPTER4_I35">Comment</a>&nbsp;]
+
+<a NAME="TIC2V2_CHAPTER4_I36"></a>
+</FONT><BR></P></DIV>
+
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE><font color=#009900>//: C04:StringCharReplace.cpp</font>
+<font color=#009900>//{L} ../TestSuite/Test</font>
+#include &lt;string&gt;
+#include &lt;algorithm&gt;
+#include &lt;iostream&gt;
+<font color=#0000ff>using</font> <font color=#0000ff>namespace</font> std;
+
+<font color=#0000ff>int</font> main() {
+  string s(<font color=#004488>"aaaXaaaXXaaXXXaXXXXaaa"</font>);
+  cout &lt;&lt; s &lt;&lt; endl;
+  replace(s.begin(), s.end(), 'X', 'Y');
+  cout &lt;&lt; s &lt;&lt; endl;
+} <font color=#009900>///:~</font></PRE></FONT></BLOCKQUOTE>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Notice that this <B>replace(&#160;)</B>
+is <I>not</I> called as a member function of <B>string</B>. Also, unlike the
+<B>string::replace(&#160;)</B> functions which only perform one replacement, the
+STL replace is replacing all instances of one character with
+another.
+[&nbsp;<a HREF="mailto:cda@freshsources.com?subject=[TICV2] TIC2V2_CHAPTER4_I36">Comment</a>&nbsp;]
+
+<a NAME="TIC2V2_CHAPTER4_I37"></a>
+</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">The STL <B>replace(&#160;)</B> algorithm
+only works with single objects (in this case, <B>char</B> objects), and will not
+perform replacements of quoted <B>char</B> arrays or of <B>string</B>
+objects.
+[&nbsp;<a HREF="mailto:cda@freshsources.com?subject=[TICV2] TIC2V2_CHAPTER4_I37">Comment</a>&nbsp;]
+
+<a NAME="TIC2V2_CHAPTER4_I38"></a>
+</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Since a <B>string</B> looks like an STL
+container, there are a number of other STL algorithms that can be applied to it,
+which may solve other problems you have that are not directly addressed by the
+<B>string</B> member functions. See Chapter XX for more information on the STL
+algorithms.
+[&nbsp;<a HREF="mailto:cda@freshsources.com?subject=[TICV2] TIC2V2_CHAPTER4_I38">Comment</a>&nbsp;]
+
+<a NAME="TIC2V2_CHAPTER4_I39"></a>
+</FONT><A NAME="_Toc519041930"></A><BR></P></DIV>
+<A NAME="Heading91"></A><FONT FACE = "Verdana, Tahoma, Arial, Helvetica, Sans"><H3 ALIGN="LEFT">
+Concatenation using non-member overloaded operators</H3></FONT>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">One of the most delightful discoveries
+awaiting a C programmer learning about C++ <B>string</B> handling is how simply
+<B>string</B>s can be combined and appended using <B>operator+</B> and
+<B>operator+=</B>.<B> </B>These operators make combining <B>string</B>s
+syntactically equivalent to adding numeric
+data.
+[&nbsp;<a HREF="mailto:cda@freshsources.com?subject=[TICV2] TIC2V2_CHAPTER4_I39">Comment</a>&nbsp;]
+
+<a NAME="TIC2V2_CHAPTER4_I40"></a>
+</FONT><BR></P></DIV>
+
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE><font color=#009900>//: C04:AddStrings.cpp</font>
+<font color=#009900>//{L} ../TestSuite/Test</font>
+#include &lt;string&gt;
+#include &lt;iostream&gt;
+<font color=#0000ff>using</font> <font color=#0000ff>namespace</font> std;
+
+<font color=#0000ff>int</font> main() {
+  string s1(<font color=#004488>"This "</font>);
+  string s2(<font color=#004488>"That "</font>);
+  string s3(<font color=#004488>"The other "</font>);
+  <font color=#009900>// operator+ concatenates strings</font>
+  s1 = s1 + s2;
+  cout &lt;&lt; s1 &lt;&lt; endl;
+  <font color=#009900>// Another way to concatenates strings</font>
+  s1 += s3;
+  cout &lt;&lt; s1 &lt;&lt; endl;
+  <font color=#009900>// You can index the string on the right</font>
+  s1 += s3 + s3[4] + <font color=#004488>"oh lala"</font>;
+  cout &lt;&lt; s1 &lt;&lt; endl;
+} <font color=#009900>///:~</font></PRE></FONT></BLOCKQUOTE>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">The output looks like
+this:
+[&nbsp;<a HREF="mailto:cda@freshsources.com?subject=[TICV2] TIC2V2_CHAPTER4_I40">Comment</a>&nbsp;]
+
+<a NAME="TIC2V2_CHAPTER4_I41"></a>
+</FONT><BR></P></DIV>
+
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE>This
+This That
+This That The other
+This That The other ooh lala</PRE></FONT></BLOCKQUOTE>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia"><B>operator+</B> and <B>operator+=
+</B>are a very flexible and<B> </B>convenient means of combining <B>string</B>
+data. On the right hand side of the statement, you can use almost any type that
+evaluates to a group of one or more
+characters.
+[&nbsp;<a HREF="mailto:cda@freshsources.com?subject=[TICV2] TIC2V2_CHAPTER4_I41">Comment</a>&nbsp;]
+
+<a NAME="TIC2V2_CHAPTER4_I42"></a>
+</FONT><A NAME="_Toc519041931"></A><BR></P></DIV>
+<A NAME="Heading92"></A><FONT FACE = "Verdana, Tahoma, Arial, Helvetica, Sans"><H2 ALIGN="LEFT">
+Searching in strings</H2></FONT>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">The <B>find</B> family of <B>string</B>
+member functions allows you to locate a character or group of characters within
+a given string. Here are the members of the <B>find</B> family and their general
+usage:</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><TABLE BORDER>
+<TR VALIGN="TOP">
+<TD>
+<DIV ALIGN="LEFT"><P><FONT FACE="Verdana"><B>string find member
+function</B></FONT><BR></P></DIV>
+</TD>
+<TD>
+<DIV ALIGN="LEFT"><P><FONT FACE="Verdana"><B>What/how it finds
+</B></FONT><BR></P></DIV>
+</TD>
+</TR>
+<TR VALIGN="TOP">
+<TD>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia"><B> find(&#160;)</B></FONT><BR></P></DIV>
+</TD>
+<TD>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Searches a string for a specified
+character or group of characters and returns the starting position of the first
+occurrence found or <B>npos</B> if no match is found. (<B>npos </B>is a const of
+&#8211;1 and indicates that a search failed.) </FONT><BR></P></DIV>
+</TD>
+</TR>
+<TR VALIGN="TOP">
+<TD>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia"><B>
+find_first_of(&#160;)</B></FONT><BR></P></DIV>
+</TD>
+<TD>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Searches a target string and returns the
+position of the first match of <I>any</I> character in a specified group. If no
+match is found, it returns <B>npos</B>.</FONT><BR></P></DIV>
+</TD>
+</TR>
+<TR VALIGN="TOP">
+<TD>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia"><B>
+find_last_of(&#160;)</B></FONT><BR></P></DIV>
+</TD>
+<TD>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Searches a target string and returns the
+position of the last match of <I>any</I> character in a specified group. If no
+match is found, it returns <B>npos</B>.</FONT><BR></P></DIV>
+</TD>
+</TR>
+<TR VALIGN="TOP">
+<TD>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia"><B>
+find_first_not_of(&#160;)</B></FONT><BR></P></DIV>
+</TD>
+<TD>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Searches a target string and returns the
+position of the first element that <I>doesn&#8217;t</I> match <I>any</I>
+character in a specified group. If no such element is found, it returns
+<B>npos</B>.</FONT><BR></P></DIV>
+</TD>
+</TR>
+<TR VALIGN="TOP">
+<TD>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia"><B>
+find_last_not_of(&#160;)</B></FONT><BR></P></DIV>
+</TD>
+<TD>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Searches a target string and returns the
+position of the element with the largest subscript that <I>doesn&#8217;t</I>
+match of <I>any</I> character in a specified group. If no such element is found,
+it returns <B>npos</B>.</FONT><BR></P></DIV>
+</TD>
+</TR>
+<TR VALIGN="TOP">
+<TD>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia"><B> rfind(&#160;)</B></FONT><BR></P></DIV>
+</TD>
+<TD>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Searches a string from end to beginning
+for a specified character or group of characters and returns the starting
+position of the match if one is found. If no match is found, it returns
+<B>npos</B>.</FONT><BR></P></DIV>
+</TD>
+</TR>
+</TABLE></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Verdana"><B>String searching member functions and
+their general uses</B></FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">The simplest use of <B>find(&#160;)
+</B>searches for one or more characters in a <B>string</B>. This overloaded
+version of <B>find(&#160;) </B>takes a parameter that specifies the character(s)
+for which to search, and optionally one that tells it where in the string to
+begin searching for the occurrence of a substring. (The default position at
+which to begin searching is 0.) By setting the call to <B>find </B>inside a
+loop, you can easily move through a string, repeating a search in order to find
+all of the occurrences of a given character or group of characters within the
+string. 
+[&nbsp;<a HREF="mailto:cda@freshsources.com?subject=[TICV2] TIC2V2_CHAPTER4_I42">Comment</a>&nbsp;]
+
+<a NAME="TIC2V2_CHAPTER4_I43"></a>
+</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Notice that we define the string object
+<B>sieveChars</B> using a constructor idiom which sets the initial size of the
+character array and writes the value &#8216;P&#8217; to each of its
+member.
+[&nbsp;<a HREF="mailto:cda@freshsources.com?subject=[TICV2] TIC2V2_CHAPTER4_I43">Comment</a>&nbsp;]
+
+<a NAME="TIC2V2_CHAPTER4_I44"></a>
+</FONT><BR></P></DIV>
+
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE><font color=#009900>//: C04:Sieve.cpp</font>
+<font color=#009900>//{L} ../TestSuite/Test</font>
+#include &lt;string&gt;
+#include &lt;iostream&gt;
+<font color=#0000ff>using</font> <font color=#0000ff>namespace</font> std;
+
+<font color=#0000ff>int</font> main() {
+  <font color=#009900>// Create a 50 char string and set each </font>
+  <font color=#009900>// element to 'P' for Prime</font>
+  string sieveChars(50, 'P');
+  <font color=#009900>// By definition neither 0 nor 1 is prime.</font>
+  <font color=#009900>// Change these elements to "N" for Not Prime</font>
+  sieveChars.replace(0, 2, <font color=#004488>"NN"</font>);
+  <font color=#009900>// Walk through the array:</font>
+  <font color=#0000ff>for</font>(<font color=#0000ff>int</font> i = 2;  
+    i &lt;= (sieveChars.size() / 2) - 1; i++)
+    <font color=#009900>// Find all the factors:</font>
+    <font color=#0000ff>for</font>(<font color=#0000ff>int</font> factor = 2;
+      factor * i &lt; sieveChars.size();factor++)
+      sieveChars[factor * i] = 'N';
+     
+  cout &lt;&lt; <font color=#004488>"Prime:"</font> &lt;&lt; endl;
+  <font color=#009900>// Return the index of the first 'P' element:</font>
+  <font color=#0000ff>int</font> j = sieveChars.find('P');
+  <font color=#009900>// While not at the end of the string:</font>
+  <font color=#0000ff>while</font>(j != sieveChars.npos) {
+    <font color=#009900>// If the element is P, the index is a prime</font>
+    cout &lt;&lt; j &lt;&lt; <font color=#004488>" "</font>;
+    <font color=#009900>// Move past the last prime</font>
+    j++;
+    <font color=#009900>// Find the next prime</font>
+    j = sieveChars.find('P', j);
+  }
+  cout &lt;&lt; <font color=#004488>"\n Not prime:"</font> &lt;&lt; endl;
+  <font color=#009900>// Find the first element value not equal P:</font>
+  j = sieveChars.find_first_not_of('P');
+  <font color=#0000ff>while</font>(j != sieveChars.npos) {
+    cout &lt;&lt; j &lt;&lt; <font color=#004488>" "</font>;
+    j++;
+    j = sieveChars.find_first_not_of('P', j);
+  }
+} <font color=#009900>///:~</font></PRE></FONT></BLOCKQUOTE>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">The output from <B>Sieve.cpp</B> looks
+like this:
+[&nbsp;<a HREF="mailto:cda@freshsources.com?subject=[TICV2] TIC2V2_CHAPTER4_I44">Comment</a>&nbsp;]
+
+<a NAME="TIC2V2_CHAPTER4_I45"></a>
+</FONT><BR></P></DIV>
+
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE>Prime:
+2 3 5 7 11 13 17 19 23 29 31 37 41 43 47
+Not prime:
+0 1 4 6 8 9 10 12 14 15 16 18 20 21 22 
+24 25 26 27 28 30 32 33 34 35 36 38 39 
+40 42 44 45 46 48 49</PRE></FONT></BLOCKQUOTE>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia"><B>find(&#160;)</B> allows you to walk
+forward through a <B>string</B>, detecting multiple occurrences of a character
+or group of characters, while <B>find_first_not_of(&#160;)</B> allows you to
+test for the absence of a character or
+group.
+[&nbsp;<a HREF="mailto:cda@freshsources.com?subject=[TICV2] TIC2V2_CHAPTER4_I45">Comment</a>&nbsp;]
+
+<a NAME="TIC2V2_CHAPTER4_I46"></a>
+</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">The <B>find</B> member is also useful for
+detecting the occurrence of a sequence of characters in a
+<B>string</B>:
+[&nbsp;<a HREF="mailto:cda@freshsources.com?subject=[TICV2] TIC2V2_CHAPTER4_I46">Comment</a>&nbsp;]
+
+<a NAME="TIC2V2_CHAPTER4_I47"></a>
+</FONT><BR></P></DIV>
+
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE><font color=#009900>//: C04:Find.cpp</font>
+<font color=#009900>// Find a group of characters in a string</font>
+<font color=#009900>//{L} ../TestSuite/Test</font>
+#include &lt;string&gt;
+#include &lt;iostream&gt;
+<font color=#0000ff>using</font> <font color=#0000ff>namespace</font> std;
+
+<font color=#0000ff>int</font> main() {
+  string chooseOne(<font color=#004488>"Eenie, meenie, miney, mo"</font>);
+  <font color=#0000ff>int</font> i = chooseOne.find(<font color=#004488>"een"</font>);
+  <font color=#0000ff>while</font>(i != string::npos) {
+    cout &lt;&lt; i &lt;&lt; endl;
+    i++;
+    i = chooseOne.find(<font color=#004488>"een"</font>, i);
+  }
+} <font color=#009900>///:~</font></PRE></FONT></BLOCKQUOTE>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia"><B>Find.cpp</B> produces a single line of
+output :
+[&nbsp;<a HREF="mailto:cda@freshsources.com?subject=[TICV2] TIC2V2_CHAPTER4_I47">Comment</a>&nbsp;]
+
+<a NAME="TIC2V2_CHAPTER4_I48"></a>
+</FONT><BR></P></DIV>
+
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE> 8 </PRE></FONT></BLOCKQUOTE>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">This tells us that the first
+&#8216;e&#8217; of the search group &#8220;een&#8221; was found in the word
+&#8220;meenie,&#8221; and is the eighth element in the string. Notice that
+<B>find</B> passed over the &#8220;Een&#8221; group of characters in the word
+&#8220;Eenie&#8221;. The <B>find</B> member function performs a <I>case
+sensitive</I> search. 
+[&nbsp;<a HREF="mailto:cda@freshsources.com?subject=[TICV2] TIC2V2_CHAPTER4_I48">Comment</a>&nbsp;]
+
+<a NAME="TIC2V2_CHAPTER4_I49"></a>
+</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">There are no functions in the <B>string
+</B>class to change the case of a string, but these functions can be easily
+created using the Standard C library functions <B>toupper(&#160;)</B> and
+<B>tolower(&#160;)</B>, which change the case of one character at a time. A few
+small changes will make <B>Find.cpp</B> perform a case insensitive
+search:
+[&nbsp;<a HREF="mailto:cda@freshsources.com?subject=[TICV2] TIC2V2_CHAPTER4_I49">Comment</a>&nbsp;]
+
+<a NAME="TIC2V2_CHAPTER4_I50"></a>
+</FONT><BR></P></DIV>
+
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE><font color=#009900>//: C04:NewFind.cpp</font>
+<font color=#009900>//{L} ../TestSuite/Test</font>
+#include &lt;string&gt;
+#include &lt;iostream&gt;
+<font color=#0000ff>using</font> <font color=#0000ff>namespace</font> std;
+
+<font color=#009900>// Make an uppercase copy of s:</font>
+string upperCase(string&amp; s) {
+  <font color=#0000ff>char</font>* buf = <font color=#0000ff>new</font> <font color=#0000ff>char</font>[s.length()];
+  s.copy(buf, s.length());
+  <font color=#0000ff>for</font>(<font color=#0000ff>int</font> i = 0; i &lt; s.length(); i++)
+    buf[i] = toupper(buf[i]);
+  string r(buf, s.length());
+  <font color=#0000ff>delete</font> buf;
+  <font color=#0000ff>return</font> r;
+}
+
+<font color=#009900>// Make a lowercase copy of s:</font>
+string lowerCase(string&amp; s) {
+  <font color=#0000ff>char</font>* buf = <font color=#0000ff>new</font> <font color=#0000ff>char</font>[s.length()];
+  s.copy(buf, s.length());
+  <font color=#0000ff>for</font>(<font color=#0000ff>int</font> i = 0; i &lt; s.length(); i++)
+    buf[i] = tolower(buf[i]);
+  string r(buf, s.length());
+  <font color=#0000ff>delete</font> buf;
+  <font color=#0000ff>return</font> r;
+}
+
+<font color=#0000ff>int</font> main() {
+  string chooseOne(<font color=#004488>"Eenie, meenie, miney, mo"</font>);
+  cout &lt;&lt; chooseOne &lt;&lt; endl;
+  cout &lt;&lt; upperCase(chooseOne) &lt;&lt; endl;
+  cout &lt;&lt; lowerCase(chooseOne) &lt;&lt; endl;
+  <font color=#009900>// Case sensitive search</font>
+  <font color=#0000ff>int</font> i = chooseOne.find(<font color=#004488>"een"</font>);
+  <font color=#0000ff>while</font>(i != string::npos) {
+    cout &lt;&lt; i &lt;&lt; endl;
+    i++;
+    i = chooseOne.find(<font color=#004488>"een"</font>, i);
+  }
+  <font color=#009900>// Search lowercase:</font>
+  string lcase = lowerCase(chooseOne);
+  cout &lt;&lt; lcase &lt;&lt; endl;
+  i = lcase.find(<font color=#004488>"een"</font>);
+  <font color=#0000ff>while</font>(i != lcase.npos) {
+    cout &lt;&lt; i &lt;&lt; endl;
+    i++;
+    i = lcase.find(<font color=#004488>"een"</font>, i);
+  }
+  <font color=#009900>// Search uppercase:</font>
+  string ucase = upperCase(chooseOne);
+  cout &lt;&lt; ucase &lt;&lt; endl;
+  i = ucase.find(<font color=#004488>"EEN"</font>);
+  <font color=#0000ff>while</font>(i != ucase.npos) {
+    cout &lt;&lt; i &lt;&lt; endl;
+    i++;
+    i = ucase.find(<font color=#004488>"EEN"</font>, i);
+  }
+} <font color=#009900>///:~</font></PRE></FONT></BLOCKQUOTE>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Both the <B>upperCase(&#160;)</B> and
+<B>lowerCase(&#160;)</B> functions follow the same form: they allocate storage
+to hold the data in the argument <B>string</B>, copy the data and change the
+case. Then they create a new <B>string</B> with the new data, release the buffer
+and return the result <B>string</B>. The <B>c_str(&#160;)</B> function cannot be
+used to produce a pointer to directly manipulate the data in the <B>string</B>
+because <B>c_str(&#160;)</B> returns a pointer to <B>const</B>. That is,
+you&#8217;re not allowed to manipulate <B>string</B> data with a pointer, only
+with member functions. If you need to use the more primitive <B>char</B> array
+manipulation, you should use the technique shown
+above.
+[&nbsp;<a HREF="mailto:cda@freshsources.com?subject=[TICV2] TIC2V2_CHAPTER4_I50">Comment</a>&nbsp;]
+
+<a NAME="TIC2V2_CHAPTER4_I51"></a>
+</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">The output looks like
+this:
+[&nbsp;<a HREF="mailto:cda@freshsources.com?subject=[TICV2] TIC2V2_CHAPTER4_I51">Comment</a>&nbsp;]
+
+<a NAME="TIC2V2_CHAPTER4_I52"></a>
+</FONT><BR></P></DIV>
+
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE>Eenie, meenie, miney, mo
+EENIE, MEENIE, MINEY, MO
+eenie, meenie, miney, mo
+8
+eenie, meenie, miney, mo
+0
+8
+EENIE, MEENIE, MINEY, MO
+0
+8</PRE></FONT></BLOCKQUOTE>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">The case insensitive searches found both
+occurrences on the &#8220;een&#8221; group.
+
+[&nbsp;<a HREF="mailto:cda@freshsources.com?subject=[TICV2] TIC2V2_CHAPTER4_I52">Comment</a>&nbsp;]
+
+<a NAME="TIC2V2_CHAPTER4_I53"></a>
+</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia"><B>NewFind.cpp</B> isn&#8217;t the best
+solution to the case sensitivity problem, so we&#8217;ll revisit it when we
+examine <B>string</B>
+comparisons.
+[&nbsp;<a HREF="mailto:cda@freshsources.com?subject=[TICV2] TIC2V2_CHAPTER4_I53">Comment</a>&nbsp;]
+
+<a NAME="TIC2V2_CHAPTER4_I54"></a>
+</FONT><A NAME="_Toc519041932"></A><BR></P></DIV>
+<A NAME="Heading93"></A><FONT FACE = "Verdana, Tahoma, Arial, Helvetica, Sans"><H3 ALIGN="LEFT">
+Finding in reverse</H3></FONT>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Sometimes it&#8217;s necessary to search
+through a <B>string</B> from end to beginning, if you need to find the data in
+&#8220;last in / first out &#8220; order. The string member function
+<B>rfind(&#160;)</B> handles this job.
+
+[&nbsp;<a HREF="mailto:cda@freshsources.com?subject=[TICV2] TIC2V2_CHAPTER4_I54">Comment</a>&nbsp;]
+
+<a NAME="TIC2V2_CHAPTER4_I55"></a>
+</FONT><BR></P></DIV>
+
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE><font color=#009900>//: C04:Rparse.cpp</font>
+<font color=#009900>// Reverse the order of words in a string</font>
+<font color=#009900>//{L} ../TestSuite/Test</font>
+#include &lt;string&gt;
+#include &lt;iostream&gt;
+#include &lt;vector&gt;
+<font color=#0000ff>using</font> <font color=#0000ff>namespace</font> std;
+
+<font color=#0000ff>int</font> main() {
+  <font color=#009900>// The ';' characters will be delimiters</font>
+  string s(<font color=#004488>"now.;sense;make;to;going;is;This"</font>);
+  cout &lt;&lt; s &lt;&lt; endl;
+  <font color=#009900>// To store the words:</font>
+  vector&lt;string&gt; strings;
+  <font color=#009900>// The last element of the string:</font>
+  <font color=#0000ff>int</font> last = s.size();
+  <font color=#009900>// The beginning of the current word:</font>
+  <font color=#0000ff>int</font> current = s.rfind(';');
+  <font color=#009900>// Walk backward through the string:</font>
+  <font color=#0000ff>while</font>(current != string::npos){
+    <font color=#009900>// Push each word into the vector.</font>
+    <font color=#009900>// Current is incremented before copying to </font>
+    <font color=#009900>// avoid copying the delimiter:</font>
+    ++current;
+    strings.push_back(
+      s.substr(current, last - current));
+    <font color=#009900>// Back over the delimiter we just found, </font>
+    <font color=#009900>// and set last to the end of the next word:</font>
+    current -= 2;
+    last = current;
+    <font color=#009900>// Find the next delimiter</font>
+    current = s.rfind(';', current);
+  }
+  <font color=#009900>// Pick up the first word - it's not </font>
+  <font color=#009900>// preceded by a delimiter</font>
+  strings.push_back(s.substr(0, last - current));
+  <font color=#009900>// Print them in the new order:</font>
+  <font color=#0000ff>for</font>(<font color=#0000ff>int</font> j = 0; j &lt; strings.size(); j++)
+    cout &lt;&lt; strings[j] &lt;&lt; <font color=#004488>" "</font>;
+} <font color=#009900>///:~</font></PRE></FONT></BLOCKQUOTE>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Here&#8217;s how the output from
+<B>Rparse.cpp</B> looks:
+[&nbsp;<a HREF="mailto:cda@freshsources.com?subject=[TICV2] TIC2V2_CHAPTER4_I55">Comment</a>&nbsp;]
+
+<a NAME="TIC2V2_CHAPTER4_I56"></a>
+</FONT><BR></P></DIV>
+
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE>now.;sense;make;to;going;is;This
+This is going to make sense now.</PRE></FONT></BLOCKQUOTE>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia"><B>rfind(&#160;)</B> backs through the
+string looking for tokens, reporting the array index of matching characters or
+<B>string::npos</B> if it is unsuccessful.
+
+[&nbsp;<a HREF="mailto:cda@freshsources.com?subject=[TICV2] TIC2V2_CHAPTER4_I56">Comment</a>&nbsp;]
+
+<a NAME="TIC2V2_CHAPTER4_I57"></a>
+</FONT><A NAME="_Toc519041933"></A><BR></P></DIV>
+<A NAME="Heading94"></A><FONT FACE = "Verdana, Tahoma, Arial, Helvetica, Sans"><H3 ALIGN="LEFT">
+Finding first/last of a set</H3></FONT>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">The <B>find_first_of(&#160;)</B> and
+<B>find_last_of(&#160;)</B> member functions can be conveniently put to work to
+create a little utility that will strip whitespace characters off of both ends
+of a string. Notice it doesn&#8217;t touch the original string, but instead
+returns a new string:
+[&nbsp;<a HREF="mailto:cda@freshsources.com?subject=[TICV2] TIC2V2_CHAPTER4_I57">Comment</a>&nbsp;]
+
+<a NAME="TIC2V2_CHAPTER4_I58"></a>
+</FONT><BR></P></DIV>
+
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE><font color=#009900>//: C04:trim.h</font>
+#ifndef TRIM_H
+#define TRIM_H
+#include &lt;string&gt;
+<font color=#009900>// General tool to strip spaces from both ends:</font>
+<font color=#0000ff>inline</font> std::string trim(<font color=#0000ff>const</font> std::string&amp; s) {
+  <font color=#0000ff>if</font>(s.length() == 0)
+    <font color=#0000ff>return</font> s;
+  <font color=#0000ff>int</font> b = s.find_first_not_of(<font color=#004488>" \t"</font>);
+  <font color=#0000ff>int</font> e = s.find_last_not_of(<font color=#004488>" \t"</font>);
+  <font color=#0000ff>if</font>(b == -1) <font color=#009900>// No non-spaces</font>
+    <font color=#0000ff>return</font> <font color=#004488>""</font>;
+  <font color=#0000ff>return</font> std::string(s, b, e - b + 1);
+}
+#endif <font color=#009900>// TRIM_H ///:~</font></PRE></FONT></BLOCKQUOTE>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">The first test checks for an empty
+<B>string</B>; in that case no tests are made and a copy is returned. Notice
+that once the end points are found, the <B>string</B> constructor is used to
+build a new <B>string</B> from the old one, giving the starting count and the
+length. This form also utilizes the &#8220;return value optimization&#8221; (see
+the index for more
+details).
+[&nbsp;<a HREF="mailto:cda@freshsources.com?subject=[TICV2] TIC2V2_CHAPTER4_I58">Comment</a>&nbsp;]
+
+<a NAME="TIC2V2_CHAPTER4_I59"></a>
+</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Testing such a general-purpose tool needs
+to be thorough:
+[&nbsp;<a HREF="mailto:cda@freshsources.com?subject=[TICV2] TIC2V2_CHAPTER4_I59">Comment</a>&nbsp;]
+
+<a NAME="TIC2V2_CHAPTER4_I60"></a>
+</FONT><BR></P></DIV>
+
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE><font color=#009900>//: C04:TrimTest.cpp</font>
+<font color=#009900>//{L} ../TestSuite/Test</font>
+#include <font color=#004488>"trim.h"</font>
+#include &lt;iostream&gt;
+<font color=#0000ff>using</font> <font color=#0000ff>namespace</font> std;
+
+string s[] = {
+  <font color=#004488>" \t abcdefghijklmnop \t "</font>,
+  <font color=#004488>"abcdefghijklmnop \t "</font>,
+  <font color=#004488>" \t abcdefghijklmnop"</font>,
+  <font color=#004488>"a"</font>, <font color=#004488>"ab"</font>, <font color=#004488>"abc"</font>, <font color=#004488>"a b c"</font>,
+  <font color=#004488>" \t a b c \t "</font>, <font color=#004488>" \t a \t b \t c \t "</font>,
+  <font color=#004488>""</font>, <font color=#009900>// Must also test the empty string</font>
+};
+
+<font color=#0000ff>void</font> test(string s) {
+  cout &lt;&lt; <font color=#004488>"["</font> &lt;&lt; trim(s) &lt;&lt; <font color=#004488>"]"</font> &lt;&lt; endl;
+}
+
+<font color=#0000ff>int</font> main() {
+  <font color=#0000ff>for</font>(<font color=#0000ff>int</font> i = 0; i &lt; <font color=#0000ff>sizeof</font> s / <font color=#0000ff>sizeof</font> *s; i++)
+    test(s[i]);
+} <font color=#009900>///:~</font></PRE></FONT></BLOCKQUOTE>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">In the array of <B>string</B> <B>s</B>,
+you can see that the character arrays are automatically converted to
+<B>string</B> objects. This array provides cases to check the removal of spaces
+and tabs from both ends, as well as ensuring that spaces and tabs do not get
+removed from the middle of a
+<B>string</B>.
+[&nbsp;<a HREF="mailto:cda@freshsources.com?subject=[TICV2] TIC2V2_CHAPTER4_I60">Comment</a>&nbsp;]
+
+<a NAME="TIC2V2_CHAPTER4_I61"></a>
+</FONT><A NAME="_Toc519041934"></A><BR></P></DIV>
+<A NAME="Heading95"></A><FONT FACE = "Verdana, Tahoma, Arial, Helvetica, Sans"><H3 ALIGN="LEFT">
+Removing characters from strings</H3></FONT>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">My word processor/page layout program
+(Microsoft Word) will save a document in HTML, but it doesn&#8217;t recognize
+that the code listings in this book should be tagged with the HTML
+&#8220;preformatted&#8221; tag (&lt;PRE&gt;), and it puts paragraph marks
+(&lt;P&gt; and &lt;/P&gt;) around every listing line. This means that all the
+indentation in the code listings is lost. In addition, Word saves HTML with
+reduced font sizes for body text, which makes it hard to
+read.
+[&nbsp;<a HREF="mailto:cda@freshsources.com?subject=[TICV2] TIC2V2_CHAPTER4_I61">Comment</a>&nbsp;]
+
+<a NAME="TIC2V2_CHAPTER4_I62"></a>
+</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">To convert the book to HTML
+form</FONT><A NAME="fnB9" HREF="#fn9">[9]</A><FONT FACE="Georgia">, then, the
+original output must be reprocessed, watching for the tags that mark the start
+and end of code listings, inserting the &lt;PRE&gt; and &lt;/PRE&gt; tags at the
+appropriate places, removing all the &lt;P&gt; and &lt;/P&gt; tags within the
+listings, and adjusting the font sizes. Removal is accomplished with the
+<B>erase(&#160;)</B> member function, but you must correctly determine the
+starting and ending points of the substring you wish to erase. Here&#8217;s the
+program that reprocesses the generated HTML
+file:
+[&nbsp;<a HREF="mailto:cda@freshsources.com?subject=[TICV2] TIC2V2_CHAPTER4_I62">Comment</a>&nbsp;]
+
+<a NAME="TIC2V2_CHAPTER4_I63"></a>
+</FONT><BR></P></DIV>
+
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE><font color=#009900>//: C04:ReprocessHTML.cpp</font>
+<font color=#009900>// Take Word's html output and fix up </font>
+<font color=#009900>// the code listings and html tags</font>
+#include <font color=#004488>"..</font><font color=#004488>/require.h"</font>
+#include &lt;iostream&gt;
+#include &lt;fstream&gt;
+#include &lt;string&gt;
+<font color=#0000ff>using</font> <font color=#0000ff>namespace</font> std;
+
+<font color=#009900>// Produce a new string which is the original</font>
+<font color=#009900>// string with the html paragraph break marks</font>
+<font color=#009900>// stripped off:</font>
+string stripPBreaks(string s) {
+  <font color=#0000ff>int</font> br;
+  <font color=#0000ff>while</font>((br = s.find(<font color=#004488>"&lt;P&gt;"</font>)) != string::npos)
+    s.erase(br, strlen(<font color=#004488>"&lt;P&gt;"</font>));
+  <font color=#0000ff>while</font>((br = s.find(<font color=#004488>"&lt;</font><font color=#004488>/P&gt;"</font>)) != string::npos)
+    s.erase(br, strlen(<font color=#004488>"&lt;</font><font color=#004488>/P&gt;"</font>));
+  <font color=#0000ff>return</font> s;
+}
+
+<font color=#009900>// After the beginning of a code listing is</font>
+<font color=#009900>// detected, this function cleans up the listing</font>
+<font color=#009900>// until the end marker is found. The first line</font>
+<font color=#009900>// of the listing is passed in by the caller, </font>
+<font color=#009900>// which detects the start marker in the line.</font>
+<font color=#0000ff>void</font> fixupCodeListing(istream&amp; in, 
+  ostream&amp; out, string&amp; line, <font color=#0000ff>int</font> tag) {
+  out &lt;&lt; line.substr(0, tag)
+    &lt;&lt; <font color=#004488>"&lt;PRE&gt;"</font> <font color=#009900>// Means "preformatted" in html</font>
+    &lt;&lt; stripPBreaks(line.substr(tag)) &lt;&lt; endl;
+  string s;
+  <font color=#0000ff>while</font>(getline(in, s)) {
+    <font color=#0000ff>int</font> endtag = s.find(<font color=#004488>"</font><font color=#004488>/"</font><font color=#004488>"</font><font color=#004488>/"</font><font color=#004488>"</font><font color=#004488>/"</font><font color=#004488>":~"</font>);
+    <font color=#0000ff>if</font>(endtag != string::npos) {
+      endtag += strlen(<font color=#004488>"</font><font color=#004488>/"</font><font color=#004488>"</font><font color=#004488>/"</font><font color=#004488>"</font><font color=#004488>/"</font><font color=#004488>":~"</font>);
+      string before = s.substr(0, endtag);
+      string after = s.substr(endtag);
+      out &lt;&lt; stripPBreaks(before) &lt;&lt; <font color=#004488>"&lt;</font><font color=#004488>/PRE&gt;"</font> 
+        &lt;&lt; after &lt;&lt; endl;
+      <font color=#0000ff>return</font>;
+    }
+    out &lt;&lt; stripPBreaks(s) &lt;&lt; endl;
+  }
+}
+
+string removals[] = {
+  <font color=#004488>"&lt;FONT SIZE=2&gt;"</font>,
+  <font color=#004488>"&lt;FONT SIZE=1&gt;"</font>,
+  <font color=#004488>"&lt;FONT FACE=\"</font>Times\<font color=#004488>" SIZE=1&gt;"</font>,
+  <font color=#004488>"&lt;FONT FACE=\"</font>Times\<font color=#004488>" SIZE=2&gt;"</font>,
+  <font color=#004488>"&lt;FONT FACE=\"</font>Courier\<font color=#004488>" SIZE=1&gt;"</font>,
+  <font color=#004488>"SIZE=1"</font>, <font color=#009900>// Eliminate all other '1' &amp; '2' size</font>
+  <font color=#004488>"SIZE=2"</font>,
+};
+<font color=#0000ff>const</font> <font color=#0000ff>int</font> rmsz = 
+  <font color=#0000ff>sizeof</font>(removals)/<font color=#0000ff>sizeof</font>(*removals);
+
+<font color=#0000ff>int</font> main(<font color=#0000ff>int</font> argc, <font color=#0000ff>char</font>* argv[]) {
+  requireArgs(argc, 2);
+  ifstream in(argv[1]);
+  assure(in, argv[1]);
+  ofstream out(argv[2]);
+  string line;
+  <font color=#0000ff>while</font>(getline(in, line)) {
+    <font color=#009900>// The "Body" tag only appears once:</font>
+    <font color=#0000ff>if</font>(line.find(<font color=#004488>"&lt;BODY"</font>) != string::npos) {
+      out &lt;&lt; <font color=#004488>"&lt;BODY BGCOLOR=\"</font>#FFFFFF\<font color=#004488>" "</font>
+      <font color=#004488>"TEXT=\"</font>#000000\<font color=#004488>"&gt;"</font> &lt;&lt; endl;
+      <font color=#0000ff>continue</font>; <font color=#009900>// Get next line</font>
+    }
+    <font color=#009900>// Eliminate each of the removals strings:</font>
+    <font color=#0000ff>for</font>(<font color=#0000ff>int</font> i = 0; i &lt; rmsz; i++) {
+      <font color=#0000ff>int</font> find = line.find(removals[i]);
+      <font color=#0000ff>if</font>(find != string::npos)
+        line.erase(find, removals[i].size());
+    }
+    <font color=#0000ff>int</font> tag1 = line.find(<font color=#004488>"</font><font color=#004488>/"</font><font color=#004488>"</font><font color=#004488>/"</font><font color=#004488>":"</font>);
+    <font color=#0000ff>int</font> tag2 = line.find(<font color=#004488>"</font><font color=#004488>/"</font><font color=#004488>"*"</font><font color=#004488>":"</font>);
+    <font color=#0000ff>if</font>(tag1 != string::npos)
+      fixupCodeListing(in, out, line, tag1);
+    <font color=#0000ff>else</font> <font color=#0000ff>if</font>(tag2 != string::npos)
+      fixupCodeListing(in, out, line, tag2);
+    <font color=#0000ff>else</font>
+      out &lt;&lt; line &lt;&lt; endl;
+  }
+} <font color=#009900>///:~</font></PRE></FONT></BLOCKQUOTE>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Notice the lines that detect the start
+and end listing tags by indicating them with each character in quotes. These
+tags are treated in a special way by the logic in the <B>Extractcode.cpp
+</B>tool for extracting code listings. To present the code for the tool in the
+text of the book, the tag sequence itself must not occur in the listing. This
+was accomplished by taking advantage of a C++ preprocessor feature that causes
+text strings delimited by adjacent pairs of double quotes to be merged into a
+single string during the preprocessor pass of the build.
+
+[&nbsp;<a HREF="mailto:cda@freshsources.com?subject=[TICV2] TIC2V2_CHAPTER4_I63">Comment</a>&nbsp;]
+
+<a NAME="TIC2V2_CHAPTER4_I64"></a>
+</FONT><BR></P></DIV>
+
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE><font color=#0000ff>int</font> tag1 = line.find(<font color=#004488>"</font><font color=#004488>/"</font><font color=#004488>"</font><font color=#004488>/"</font><font color=#004488>":"</font>);</PRE></FONT></BLOCKQUOTE>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">The effect of the sequence of <B>char</B>
+arrays is to produce the starting tag for code
+listings.
+[&nbsp;<a HREF="mailto:cda@freshsources.com?subject=[TICV2] TIC2V2_CHAPTER4_I64">Comment</a>&nbsp;]
+
+<a NAME="TIC2V2_CHAPTER4_I65"></a>
+</FONT><BR></P></DIV>
+<A NAME="Heading96"></A><FONT FACE = "Verdana, Tahoma, Arial, Helvetica, Sans"><H4 ALIGN="LEFT">
+Stripping HTML tags</H4></FONT>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Sometimes it&#8217;s useful to take an
+HTML file and strip its tags so you have something approximating the text that
+would be displayed in the Web browser, only as an ASCII text file. The
+<B>string</B> class once again comes in handy. The following has some variation
+on the theme of the previous
+example:
+[&nbsp;<a HREF="mailto:cda@freshsources.com?subject=[TICV2] TIC2V2_CHAPTER4_I65">Comment</a>&nbsp;]
+
+<a NAME="TIC2V2_CHAPTER4_I66"></a>
+</FONT><BR></P></DIV>
+
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE><font color=#009900>//: C04:HTMLStripper.cpp</font>
+<font color=#009900>// Filter to remove html tags and markers</font>
+#include <font color=#004488>"..</font><font color=#004488>/require.h"</font>
+#include &lt;fstream&gt;
+#include &lt;iostream&gt;
+#include &lt;string&gt;
+<font color=#0000ff>using</font> <font color=#0000ff>namespace</font> std;
+
+string replaceAll(string s, string f, string r) {
+  <font color=#0000ff>unsigned</font> <font color=#0000ff>int</font> found = s.find(f);
+  <font color=#0000ff>while</font>(found != string::npos) {
+    s.replace(found, f.length(), r);
+    found = s.find(f);
+  }
+  <font color=#0000ff>return</font> s;
+}
+
+string stripHTMLTags(string s) {
+  <font color=#0000ff>while</font>(<font color=#0000ff>true</font>) {
+    <font color=#0000ff>unsigned</font> <font color=#0000ff>int</font> left = s.find('&lt;');
+    <font color=#0000ff>unsigned</font> <font color=#0000ff>int</font> right = s.find('&gt;');
+    <font color=#0000ff>if</font>(left==string::npos || right==string::npos)
+      <font color=#0000ff>break</font>;
+    s = s.erase(left, right - left + 1);
+  }
+  s = replaceAll(s, <font color=#004488>"&amp;lt;"</font>, <font color=#004488>"&lt;"</font>);
+  s = replaceAll(s, <font color=#004488>"&amp;gt;"</font>, <font color=#004488>"&gt;"</font>);
+  s = replaceAll(s, <font color=#004488>"&amp;amp;"</font>, <font color=#004488>"&amp;"</font>);
+  s = replaceAll(s, <font color=#004488>"&amp;nbsp;"</font>, <font color=#004488>" "</font>);
+  <font color=#009900>// Etc...</font>
+  <font color=#0000ff>return</font> s;
+}
+
+<font color=#0000ff>int</font> main(<font color=#0000ff>int</font> argc, <font color=#0000ff>char</font>* argv[]) {
+  requireArgs(argc, 1, 
+    <font color=#004488>"usage: HTMLStripper InputFile"</font>);
+  ifstream in(argv[1]);
+  assure(in, argv[1]);
+  <font color=#0000ff>const</font> <font color=#0000ff>int</font> sz = 4096;
+  <font color=#0000ff>char</font> buf[sz];
+  <font color=#0000ff>while</font>(in.getline(buf, sz)) {
+    string s(buf);
+    cout &lt;&lt; stripHTMLTags(s) &lt;&lt; endl;
+  }
+} <font color=#009900>///:~</font></PRE></FONT></BLOCKQUOTE>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">The <B>string</B> class can replace one
+string with another but there&#8217;s no facility for replacing all the strings
+of one type with another, so the <B>replaceAll(&#160;)</B> function does this
+for you, inside a <B>while</B> loop that keeps finding the next instance of the
+find string <B>f</B>. That function is used inside <B>stripHTMLTags</B> after it
+uses <B>erase(&#160;)</B> to remove everything that appears inside angle braces
+(&#8216;<B>&lt;</B>&#8216; and &#8216;<B>&gt;</B>&#8216;). Note that I probably
+haven&#8217;t gotten all the necessary replacement values, but you can see what
+to do (you might even put all the find-replace pairs in a table...). In
+<B>main(&#160;)</B> the arguments are checked, and the file is read and
+converted. It is sent to standard output so you must redirect it with
+&#8216;<B>&gt;</B>&#8216; if you want to write it to a
+file.
+[&nbsp;<a HREF="mailto:cda@freshsources.com?subject=[TICV2] TIC2V2_CHAPTER4_I66">Comment</a>&nbsp;]
+
+<a NAME="TIC2V2_CHAPTER4_I67"></a>
+</FONT><A NAME="_Toc519041935"></A><BR></P></DIV>
+<A NAME="Heading97"></A><FONT FACE = "Verdana, Tahoma, Arial, Helvetica, Sans"><H3 ALIGN="LEFT">
+Comparing strings </H3></FONT>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Comparing strings is inherently different
+than comparing numbers. Numbers have constant, universally meaningful values. To
+evaluate the relationship between the magnitude of two strings, you must make a
+<I>lexical comparison</I>. Lexical comparison means that when you test a
+character to see if it is &#8220;greater than&#8221; or &#8220;less than&#8221;
+another character, you are actually comparing the numeric representation of
+those characters as specified in the collating sequence of the character set
+being used. Most often, this will be the ASCII collating sequence, which assigns
+the printable characters for the English language numbers in the range from 32
+to 127 decimal. In the ASCII collating sequence, the first
+&#8220;character&#8221; in the list is the space, followed by several common
+punctuation marks, and then uppercase and lowercase letters. With respect to the
+alphabet, this means that the letters nearer the front have lower ASCII values
+than those nearer the end. With these details in mind, it becomes easier to
+remember that when a lexical comparison that reports s1 is &#8220;greater
+than&#8221; s2, it simply means that when the two were compared, the first
+differing character in s1 came later in the alphabet than the character in that
+same position in s2.
+[&nbsp;<a HREF="mailto:cda@freshsources.com?subject=[TICV2] TIC2V2_CHAPTER4_I67">Comment</a>&nbsp;]
+
+<a NAME="TIC2V2_CHAPTER4_I68"></a>
+</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">C++ provides several ways to compare
+strings, and each has their advantages. The simplest to use are the non member
+overloaded operator functions <B>operator ==, operator != operator &gt;,
+operator &lt;, operator &gt;=, </B>and<B> operator &lt;=.
+</B>
+[&nbsp;<a HREF="mailto:cda@freshsources.com?subject=[TICV2] TIC2V2_CHAPTER4_I68">Comment</a>&nbsp;]
+
+<a NAME="TIC2V2_CHAPTER4_I69"></a>
+</FONT><BR></P></DIV>
+
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE><font color=#009900>//: C04:CompStr.cpp</font>
+<font color=#009900>//{L} ../TestSuite/Test</font>
+#include &lt;string&gt;
+#include &lt;iostream&gt;
+<font color=#0000ff>using</font> <font color=#0000ff>namespace</font> std;
+
+<font color=#0000ff>int</font> main() {
+  <font color=#009900>// Strings to compare</font>
+  string s1(<font color=#004488>"This "</font>);
+  string s2(<font color=#004488>"That "</font>);
+  <font color=#0000ff>for</font>(<font color=#0000ff>int</font> i = 0; i&lt; s1.size() &amp;&amp;
+    i &lt; s2.size(); i++)
+    <font color=#009900>// See if the string elements are the same:</font>
+    <font color=#0000ff>if</font>(s1[i] == s2[i])
+      cout &lt;&lt; s1[i] &lt;&lt; <font color=#004488>"  "</font> &lt;&lt; i &lt;&lt; endl;
+  <font color=#009900>// Use the string inequality operators</font>
+  <font color=#0000ff>if</font>(s1 != s2) { 
+    cout &lt;&lt; <font color=#004488>"Strings aren't the same:"</font> &lt;&lt; <font color=#004488>" "</font>;
+    <font color=#0000ff>if</font>(s1 &gt; s2)
+      cout &lt;&lt; <font color=#004488>"s1 is &gt; s2"</font> &lt;&lt; endl;
+    <font color=#0000ff>else</font>
+      cout &lt;&lt; <font color=#004488>"s2 is &gt; s1"</font> &lt;&lt; endl;
+  }
+} <font color=#009900>///:~</font></PRE></FONT></BLOCKQUOTE>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Here&#8217;s the output from
+<B>CompStr.cpp</B>:
+[&nbsp;<a HREF="mailto:cda@freshsources.com?subject=[TICV2] TIC2V2_CHAPTER4_I69">Comment</a>&nbsp;]
+
+<a NAME="TIC2V2_CHAPTER4_I70"></a>
+</FONT><BR></P></DIV>
+
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE>T 0
+h 1
+  4
+Strings aren&#8217;t the same: s1 is &gt; s2 </PRE></FONT></BLOCKQUOTE>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">The overloaded comparison operators are
+useful for comparing both full strings and individual string
+elements.
+[&nbsp;<a HREF="mailto:cda@freshsources.com?subject=[TICV2] TIC2V2_CHAPTER4_I70">Comment</a>&nbsp;]
+
+<a NAME="TIC2V2_CHAPTER4_I71"></a>
+</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Notice in the code fragment below the
+flexibility of argument types on both the left and right hand side of the
+comparison operators. The overloaded operator set allows the direct comparison
+of string objects, quoted literals, and pointers to C style strings.
+
+[&nbsp;<a HREF="mailto:cda@freshsources.com?subject=[TICV2] TIC2V2_CHAPTER4_I71">Comment</a>&nbsp;]
+
+<a NAME="TIC2V2_CHAPTER4_I72"></a>
+</FONT><BR></P></DIV>
+
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE><font color=#009900>// The lvalue is a quoted literal and </font>
+<font color=#009900>// the rvalue is a string</font>
+<font color=#0000ff>if</font>(<font color=#004488>"That "</font> == s2)
+  cout &lt;&lt; <font color=#004488>"A match"</font> &lt;&lt; endl;
+<font color=#009900>// The lvalue is a string and the rvalue is a</font>
+<font color=#009900>// pointer to a c style null terminated string</font>
+<font color=#0000ff>if</font>(s1 != s2.c_str())
+  cout &lt;&lt; <font color=#004488>"No match"</font> &lt;&lt; endl;</PRE></FONT></BLOCKQUOTE>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">You won&#8217;t find the logical not (!)
+or the logical comparison operators (&amp;&amp; and ||) among operators for
+string. (Neither will you find overloaded versions of the bitwise C operators
+&amp;, |, ^, or ~.) The overloaded non member comparison operators for the
+string class are limited to the subset which has clear, unambiguous application
+to single characters or groups of characters.
+
+[&nbsp;<a HREF="mailto:cda@freshsources.com?subject=[TICV2] TIC2V2_CHAPTER4_I72">Comment</a>&nbsp;]
+
+<a NAME="TIC2V2_CHAPTER4_I73"></a>
+</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">The <B>compare(&#160;)</B> member
+function offers you a great deal more sophisticated and precise comparison than
+the non member operator set, because it returns a lexical comparison value, and
+provides for comparisons that consider subsets of the string data. It provides
+overloaded versions that allow you to compare two complete strings, part of
+either string to a complete string, and subsets of two strings. This example
+compares complete
+strings:
+[&nbsp;<a HREF="mailto:cda@freshsources.com?subject=[TICV2] TIC2V2_CHAPTER4_I73">Comment</a>&nbsp;]
+
+<a NAME="TIC2V2_CHAPTER4_I74"></a>
+</FONT><BR></P></DIV>
+
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE><font color=#009900>//: C04:Compare.cpp</font>
+<font color=#009900>// Demonstrates compare(), swap()</font>
+<font color=#009900>//{L} ../TestSuite/Test</font>
+#include &lt;string&gt;
+#include &lt;iostream&gt;
+<font color=#0000ff>using</font> <font color=#0000ff>namespace</font> std;
+
+<font color=#0000ff>int</font> main() {
+  string first(<font color=#004488>"This"</font>);
+  string second(<font color=#004488>"That"</font>);
+  <font color=#009900>// Which is lexically greater?</font>
+  <font color=#0000ff>switch</font>(first.compare(second)) {
+    <font color=#0000ff>case</font> 0: <font color=#009900>// The same</font>
+      cout &lt;&lt; first &lt;&lt; <font color=#004488>" and "</font> &lt;&lt; second &lt;&lt;
+        <font color=#004488>" are lexically equal"</font> &lt;&lt; endl;
+      <font color=#0000ff>break</font>;
+    <font color=#0000ff>case</font> -1: <font color=#009900>// Less than</font>
+      first.swap(second);
+      <font color=#009900>// Fall through this case...</font>
+    <font color=#0000ff>case</font> 1: <font color=#009900>// Greater than</font>
+      cout &lt;&lt; first &lt;&lt;
+        <font color=#004488>" is lexically greater than "</font> &lt;&lt;
+        second &lt;&lt; endl;
+  }
+} <font color=#009900>///:~</font></PRE></FONT></BLOCKQUOTE>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">The output from <B>Compare.cpp</B> looks
+like this:
+[&nbsp;<a HREF="mailto:cda@freshsources.com?subject=[TICV2] TIC2V2_CHAPTER4_I74">Comment</a>&nbsp;]
+
+<a NAME="TIC2V2_CHAPTER4_I75"></a>
+</FONT><BR></P></DIV>
+
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE>This is lexically greater than That</PRE></FONT></BLOCKQUOTE>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">To compare a subset of the characters in
+one or both strings, you add arguments that define where to start the comparison
+and how many characters to consider. For example, we can use the overloaded
+version of
+<B>compare(&#160;)</B>:
+[&nbsp;<a HREF="mailto:cda@freshsources.com?subject=[TICV2] TIC2V2_CHAPTER4_I75">Comment</a>&nbsp;]
+
+<a NAME="TIC2V2_CHAPTER4_I76"></a>
+</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia"><B>s1.compare(s1StartPos, s1NumberChars,
+s2, s2StartPos,
+s2NumberChars);</B>
+[&nbsp;<a HREF="mailto:cda@freshsources.com?subject=[TICV2] TIC2V2_CHAPTER4_I76">Comment</a>&nbsp;]
+
+<a NAME="TIC2V2_CHAPTER4_I77"></a>
+</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">If we substitute the above version of
+<B>compare(&#160;)</B> in the previous program so that it only looks at the
+first two characters of each string, the program
+becomes:
+[&nbsp;<a HREF="mailto:cda@freshsources.com?subject=[TICV2] TIC2V2_CHAPTER4_I77">Comment</a>&nbsp;]
+
+<a NAME="TIC2V2_CHAPTER4_I78"></a>
+</FONT><BR></P></DIV>
+
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE><font color=#009900>//: C04:Compare2.cpp</font>
+<font color=#009900>// Overloaded compare()</font>
+<font color=#009900>//{L} ../TestSuite/Test</font>
+<font color=#009900>//{-g++295}</font>
+#include &lt;string&gt;
+#include &lt;iostream&gt;
+<font color=#0000ff>using</font> <font color=#0000ff>namespace</font> std;
+
+<font color=#0000ff>int</font> main() {
+  string first(<font color=#004488>"This"</font>);
+  string second(<font color=#004488>"That"</font>);
+  <font color=#009900>// Compare first two characters of each string:</font>
+  <font color=#0000ff>switch</font>(first.compare(0, 2, second, 0, 2)) {
+    <font color=#0000ff>case</font> 0: <font color=#009900>// The same</font>
+      cout &lt;&lt; first &lt;&lt; <font color=#004488>" and "</font> &lt;&lt; second &lt;&lt;
+        <font color=#004488>" are lexically equal"</font> &lt;&lt; endl;
+      <font color=#0000ff>break</font>;
+    <font color=#0000ff>case</font> -1: <font color=#009900>// Less than</font>
+      first.swap(second);
+      <font color=#009900>// Fall through this case...</font>
+    <font color=#0000ff>case</font> 1: <font color=#009900>// Greater than</font>
+      cout &lt;&lt; first &lt;&lt;
+        <font color=#004488>" is lexically greater than "</font> &lt;&lt;
+        second &lt;&lt; endl;
+  }
+} <font color=#009900>///:~</font></PRE></FONT></BLOCKQUOTE>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">The output
+is:
+[&nbsp;<a HREF="mailto:cda@freshsources.com?subject=[TICV2] TIC2V2_CHAPTER4_I78">Comment</a>&nbsp;]
+
+<a NAME="TIC2V2_CHAPTER4_I79"></a>
+</FONT><BR></P></DIV>
+
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE>This and That are lexically equal</PRE></FONT></BLOCKQUOTE>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">which is true, for the first two
+characters of &#8220;This&#8221; and
+&#8220;That.&#8221;
+[&nbsp;<a HREF="mailto:cda@freshsources.com?subject=[TICV2] TIC2V2_CHAPTER4_I79">Comment</a>&nbsp;]
+
+<a NAME="TIC2V2_CHAPTER4_I80"></a>
+</FONT><BR></P></DIV>
+<A NAME="Heading98"></A><FONT FACE = "Verdana, Tahoma, Arial, Helvetica, Sans"><H4 ALIGN="LEFT">
+Indexing with [ ] vs. at(&#160;)</H4></FONT>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">In the examples so far, we have used C
+style array indexing syntax to refer to an individual character in a string. C++
+strings provide an alternative to the <B>s[n] </B>notation: the
+<B>at(&#160;)</B> member. These two idioms produce the same result in C++ if all
+goes well:
+[&nbsp;<a HREF="mailto:cda@freshsources.com?subject=[TICV2] TIC2V2_CHAPTER4_I80">Comment</a>&nbsp;]
+
+<a NAME="TIC2V2_CHAPTER4_I81"></a>
+</FONT><BR></P></DIV>
+
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE><font color=#009900>//: C04:StringIndexing.cpp</font>
+<font color=#009900>//{L} ../TestSuite/Test</font>
+#include &lt;string&gt;
+#include &lt;iostream&gt;
+<font color=#0000ff>using</font> <font color=#0000ff>namespace</font> std;
+<font color=#0000ff>int</font> main(){
+  string s(<font color=#004488>"1234"</font>);
+  cout &lt;&lt; s[1] &lt;&lt; <font color=#004488>" "</font>;
+  cout &lt;&lt; s.at(1) &lt;&lt; endl;
+} <font color=#009900>///:~</font></PRE></FONT></BLOCKQUOTE>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">The output from this code looks like
+this:
+[&nbsp;<a HREF="mailto:cda@freshsources.com?subject=[TICV2] TIC2V2_CHAPTER4_I81">Comment</a>&nbsp;]
+
+<a NAME="TIC2V2_CHAPTER4_I82"></a>
+</FONT><BR></P></DIV>
+
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE>2 2</PRE></FONT></BLOCKQUOTE>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">However, there is one important
+difference between <B>[ ]</B> and <B>at(&#160;)</B>. When you try to reference
+an array element that is out of bounds, <B>at(&#160;) </B>will do you the
+kindness of throwing an exception, while ordinary <B>[ ] </B>subscripting syntax
+will leave you to your own
+devices:
+[&nbsp;<a HREF="mailto:cda@freshsources.com?subject=[TICV2] TIC2V2_CHAPTER4_I82">Comment</a>&nbsp;]
+
+<a NAME="TIC2V2_CHAPTER4_I83"></a>
+</FONT><BR></P></DIV>
+
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE><font color=#009900>//: C04:BadStringIndexing.cpp</font>
+<font color=#009900>//{L} ../TestSuite/Test</font>
+#include &lt;string&gt;
+#include &lt;iostream&gt;
+<font color=#0000ff>using</font> <font color=#0000ff>namespace</font> std;
+
+<font color=#0000ff>int</font> main(){
+  string s(<font color=#004488>"1234"</font>);
+  <font color=#009900>// Runtime problem: goes beyond array bounds:</font>
+  <font color=#009900>//! s[5];</font>
+  <font color=#009900>// Saves you by throwing an exception:</font>
+  <font color=#0000ff>try</font> {
+    s.at(5);
+  } <font color=#0000ff>catch</font>(...) {
+    cerr &lt;&lt; <font color=#004488>"Went beyond array bounds!"</font> &lt;&lt; endl;
+  }
+} <font color=#009900>///:~</font></PRE></FONT></BLOCKQUOTE>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Using <B>at(&#160;) </B>in place of <B>[
+] </B>will give you a chance to gracefully recover from references to array
+elements that don&#8217;t exist. <B>at(&#160;)</B> throws an object of class
+<B>out_of_range. </B>By catching this object in an exception handler, you can
+take appropriate remedial actions such as recalculating the offending subscript
+or growing the array. (You can read more about Exception Handling in Chapter
+XX)
+[&nbsp;<a HREF="mailto:cda@freshsources.com?subject=[TICV2] TIC2V2_CHAPTER4_I83">Comment</a>&nbsp;]
+
+<a NAME="TIC2V2_CHAPTER4_I84"></a>
+</FONT><A NAME="_Toc519041936"></A><BR></P></DIV>
+<A NAME="Heading99"></A><FONT FACE = "Verdana, Tahoma, Arial, Helvetica, Sans"><H3 ALIGN="LEFT">
+Using iterators</H3></FONT>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">In the example program
+<B>NewFind.cpp</B>, we used a lot of messy and rather tedious C <B>char</B>
+array handling code to change the case of the characters in a string and then
+search for the occurrence of matches to a substring. Sometimes the &#8220;quick
+and dirty&#8221; method is justifiable, but in general, you won&#8217;t want to
+sacrifice the advantages of having your string data safely and securely
+encapsulated in the C++ object where it lives.
+
+[&nbsp;<a HREF="mailto:cda@freshsources.com?subject=[TICV2] TIC2V2_CHAPTER4_I84">Comment</a>&nbsp;]
+
+<a NAME="TIC2V2_CHAPTER4_I85"></a>
+</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Here is a better, safer way to handle
+case insensitive comparison of two C++ string objects. Because no data is copied
+out of the objects and into C style strings, you don&#8217;t have to use
+pointers and you don&#8217;t have to risk overwriting the bounds of an ordinary
+character array. In this example, we use the string <B>iterator</B>. Iterators
+are themselves objects which move through a collection or container of other
+objects, selecting them one at a time, but never providing direct access to the
+implementation of the container. Iterators are <I>not</I> pointers, but they are
+useful for many of the same
+jobs.
+[&nbsp;<a HREF="mailto:cda@freshsources.com?subject=[TICV2] TIC2V2_CHAPTER4_I85">Comment</a>&nbsp;]
+
+<a NAME="TIC2V2_CHAPTER4_I86"></a>
+</FONT><BR></P></DIV>
+
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE><font color=#009900>//: C04:CmpIter.cpp</font>
+<font color=#009900>// Find a group of characters in a string</font>
+<font color=#009900>//{L} ../TestSuite/Test</font>
+#include &lt;string&gt;
+#include &lt;iostream&gt;
+<font color=#0000ff>using</font> <font color=#0000ff>namespace</font> std;
+
+<font color=#009900>// Case insensitive compare function:</font>
+<font color=#0000ff>int</font> 
+stringCmpi(<font color=#0000ff>const</font> string&amp; s1, <font color=#0000ff>const</font> string&amp; s2) {
+  <font color=#009900>// Select the first element of each string:</font>
+  string::const_iterator 
+    p1 = s1.begin(), p2 = s2.begin();
+  <font color=#009900>// Don&#8217;t run past the end:</font>
+  <font color=#0000ff>while</font>(p1 != s1.end() &amp;&amp; p2 != s2.end()) {
+    <font color=#009900>// Compare upper-cased chars:</font>
+    <font color=#0000ff>if</font>(toupper(*p1) != toupper(*p2))
+      <font color=#009900>// Report which was lexically  greater:</font>
+      <font color=#0000ff>return</font> (toupper(*p1)&lt;toupper(*p2))? -1 : 1;
+    p1++;
+    p2++;
+  }
+  <font color=#009900>// If they match up to the detected eos, say </font>
+  <font color=#009900>// which was longer. Return 0 if the same.</font>
+  <font color=#0000ff>return</font>(s2.size() - s1.size());
+}
+
+<font color=#0000ff>int</font> main() {
+  string s1(<font color=#004488>"Mozart"</font>);
+  string s2(<font color=#004488>"Modigliani"</font>);
+  cout &lt;&lt; stringCmpi(s1, s2) &lt;&lt; endl;
+} <font color=#009900>///:~</font></PRE></FONT></BLOCKQUOTE>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Notice that the iterators <B>p1</B> and
+<B>p2</B> use the same syntax as C pointers &#8211; the &#8216;<B>*</B>&#8217;
+operator makes the <I>value of</I> element at the location given by the
+iterators available to the <B>toupper(&#160;) </B>function. <B>toupper(&#160;)
+</B>doesn&#8217;t actually change the content of the element in the string. In
+fact, it can&#8217;t. This definition of <B>p1</B> tells us that we can only use
+the elements <B>p1</B> points to as constants.
+
+[&nbsp;<a HREF="mailto:cda@freshsources.com?subject=[TICV2] TIC2V2_CHAPTER4_I86">Comment</a>&nbsp;]
+
+<a NAME="TIC2V2_CHAPTER4_I87"></a>
+</FONT><BR></P></DIV>
+
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE>string::const_iterator p1 = s1.begin();</PRE></FONT></BLOCKQUOTE>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">The way <B>toupper(&#160;)</B> and the
+iterators are used in this example is called a <I>case preserving </I>case
+insensitive comparison. This means that the string didn&#8217;t have to be
+copied or rewritten to accommodate case insensitive comparison. Both of the
+strings retain their original data,
+unmodified.
+[&nbsp;<a HREF="mailto:cda@freshsources.com?subject=[TICV2] TIC2V2_CHAPTER4_I87">Comment</a>&nbsp;]
+
+<a NAME="TIC2V2_CHAPTER4_I88"></a>
+</FONT><BR></P></DIV>
+<A NAME="Heading100"></A><FONT FACE = "Verdana, Tahoma, Arial, Helvetica, Sans"><H4 ALIGN="LEFT">
+Iterating in reverse</H4></FONT>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Just as the standard C pointer gives us
+the increment (++) and decrement (--) operators to make pointer arithmetic a bit
+more convenient, C++ string iterators come in two basic varieties. You&#8217;ve
+seen <B>end(&#160;)</B> and <B>begin(&#160;)</B>, which are the tools for moving
+forward through a string one element at a time. The reverse iterators
+<B>rend(&#160;)</B> and <B>rbegin(&#160;)</B> allow you to step backwards
+through a string. Here&#8217;s how they
+work:
+[&nbsp;<a HREF="mailto:cda@freshsources.com?subject=[TICV2] TIC2V2_CHAPTER4_I88">Comment</a>&nbsp;]
+
+<a NAME="TIC2V2_CHAPTER4_I89"></a>
+</FONT><BR></P></DIV>
+
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE><font color=#009900>//: C04:RevStr.cpp</font>
+<font color=#009900>// Print a string in reverse</font>
+<font color=#009900>//{L} ../TestSuite/Test</font>
+#include &lt;string&gt;
+#include &lt;iostream&gt;
+<font color=#0000ff>using</font> <font color=#0000ff>namespace</font> std;
+<font color=#0000ff>int</font> main() {
+  string s(<font color=#004488>"987654321"</font>);
+  <font color=#009900>// Use this iterator to walk backwards:</font>
+  string::reverse_iterator rev;
+  <font color=#009900>// "Incrementing" the reverse iterator moves </font>
+  <font color=#009900>// it to successively lower string elements:</font>
+  <font color=#0000ff>for</font>(rev = s.rbegin(); rev != s.rend(); rev++)
+    cout &lt;&lt; *rev &lt;&lt; <font color=#004488>" "</font>;
+} <font color=#009900>///:~</font></PRE></FONT></BLOCKQUOTE>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">The output from <B>RevStr.cpp</B> looks
+like this:
+[&nbsp;<a HREF="mailto:cda@freshsources.com?subject=[TICV2] TIC2V2_CHAPTER4_I89">Comment</a>&nbsp;]
+
+<a NAME="TIC2V2_CHAPTER4_I90"></a>
+</FONT><BR></P></DIV>
+
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE>1 2 3 4 5 6 7 8 9</PRE></FONT></BLOCKQUOTE>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Reverse iterators act like pointers to
+elements of the string&#8217;s character array, <I>except that when you apply
+the increment operator to them, they move backward rather than forward</I>.
+<B>rbegin(&#160;)</B> and <B>rend(&#160;)</B> supply string locations that are
+consistent with this behavior, to wit, <B>rbegin(&#160;)</B> locates the
+position just beyond the end of the string, and <B>rend(&#160;)</B> locates the
+beginning. Aside from this, the main thing to remember about reverse iterators
+is that they <I>aren&#8217;t</I> type equivalent to ordinary iterators. For
+example, if a member function parameter list includes an iterator as an
+argument, you can&#8217;t substitute a reverse iterator to get the function to
+perform it&#8217;s job walking backward through the string. Here&#8217;s an
+illustration:
+[&nbsp;<a HREF="mailto:cda@freshsources.com?subject=[TICV2] TIC2V2_CHAPTER4_I90">Comment</a>&nbsp;]
+
+<a NAME="TIC2V2_CHAPTER4_I91"></a>
+</FONT><BR></P></DIV>
+
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE><font color=#009900>// The compiler won&#8217;t accept this</font>
+string sBackwards(s.rbegin(), s.rend());</PRE></FONT></BLOCKQUOTE>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">The string constructor won&#8217;t accept
+reverse iterators in place of forward iterators in its parameter list. This is
+also true of string members such as <B>copy(&#160;)</B>, <B>insert(&#160;),</B>
+and
+<B>assign(&#160;).</B>
+[&nbsp;<a HREF="mailto:cda@freshsources.com?subject=[TICV2] TIC2V2_CHAPTER4_I91">Comment</a>&nbsp;]
+
+<a NAME="TIC2V2_CHAPTER4_I92"></a>
+</FONT><A NAME="_Toc519041937"></A><BR></P></DIV>
+<A NAME="Heading101"></A><FONT FACE = "Verdana, Tahoma, Arial, Helvetica, Sans"><H3 ALIGN="LEFT">
+Strings and character traits</H3></FONT>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">We seem to have worked our way around the
+margins of case insensitive string comparisons using C++ string objects, so
+maybe it&#8217;s time to ask the obvious question: &#8220;Why isn&#8217;t
+case-insensitive comparison part of the standard <B>string</B> class ?&#8221;
+The answer provides interesting background on the true nature of C++ string
+objects. 
+[&nbsp;<a HREF="mailto:cda@freshsources.com?subject=[TICV2] TIC2V2_CHAPTER4_I92">Comment</a>&nbsp;]
+
+<a NAME="TIC2V2_CHAPTER4_I93"></a>
+</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Consider what it means for a character to
+have &#8220;case.&#8221; Written Hebrew, Farsi, and Kanji don&#8217;t use the
+concept of upper and lower case, so for those languages this idea has no meaning
+at all. This the first impediment to built-in C++ support for case-insensitive
+character search and comparison: the idea of case sensitivity is not universal,
+and therefore not portable.
+
+[&nbsp;<a HREF="mailto:cda@freshsources.com?subject=[TICV2] TIC2V2_CHAPTER4_I93">Comment</a>&nbsp;]
+
+<a NAME="TIC2V2_CHAPTER4_I94"></a>
+</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">It would seem that if there were a way of
+designating that some languages were &#8220;all uppercase&#8221; or &#8220;all
+lowercase&#8221; we could design a generalized solution. However, some languages
+which employ the concept of &#8220;case&#8221; <I>also</I> change the meaning of
+particular characters with diacritical marks: the cedilla in Spanish, the
+circumflex in French, and the umlaut in German. For this reason, any
+case-sensitive collating scheme that attempts to be comprehensive will be
+nightmarishly complex to use.
+
+[&nbsp;<a HREF="mailto:cda@freshsources.com?subject=[TICV2] TIC2V2_CHAPTER4_I94">Comment</a>&nbsp;]
+
+<a NAME="TIC2V2_CHAPTER4_I95"></a>
+</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Although we usually treat the C++
+<B>string</B> as a class, this is really not the case. <B>string</B> is a
+<B>typedef</B> of a more general constituent, the
+<B>basic_string&lt;</B>&#160;<B>&gt;</B> template. Observe how <B>string</B> is
+declared in the standard C++ header
+file:
+[&nbsp;<a HREF="mailto:cda@freshsources.com?subject=[TICV2] TIC2V2_CHAPTER4_I95">Comment</a>&nbsp;]
+
+<a NAME="TIC2V2_CHAPTER4_I96"></a>
+</FONT><BR></P></DIV>
+
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE><font color=#0000ff>typedef</font> basic_string&lt;<font color=#0000ff>char</font>&gt; string;</PRE></FONT></BLOCKQUOTE>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">To really understand the nature of
+strings, it&#8217;s helpful to delve a bit deeper and look at the template on
+which it is based. Here&#8217;s the declaration of the
+<B>basic_string&lt;</B>&#160;<B>&gt;</B>
+template:
+[&nbsp;<a HREF="mailto:cda@freshsources.com?subject=[TICV2] TIC2V2_CHAPTER4_I96">Comment</a>&nbsp;]
+
+<a NAME="TIC2V2_CHAPTER4_I97"></a>
+</FONT><BR></P></DIV>
+
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE><font color=#0000ff>template</font>&lt;<font color=#0000ff>class</font> charT,
+  <font color=#0000ff>class</font> traits = char_traits&lt;charT&gt;,
+  <font color=#0000ff>class</font> allocator = allocator&lt;charT&gt; &gt;
+  <font color=#0000ff>class</font> basic_string;</PRE></FONT></BLOCKQUOTE>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Earlier in this book, templates were
+examined in a great deal of detail. The main thing to notice about the two
+declarations above are that the <B>string</B> type is created when the
+<B>basic_string</B> template is instantiated with <B>char. </B>Inside the
+<B>basic_string&lt;</B>&#160;<B>&gt; </B>template declaration, the line
+
+[&nbsp;<a HREF="mailto:cda@freshsources.com?subject=[TICV2] TIC2V2_CHAPTER4_I97">Comment</a>&nbsp;]
+
+<a NAME="TIC2V2_CHAPTER4_I98"></a>
+</FONT><BR></P></DIV>
+
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE><font color=#0000ff>class</font> traits = char_traits&lt;charT&gt;,</PRE></FONT></BLOCKQUOTE>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">tells us that the behavior of the class
+made from the <B>basic_string&lt;</B>&#160;<B>&gt; </B>template is specified by
+a class based on the template <B>char_traits&lt;</B>&#160;<B>&gt;</B>. Thus, the
+<B>basic_string&lt;</B>&#160;<B>&gt;</B> template provides for cases where you
+need string oriented classes that manipulate types other than <B>char</B> (wide
+characters or unicode, for example). To do this, the
+<B>char_traits&lt;</B>&#160;<B>&gt; </B>template controls the content and
+collating behaviors of a variety of character sets using the character
+comparison functions <B>eq(&#160;)</B> (equal), <B>ne(&#160;)</B> (not equal),
+and <B>lt(&#160;)</B> (less than) upon which the
+<B>basic_string&lt;</B>&#160;<B>&gt; </B>string comparison functions
+rely.
+[&nbsp;<a HREF="mailto:cda@freshsources.com?subject=[TICV2] TIC2V2_CHAPTER4_I98">Comment</a>&nbsp;]
+
+<a NAME="TIC2V2_CHAPTER4_I99"></a>
+</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">This is why the string class
+doesn&#8217;t include case insensitive member functions: That&#8217;s not in its
+job description. To change the way the string class treats character comparison,
+you must supply a different <B>char_traits&lt;</B>&#160;<B>&gt;</B> template,
+because that defines the behavior of the individual character comparison member
+functions. 
+[&nbsp;<a HREF="mailto:cda@freshsources.com?subject=[TICV2] TIC2V2_CHAPTER4_I99">Comment</a>&nbsp;]
+
+<a NAME="TIC2V2_CHAPTER4_I100"></a>
+</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">This information can be used to make a
+new type of <B>string </B>class that ignores case. First, we&#8217;ll define a
+new case insensitive <B>char_traits&lt;</B>&#160;<B>&gt;</B> template that
+inherits the existing one. Next, we&#8217;ll override only the members we need
+to change in order to make character-by-character comparison case insensitive.
+(In addition to the three lexical character comparison members mentioned above,
+we&#8217;ll also have to supply new implementation of <B>find(&#160;)</B> and
+<B>compare(&#160;)</B>.) Finally, we&#8217;ll <B>typedef</B> a new class based
+on <B>basic_string</B>, but using the case insensitive <B>ichar_traits</B>
+template for its second
+argument.
+[&nbsp;<a HREF="mailto:cda@freshsources.com?subject=[TICV2] TIC2V2_CHAPTER4_I100">Comment</a>&nbsp;]
+
+<a NAME="TIC2V2_CHAPTER4_I101"></a>
+</FONT><BR></P></DIV>
+
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE><font color=#009900>//: C04:ichar_traits.h</font>
+<font color=#009900>// Creating your own character traits</font>
+#ifndef ICHAR_TRAITS_H
+#define ICHAR_TRAITS_H
+#include &lt;string&gt;
+#include &lt;cctype&gt;
+
+<font color=#0000ff>struct</font> ichar_traits : std::char_traits&lt;<font color=#0000ff>char</font>&gt; {
+  <font color=#009900>// We'll only change character by </font>
+  <font color=#009900>// character comparison functions</font>
+  <font color=#0000ff>static</font> <font color=#0000ff>bool</font> eq(<font color=#0000ff>char</font> c1st, <font color=#0000ff>char</font> c2nd) {
+    <font color=#0000ff>return</font> 
+      std::toupper(c1st) == std::toupper(c2nd);
+  }
+  <font color=#0000ff>static</font> <font color=#0000ff>bool</font> ne(<font color=#0000ff>char</font> c1st, <font color=#0000ff>char</font> c2nd) {
+    <font color=#0000ff>return</font> 
+      std::toupper(c1st) != std::toupper(c2nd);
+  }
+  <font color=#0000ff>static</font> <font color=#0000ff>bool</font> lt(<font color=#0000ff>char</font> c1st, <font color=#0000ff>char</font> c2nd) {
+    <font color=#0000ff>return</font> 
+      std::toupper(c1st) &lt; std::toupper(c2nd);
+  }
+  <font color=#0000ff>static</font> <font color=#0000ff>int</font> compare(<font color=#0000ff>const</font> <font color=#0000ff>char</font>* str1, 
+    <font color=#0000ff>const</font> <font color=#0000ff>char</font>* str2, size_t n) {
+    <font color=#0000ff>for</font>(<font color=#0000ff>int</font> i = 0; i &lt; n; i++) {
+      <font color=#0000ff>if</font>(std::tolower(*str1)&gt;std::tolower(*str2))
+        <font color=#0000ff>return</font> 1;
+      <font color=#0000ff>if</font>(std::tolower(*str1)&lt;std::tolower(*str2))
+        <font color=#0000ff>return</font> -1;
+      <font color=#0000ff>if</font>(*str1 == 0 || *str2 == 0)
+        <font color=#0000ff>return</font> 0;
+      str1++; str2++; <font color=#009900>// Compare the other chars</font>
+    }
+    <font color=#0000ff>return</font> 0;
+  }
+  <font color=#0000ff>static</font> <font color=#0000ff>const</font> <font color=#0000ff>char</font>* find(<font color=#0000ff>const</font> <font color=#0000ff>char</font>* s1, 
+    <font color=#0000ff>int</font>  n, <font color=#0000ff>char</font> c) {
+    <font color=#0000ff>while</font>(n-- &gt; 0 &amp;&amp;  
+      std::toupper(*s1) != std::toupper(c))
+      s1++;
+    <font color=#0000ff>return</font> s1;
+  }
+};
+#endif <font color=#009900>// ICHAR_TRAITS_H  ///:~</font></PRE></FONT></BLOCKQUOTE>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">If we <B>typedef </B>an <B>istring</B>
+class like this:
+[&nbsp;<a HREF="mailto:cda@freshsources.com?subject=[TICV2] TIC2V2_CHAPTER4_I101">Comment</a>&nbsp;]
+
+<a NAME="TIC2V2_CHAPTER4_I102"></a>
+</FONT><BR></P></DIV>
+
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE><font color=#0000ff>typedef</font> basic_string&lt;<font color=#0000ff>char</font>, ichar_traits, 
+  allocator&lt;<font color=#0000ff>char</font>&gt; &gt; istring;</PRE></FONT></BLOCKQUOTE>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Then this <B>istring</B> will act like an
+ordinary <B>string</B> in every way, except that it will make all comparisons
+without respect to case. Here&#8217;s an
+example:
+[&nbsp;<a HREF="mailto:cda@freshsources.com?subject=[TICV2] TIC2V2_CHAPTER4_I102">Comment</a>&nbsp;]
+
+<a NAME="TIC2V2_CHAPTER4_I103"></a>
+</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">[ Something&#8217;s wrong with this, so
+it&#8217;s currently left out of the compile by removing the
+&#8216;:&#8217;]
+[&nbsp;<a HREF="mailto:cda@freshsources.com?subject=[TICV2] TIC2V2_CHAPTER4_I103">Comment</a>&nbsp;]
+
+<a NAME="TIC2V2_CHAPTER4_I104"></a>
+</FONT><BR></P></DIV>
+
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE><font color=#009900>// C04:ICompare.cpp</font>
+<font color=#009900>//{L} ../TestSuite/Test</font>
+#include <font color=#004488>"ichar_traits.h"</font>
+#include &lt;string&gt;
+#include &lt;iostream&gt;
+<font color=#0000ff>using</font> <font color=#0000ff>namespace</font> std;
+
+<font color=#0000ff>typedef</font> basic_string&lt;<font color=#0000ff>char</font>, ichar_traits, 
+  allocator&lt;<font color=#0000ff>char</font>&gt; &gt; istring;
+
+<font color=#0000ff>int</font> main() {
+  <font color=#009900>// The same letters except for case:</font>
+  istring first = <font color=#004488>"tHis"</font>;
+  istring second = <font color=#004488>"ThIS"</font>;
+  cout &lt;&lt; first.compare(second) &lt;&lt; endl;
+} <font color=#009900>///:~</font></PRE></FONT></BLOCKQUOTE>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">The output from the program is
+&#8220;0&#8221;, indicating that the strings compare as equal. This is just a
+simple example &#8211; in order to make <B>istring</B> fully equivalent to
+<B>string</B>, we&#8217;d have to create the other functions necessary to
+support the new <B>istring</B>
+type.
+[&nbsp;<a HREF="mailto:cda@freshsources.com?subject=[TICV2] TIC2V2_CHAPTER4_I104">Comment</a>&nbsp;]
+
+<a NAME="TIC2V2_CHAPTER4_I105"></a>
+</FONT><A NAME="_Toc519041938"></A><BR></P></DIV>
+<A NAME="Heading102"></A><FONT FACE = "Verdana, Tahoma, Arial, Helvetica, Sans"><H2 ALIGN="LEFT">
+A string application</H2></FONT>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">My friend Daniel (who designed the cover
+and page layout for this book) does a lot of work with Web pages. One tool he
+uses creates a &#8220;site map&#8221; consisting of a Java applet to display the
+map and an HTML tag that invoked the applet and provided it with the necessary
+data to create the map. Daniel wanted to use this data to create an ordinary
+HTML page (sans applet) that would contain regular links as the site map. The
+resulting program turns out to be a nice practical application of the
+<B>string</B> class, so it is presented
+here.
+[&nbsp;<a HREF="mailto:cda@freshsources.com?subject=[TICV2] TIC2V2_CHAPTER4_I105">Comment</a>&nbsp;]
+
+<a NAME="TIC2V2_CHAPTER4_I106"></a>
+</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">The input is an HTML file that contains
+the usual stuff along with an applet tag with a parameter that begins like
+this:
+[&nbsp;<a HREF="mailto:cda@freshsources.com?subject=[TICV2] TIC2V2_CHAPTER4_I106">Comment</a>&nbsp;]
+
+<a NAME="TIC2V2_CHAPTER4_I107"></a>
+</FONT><BR></P></DIV>
+
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE>&lt;param name=<font color=#004488>"source_file"</font> value="</PRE></FONT></BLOCKQUOTE>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">The rest of the line contains encoded
+information about the site map, all combined into a single line (it&#8217;s
+rather long, but fortunately <B>string</B> objects don&#8217;t care). Each entry
+may or may not begin with a number of &#8216;<B>#</B>&#8217; signs; each of
+these indicates one level of depth. If no &#8216;<B>#</B>&#8217; sign is present
+the entry will be considered to be at level one. After the
+&#8216;<B>#</B>&#8217; is the text to be displayed on the page, followed by a
+&#8216;<B>%</B>&#8217; and the URL to use as the link. Each entry is terminated
+by a &#8216;<B>*</B>&#8217;. Thus, a single entry in the line might look like
+this:
+[&nbsp;<a HREF="mailto:cda@freshsources.com?subject=[TICV2] TIC2V2_CHAPTER4_I107">Comment</a>&nbsp;]
+
+<a NAME="TIC2V2_CHAPTER4_I108"></a>
+</FONT><BR></P></DIV>
+
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE>###|Useful Art%./Build/useful_art.html*</PRE></FONT></BLOCKQUOTE>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">The &#8216;<B>|</B>&#8217; at the
+beginning is an artifact that needs to be
+removed.
+[&nbsp;<a HREF="mailto:cda@freshsources.com?subject=[TICV2] TIC2V2_CHAPTER4_I108">Comment</a>&nbsp;]
+
+<a NAME="TIC2V2_CHAPTER4_I109"></a>
+</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">My solution was to create an <B>Item</B>
+class whose constructor would take input text and create an object that contains
+the text to be displayed, the URL and the level. The objects essentially parse
+themselves, and at that point you can read any value you want. In
+<B>main(&#160;)</B>, the input file is opened and read until the line contains
+the parameter that we&#8217;re interested in. Everything but the site map codes
+are stripped away from this <B>string</B>, and then it is parsed into
+<B>Item</B> objects:
+[&nbsp;<a HREF="mailto:cda@freshsources.com?subject=[TICV2] TIC2V2_CHAPTER4_I109">Comment</a>&nbsp;]
+
+<a NAME="TIC2V2_CHAPTER4_I110"></a>
+</FONT><BR></P></DIV>
+
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE><font color=#009900>//: C04:SiteMapConvert.cpp</font>
+<font color=#009900>// Using strings to create a custom conversion</font>
+<font color=#009900>// program that generates HTML output</font>
+#include <font color=#004488>"..</font><font color=#004488>/require.h"</font>
+#include &lt;iostream&gt;
+#include &lt;fstream&gt;
+#include &lt;string&gt;
+#include &lt;cstdlib&gt;
+<font color=#0000ff>using</font> <font color=#0000ff>namespace</font> std;
+
+<font color=#0000ff>class</font> Item {
+  string id, url;
+  <font color=#0000ff>int</font> depth;
+  string removeBar(string s) {
+    <font color=#0000ff>if</font>(s[0] == '|')
+      <font color=#0000ff>return</font> s.substr(1);
+    <font color=#0000ff>else</font> <font color=#0000ff>return</font> s;
+  }
+<font color=#0000ff>public</font>:
+  Item(string in, <font color=#0000ff>int</font>&amp; index) : depth(0) {
+    <font color=#0000ff>while</font>(in[index] == '#' &amp;&amp; index &lt; in.size()){
+      depth++;
+      index++;
+    }
+    <font color=#009900>// 0 means no '#' marks were found:</font>
+    <font color=#0000ff>if</font>(depth == 0) depth = 1;
+    <font color=#0000ff>while</font>(in[index] != '%' &amp;&amp; index &lt; in.size())
+      id += in[index++];
+    id = removeBar(id);
+    index++; <font color=#009900>// Move past '%'</font>
+    <font color=#0000ff>while</font>(in[index] != '*' &amp;&amp; index &lt; in.size())
+      url += in[index++];
+    url = removeBar(url);
+    index++; <font color=#009900>// To move past '*'</font>
+  }
+  string identifier() { <font color=#0000ff>return</font> id; }
+  string path() { <font color=#0000ff>return</font> url; }
+  <font color=#0000ff>int</font> level() { <font color=#0000ff>return</font> depth; }
+};
+
+<font color=#0000ff>int</font> main(<font color=#0000ff>int</font> argc, <font color=#0000ff>char</font>* argv[]) {
+  requireArgs(argc, 1,
+    <font color=#004488>"usage: SiteMapConvert inputfilename"</font>);
+  ifstream in(argv[1]);
+  assure(in, argv[1]);
+  ofstream out(<font color=#004488>"plainmap.html"</font>);
+  string line;
+  <font color=#0000ff>while</font>(getline(in, line)) {
+    <font color=#0000ff>if</font>(line.find(<font color=#004488>"&lt;param name=\"</font>source_file\<font color=#004488>""</font>)
+       != string::npos) {
+      <font color=#009900>// Extract data from start of sequence</font>
+      <font color=#009900>// until the terminating quote mark:</font>
+      line = line.substr(line.find(<font color=#004488>"value=\"</font>") 
+             + string(<font color=#004488>"value=\"</font>").size());
+      line = line.substr(0, 
+               line.find_last_of(<font color=#004488>"\"</font>"));
+      <font color=#0000ff>int</font> index = 0;
+      <font color=#0000ff>while</font>(index &lt; line.size()) {
+        Item item(line, index);
+        string startLevel, endLevel;
+        <font color=#0000ff>if</font>(item.level() == 1) {
+          startLevel = <font color=#004488>"&lt;h1&gt;"</font>;
+          endLevel = <font color=#004488>"&lt;</font><font color=#004488>/h1&gt;"</font>;
+        } <font color=#0000ff>else</font>
+          <font color=#0000ff>for</font>(<font color=#0000ff>int</font> i = 0; i &lt; item.level(); i++)
+            <font color=#0000ff>for</font>(<font color=#0000ff>int</font> j = 0; j &lt; 5; j++)
+              out &lt;&lt; <font color=#004488>"&amp;nbsp;"</font>;
+        string htmlLine = <font color=#004488>"&lt;a href=\"</font>"
+          + item.path() + <font color=#004488>"\"</font>&gt;"
+          + item.identifier() + <font color=#004488>"&lt;</font><font color=#004488>/a&gt;&lt;br&gt;"</font>;
+        out &lt;&lt; startLevel &lt;&lt; htmlLine 
+            &lt;&lt; endLevel &lt;&lt; endl;
+      }
+      <font color=#0000ff>break</font>; <font color=#009900>// Out of while loop</font>
+    }
+  }
+} <font color=#009900>///:~</font></PRE></FONT></BLOCKQUOTE>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia"><B>Item</B> contains a private member
+function <B>removeBar(&#160;)</B> that is used internally to strip off the
+leading bars, if they
+appear.
+[&nbsp;<a HREF="mailto:cda@freshsources.com?subject=[TICV2] TIC2V2_CHAPTER4_I110">Comment</a>&nbsp;]
+
+<a NAME="TIC2V2_CHAPTER4_I111"></a>
+</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">The constructor for <B>Item</B>
+initializes <B>depth</B> to <B>0</B> to indicate that no &#8216;#&#8217; signs
+were found yet; if none are found then it is assumed the <B>Item</B> should be
+displayed at level one. Each character in the <B>string</B> is examined using
+<B>operator[&#160;]</B> to find the <B>depth</B>, <B>id</B> and <B>url</B>
+values. The other member functions simply return these
+values.
+[&nbsp;<a HREF="mailto:cda@freshsources.com?subject=[TICV2] TIC2V2_CHAPTER4_I111">Comment</a>&nbsp;]
+
+<a NAME="TIC2V2_CHAPTER4_I112"></a>
+</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">After opening the files,
+<B>main(&#160;)</B> uses <B>string::find(&#160;)</B> to locate the line
+containing the site map data. At this point, <B>substr(&#160;)</B> is used in
+order to strip off the information before and after the site map data. The
+subsequent <B>while</B> loop performs the parsing, but notice that the value
+<B>index</B> is passed <I>by reference</I> into the <B>Item</B> constructor, and
+that constructor increments <B>index</B> as it parses each new <B>Item</B>, thus
+moving forward in the
+sequence.
+[&nbsp;<a HREF="mailto:cda@freshsources.com?subject=[TICV2] TIC2V2_CHAPTER4_I112">Comment</a>&nbsp;]
+
+<a NAME="TIC2V2_CHAPTER4_I113"></a>
+</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">If an <B>Item</B> is at level one, then
+an HTML <B>h1</B> tag is used, otherwise the elements are indented using HTML
+non-breaking spaces. Note in the initialization of <B>htmlLine</B> how easy it
+is to construct a <B>string</B> &#8211; you can just combine quoted character
+arrays and other <B>string</B> objects using
+<B>operator+</B>.
+[&nbsp;<a HREF="mailto:cda@freshsources.com?subject=[TICV2] TIC2V2_CHAPTER4_I113">Comment</a>&nbsp;]
+
+<a NAME="TIC2V2_CHAPTER4_I114"></a>
+</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">When the output is written to the
+destination file, <B>startLevel</B> and <B>endLevel</B> will only produce
+results if they have been given any value other than their default
+initialization
+values.
+[&nbsp;<a HREF="mailto:cda@freshsources.com?subject=[TICV2] TIC2V2_CHAPTER4_I114">Comment</a>&nbsp;]
+
+<a NAME="TIC2V2_CHAPTER4_I115"></a>
+</FONT><A NAME="_Toc519041939"></A><BR></P></DIV>
+<A NAME="Heading103"></A><FONT FACE = "Verdana, Tahoma, Arial, Helvetica, Sans"><H2 ALIGN="LEFT">
+Summary</H2></FONT>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">C++ string objects provide developers
+with a number of great advantages over their C counterparts. For the most part,
+the <B>string</B> class makes referring to strings through the use of character
+pointers unnecessary. This eliminates an entire class of software defects that
+arise from the use of uninitialized and incorrectly valued pointers. C++ strings
+dynamically and transparently grow their internal data storage space to
+accommodate increases in the size of the string data. This means that when the
+data in a string grows beyond the limits of the memory initially allocated to
+it, the string object will make the memory management calls that take space from
+and return space to the heap. Consistent allocation schemes prevent memory leaks
+and have the potential to be much more efficient than &#8220;roll your
+own&#8221; memory
+management.
+[&nbsp;<a HREF="mailto:cda@freshsources.com?subject=[TICV2] TIC2V2_CHAPTER4_I115">Comment</a>&nbsp;]
+
+<a NAME="TIC2V2_CHAPTER4_I116"></a>
+</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">The <B>string</B> class member functions
+provide a fairly comprehensive set of tools for creating, modifying, and
+searching in strings. <B>string</B> comparisons are always case sensitive, but
+you can work around this by copying string data to C style null terminated
+strings and using case insensitive string comparison functions, temporarily
+converting the data held in sting objects to a single case, or by creating a
+case insensitive string class which overrides the character traits used to
+create the <B>basic_string</B>
+object.
+[&nbsp;<a HREF="mailto:cda@freshsources.com?subject=[TICV2] TIC2V2_CHAPTER4_I116">Comment</a>&nbsp;]
+
+<a NAME="TIC2V2_CHAPTER4_I117"></a>
+</FONT><A NAME="_Toc519041940"></A><BR></P></DIV>
+<A NAME="Heading104"></A><FONT FACE = "Verdana, Tahoma, Arial, Helvetica, Sans"><H2 ALIGN="LEFT">
+Exercises</H2></FONT>
+<OL>
+<LI><FONT FACE="Verdana">	</FONT><FONT FACE="Georgia">A palindrome is a word or
+group of words that read the same forward and backward. For example
+&#8220;madam&#8221; or &#8220;wow&#8221;. Write a program that takes a string
+argument from the command line and returns TRUE if the string was a
+palindrome.
+[&nbsp;<a HREF="mailto:cda@freshsources.com?subject=[TICV2] TIC2V2_CHAPTER4_I117">Comment</a>&nbsp;]
+
+<a NAME="TIC2V2_CHAPTER4_I118"></a>
+</FONT><LI><FONT FACE="Verdana">	</FONT><FONT FACE="Georgia">Sometimes
+the input from a file stream contains a two character sequence to represent a
+newline. These two characters (0x0a 0x0d) produce extra blank lines when the
+stream is printed to standard out. Write a program that finds the character 0x0d
+(ASCII carriage return) and deletes it from the
+string.
+[&nbsp;<a HREF="mailto:cda@freshsources.com?subject=[TICV2] TIC2V2_CHAPTER4_I118">Comment</a>&nbsp;]
+
+<a NAME="TIC2V2_CHAPTER4_I119"></a>
+</FONT><LI><FONT FACE="Verdana">	</FONT><FONT FACE="Georgia">Write
+a program that reverses the order of the characters in a
+string.
+[&nbsp;<a HREF="mailto:cda@freshsources.com?subject=[TICV2] TIC2V2_CHAPTER4_I119">Comment</a>&nbsp;]
+
+</FONT></OL>
+<HR><DIV ALIGN="LEFT"><P><A NAME="fn8" HREF="#fnB8">[8]</A><FONT FACE="Georgia" SIZE=2>
+Much of the material in this chapter was originally created by Nancy
+Nicolaisen</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><A NAME="fn9" HREF="#fnB9">[9]</A><FONT FACE="Georgia" SIZE=2>
+I subsequently found better tools to accomplish this task, but the program is
+still interesting.</FONT><BR></P></DIV>
+
+<DIV ALIGN="CENTER">
+    <FONT FACE="Verdana, Tahoma, Arial, Helvetica, Sans" size = "-1">
+     [ <a href="Part2.htm">Previous Chapter</a> ] 
+    
+    [ <a href="SimpCont.htm">Short TOC</a> ] 
+    [ <a href="Contents.htm">Table of Contents</a> ] 
+  
+        [ <a href="DocIdx.htm">Index</a> ]
+        
+     [ <a href="Chap05.htm">Next Chapter</a> ] 
+    </FONT>
+    <BR>
+ Last Update:08/19/2001</P></DIV>
+
+</BODY>
+
+</HTML>

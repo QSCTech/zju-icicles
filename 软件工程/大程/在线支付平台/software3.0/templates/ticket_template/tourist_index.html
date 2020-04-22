@@ -1,0 +1,839 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>去旅行 | 主页</title>
+
+    <!-- Font awesome -->
+    <link href="static/css/font-awesome.css" rel="stylesheet">
+    <!-- Bootstrap -->
+    <link href="static/css/bootstrap.css" rel="stylesheet">
+    <!-- SmartMenus jQuery Bootstrap Addon CSS -->
+    <link href="static/css/jquery.smartmenus.bootstrap.css" rel="stylesheet">
+    <!-- Product view slider -->
+    <link rel="stylesheet" type="text/css" href="static/css/jquery.simpleLens.css">
+    <!-- slick slider -->
+    <link rel="stylesheet" type="text/css" href="static/css/slick.css">
+    <!-- price picker slider -->
+    <link rel="stylesheet" type="text/css" href="static/css/nouislider.css">
+    <!-- Theme color -->
+    <link id="switcher" href="static/css/theme-color/default-theme.css" rel="stylesheet">
+    <!-- <link id="switcher" href="static/css/theme-color/bridge-theme.css" rel="stylesheet"> -->
+    <!-- Top Slider CSS -->
+    <link href="static/css/sequence-theme.modern-slide-in.css" rel="stylesheet" media="all">
+
+    <!-- Main style sheet -->
+    <link href="static/css/style.css" rel="stylesheet">
+
+    <!-- Google Font -->
+    <link href='https://fonts.googleapis.com/css?family=Lato' rel='stylesheet' type='text/css'>
+    <link href='https://fonts.googleapis.com/css?family=Raleway' rel='stylesheet' type='text/css'>
+
+
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+      <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+
+</head>
+<body>
+<!-- wpf loader Two -->
+<!--   <div id="wpf-loader-two">    -->
+<!-- <div class="wpf-loader-two-inner"> -->
+<!--    <span>Loading</span> -->
+<!--  </div> -->
+<!-- </div> -->
+<!-- / wpf loader Two -->
+<!-- SCROLL TOP BUTTON -->
+<a class="scrollToTop" href="#"><i class="fa fa-chevron-up"></i></a>
+<!-- END SCROLL TOP BUTTON -->
+
+
+<!-- Start header section -->
+<header id="aa-header">
+    <!-- start header top  -->
+    <div class="aa-header-top">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="aa-header-top-area">
+                        <!-- start header top left -->
+                        <div class="aa-header-top-left">
+                            <!-- start language -->
+                            <div class="aa-language">
+                                <div class="dropdown">
+                                    <a class="btn dropdown-toggle" href="#" type="button" id="dropdownMenu1"
+                                       data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                                        <img src="static/img/flag/english.jpg" alt="english flag">ENGLISH
+                                        <span class="caret"></span>
+                                    </a>
+                                    <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
+                                        <li><a href="#"><img src="static/img/flag/french.jpg" alt="">FRENCH</a></li>
+                                        <li><a href="#"><img src="static/img/flag/english.jpg" alt="">ENGLISH</a></li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <!-- / language -->
+
+                            <!-- start currency -->
+                            <div class="aa-currency">
+                                <div class="dropdown">
+                                    <a class="btn dropdown-toggle" href="#" type="button" id="dropdownMenu1"
+                                       data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                                        <i class="fa fa-usd"></i>USD
+                                        <span class="caret"></span>
+                                    </a>
+                                    <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
+                                        <li><a href="#"><i class="fa fa-euro"></i>EURO</a></li>
+                                        <li><a href="#"><i class="fa fa-jpy"></i>YEN</a></li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <!-- / currency -->
+                            <!-- start cellphone -->
+                            <div class="cellphone hidden-xs">
+                                <p><span class="fa fa-phone"></span>00-62-658-658</p>
+                            </div>
+                            <!-- / cellphone -->
+                        </div>
+                        <!-- / header top left -->
+                        <div class="aa-header-top-right">
+                            <ul class="aa-head-top-nav-right">
+                                <li class="hidden-xs"><a href={{ url_for("account") }}>My account</a></li>
+                                <li><a href="" data-toggle="modal" data-target="#login-modal">Login</a></li>
+                                <li class="hidden-xs"><a href={{ url_for("register") }}>Register</a></li>
+                                <li class="hidden-xs"><a href={{ url_for("logout") }} Log out </a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- / header top  -->
+    <!-- start header bottom  -->
+    <div class="aa-header-bottom">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="aa-header-bottom-area">
+                        <!-- logo  -->
+                        <div class="aa-logo">
+                            <!-- Text based logo -->
+                            <a href="tourist_index">
+                                <!--span class="fa fa-shopping-cart"></span-->
+                                <p>去<strong>旅行</strong> <span>在线付款交易平台</span></p>
+                            </a>
+                            <!-- img based logo -->
+                            <!-- <a href="index"><img src="static/img/logo.jpg" alt="logo img"></a> -->
+                        </div>
+                        <!-- / logo  -->
+
+                        <!-- search box -->
+                        <div class="aa-search-box">
+                            <form action="" method="POST">
+                                <!--p>{{ goodform.goodname.label }}<span>*</span> {{ goodform.goodname }} {{ goodform.goodname.errors.0 }}</p-->
+                                {{ goodform.hidden_tag() }}
+                                {{ goodform.goodname(size = 30) }}
+                                <button type="submit" name="key" value="query"><span class="fa fa-search"></span>
+                                </button>
+                            </form>
+                        </div>
+                        <!-- / search box -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- / header bottom  -->
+</header>
+<!-- / header section -->
+<!-- menu -->
+<section id="menu">
+    <div class="container">
+        <div class="menu-area">
+            <!-- Navbar -->
+            <div class="navbar navbar-default" role="navigation">
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                        <span class="sr-only">Toggle navigation</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                </div>
+                <div class="navbar-collapse collapse">
+                    <!-- Left nav -->
+                    <ul class="nav navbar-nav">
+                        <li><a href="tourist_index">主页</a></li>
+                        <li><a href="contact">联系</a></li>
+                    </ul>
+                </div><!--/.nav-collapse -->
+            </div>
+        </div>
+    </div>
+</section>
+<!-- / menu -->
+<!-- Start slider -->
+<section id="aa-slider">
+    <div class="aa-slider-area">
+        <div id="sequence" class="seq">
+            <div class="seq-screen">
+                <ul class="seq-canvas">
+                    <!-- single slide item -->
+                    <li>
+                        <div class="seq-model">
+                            <img src="static/picture/czech_pic.jpg" width="1920" height="700">
+                        </div>
+                        <div class="seq-title">
+                            <span data-seq>人文历史</span>
+                            <h2 data-seq>>> 捷克 Czech <<</h2>
+                            <p data-seq>城堡 + 鹅卵石 + 教堂 = 现实生活中的童话故事王国</p>
+                        </div>
+                    </li>
+                    <!-- single slide item -->
+                    <li>
+                        <div class="seq-model">
+                            <img src="static/picture/vietnam_pic.jpg" width="1920" height="700">
+                        </div>
+                        <div class="seq-title">
+                            <span data-seq>壮丽风景</span>
+                            <h2 data-seq>>> 越南 Vietnam <<</h2>
+                            <p data-seq>乘独木舟绕行矗立在海中的石灰岩岛屿--下龙湾</p>
+                        </div>
+                    </li>
+                    <!-- single slide item -->
+                    <li>
+                        <div class="seq-model">
+                            <img src="static/picture/india_pic.jpg" width="1920" height="700">
+                        </div>
+                        <div class="seq-title">
+                            <span data-seq>建筑特色</span>
+                            <h2 data-seq>>> 印度 India <<</h2>
+                            <p data-seq>泰姬玛哈陵: 一代国王对皇后爱的结晶</p>
+                        </div>
+                    </li>
+                    <!-- single slide item -->
+                    <li>
+                        <div class="seq-model">
+                            <img src="static/picture/australia_pic.jpg" width="1920" height="700">
+                        </div>
+                        <div class="seq-title">
+                            <span data-seq>奇岩怪石</span>
+                            <h2 data-seq>>> 澳洲 Australia <<</h2>
+                            <p data-seq>紅岩山: 极端天气下孕育出的特色景观</p>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+            <!-- slider navigation btn -->
+            <fieldset class="seq-nav" aria-controls="sequence" aria-label="Slider buttons">
+                <a type="button" class="seq-prev" aria-label="Previous"><span class="fa fa-angle-left"></span></a>
+                <a type="button" class="seq-next" aria-label="Next"><span class="fa fa-angle-right"></span></a>
+            </fieldset>
+        </div>
+    </div>
+</section>
+<!-- / slider -->
+<!-- Products section -->
+<section id="aa-product">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="row">
+                    <div class="aa-product-area">
+                        <div class="aa-product-inner">
+                            <!-- start prduct navigation -->
+                            <ul class="nav nav-tabs aa-products-tab">
+                                <li class="active"><a href="#men" data-toggle="tab">饭店</a></li>
+                                <li><a href="#women" data-toggle="tab">航班</a></li>
+                                <p></p>
+                                <form action="" class="aa-sort-form" method="POST">
+                                    <label for="">排序依照</label>
+                                    <!--select name="">
+                                      <option value="1" selected="Default">无</option>
+                                      <option value="2">公司名称</option>
+                                      <option value="3">价格(低至高)</option>
+                                      <option value="4">评价(高至低)</option>
+                                    </select-->
+                                </form>
+                                <form action="" class="aa-show-form">
+                                    <label for="">价格区间</label>
+                                    <!--select name="">
+                                      <option value="1" selected="Default">无</option>
+                                      <option value="2">0-500</option>
+                                      <option value="3">500-1000</option>
+                                      <option value="4">1000-1500</option>
+                                      <option value="5">1500-2500</option>
+                                      <option value="6">2500-3500</option>
+                                      <option value="7">3500~</option>
+                                    </select-->
+                                </form>
+                            </ul>
+                            <!-- Tab panes -->
+                            <div class="tab-content">
+                                <!-- Start hotel product category -->
+                                <div class="tab-pane fade in active" id="men">
+                                    <ul class="aa-product-catg" method="POST">
+                                        <!-- start single product item -->
+                                        {% if query %}
+                                            {% for Q in query %}
+                                                <!--div class="aa-blog-info">{{ _ }}</div-->
+                                                <li>
+                                                    <figure>
+                                                        <br>{{ Q.1 }}</br>
+                                                        {% if Q.3 == NULL %}
+                                                            <img src="static/picture/hotel_icon.jpg" width="200"
+                                                                 height="250"></a>
+                                                            <a class="aa-add-card-btn"
+                                                               href="tourist_hotel_detail/{{ Q.0 }}"><span
+                                                                    class="fa fa-shopping-cart"></span>详细说明</a>
+                                                        {% else %}
+                                                            <img src="static/picture/airplane_icon.jpg" width="200"
+                                                                 height="250"></a>
+                                                            <a class="aa-add-card-btn"
+                                                               href="tourist_plane_detail/{{ Q.0 }}"><span
+                                                                    class="fa fa-shopping-cart"></span>详细说明</a>
+                                                        {% endif %}
+                                                        <figcaption>
+                                                            <h4 class="aa-product-title"><a href="#">{{ Q.2 }}</a></h4>
+                                                            <span class="aa-product-price">￥{{ Q.5 }}</span>
+                                                            <!--<span class="aa-product-price"><del>$65.50</del></span>-->
+                                                        </figcaption>
+                                                    </figure>
+                                                    <!-- product badge -->
+                                                    <span class="aa-badge aa-sale" href="#">SALE!</span>
+                                                </li>
+                                            {% endfor %}
+                                        {% endif %}
+                                        {% for hotel in hotels %}
+                                            <li>
+                                                <figure>
+                                                    <br>{{ hotel.1 }}</br><img src="static/picture/hotel_icon.jpg"
+                                                                               width="200" height="250"></a>
+                                                    <a class="aa-add-card-btn"
+                                                       href="tourist_hotel_detail/{{ hotel.0 }}"><span
+                                                            class="fa fa-shopping-cart"></span>详细说明</a>
+                                                    <figcaption>
+                                                        <h4 class="aa-product-title"><a href="#">{{ hotel.2 }}</a></h4>
+                                                        <span class="aa-product-price">￥{{ hotel.5 }}</span>
+                                                        <!--<span class="aa-product-price"><del>$65.50</del></span>-->
+                                                    </figcaption>
+                                                </figure>
+                                                <!-- product badge -->
+                                                <span class="aa-badge aa-sale" href="#">SALE!</span>
+                                            </li>
+                                        {% endfor %}
+                                    </ul>
+                                    <a class="aa-browse-btn" href="#">Browse all Product <span
+                                            class="fa fa-long-arrow-right"></span></a>
+                                </div>
+                                <!-- / hotel product category -->
+                                <!-- start flight product category -->
+                                <div class="tab-pane fade" id="women">
+                                    <ul class="aa-product-catg">
+                                        <!-- start single product item -->
+                                        {% for plane in planes %}
+                                            <li>
+                                                <figure>
+                                                    <br>{{ plane.1 }}</br></br><img
+                                                        src="static/picture/airplane_icon.jpg" width="200"
+                                                        height="230"></a>
+                                                    <a class="aa-add-card-btn"
+                                                       href="tourist_plane_detail/{{ plane.0 }}"><span
+                                                            class="fa fa-shopping-cart"></span>详细说明</a>
+                                                    <figcaption>
+                                                        <h4 class="aa-product-title"><a
+                                                                href="#">{{ plane.2 }}-->{{ plane.3 }}</a></h4>
+                                                        <span class="aa-product-price">￥{{ plane.5 }}</span>
+                                                        <!--<span class="aa-product-price"><del>$65.50</del></span>-->
+                                                    </figcaption>
+                                                </figure>
+                                                <!-- product badge -->
+                                                <span class="aa-badge aa-sale" href="#">SALE!</span>
+                                            </li>
+                                        {% endfor %}
+                                    </ul>
+                                    <a class="aa-browse-btn" href="#">Browse all Product <span
+                                            class="fa fa-long-arrow-right"></span></a>
+                                </div>
+                                <!-- / flight product category -->
+                            </div><!-- / quick view modal -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- / Products section -->
+<!-- banner section -->
+<section id="aa-banner">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="row">
+                    <div class="aa-banner-area">
+                        <a href="#"><img src="static/picture/home_img.jpg" alt="fashion banner img"></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- popular section -->
+<section id="aa-popular-category">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="row">
+                    <div class="aa-popular-category-area">
+                        <!-- start prduct navigation -->
+                        <ul class="nav nav-tabs aa-products-tab">
+                            <li class="active"><a href="#popular" data-toggle="tab">星级排序</a></li>
+                            <li><a href="#featured" data-toggle="tab">评价排序</a></li>
+                            <li><a href="#latest" data-toggle="tab">最近新品</a></li>
+                        </ul>
+                        <!-- Tab panes -->
+                        <div class="tab-content">
+                            <!-- Start men popular category -->
+                            <div class="tab-pane fade in active" id="popular">
+                                <ul class="aa-product-catg aa-popular-slider">
+                                    <!-- start single product item -->
+                                    <li>
+                                        <figure>
+                                            <a class="aa-product-img" href="#"><img
+                                                    src="static/img/man/polo-shirt-2.png" alt="polo shirt img"></a>
+                                            <a class="aa-add-card-btn" href="tourist_product_detail"><span
+                                                    class="fa fa-shopping-cart"></span>详细说明</a>
+                                            <figcaption>
+                                                <h4 class="aa-product-title"><a href="#">Polo T-Shirt</a></h4>
+                                                <span class="aa-product-price">$45.50</span><span
+                                                    class="aa-product-price"><del>$65.50</del></span>
+                                            </figcaption>
+                                        </figure>
+                                        <!-- product badge -->
+                                        <span class="aa-badge aa-sale" href="#">SALE!</span>
+                                    </li>
+                                    <!-- start single product item -->
+                                    <li>
+                                        <figure>
+                                            <a class="aa-product-img" href="#"><img
+                                                    src="static/img/man/polo-shirt-2.png" alt="polo shirt img"></a>
+                                            <a class="aa-add-card-btn" href="tourist_product_detail"><span
+                                                    class="fa fa-shopping-cart"></span>详细说明</a>
+                                            <figcaption>
+                                                <h4 class="aa-product-title"><a href="#">Polo T-Shirt</a></h4>
+                                                <span class="aa-product-price">$45.50</span><span
+                                                    class="aa-product-price"><del>$65.50</del></span>
+                                            </figcaption>
+                                        </figure>
+                                        <!-- product badge -->
+                                        <span class="aa-badge aa-sale" href="#">SALE!</span>
+                                    </li>
+                                    <!-- start single product item -->
+                                    <li>
+                                        <figure>
+                                            <a class="aa-product-img" href="#"><img
+                                                    src="static/img/man/polo-shirt-2.png" alt="polo shirt img"></a>
+                                            <a class="aa-add-card-btn" href="tourist_product_detail"><span
+                                                    class="fa fa-shopping-cart"></span>详细说明</a>
+                                            <figcaption>
+                                                <h4 class="aa-product-title"><a href="#">Polo T-Shirt</a></h4>
+                                                <span class="aa-product-price">$45.50</span><span
+                                                    class="aa-product-price"><del>$65.50</del></span>
+                                            </figcaption>
+                                        </figure>
+                                        <!-- product badge -->
+                                        <span class="aa-badge aa-sale" href="#">SALE!</span>
+                                    </li>
+                                    <!-- start single product item -->
+                                    <li>
+                                        <figure>
+                                            <a class="aa-product-img" href="#"><img
+                                                    src="static/img/man/polo-shirt-2.png" alt="polo shirt img"></a>
+                                            <a class="aa-add-card-btn" href="tourist_product_detail"><span
+                                                    class="fa fa-shopping-cart"></span>详细说明</a>
+                                            <figcaption>
+                                                <h4 class="aa-product-title"><a href="#">Polo T-Shirt</a></h4>
+                                                <span class="aa-product-price">$45.50</span><span
+                                                    class="aa-product-price"><del>$65.50</del></span>
+                                            </figcaption>
+                                        </figure>
+                                        <!-- product badge -->
+                                        <span class="aa-badge aa-sale" href="#">SALE!</span>
+                                    </li>
+                                    <!-- start single product item -->
+                                    <li>
+                                        <figure>
+                                            <a class="aa-product-img" href="#"><img
+                                                    src="static/img/man/polo-shirt-2.png" alt="polo shirt img"></a>
+                                            <a class="aa-add-card-btn" href="tourist_product_detail"><span
+                                                    class="fa fa-shopping-cart"></span>详细说明</a>
+                                            <figcaption>
+                                                <h4 class="aa-product-title"><a href="#">Polo T-Shirt</a></h4>
+                                                <span class="aa-product-price">$45.50</span><span
+                                                    class="aa-product-price"><del>$65.50</del></span>
+                                            </figcaption>
+                                        </figure>
+                                        <!-- product badge -->
+                                        <span class="aa-badge aa-sale" href="#">SALE!</span>
+                                    </li>
+                                    <!-- start single product item -->
+                                    <li>
+                                        <figure>
+                                            <a class="aa-product-img" href="#"><img
+                                                    src="static/img/man/polo-shirt-2.png" alt="polo shirt img"></a>
+                                            <a class="aa-add-card-btn" href="tourist_product_detail"><span
+                                                    class="fa fa-shopping-cart"></span>详细说明</a>
+                                            <figcaption>
+                                                <h4 class="aa-product-title"><a href="#">Polo T-Shirt</a></h4>
+                                                <span class="aa-product-price">$45.50</span><span
+                                                    class="aa-product-price"><del>$65.50</del></span>
+                                            </figcaption>
+                                        </figure>
+                                        <!-- product badge -->
+                                        <span class="aa-badge aa-sale" href="#">SALE!</span>
+                                    </li>
+                                    <!-- start single product item -->
+                                    <li>
+                                        <figure>
+                                            <a class="aa-product-img" href="#"><img
+                                                    src="static/img/man/polo-shirt-2.png" alt="polo shirt img"></a>
+                                            <a class="aa-add-card-btn" href="tourist_product_detail"><span
+                                                    class="fa fa-shopping-cart"></span>详细说明</a>
+                                            <figcaption>
+                                                <h4 class="aa-product-title"><a href="#">Polo T-Shirt</a></h4>
+                                                <span class="aa-product-price">$45.50</span><span
+                                                    class="aa-product-price"><del>$65.50</del></span>
+                                            </figcaption>
+                                        </figure>
+                                        <!-- product badge -->
+                                        <span class="aa-badge aa-sale" href="#">SALE!</span>
+                                    </li>
+                                    <!-- start single product item -->
+                                    <li>
+                                        <figure>
+                                            <a class="aa-product-img" href="#"><img
+                                                    src="static/img/man/polo-shirt-2.png" alt="polo shirt img"></a>
+                                            <a class="aa-add-card-btn" href="tourist_product_detail"><span
+                                                    class="fa fa-shopping-cart"></span>详细说明</a>
+                                            <figcaption>
+                                                <h4 class="aa-product-title"><a href="#">Polo T-Shirt</a></h4>
+                                                <span class="aa-product-price">$45.50</span><span
+                                                    class="aa-product-price"><del>$65.50</del></span>
+                                            </figcaption>
+                                        </figure>
+                                        <!-- product badge -->
+                                        <span class="aa-badge aa-sale" href="#">SALE!</span>
+                                    </li>
+                                </ul>
+                                <a class="aa-browse-btn" href="#">Browse all Product <span
+                                        class="fa fa-long-arrow-right"></span></a>
+                            </div>
+                            <!-- / popular product category -->
+
+                            <!-- start featured product category -->
+                            <div class="tab-pane fade" id="featured">
+                                <ul class="aa-product-catg aa-featured-slider">
+                                    <!-- start single product item -->
+                                    <li>
+                                        <figure>
+                                            <a class="aa-product-img" href="#"><img src="static/img/women/girl-2.png"
+                                                                                    alt="polo shirt img"></a>
+                                            <a class="aa-add-card-btn" href="tourist_product_detail"><span
+                                                    class="fa fa-shopping-cart"></span>详细说明</a>
+                                            <figcaption>
+                                                <h4 class="aa-product-title"><a href="#">Lorem ipsum doller</a></h4>
+                                                <span class="aa-product-price">$45.50</span>
+                                            </figcaption>
+                                        </figure>
+                                        <!-- product badge -->
+                                        <span class="aa-badge aa-sold-out" href="#">Sold Out!</span>
+                                    </li>
+                                    <!-- start single product item -->
+                                    <li>
+                                        <figure>
+                                            <a class="aa-product-img" href="#"><img src="static/img/women/girl-2.png"
+                                                                                    alt="polo shirt img"></a>
+                                            <a class="aa-add-card-btn" href="tourist_product_detail"><span
+                                                    class="fa fa-shopping-cart"></span>详细说明</a>
+                                            <figcaption>
+                                                <h4 class="aa-product-title"><a href="#">Lorem ipsum doller</a></h4>
+                                                <span class="aa-product-price">$45.50</span>
+                                            </figcaption>
+                                        </figure>
+                                        <!-- product badge -->
+                                        <span class="aa-badge aa-sold-out" href="#">Sold Out!</span>
+                                    </li>
+                                    <!-- start single product item -->
+                                    <li>
+                                        <figure>
+                                            <a class="aa-product-img" href="#"><img src="static/img/women/girl-2.png"
+                                                                                    alt="polo shirt img"></a>
+                                            <a class="aa-add-card-btn" href="tourist_product_detail"><span
+                                                    class="fa fa-shopping-cart"></span>详细说明</a>
+                                            <figcaption>
+                                                <h4 class="aa-product-title"><a href="#">Lorem ipsum doller</a></h4>
+                                                <span class="aa-product-price">$45.50</span>
+                                            </figcaption>
+                                        </figure>
+                                        <!-- product badge -->
+                                        <span class="aa-badge aa-sold-out" href="#">Sold Out!</span>
+                                    </li>
+                                    <!-- start single product item -->
+                                    <li>
+                                        <figure>
+                                            <a class="aa-product-img" href="#"><img src="static/img/women/girl-2.png"
+                                                                                    alt="polo shirt img"></a>
+                                            <a class="aa-add-card-btn" href="tourist_product_detail"><span
+                                                    class="fa fa-shopping-cart"></span>详细说明</a>
+                                            <figcaption>
+                                                <h4 class="aa-product-title"><a href="#">Lorem ipsum doller</a></h4>
+                                                <span class="aa-product-price">$45.50</span>
+                                            </figcaption>
+                                        </figure>
+                                        <!-- product badge -->
+                                        <span class="aa-badge aa-sold-out" href="#">Sold Out!</span>
+                                    </li>
+                                    <!-- start single product item -->
+                                    <li>
+                                        <figure>
+                                            <a class="aa-product-img" href="#"><img src="static/img/women/girl-2.png"
+                                                                                    alt="polo shirt img"></a>
+                                            <a class="aa-add-card-btn" href="tourist_product_detail"><span
+                                                    class="fa fa-shopping-cart"></span>详细说明</a>
+                                            <figcaption>
+                                                <h4 class="aa-product-title"><a href="#">Lorem ipsum doller</a></h4>
+                                                <span class="aa-product-price">$45.50</span>
+                                            </figcaption>
+                                        </figure>
+                                        <!-- product badge -->
+                                        <span class="aa-badge aa-sold-out" href="#">Sold Out!</span>
+                                    </li>
+                                    <!-- start single product item -->
+                                    <li>
+                                        <figure>
+                                            <a class="aa-product-img" href="#"><img src="static/img/women/girl-2.png"
+                                                                                    alt="polo shirt img"></a>
+                                            <a class="aa-add-card-btn" href="tourist_product_detail"><span
+                                                    class="fa fa-shopping-cart"></span>详细说明</a>
+                                            <figcaption>
+                                                <h4 class="aa-product-title"><a href="#">Lorem ipsum doller</a></h4>
+                                                <span class="aa-product-price">$45.50</span>
+                                            </figcaption>
+                                        </figure>
+                                        <!-- product badge -->
+                                        <span class="aa-badge aa-sold-out" href="#">Sold Out!</span>
+                                    </li>
+                                    <!-- start single product item -->
+                                    <li>
+                                        <figure>
+                                            <a class="aa-product-img" href="#"><img src="static/img/women/girl-2.png"
+                                                                                    alt="polo shirt img"></a>
+                                            <a class="aa-add-card-btn" href="tourist_product_detail"><span
+                                                    class="fa fa-shopping-cart"></span>详细说明</a>
+                                            <figcaption>
+                                                <h4 class="aa-product-title"><a href="#">Lorem ipsum doller</a></h4>
+                                                <span class="aa-product-price">$45.50</span>
+                                            </figcaption>
+                                        </figure>
+                                        <!-- product badge -->
+                                        <span class="aa-badge aa-sold-out" href="#">Sold Out!</span>
+                                    </li>
+                                    <!-- start single product item -->
+                                    <li>
+                                        <figure>
+                                            <a class="aa-product-img" href="#"><img src="static/img/women/girl-2.png"
+                                                                                    alt="polo shirt img"></a>
+                                            <a class="aa-add-card-btn" href="tourist_product_detail"><span
+                                                    class="fa fa-shopping-cart"></span>详细说明</a>
+                                            <figcaption>
+                                                <h4 class="aa-product-title"><a href="#">Lorem ipsum doller</a></h4>
+                                                <span class="aa-product-price">$45.50</span>
+                                            </figcaption>
+                                        </figure>
+                                        <!-- product badge -->
+                                        <span class="aa-badge aa-sold-out" href="#">Sold Out!</span>
+                                    </li>
+                                </ul>
+                                <a class="aa-browse-btn" href="#">Browse all Product <span
+                                        class="fa fa-long-arrow-right"></span></a>
+                            </div>
+                            <!-- / featured product category -->
+
+                            <!-- start latest product category -->
+                            <div class="tab-pane fade" id="latest">
+                                <ul class="aa-product-catg aa-latest-slider">
+                                    <!-- start single product item -->
+                                    <li>
+                                        <figure>
+                                            <a class="aa-product-img" href="#"><img src="static/img/women/girl-3.png"
+                                                                                    alt="polo shirt img"></a>
+                                            <a class="aa-add-card-btn" href="tourist_product_detail"><span
+                                                    class="fa fa-shopping-cart"></span>详细说明</a>
+                                            <figcaption>
+                                                <h4 class="aa-product-title"><a href="#">Lorem ipsum doller</a></h4>
+                                                <span class="aa-product-price">$45.50</span><span
+                                                    class="aa-product-price"><del>$65.50</del></span>
+                                            </figcaption>
+                                        </figure>
+                                    </li>
+                                    <!-- start single product item -->
+                                    <li>
+                                        <figure>
+                                            <a class="aa-product-img" href="#"><img src="static/img/women/girl-3.png"
+                                                                                    alt="polo shirt img"></a>
+                                            <a class="aa-add-card-btn" href="tourist_product_detail"><span
+                                                    class="fa fa-shopping-cart"></span>详细说明</a>
+                                            <figcaption>
+                                                <h4 class="aa-product-title"><a href="#">Lorem ipsum doller</a></h4>
+                                                <span class="aa-product-price">$45.50</span><span
+                                                    class="aa-product-price"><del>$65.50</del></span>
+                                            </figcaption>
+                                        </figure>
+                                    </li>
+                                    <!-- start single product item -->
+                                    <li>
+                                        <figure>
+                                            <a class="aa-product-img" href="#"><img src="static/img/women/girl-3.png"
+                                                                                    alt="polo shirt img"></a>
+                                            <a class="aa-add-card-btn" href="tourist_product_detail"><span
+                                                    class="fa fa-shopping-cart"></span>详细说明</a>
+                                            <figcaption>
+                                                <h4 class="aa-product-title"><a href="#">Lorem ipsum doller</a></h4>
+                                                <span class="aa-product-price">$45.50</span><span
+                                                    class="aa-product-price"><del>$65.50</del></span>
+                                            </figcaption>
+                                        </figure>
+                                    </li>
+                                    <!-- start single product item -->
+                                    <li>
+                                        <figure>
+                                            <a class="aa-product-img" href="#"><img src="static/img/women/girl-3.png"
+                                                                                    alt="polo shirt img"></a>
+                                            <a class="aa-add-card-btn" href="tourist_product_detail"><span
+                                                    class="fa fa-shopping-cart"></span>详细说明</a>
+                                            <figcaption>
+                                                <h4 class="aa-product-title"><a href="#">Lorem ipsum doller</a></h4>
+                                                <span class="aa-product-price">$45.50</span><span
+                                                    class="aa-product-price"><del>$65.50</del></span>
+                                            </figcaption>
+                                        </figure>
+                                    </li>
+                                    <!-- start single product item -->
+                                    <li>
+                                        <figure>
+                                            <a class="aa-product-img" href="#"><img src="static/img/women/girl-3.png"
+                                                                                    alt="polo shirt img"></a>
+                                            <a class="aa-add-card-btn" href="tourist_product_detail"><span
+                                                    class="fa fa-shopping-cart"></span>详细说明</a>
+                                            <figcaption>
+                                                <h4 class="aa-product-title"><a href="#">Lorem ipsum doller</a></h4>
+                                                <span class="aa-product-price">$45.50</span><span
+                                                    class="aa-product-price"><del>$65.50</del></span>
+                                            </figcaption>
+                                        </figure>
+                                    </li>
+                                    <!-- start single product item -->
+                                    <li>
+                                        <figure>
+                                            <a class="aa-product-img" href="#"><img src="static/img/women/girl-3.png"
+                                                                                    alt="polo shirt img"></a>
+                                            <a class="aa-add-card-btn" href="tourist_product_detail"><span
+                                                    class="fa fa-shopping-cart"></span>详细说明</a>
+                                            <figcaption>
+                                                <h4 class="aa-product-title"><a href="#">Lorem ipsum doller</a></h4>
+                                                <span class="aa-product-price">$45.50</span><span
+                                                    class="aa-product-price"><del>$65.50</del></span>
+                                            </figcaption>
+                                        </figure>
+                                    </li>
+                                    <!-- start single product item -->
+                                    <li>
+                                        <figure>
+                                            <a class="aa-product-img" href="#"><img src="static/img/women/girl-3.png"
+                                                                                    alt="polo shirt img"></a>
+                                            <a class="aa-add-card-btn" href="tourist_product_detail"><span
+                                                    class="fa fa-shopping-cart"></span>详细说明</a>
+                                            <figcaption>
+                                                <h4 class="aa-product-title"><a href="#">Lorem ipsum doller</a></h4>
+                                                <span class="aa-product-price">$45.50</span><span
+                                                    class="aa-product-price"><del>$65.50</del></span>
+                                            </figcaption>
+                                        </figure>
+                                    </li>
+                                    <!-- start single product item -->
+                                    <li>
+                                        <figure>
+                                            <a class="aa-product-img" href="#"><img src="static/img/women/girl-3.png"
+                                                                                    alt="polo shirt img"></a>
+                                            <a class="aa-add-card-btn" href="tourist_product_detail"><span
+                                                    class="fa fa-shopping-cart"></span>详细说明</a>
+                                            <figcaption>
+                                                <h4 class="aa-product-title"><a href="#">Lorem ipsum doller</a></h4>
+                                                <span class="aa-product-price">$45.50</span><span
+                                                    class="aa-product-price"><del>$65.50</del></span>
+                                            </figcaption>
+                                        </figure>
+                                    </li>
+                                </ul>
+                                <a class="aa-browse-btn" href="#">Browse all Product <span
+                                        class="fa fa-long-arrow-right"></span></a>
+                            </div>
+                            <!-- / latest product category -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- / popular section -->
+
+
+<!-- Login Modal -->
+<div class="modal fade" id="login-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-body">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4>Login</h4>
+                <form class="aa-login-form" action="" method="post" novalidate>
+                    <p>{{ logform.username.label }}<span>*</span> {{ logform.username }} {{ logform.username.errors.0 }}</p>
+                    <p>{{ logform.password.label }}<span>*</span> {{ logform.password }} {{ logform.password.errors.0 }}</p>
+                    <input type="submit" name="key" value="login" class="aa-browse-btn">
+                </form>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div>
+
+<!-- jQuery library -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+<!-- Include all compiled plugins (below), or include individual files as needed -->
+<script src="static/js/bootstrap.js"></script>
+<!-- SmartMenus jQuery plugin -->
+<script type="text/javascript" src="static/js/jquery.smartmenus.js"></script>
+<!-- SmartMenus jQuery Bootstrap Addon -->
+<script type="text/javascript" src="static/js/jquery.smartmenus.bootstrap.js"></script>
+<!-- To Slider JS -->
+<script src="static/js/sequence.js"></script>
+<script src="static/js/sequence-theme.modern-slide-in.js"></script>
+<!-- Product view slider -->
+<script type="text/javascript" src="static/js/jquery.simpleGallery.js"></script>
+<script type="text/javascript" src="static/js/jquery.simpleLens.js"></script>
+<!-- slick slider -->
+<script type="text/javascript" src="static/js/slick.js"></script>
+<!-- Price picker slider -->
+<script type="text/javascript" src="static/js/nouislider.js"></script>
+<!-- Custom js -->
+<script src="static/js/custom.js"></script>
+
+</body>
+</html>

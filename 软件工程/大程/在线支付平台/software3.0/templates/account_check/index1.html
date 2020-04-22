@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+{% for num in error_list %}
+        {{ num }}<br>
+{% endfor %}
+
+{# 这是注释符号 #}
+{#这是模板 <br>#}
+{#这是首页 <br>#}
+
+{#变量代码块#}
+{#{{ url_str }}<br>#}
+{##}
+{# 列表的使用 #}
+{#{{ my_list }}<br>#}
+{#{{ my_list.2 }}<br>#}
+{#{{ my_list[2] }}<br>#}
+{##}
+{##}
+{# 字典的使用 #}
+{#{{ my_dict }}<br>#}
+{#{{ my_dict.url }}<br>#}
+{#{{ my_dict['url'] }}<br>#}
+{##}
+{#<hr>#}
+{##}
+{#控制代码块#}
+{#for循环的使用，建议先写for 然后按住Tab进行补全#}
+{#{% for num in my_list %}#}
+{#    {% if num > 3 %}#}
+{#        {{ num }}<br>#}
+{#    {% endif %}#}
+{#{% endfor %}#}
+{##}
+{#<hr>#}
+
+{# 过滤器 #}
+{#{{ url_str | upper }}<br>#}
+{#链式调用#}
+{#{{ url_str | upper |reverse}}<br>#}
+
+{#<hr>#}
+{#<form method="post">#}
+{#    <label>用户名：</label><input type="text" name="username"><br>#}
+{#    <label>密码：</label><input type="password" name="password"><br>#}
+{#    <label>确认密码：</label><input type="password" name="password2"><br>#}
+{#    <input type="submit" value="提交"><br>#}
+{#</form>#}
+
+    <!-- 只说说大概结构 -->
+    <div class="query-form">
+        <form class="pui-form" id="queryForm">
+            <!-- 这里填写各种查询标签，譬如选项，搜索关键字，高级搜索，日期等 -->
+        </form>
+    </div>
+    <!-- 下面表格结构 -->
+    <div class="page-table hasPagination">
+        <div class="overflow-table">
+            <table class="table table-center table-song table-relative table-big" id="tableObj">
+                <thead>
+                    <tr class="header">
+                        <th class="tl">管理员帐号</th>
+                        <th>总人次</th>
+                        <th>完成人次</th>
+                        <th>外完成人次</th>
+                        <th>剩余必填人次</th>
+                        <th>完成比例</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- 渲染后数据填充位置 -->
+
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+<script href="">
+    <button>
+
+    </button>
+</script>
+
+
+</body>
+</html>

@@ -1,0 +1,100 @@
+.aa-primary-btn{	
+	font-size: 16px;
+	padding: 10px 30px;
+	border: 1px solid #e9e9e9;
+	margin-top: 10px;
+	display: inline-block;
+	@include transition(0.5s);
+
+	&:hover,
+	&:focus{
+		color: $theme-color;
+		text-decoration: none;
+		border-color: $theme-color;
+	}
+	span{
+		margin-right: 5px;
+	}
+}
+.aa-secondary-btn{	
+	background-color: #fff;
+	color: $theme-color;
+	font-size: 16px;
+	padding: 10px 22px;
+	// border: 1px solid #fff;
+	margin-top: 10px;
+	display: inline-block;
+	@include border-radius(4px);
+	@include transition(0.5s);	
+
+	&:hover, &:focus{
+		background-color: $theme-color;
+		text-decoration: none;
+		color: #fff;  		
+		// border-radius: 0px;
+	}
+}
+.aa-browse-btn{
+	background-color: $theme-color;
+	display: inline-block;
+	font-size: 16px;
+	padding: 12px 18px;	
+	color: #fff;
+	border: 1px solid $theme-color;
+	@include transition(all 0.5s);
+	span{
+		margin-left: 5px;
+	}
+	&:hover,
+	&:focus{
+		background-color: #fff;
+		color: $theme-color;
+
+	}
+}
+.aa-add-to-cart-btn{
+	border: 1px solid #ccc;
+	color: #555;
+	display: inline-block;
+	font-size: 14px;
+	font-weight: bold;
+	letter-spacing: 0.5px;
+	margin-top: 5px;
+	padding: 10px 15px;
+	text-transform: uppercase;
+	transition: all 0.5s ease 0s;
+	span{
+		margin-right: 5px;
+	}
+	&:hover,
+	&:focus{
+		color: $theme-color;
+		border-color:$theme-color;
+	}
+}
+.aa-filter-btn{
+	background-color: #ff6666;
+	border: 1px solid #ff6666;
+	color: #fff;
+	font-size: 15px;
+	height: 30px;
+	width: 80px;
+}
+.aa-cart-view-btn{
+	float: right;
+	background-color: $theme-color;
+	border: none;
+	color: #fff;
+	font-size: 16px;
+	font-weight: 700;
+	letter-spacing: 2px;
+	padding: 15px 30px;
+	text-align: center;
+	text-decoration: none;
+	text-transform: uppercase;
+	@include transition(all 0.5s);
+	&:hover{
+		background-color: #000;
+		color: #fff;
+	}
+}

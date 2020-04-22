@@ -1,0 +1,201 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<HTML>
+<!--
+This document was converted from RTF source: 
+By rtftohtml 4.19
+See http://www.sunpack.com/RTF
+Filename:C:\TEMP\TicV2\html\TicV2.rtf
+Application Directory:C:\TOOLS\RTF2HTML\
+Subject:
+Author:Bruce Eckel
+Operator:Bruce Eckel
+Document Comments:
+Version Comments:
+Comments:
+Keywords:
+Translation Date:08/19/2001
+Translation Time:14:25:12
+Translation Platform:Win32
+Number of Output files:19
+This File:C:\TEMP\TicV2\html\AppendB.htm
+SplitDepth=1
+SkipNavPanel=1
+SkipLeadingToc=1
+SkipTrailingToc=1
+GenContents=1
+GenFrames=1
+GenIndex=1
+-->
+<HEAD lang="en"><META http-equiv="Content-Type" content="text/html">
+<TITLE>B: Etc</TITLE>
+</HEAD>
+
+<BODY  BGCOLOR="#FFFFFF"><DIV ALIGN="CENTER">
+  <a href="http://www.MindView.net">
+  <img src="mindview.gif" alt="MindView Inc." BORDER = "0"></a>
+  <CENTER>
+    <FONT FACE="Verdana, Tahoma, Arial, Helvetica, Sans" size = "-1">
+    [ <a href="README.txt">Viewing Hints</a> ]
+    [ <a href="RevisionHistory.htm">Revision History</a> ]
+    [ <a href="http://www.mindview.net/Books/TICPP/ThinkingInCPP2e.html">Book Home Page</a> ]
+    [ <a href="http://www.mindview.net/Etc/MailingList.html">Free Newsletter</a> ] <br>
+    [ <a href="http://www.mindview.net/Seminars">Seminars</a> ]
+    [ <a href="http://www.mindview.net/CDs">Seminars on CD ROM</a> ]
+    [ <a href="http://www.mindview.net/Services">Consulting</a> ]
+    </FONT>
+  <H2><FONT FACE="Verdana, Tahoma, Arial, Helvetica, Sans">
+  Thinking in C++, 2nd edition, Volume 2<br>
+  <small>Revision 4.0</small></FONT></H2>
+  <H3><FONT FACE="Verdana, Tahoma, Arial, Helvetica, Sans">
+  by Bruce Eckel &amp; Chuck Allison<br>&copy;2001 MindView, Inc.</FONT></H3>
+  
+    <FONT FACE="Verdana, Tahoma, Arial, Helvetica, Sans" size = "-1">
+     [ <a href="AppendA.htm">Previous Chapter</a> ] 
+    
+    [ <a href="SimpCont.htm">Short TOC</a> ] 
+    [ <a href="Contents.htm">Table of Contents</a> ] 
+  
+        [ <a href="DocIdx.htm">Index</a> ]
+        
+     [ <a href="DocIdx.htm">Next Chapter</a> ] 
+    </FONT>
+    
+  </CENTER>
+  </P></DIV><A NAME="_Toc519042156"></A><A NAME="Heading374"></A><FONT FACE = "Verdana, Tahoma, Arial, Helvetica, Sans"><H1 ALIGN="LEFT">
+B: Etc</H1></FONT>
+<DIV ALIGN="LEFT"><P><FONT FACE="Verdana" SIZE=4><a NAME="TIC2V2_APPENDIXB_I21"></a>
+This
+appendix contains files from Volume 1 that are required to build the files in
+Volume 2.</FONT><BR></P></DIV>
+
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE><font color=#009900>//: :require.h</font>
+<font color=#009900>// Test for error conditions in programs</font>
+<font color=#009900>// Local "using namespace std" for old compilers</font>
+#ifndef REQUIRE_H
+#define REQUIRE_H
+#include &lt;cstdio&gt;
+#include &lt;cstdlib&gt;
+#include &lt;fstream&gt;
+
+<font color=#0000ff>inline</font> <font color=#0000ff>void</font> require(<font color=#0000ff>bool</font> requirement, 
+  <font color=#0000ff>const</font> <font color=#0000ff>char</font>* msg = <font color=#004488>"Requirement failed"</font>) {
+  <font color=#0000ff>using</font> <font color=#0000ff>namespace</font> std;
+  <font color=#0000ff>if</font> (!requirement) {
+    fputs(msg, stderr);
+    fputs(<font color=#004488>"\n"</font>, stderr);
+    exit(1);
+  }
+}
+
+<font color=#0000ff>inline</font> <font color=#0000ff>void</font> requireArgs(<font color=#0000ff>int</font> argc, <font color=#0000ff>int</font> args, 
+  <font color=#0000ff>const</font> <font color=#0000ff>char</font>* msg = <font color=#004488>"Must use %d arguments"</font>) {
+  <font color=#0000ff>using</font> <font color=#0000ff>namespace</font> std;
+   <font color=#0000ff>if</font> (argc != args + 1) {
+     fprintf(stderr, msg, args);
+     fputs(<font color=#004488>"\n"</font>, stderr);
+     exit(1);
+   }
+}
+
+<font color=#0000ff>inline</font> <font color=#0000ff>void</font> requireMinArgs(<font color=#0000ff>int</font> argc, <font color=#0000ff>int</font> minArgs,
+  <font color=#0000ff>const</font> <font color=#0000ff>char</font>* msg = 
+    <font color=#004488>"Must use at least %d arguments"</font>) {
+  <font color=#0000ff>using</font> <font color=#0000ff>namespace</font> std;
+  <font color=#0000ff>if</font>(argc &lt; minArgs + 1) {
+    fprintf(stderr, msg, minArgs);
+    fputs(<font color=#004488>"\n"</font>, stderr);
+    exit(1);
+  }
+}
+  
+<font color=#0000ff>inline</font> <font color=#0000ff>void</font> assure(std::ifstream&amp; in, 
+  <font color=#0000ff>const</font> <font color=#0000ff>char</font>* filename = <font color=#004488>""</font>) {
+  <font color=#0000ff>using</font> <font color=#0000ff>namespace</font> std;
+  <font color=#0000ff>if</font>(!in) {
+    fprintf(stderr,
+      <font color=#004488>"Could not open file %s\n"</font>, filename);
+    exit(1);
+  }
+}
+
+<font color=#0000ff>inline</font> <font color=#0000ff>void</font> assure(std::ofstream&amp; in, 
+  <font color=#0000ff>const</font> <font color=#0000ff>char</font>* filename = <font color=#004488>""</font>) {
+  <font color=#0000ff>using</font> <font color=#0000ff>namespace</font> std;
+  <font color=#0000ff>if</font>(!in) {
+    fprintf(stderr,
+      <font color=#004488>"Could not open file %s\n"</font>, filename);
+    exit(1);
+  }
+}
+#endif <font color=#009900>// REQUIRE_H ///:~</font></PRE></FONT></BLOCKQUOTE>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">From Volume 1, Chapter
+9:
+[&nbsp;<a HREF="mailto:cda@freshsources.com?subject=[TICV2] TIC2V2_APPENDIXB_I21">Comment</a>&nbsp;]
+
+<a NAME="TIC2V2_APPENDIXB_I22"></a>
+</FONT><BR></P></DIV>
+
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE><font color=#009900>//: C0B:Stack4.h</font>
+<font color=#009900>// With inlines</font>
+#ifndef STACK4_H
+#define STACK4_H
+#include <font color=#004488>"..</font><font color=#004488>/require.h"</font>
+
+<font color=#0000ff>class</font> Stack {
+  <font color=#0000ff>struct</font> Link {
+    <font color=#0000ff>void</font>* data;
+    Link* next;
+    Link(<font color=#0000ff>void</font>* dat, Link* nxt): 
+      data(dat), next(nxt) {}
+  }* head;
+<font color=#0000ff>public</font>:
+  Stack(){ head = 0; }
+  ~Stack(){ 
+    require(head == 0, <font color=#004488>"Stack not empty"</font>);
+  }
+  <font color=#0000ff>void</font> push(<font color=#0000ff>void</font>* dat) {
+    head = <font color=#0000ff>new</font> Link(dat, head);
+  }
+  <font color=#0000ff>void</font>* peek() { <font color=#0000ff>return</font> head-&gt;data; }
+  <font color=#0000ff>void</font>* pop(){
+    <font color=#0000ff>if</font>(head == 0) <font color=#0000ff>return</font> 0;
+    <font color=#0000ff>void</font>* result = head-&gt;data;
+    Link* oldHead = head;
+    head = head-&gt;next;
+    <font color=#0000ff>delete</font> oldHead;
+    <font color=#0000ff>return</font> result;
+  }
+};
+#endif <font color=#009900>// STACK4_H ///:~</font></PRE></FONT></BLOCKQUOTE>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">
+[&nbsp;<a HREF="mailto:cda@freshsources.com?subject=[TICV2] TIC2V2_APPENDIXB_I22">Comment</a>&nbsp;]
+
+<a NAME="TIC2V2_APPENDIXB_I23"></a>
+</FONT><BR></P></DIV>
+
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE><font color=#009900>//: C0B:Dummy.cpp</font>
+<font color=#009900>// To give the makefile at least one target </font>
+<font color=#009900>// for this directory</font>
+<font color=#0000ff>int</font> main() {} <font color=#009900>///:~</font></PRE></FONT></BLOCKQUOTE><DIV ALIGN="LEFT"><P><FONT FACE="Georgia">
+[&nbsp;<a HREF="mailto:cda@freshsources.com?subject=[TICV2] TIC2V2_APPENDIXB_I23">Comment</a>&nbsp;]
+
+&lt;#TIC2V2_APPENDIXB_I24&gt;</FONT><BR></P></DIV>
+
+
+<DIV ALIGN="CENTER">
+    <FONT FACE="Verdana, Tahoma, Arial, Helvetica, Sans" size = "-1">
+     [ <a href="AppendA.htm">Previous Chapter</a> ] 
+    
+    [ <a href="SimpCont.htm">Short TOC</a> ] 
+    [ <a href="Contents.htm">Table of Contents</a> ] 
+  
+        [ <a href="DocIdx.htm">Index</a> ]
+        
+     [ <a href="DocIdx.htm">Next Chapter</a> ] 
+    </FONT>
+    <BR>
+ Last Update:08/19/2001</P></DIV>
+
+</BODY>
+
+</HTML>

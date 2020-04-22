@@ -1,0 +1,2417 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<HTML>
+<!--
+This document was converted from RTF source: 
+By rtftohtml 4.19
+See http://www.sunpack.com/RTF
+Filename:TIC2Vone.rtf
+Application Directory:C:\TOOLS\RTF2HTML\
+Subject:
+Author:Bruce Eckel
+Operator:Bruce Eckel
+Document Comments:
+Version Comments:
+Comments:
+Keywords:
+Translation Date:09/27/2001
+Translation Time:05:25:57
+Translation Platform:Win32
+Number of Output files:22
+This File:Chapter15.html
+SplitDepth=1
+SkipNavPanel=1
+SkipLeadingToc=1
+SkipTrailingToc=1
+GenContents=1
+GenFrames=1
+GenIndex=1
+-->
+<HEAD lang="en"><META http-equiv="Content-Type" content="text/html">
+<TITLE>15: Polymorphism &amp;  Virtual Functions</TITLE>
+</HEAD>
+
+<BODY  BGCOLOR="#FFFFFF"><DIV ALIGN="CENTER">
+  <a href="http://www.MindView.net">
+  <img src="mindview-head.gif" alt="MindView Inc." BORDER = "0"></a>
+  <CENTER>
+    <FONT FACE="Verdana" size = "-1">
+    [ <a href="README-HTML.txt">Viewing Hints</a> ]
+    [ <a href="http://www.mindview.net/CPPServices/SolutionGuide.html">Exercise Solutions</a> ]
+    [ <a href="http://www.mindview.net/ThinkingInCPP2e.html">Volume 2</a> ]
+    [ <a href="http://www.mindview.net/MailingList.html">Free Newsletter</a> ] <br>
+    [ <a href="http://www.mindview.net/CPPServices/#PublicSeminars">Seminars</a> ]
+    [ <a href="http://www.mindview.net/CPPServices/#SeminarsOnCD">Seminars on CD ROM</a> ]
+    [ <a href="http://www.mindview.net/CPPServices/#ConsultingServices">Consulting</a> ]
+    </FONT>
+  <H2><FONT FACE="Verdana">
+  Thinking in C++, 2nd ed. Volume 1</FONT></H2></FONT>
+  <H3><FONT FACE="Verdana">&copy;2000 by Bruce Eckel</FONT></H3></FONT>
+  
+    <FONT FACE="Verdana" size = "-1">
+     [ <a href="Chapter14.html">Previous Chapter</a> ] 
+    [ <a href="Contents.html">Table of Contents</a> ] 
+    [ <a href="DocIndex.html">Index</a> ]
+     [ <a href="Chapter16.html">Next Chapter</a> ] 
+    </FONT>
+    
+  </CENTER>
+  </P></DIV><A NAME="_Toc472655015"></A><A NAME="Heading433"></A><FONT FACE = "Verdana"><H1 ALIGN="LEFT">
+15: Polymorphism &amp; <BR>Virtual Functions <A NAME="Index2390"></A></H1></FONT>
+<DIV ALIGN="LEFT"><P><FONT FACE="Verdana" SIZE=4>Polymorphism (implemented in C++
+with
+<A NAME="Index2391"></A><A NAME="Index2392"></A><A NAME="Index2393"></A><B>virtual</B>
+functions) is the third essential feature of an object-oriented programming
+language, after data abstraction and inheritance. </FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">It provides another dimension of
+separation of interface from implementation, to decouple <I>what</I> from
+<I>how</I>. Polymorphism allows improved code organization and readability as
+well as the creation of <I>extensible</I> programs that can be
+&#8220;grown&#8221; not only during the original creation of the project, but
+also when new features are desired.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Encapsulation creates new data types by
+combining characteristics and behaviors. Access control separates the interface
+from the implementation by making the details <B>private</B>. This kind of
+mechanical organization makes ready sense to someone with a procedural
+programming background. But virtual functions deal with
+<A NAME="Index2394"></A>decoupling in terms of <I>types</I>. In Chapter 14, you
+saw how inheritance allows the treatment of an object as its own type <I>or</I>
+its base type. This ability is critical because it allows many types (derived
+from the same base type) to be treated as if they were one type, and a single
+piece of code to work on all those different types equally. The virtual function
+allows one type to express its distinction from another, similar type, as long
+as they&#8217;re both derived from the same base type. This distinction is
+expressed through differences in behavior of the functions that you can call
+through the base class.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">In this chapter, you&#8217;ll learn about
+virtual functions, starting from the basics with simple examples that strip away
+everything but the &#8220;virtualness&#8221; of the
+program.</FONT><A NAME="_Toc312374039"></A><A NAME="_Toc472655016"></A><BR></P></DIV>
+<A NAME="Heading434"></A><FONT FACE = "Verdana"><H2 ALIGN="LEFT">
+Evolution of C++ programmers</H2></FONT>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">C
+programmers<A NAME="Index2395"></A><A NAME="Index2396"></A> seem to acquire C++
+in three steps. First, as simply a &#8220;better C,&#8221; because C++ forces
+you to declare all functions before using them and is much pickier about how
+variables are used. You can often find the errors in a C program simply by
+compiling it with a C++ compiler.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">The second step is
+&#8220;object-based&#8221; C++<A NAME="Index2397"></A><A NAME="Index2398"></A>.
+This means that you easily see the code organization benefits of grouping a data
+structure together with the functions that act upon it, the value of
+constructors and destructors, and perhaps some simple inheritance. Most
+programmers who have been working with C for a while quickly see the usefulness
+of this because, whenever they create a library, this is exactly what they try
+to do. With C++, you have the aid of the compiler.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">You can get stuck at the object-based
+level because you can quickly get there and you get a lot of benefit without
+much mental effort. It&#8217;s also easy to feel like you&#8217;re creating data
+types &#8211; you make classes and objects, you send messages to those objects,
+and everything is nice and neat.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">But don&#8217;t be fooled. If you stop
+here, you&#8217;re missing out on the greatest part of the language, which is
+the jump to true object-oriented programming. You can do this only with virtual
+functions.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Virtual
+functions<A NAME="Index2399"></A><A NAME="Index2400"></A> enhance the concept of
+type instead of just encapsulating code inside structures and behind walls, so
+they are without a doubt the most difficult concept for the new C++ programmer
+to fathom. However, they&#8217;re also the turning point in the understanding of
+object-oriented programming. If you don&#8217;t use virtual functions, you
+don&#8217;t understand OOP yet.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Because the virtual function is
+intimately bound with the concept of type, and type is at the core of
+object-oriented programming, there is no analog to the virtual function in a
+traditional procedural language. As a procedural programmer, you have no
+referent with which to think about virtual functions, as you do with almost
+every other feature in the language. Features in a procedural language can be
+understood on an algorithmic level, but virtual functions can be understood only
+from a design
+viewpoint.</FONT><A NAME="_Toc305593263"></A><A NAME="_Toc305628735"></A><A NAME="_Toc312374040"></A><A NAME="_Toc472655017"></A><BR></P></DIV>
+<A NAME="Heading435"></A><FONT FACE = "Verdana"><H2 ALIGN="LEFT">
+Upcasting</H2></FONT>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">In Chapter 14 you saw how an object can
+be used as its own type or as an object of its base type. In addition, it can be
+manipulated through an address of the base type. Taking the address of an object
+(either a pointer or a reference) and treating it as the address of the base
+type is called <I>upcasting<A NAME="Index2401"></A></I> because of the way
+inheritance trees are drawn with the base class at the top.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">You also saw a problem arise, which is
+embodied in the following code:</FONT><BR></P></DIV>
+
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE><font color=#009900>//: C15:Instrument2.cpp</font>
+<font color=#009900>// Inheritance &amp; upcasting</font>
+#include &lt;iostream&gt;
+<font color=#0000ff>using</font> <font color=#0000ff>namespace</font> std;
+<font color=#0000ff>enum</font> note { middleC, Csharp, Eflat }; <font color=#009900>// Etc.</font>
+
+<font color=#0000ff>class</font> Instrument {
+<font color=#0000ff>public</font>:
+  <font color=#0000ff>void</font> play(note) <font color=#0000ff>const</font> {
+    cout &lt;&lt; <font color=#004488>"Instrument::play"</font> &lt;&lt; endl;
+  }
+};
+
+<font color=#009900>// Wind objects are Instruments</font>
+<font color=#009900>// because they have the same interface:</font>
+<font color=#0000ff>class</font> Wind : <font color=#0000ff>public</font> Instrument {
+<font color=#0000ff>public</font>:
+  <font color=#009900>// Redefine interface function:</font>
+  <font color=#0000ff>void</font> play(note) <font color=#0000ff>const</font> {
+    cout &lt;&lt; <font color=#004488>"Wind::play"</font> &lt;&lt; endl;
+  }
+};
+
+<font color=#0000ff>void</font> tune(Instrument&amp; i) {
+  <font color=#009900>// ...</font>
+  i.play(middleC);
+}
+
+<font color=#0000ff>int</font> main() {
+  Wind flute;
+  tune(flute); <font color=#009900>// Upcasting</font>
+} <font color=#009900>///:~</font></PRE></FONT></BLOCKQUOTE>
+
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">The function <B>tune(&#160;)</B> accepts
+(by <A NAME="Index2402"></A><A NAME="Index2403"></A>reference) an
+<B>Instrument</B>, but also without complaint anything derived from
+<B>Instrument</B>. In <B>main(&#160;)</B>, you can see this happening as a
+<B>Wind</B> object is passed to <B>tune(&#160;)</B>, with no
+<A NAME="Index2404"></A>cast necessary. This is acceptable; the interface in
+<B>Instrument</B> must exist in <B>Wind</B>, because <B>Wind</B> is publicly
+inherited from <B>Instrument</B>. Upcasting from <B>Wind</B> to
+<B>Instrument</B> may &#8220;narrow&#8221; that interface, but never less than
+the full interface to <B>Instrument</B>.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><A NAME="Index2405"></A><A NAME="Index2406"></A><FONT FACE="Georgia">The
+same arguments are true when dealing with pointers; the only difference is that
+the user must explicitly take the addresses of objects as they are passed into
+the
+function.</FONT><A NAME="_Toc305593264"></A><A NAME="_Toc305628736"></A><A NAME="_Toc312374041"></A><A NAME="_Toc472655018"></A><BR></P></DIV>
+<A NAME="Heading436"></A><FONT FACE = "Verdana"><H2 ALIGN="LEFT">
+The problem</H2></FONT>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">The problem with <B>Instrument2.cpp</B>
+can be seen by running the program. The output is <B>Instrument::play</B>. This
+is clearly not the desired output, because you happen to know that the object is
+actually a <B>Wind</B> and not just an <B>Instrument</B>. The call should
+produce <B>Wind::play</B>. For that matter, any object of a class derived from
+<B>Instrument</B> should have its version of <B>play(&#160;)</B> used,
+regardless of the situation.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">The behavior of <B>Instrument2.cpp</B> is
+not surprising, given C&#8217;s approach to functions. To understand the issues,
+you need to be aware of the concept of
+<I>binding</I>.</FONT><A NAME="_Toc312374042"></A><A NAME="_Toc472655019"></A><BR></P></DIV>
+<A NAME="Heading437"></A><FONT FACE = "Verdana"><H3 ALIGN="LEFT">
+Function call binding<BR><A NAME="Index2407"></A><A NAME="Index2408"></A></H3></FONT>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Connecting a function call to a function
+body is called <I>binding</I>. When binding is performed before the program is
+run (by the compiler and linker), it&#8217;s called <I>early
+binding<A NAME="Index2409"></A></I>. You may not have heard the term before
+because it&#8217;s never been an option with procedural languages: C compilers
+have only one kind of function call, and that&#8217;s early
+binding.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">The problem in the program above is
+caused by early binding because the compiler cannot know the correct function to
+call when it has only an <B>Instrument</B> address.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">The solution is called <I>late
+binding<A NAME="Index2410"></A><A NAME="Index2411"></A></I>, which means the
+binding occurs at runtime, based on the type of the object. Late binding is also
+called <I>dynamic binding<A NAME="Index2412"></A><A NAME="Index2413"></A></I> or
+<I>runtime binding<A NAME="Index2414"></A><A NAME="Index2415"></A></I>. When a
+language implements late binding, there must be some mechanism to determine the
+type of the object at runtime and call the appropriate member function. In the
+case of a compiled language, the compiler still doesn&#8217;t know the actual
+object type, but it inserts code that finds out and calls the correct function
+body. The late-binding mechanism varies from language to language, but you can
+imagine that some sort of type information must be installed in the objects.
+You&#8217;ll see how this works
+later.</FONT><A NAME="_Toc305593265"></A><A NAME="_Toc305628737"></A><A NAME="_Toc312374043"></A><A NAME="_Toc472655020"></A><BR></P></DIV>
+<A NAME="Heading438"></A><FONT FACE = "Verdana"><H2 ALIGN="LEFT">
+virtual functions</H2></FONT>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">To cause late binding to occur for a
+particular function, C++ requires that you use the <B>virtual</B>
+keyword<A NAME="Index2416"></A><A NAME="Index2417"></A> when declaring the
+function in the base class. Late binding occurs only with <B>virtual</B>
+functions, and only when you&#8217;re using an address of the base class where
+those <B>virtual</B> functions exist, although they may also be defined in an
+earlier base class.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">To create a member function as
+<B>virtual</B>, you simply precede the declaration <A NAME="Index2418"></A>of
+the function with the keyword <B>virtual</B>. Only the declaration needs the
+<B>virtual</B> keyword, not the definition. If a function is declared as
+<B>virtual</B> in the base class, it is <B>virtual</B> in all the derived
+classes. The redefinition of a <B>virtual </B>function in a derived class is
+usually called
+<I>overriding<A NAME="Index2419"></A><A NAME="Index2420"></A><A NAME="Index2421"></A>.</I></FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><A NAME="Index2422"></A><A NAME="Index2423"></A><A NAME="Index2424"></A><FONT FACE="Georgia">Notice
+that you are only required to declare a function <B>virtual</B> in the base
+class. All derived-class functions that match the signature of the base-class
+declaration will be called using the virtual mechanism. You <I>can</I> use the
+<B>virtual</B> keyword in the derived-class declarations
+<A NAME="Index2425"></A><A NAME="Index2426"></A><A NAME="Index2427"></A>(it does
+no harm to do so), but it is redundant and can be confusing. </FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">To get the desired behavior from
+<B>Instrument2.cpp</B>, simply add the <B>virtual</B> keyword in the base class
+before <B>play(&#160;)</B>:</FONT><BR></P></DIV>
+
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE><font color=#009900>//: C15:Instrument3.cpp</font>
+<font color=#009900>// Late binding with the virtual keyword</font>
+#include &lt;iostream&gt;
+<font color=#0000ff>using</font> <font color=#0000ff>namespace</font> std;
+<font color=#0000ff>enum</font> note { middleC, Csharp, Cflat }; <font color=#009900>// Etc.</font>
+
+<font color=#0000ff>class</font> Instrument {
+<font color=#0000ff>public</font>:
+  <font color=#0000ff>virtual</font> <font color=#0000ff>void</font> play(note) <font color=#0000ff>const</font> {
+    cout &lt;&lt; <font color=#004488>"Instrument::play"</font> &lt;&lt; endl;
+  }
+};
+
+<font color=#009900>// Wind objects are Instruments</font>
+<font color=#009900>// because they have the same interface:</font>
+<font color=#0000ff>class</font> Wind : <font color=#0000ff>public</font> Instrument {
+<font color=#0000ff>public</font>:
+  <font color=#009900>// Override interface function:</font>
+  <font color=#0000ff>void</font> play(note) <font color=#0000ff>const</font> {
+    cout &lt;&lt; <font color=#004488>"Wind::play"</font> &lt;&lt; endl;
+  }
+};
+
+<font color=#0000ff>void</font> tune(Instrument&amp; i) {
+  <font color=#009900>// ...</font>
+  i.play(middleC);
+}
+
+<font color=#0000ff>int</font> main() {
+  Wind flute;
+  tune(flute); <font color=#009900>// Upcasting</font>
+} <font color=#009900>///:~</font></PRE></FONT></BLOCKQUOTE>
+
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">This file is identical to
+<B>Instrument2.cpp</B> except for the addition of the <B>virtual</B> keyword,
+and yet the behavior is significantly different: Now the output is
+<B>Wind::play</B>.</FONT><A NAME="_Toc312374044"></A><A NAME="_Toc472655021"></A><BR></P></DIV>
+<A NAME="Heading439"></A><FONT FACE = "Verdana"><H3 ALIGN="LEFT">
+Extensibility<BR><A NAME="Index2428"></A></H3></FONT>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">With <B>play(&#160;)</B> defined as
+<B>virtual</B> in the base class, you can add as many new types as you want
+without changing the <B>tune(&#160;)</B> function. In a well-designed OOP
+program, most or all of your functions will follow the model of
+<B>tune(&#160;)</B> and communicate only with the base-class
+interface<A NAME="Index2429"></A><A NAME="Index2430"></A>. Such a program is
+<I>extensible<A NAME="Index2431"></A></I> because you can add new functionality
+by inheriting new data types from the common base class. The functions that
+manipulate the base-class interface will not need to be changed at all to
+accommodate the new classes.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Here&#8217;s the instrument example with
+more virtual functions and a number of new classes, all of which work correctly
+with the old, unchanged <B>tune(&#160;)</B> function:</FONT><BR></P></DIV>
+
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE><font color=#009900>//: C15:Instrument4.cpp</font>
+<font color=#009900>// Extensibility in OOP</font>
+#include &lt;iostream&gt;
+<font color=#0000ff>using</font> <font color=#0000ff>namespace</font> std;
+<font color=#0000ff>enum</font> note { middleC, Csharp, Cflat }; <font color=#009900>// Etc.</font>
+
+<font color=#0000ff>class</font> Instrument {
+<font color=#0000ff>public</font>:
+  <font color=#0000ff>virtual</font> <font color=#0000ff>void</font> play(note) <font color=#0000ff>const</font> {
+    cout &lt;&lt; <font color=#004488>"Instrument::play"</font> &lt;&lt; endl;
+  }
+  <font color=#0000ff>virtual</font> <font color=#0000ff>char</font>* what() <font color=#0000ff>const</font> {
+    <font color=#0000ff>return</font> <font color=#004488>"Instrument"</font>;
+  }
+  <font color=#009900>// Assume this will modify the object:</font>
+  <font color=#0000ff>virtual</font> <font color=#0000ff>void</font> adjust(<font color=#0000ff>int</font>) {}
+};
+
+<font color=#0000ff>class</font> Wind : <font color=#0000ff>public</font> Instrument {
+<font color=#0000ff>public</font>:
+  <font color=#0000ff>void</font> play(note) <font color=#0000ff>const</font> {
+    cout &lt;&lt; <font color=#004488>"Wind::play"</font> &lt;&lt; endl;
+  }
+  <font color=#0000ff>char</font>* what() <font color=#0000ff>const</font> { <font color=#0000ff>return</font> <font color=#004488>"Wind"</font>; }
+  <font color=#0000ff>void</font> adjust(<font color=#0000ff>int</font>) {}
+};
+
+<font color=#0000ff>class</font> Percussion : <font color=#0000ff>public</font> Instrument {
+<font color=#0000ff>public</font>:
+  <font color=#0000ff>void</font> play(note) <font color=#0000ff>const</font> {
+    cout &lt;&lt; <font color=#004488>"Percussion::play"</font> &lt;&lt; endl;
+  }
+  <font color=#0000ff>char</font>* what() <font color=#0000ff>const</font> { <font color=#0000ff>return</font> <font color=#004488>"Percussion"</font>; }
+  <font color=#0000ff>void</font> adjust(<font color=#0000ff>int</font>) {}
+};
+
+<font color=#0000ff>class</font> Stringed : <font color=#0000ff>public</font> Instrument {
+<font color=#0000ff>public</font>:
+  <font color=#0000ff>void</font> play(note) <font color=#0000ff>const</font> {
+    cout &lt;&lt; <font color=#004488>"Stringed::play"</font> &lt;&lt; endl;
+  }
+  <font color=#0000ff>char</font>* what() <font color=#0000ff>const</font> { <font color=#0000ff>return</font> <font color=#004488>"Stringed"</font>; }
+  <font color=#0000ff>void</font> adjust(<font color=#0000ff>int</font>) {}
+};
+
+<font color=#0000ff>class</font> Brass : <font color=#0000ff>public</font> Wind {
+<font color=#0000ff>public</font>:
+  <font color=#0000ff>void</font> play(note) <font color=#0000ff>const</font> {
+    cout &lt;&lt; <font color=#004488>"Brass::play"</font> &lt;&lt; endl;
+  }
+  <font color=#0000ff>char</font>* what() <font color=#0000ff>const</font> { <font color=#0000ff>return</font> <font color=#004488>"Brass"</font>; }
+};
+
+<font color=#0000ff>class</font> Woodwind : <font color=#0000ff>public</font> Wind {
+<font color=#0000ff>public</font>:
+  <font color=#0000ff>void</font> play(note) <font color=#0000ff>const</font> {
+    cout &lt;&lt; <font color=#004488>"Woodwind::play"</font> &lt;&lt; endl;
+  }
+  <font color=#0000ff>char</font>* what() <font color=#0000ff>const</font> { <font color=#0000ff>return</font> <font color=#004488>"Woodwind"</font>; }
+};
+
+<font color=#009900>// Identical function from before:</font>
+<font color=#0000ff>void</font> tune(Instrument&amp; i) {
+  <font color=#009900>// ...</font>
+  i.play(middleC);
+}
+
+<font color=#009900>// New function:</font>
+<font color=#0000ff>void</font> f(Instrument&amp; i) { i.adjust(1); }
+
+<font color=#009900>// Upcasting during array initialization:</font>
+Instrument* A[] = {
+  <font color=#0000ff>new</font> Wind,
+  <font color=#0000ff>new</font> Percussion,
+  <font color=#0000ff>new</font> Stringed,
+  <font color=#0000ff>new</font> Brass,
+};
+
+<font color=#0000ff>int</font> main() {
+  Wind flute;
+  Percussion drum;
+  Stringed violin;
+  Brass flugelhorn;
+  Woodwind recorder;
+  tune(flute);
+  tune(drum);
+  tune(violin);
+  tune(flugelhorn);
+  tune(recorder);
+  f(flugelhorn);
+} <font color=#009900>///:~</font></PRE></FONT></BLOCKQUOTE>
+
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">You can see that another inheritance
+level has been added beneath <B>Wind</B>, but the <B>virtual</B> mechanism works
+correctly no matter how many levels there are. The <B>adjust(&#160;)</B>
+function is <I>not</I> overridden for <B>Brass</B> and <B>Woodwind</B>. When
+this happens, the &#8220;closest&#8221; definition in the inheritance hierarchy
+is automatically used &#8211; the compiler guarantees there&#8217;s always
+<I>some</I> definition for a virtual function, so you&#8217;ll never end up with
+a call that doesn&#8217;t bind to a function body. (That would be
+disastrous.)</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">The array <B>A[ ]</B> contains pointers
+to the base class <B>Instrument</B>, so upcasting occurs during the process of
+array initialization. This array and the function <B>f(&#160;)</B> will be used
+in later discussions.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">In the call to <B>tune(&#160;)</B>,
+upcasting <A NAME="Index2432"></A>is performed on each different type of object,
+yet the desired behavior always takes place. This can be described as
+&#8220;sending a message<A NAME="Index2433"></A><A NAME="Index2434"></A> to an
+object and letting the object worry about what to do with it.&#8221; The
+<B>virtual</B> function is the lens to use when you&#8217;re trying to analyze a
+project: Where should the base classes occur, and how might you want to extend
+the program? However, even if you don&#8217;t discover the proper base class
+interfaces and virtual functions at the initial creation of the program,
+you&#8217;ll often discover them later, even much later, when you set out to
+extend or otherwise maintain the program. This is not an analysis or design
+error; it simply means you didn&#8217;t or couldn&#8217;t know all the
+information the first time. Because of the tight class modularization in C++, it
+isn&#8217;t a large problem when this occurs because changes you make in one
+part of a system tend not to propagate to other parts of the system as they do
+in
+C.</FONT><A NAME="_Toc305593266"></A><A NAME="_Toc305628738"></A><A NAME="_Toc312374045"></A><A NAME="_Toc472655022"></A><BR></P></DIV>
+<A NAME="Heading440"></A><FONT FACE = "Verdana"><H2 ALIGN="LEFT">
+How C++ implements late binding</H2></FONT>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">How can late
+binding<A NAME="Index2435"></A> happen? All the work goes on behind the scenes
+by the compiler, which installs the necessary late-binding mechanism when you
+ask it to (you ask by creating virtual functions). Because programmers often
+benefit from understanding the mechanism of virtual functions in C++, this
+section will elaborate on the way the compiler implements this
+mechanism.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">The keyword
+<A NAME="Index2436"></A><B>virtual</B> <A NAME="Index2437"></A>tells the
+compiler it should not perform early binding. Instead, it should automatically
+install all the mechanisms necessary to perform late binding. This means that if
+you call <B>play(&#160;)</B> for a <B>Brass</B> object <I>through an address for
+the base-class </I><B>Instrument</B>, you&#8217;ll get the proper
+function.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">To accomplish this, the typical
+compiler</FONT><A NAME="fnB54" HREF="#fn54">[54]</A><FONT FACE="Georgia">
+creates a single table (called the VTABLE<A NAME="Index2438"></A>) for each
+class that contains <B>virtual</B> functions. The compiler places the addresses
+of the virtual functions for that particular class in the VTABLE. In each class
+with virtual functions, it secretly places a pointer, called the <I>vpointer</I>
+<A NAME="Index2439"></A>(abbreviated as VPTR<A NAME="Index2440"></A>), which
+points to the VTABLE for that object. When you make a virtual function call
+through a base-class pointer (that is, when you make a polymorphic
+call<A NAME="Index2441"></A><A NAME="Index2442"></A>), the compiler quietly
+inserts code to fetch the VPTR and look up the function address in the VTABLE,
+thus calling the correct function and causing late binding to take
+place.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">All of this &#8211; setting up the VTABLE
+for each class, initializing the VPTR, inserting the code for the virtual
+function call &#8211; happens automatically, so you don&#8217;t have to worry
+about it. With virtual functions, the proper function gets called for an object,
+even if the compiler cannot know the specific type of the
+object.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">The following sections go into this
+process in more
+detail.</FONT><A NAME="_Toc312374046"></A><A NAME="_Toc472655023"></A><BR></P></DIV>
+<A NAME="Heading441"></A><FONT FACE = "Verdana"><H3 ALIGN="LEFT">
+Storing type
+information<BR><A NAME="Index2443"></A><A NAME="Index2444"></A><A NAME="Index2445"></A><A NAME="Index2446"></A></H3></FONT>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">You can see that there is no explicit
+type information stored in any of the classes. But the previous examples, and
+simple logic, tell you that there must be some sort of type information stored
+in the objects; otherwise the type could not be established at runtime. This is
+true, but the type information is hidden. To see it, here&#8217;s an example to
+examine the sizes of classes that use virtual functions compared with those that
+don&#8217;t:</FONT><BR></P></DIV>
+
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE><font color=#009900>//: C15:Sizes.cpp</font>
+<font color=#009900>// Object sizes with/without virtual functions</font>
+#include &lt;iostream&gt;
+<font color=#0000ff>using</font> <font color=#0000ff>namespace</font> std;
+
+<font color=#0000ff>class</font> NoVirtual {
+  <font color=#0000ff>int</font> a;
+<font color=#0000ff>public</font>:
+  <font color=#0000ff>void</font> x() <font color=#0000ff>const</font> {}
+  <font color=#0000ff>int</font> i() <font color=#0000ff>const</font> { <font color=#0000ff>return</font> 1; }
+};
+
+<font color=#0000ff>class</font> OneVirtual {
+  <font color=#0000ff>int</font> a;
+<font color=#0000ff>public</font>:
+  <font color=#0000ff>virtual</font> <font color=#0000ff>void</font> x() <font color=#0000ff>const</font> {}
+  <font color=#0000ff>int</font> i() <font color=#0000ff>const</font> { <font color=#0000ff>return</font> 1; }
+};
+
+<font color=#0000ff>class</font> TwoVirtuals {
+  <font color=#0000ff>int</font> a;
+<font color=#0000ff>public</font>:
+  <font color=#0000ff>virtual</font> <font color=#0000ff>void</font> x() <font color=#0000ff>const</font> {}
+  <font color=#0000ff>virtual</font> <font color=#0000ff>int</font> i() <font color=#0000ff>const</font> { <font color=#0000ff>return</font> 1; }
+};
+
+<font color=#0000ff>int</font> main() {
+  cout &lt;&lt; <font color=#004488>"int: "</font> &lt;&lt; <font color=#0000ff>sizeof</font>(<font color=#0000ff>int</font>) &lt;&lt; endl;
+  cout &lt;&lt; <font color=#004488>"NoVirtual: "</font>
+       &lt;&lt; <font color=#0000ff>sizeof</font>(NoVirtual) &lt;&lt; endl;
+  cout &lt;&lt; <font color=#004488>"void* : "</font> &lt;&lt; <font color=#0000ff>sizeof</font>(<font color=#0000ff>void</font>*) &lt;&lt; endl;
+  cout &lt;&lt; <font color=#004488>"OneVirtual: "</font>
+       &lt;&lt; <font color=#0000ff>sizeof</font>(OneVirtual) &lt;&lt; endl;
+  cout &lt;&lt; <font color=#004488>"TwoVirtuals: "</font>
+       &lt;&lt; <font color=#0000ff>sizeof</font>(TwoVirtuals) &lt;&lt; endl;
+} <font color=#009900>///:~</font></PRE></FONT></BLOCKQUOTE>
+
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">With no virtual functions, the size of
+the object is exactly what you&#8217;d expect: the size of a
+single</FONT><A NAME="fnB55" HREF="#fn55">[55]</A><FONT FACE="Georgia">
+<B>int</B>. With a single virtual function in <B>OneVirtual</B>, the size of the
+object is the size of <B>NoVirtual</B> plus the size of a <B>void</B> pointer.
+It turns out that the compiler inserts a single pointer (the VPTR) into the
+structure if you have one <I>or more</I> virtual functions. There is no size
+difference between <B>OneVirtual</B> and <B>TwoVirtuals</B>. That&#8217;s
+because the VPTR points to a table of function addresses. You need only one
+table because all the virtual function addresses are contained in that single
+table.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">This example required at least one data
+member. If there had been no data members, the C++ compiler would have forced
+the objects to be a nonzero size
+<A NAME="Index2447"></A><A NAME="Index2448"></A>because each object must have a
+distinct address. If you imagine indexing into an array of zero-sized objects,
+you&#8217;ll understand. A &#8220;dummy&#8221; member is inserted into objects
+that would otherwise be zero-sized. When the type information is inserted
+because of the <B>virtual</B> keyword, this takes the place of the
+&#8220;dummy&#8221; member. Try commenting out the <B>int a</B> in all the
+classes in the example above to see
+this.</FONT><A NAME="_Toc312374047"></A><A NAME="_Toc472655024"></A><BR></P></DIV>
+<A NAME="Heading442"></A><FONT FACE = "Verdana"><H3 ALIGN="LEFT">
+Picturing virtual
+functions<BR><A NAME="Index2449"></A><A NAME="Index2450"></A></H3></FONT>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">To understand exactly what&#8217;s going
+on when you use a virtual function, it&#8217;s helpful to visualize the
+activities going on behind the curtain. Here&#8217;s a drawing of the array of
+pointers <B>A[ ] </B>in <B>Instrument4.cpp</B>:</FONT><BR></P></DIV>
+<DIV ALIGN="CENTER"><FONT FACE="Georgia"><IMG SRC="TIC2Vo16.gif"></FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">The array of <B>Instrument</B> pointers
+has no specific type information; they each point to an object of type
+<B>Instrument</B>. <B>Wind</B>, <B>Percussion</B>, <B>Stringed</B>, and
+<B>Brass</B> all fit into this category because they are derived from
+<B>Instrument</B> (and thus have the same interface as <B>Instrument</B>, and
+can respond to the same messages), so their addresses can also be placed into
+the array. However, the compiler doesn&#8217;t know that they are anything more
+than <B>Instrument</B> objects, so left to its own devices it would normally
+call the base-class versions of all the functions. But in this case, all those
+functions have been declared with the <B>virtual</B> keyword, so something
+different happens.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Each time you create a class that
+contains virtual functions, or you derive from a class that contains virtual
+functions, the compiler creates a unique VTABLE <A NAME="Index2451"></A>for that
+class, seen on the right of the diagram. In that table it places the addresses
+of all the functions that are declared virtual in this class or in the base
+class. If you don&#8217;t override a function that was declared virtual in the
+base class, the compiler uses the address of the base-class version in the
+derived class. (You can see this in the <B>adjust</B> entry in the <B>Brass</B>
+VTABLE.) Then it places the VPTR <A NAME="Index2452"></A>(discovered in
+<B>Sizes.cpp</B>) into the class. There is only one VPTR for each object when
+using simple inheritance like this. The VPTR must be initialized to point to the
+starting address of the appropriate VTABLE. (This happens in the constructor,
+which you&#8217;ll see later in more detail.)</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Once the VPTR is initialized to the
+proper VTABLE, the object in effect &#8220;knows&#8221; what type it is. But
+this self-knowledge is worthless unless it is used at the point a virtual
+function is called.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">When you call a virtual function through
+a base class address (the situation when the compiler doesn&#8217;t have all the
+information necessary to perform early binding), something special happens.
+Instead of performing a typical function call, which is simply an
+assembly-language <B>CALL</B> to a particular address, the compiler generates
+different code to perform the function call. Here&#8217;s what a call to
+<B>adjust(&#160;)</B> for a <B>Brass</B> object looks like, if made through an
+<B>Instrument</B> pointer (An <B>Instrument</B> reference produces the same
+result):</FONT><BR></P></DIV>
+<DIV ALIGN="CENTER"><FONT FACE="Georgia"><IMG SRC="TIC2Vo17.gif"></FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">The compiler begins with the
+<B>Instrument</B> pointer, which points to the starting address of the object.
+All <B>Instrument</B> objects or objects derived from <B>Instrument</B> have
+their VPTR in the same place (often at the beginning of the object), so the
+compiler can pick the VPTR out of the object. The VPTR points to the starting
+address of the VTABLE. All the VTABLE function addresses are laid out in the
+same order, regardless of the specific type of the object. <B>play(&#160;)</B>
+is first, <B>what(&#160;)</B> is second, and <B>adjust(&#160;)</B> is third. The
+compiler knows that regardless of the specific object type, the
+<B>adjust(&#160;)</B> function is at the location VPTR+2. Thus, instead of
+saying, &#8220;Call the function at the absolute location
+<B>Instrument::adjust</B>&#8221; (early
+binding<A NAME="Index2453"></A><A NAME="Index2454"></A><A NAME="Index2455"></A>;
+the wrong action), it generates code that says, in effect, &#8220;Call the
+function at VPTR+2.&#8221; Because the fetching of the VPTR and the
+determination of the actual function address occur at runtime, you get the
+desired late binding. You send a message to the object, and the object figures
+out what to do with
+it.</FONT><A NAME="_Toc312374048"></A><A NAME="_Toc472655025"></A><BR></P></DIV>
+<A NAME="Heading443"></A><FONT FACE = "Verdana"><H3 ALIGN="LEFT">
+Under the hood</H3></FONT>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">It can be helpful to see the
+assembly-language code generated by a virtual function
+<A NAME="Index2456"></A><A NAME="Index2457"></A><A NAME="Index2458"></A><A NAME="Index2459"></A>call,
+so you can see that late-binding is indeed taking place. Here&#8217;s the output
+from one compiler for the call </FONT><BR></P></DIV>
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE>i.adjust(1);</PRE></FONT></BLOCKQUOTE>
+
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">inside the function <B>f(Instrument&amp;
+i)</B>:</FONT><BR></P></DIV>
+
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE>push  1
+push  si
+mov   bx, word ptr [si]
+call  word ptr [bx+4]
+add   sp, 4</PRE></FONT></BLOCKQUOTE>
+
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">The arguments of a C++ function call,
+like a C function call, are pushed on the stack from right to left (this order
+is required to support C&#8217;s variable argument lists), so the argument
+<B>1</B> is pushed on the stack first. At this point in the function, the
+register <B>si</B> (part of the Intel X86 processor architecture) contains the
+address of <B>i</B>. This is also pushed on the stack because it is the starting
+address of the object of interest. Remember that the starting address
+corresponds to the value of <B>this<A NAME="Index2460"></A></B>, and <B>this</B>
+is quietly pushed on the stack as an argument before every member function call,
+so the member function knows which particular object it is working on. So
+you&#8217;ll always see one more than the number of arguments pushed on the
+stack before a member function call (except for <B>static</B> member functions,
+which have no <B>this</B>).</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Now the actual virtual function call must
+be performed. First, the VPTR <A NAME="Index2461"></A>must be produced, so the
+VTABLE <A NAME="Index2462"></A>can be found. For this compiler the VPTR is
+inserted at the beginning of the object, so the contents of <B>this</B>
+correspond to the VPTR. The line</FONT><BR></P></DIV>
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE>mov bx, word ptr [si]</PRE></FONT></BLOCKQUOTE>
+
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">fetches the word that <B>si</B> (that is,
+<B>this</B>)<B> </B>points to, which is the VPTR. It places the VPTR into the
+register <B>bx</B>.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">The VPTR contained in <B>bx</B> points to
+the starting address of the VTABLE, but the function pointer to call isn&#8217;t
+at location zero of the VTABLE, but instead at location two (because it&#8217;s
+the third function in the list). For this memory model each function pointer is
+two bytes long, so the compiler adds four to the VPTR to calculate where the
+address of the proper function is. Note that this is a constant value,
+established at compile time, so the only thing that matters is that the function
+pointer at location number two is the one for <B>adjust(&#160;)</B>.
+Fortunately, the compiler takes care of all the bookkeeping for you and ensures
+that all the function pointers in all the VTABLEs of a particular class
+hierarchy occur in the same order, regardless of the order that you may override
+them in derived classes.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Once the address of the proper function
+pointer in the VTABLE is calculated, that function is called. So the address is
+fetched and called all at once in the statement</FONT><BR></P></DIV>
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE>call word ptr [bx+4]</PRE></FONT></BLOCKQUOTE>
+
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Finally, the stack pointer is moved back
+up to clean off the arguments that were pushed before the call. In C and C++
+assembly code you&#8217;ll often see the caller clean off the arguments but this
+may vary depending on processors and compiler
+implementations.</FONT><A NAME="_Toc312374049"></A><A NAME="_Toc472655026"></A><BR></P></DIV>
+<A NAME="Heading444"></A><FONT FACE = "Verdana"><H3 ALIGN="LEFT">
+Installing the vpointer<BR><A NAME="Index2463"></A><A NAME="Index2464"></A></H3></FONT>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Because the VPTR determines the virtual
+function behavior of the object, you can see how it&#8217;s critical that the
+VPTR always be pointing to the proper VTABLE. You don&#8217;t ever want to be
+able to make a call to a virtual function before the VPTR is properly
+initialized. Of course, the place where initialization can be guaranteed is in
+the constructor, but none of the <B>Instrument</B> examples has a
+constructor.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">This is where creation of the default
+constructor is essential. In the <B>Instrument</B> examples, the compiler
+creates a default constructor that does nothing except initialize the VPTR. This
+constructor, of course, is automatically called for all <B>Instrument</B>
+objects before you can do anything with them, so you know that it&#8217;s always
+safe to call virtual functions.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">The implications of the automatic
+initialization of the VPTR inside the constructor are discussed in a later
+section.</FONT><A NAME="_Toc312374050"></A><A NAME="_Toc472655027"></A><BR></P></DIV>
+<A NAME="Heading445"></A><FONT FACE = "Verdana"><H3 ALIGN="LEFT">
+Objects are different</H3></FONT>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">It&#8217;s important to realize that
+upcasting <A NAME="Index2465"></A>deals only with addresses. If the compiler has
+an object, it knows the exact type and therefore (in C++) will not use late
+binding for any function calls &#8211; or at least, the compiler doesn&#8217;t
+<I>need</I> to use late binding. For efficiency&#8217;s sake, most compilers
+will perform early binding<A NAME="Index2466"></A><A NAME="Index2467"></A> when
+they are making a call to a virtual function for an object because they know the
+exact type. Here&#8217;s an example:</FONT><BR></P></DIV>
+
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE><font color=#009900>//: C15:Early.cpp</font>
+<font color=#009900>// Early binding &amp; virtual functions</font>
+#include &lt;iostream&gt;
+#include &lt;string&gt;
+<font color=#0000ff>using</font> <font color=#0000ff>namespace</font> std;
+
+<font color=#0000ff>class</font> Pet {
+<font color=#0000ff>public</font>:
+  <font color=#0000ff>virtual</font> string speak() <font color=#0000ff>const</font> { <font color=#0000ff>return</font> <font color=#004488>""</font>; }
+};
+
+<font color=#0000ff>class</font> Dog : <font color=#0000ff>public</font> Pet {
+<font color=#0000ff>public</font>:
+  string speak() <font color=#0000ff>const</font> { <font color=#0000ff>return</font> <font color=#004488>"Bark!"</font>; }
+};
+
+<font color=#0000ff>int</font> main() {
+  Dog ralph;
+  Pet* p1 = &amp;ralph;
+  Pet&amp; p2 = ralph;
+  Pet p3;
+  <font color=#009900>// Late binding for both:</font>
+  cout &lt;&lt; <font color=#004488>"p1-&gt;speak() = "</font> &lt;&lt; p1-&gt;speak() &lt;&lt;endl;
+  cout &lt;&lt; <font color=#004488>"p2.speak() = "</font> &lt;&lt; p2.speak() &lt;&lt; endl;
+  <font color=#009900>// Early binding (probably):</font>
+  cout &lt;&lt; <font color=#004488>"p3.speak() = "</font> &lt;&lt; p3.speak() &lt;&lt; endl;
+} <font color=#009900>///:~</font></PRE></FONT></BLOCKQUOTE>
+
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">In <B>p1&#8211;&gt;speak(&#160;)</B> and
+<B>p2.speak(&#160;)</B>, addresses are used, which means the information is
+incomplete: <B>p1 </B>and <B>p2 </B>can represent the address of a <B>Pet</B>
+<I>or</I> something derived from <B>Pet</B>, so the virtual mechanism must be
+used. When calling <B>p3.speak(&#160;)</B> there&#8217;s no ambiguity. The
+compiler knows the exact type and that it&#8217;s an object, so it can&#8217;t
+possibly be an object derived from <B>Pet</B> &#8211; it&#8217;s <I>exactly</I>
+a <B>Pet</B>. Thus, early binding is probably used. However, if the compiler
+doesn&#8217;t want to work so hard, it can still use late binding and the same
+behavior will
+occur.</FONT><A NAME="_Toc305593267"></A><A NAME="_Toc305628739"></A><A NAME="_Toc312374051"></A><A NAME="_Toc472655028"></A><BR></P></DIV>
+<A NAME="Heading446"></A><FONT FACE = "Verdana"><H2 ALIGN="LEFT">
+Why virtual functions?</H2></FONT>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">At this point you may have a question:
+&#8220;If this technique is so important, and if it makes the
+&#8216;right&#8217; function call all the time, why is it an option? Why do I
+even need to know about it?&#8221;</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">This is a good question, and the answer
+is part of the fundamental philosophy of C++: &#8220;Because it&#8217;s not
+quite as efficient.&#8221;<A NAME="Index2468"></A><A NAME="Index2469"></A> You
+can see from the previous assembly-language output that instead of one simple
+CALL to an absolute address, there are two &#8211; more sophisticated &#8211;
+assembly instructions required to set up the virtual function call. This
+requires both code space and execution time.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Some object-oriented languages have taken
+the approach that late binding is so intrinsic to object-oriented programming
+that it should always take place, that it should not be an option, and the user
+shouldn&#8217;t have to know about it. This is a design decision when creating a
+language, and that particular path is appropriate for many
+languages.</FONT><A NAME="fnB56" HREF="#fn56">[56]</A><A NAME="Index2470"></A><A NAME="Index2471"></A><A NAME="Index2472"></A><FONT FACE="Georgia">
+However, C++ comes from the C heritage, where efficiency is critical. After all,
+C was created to replace assembly language for the implementation of an
+operating system (thereby rendering that operating system &#8211; Unix &#8211;
+far more portable than its predecessors). One of the main reasons for the
+invention of C++ was to make C programmers more
+efficient.</FONT><A NAME="fnB57" HREF="#fn57">[57]</A><FONT FACE="Georgia"> And
+the first question asked when C programmers encounter C++ is, &#8220;What kind
+of size and speed impact will I get?&#8221; If the answer were,
+&#8220;Everything&#8217;s great except for function calls when you&#8217;ll
+always have a little extra overhead,&#8221; many people would stick with C
+rather than make the change to C++. In addition, inline functions
+<A NAME="Index2473"></A><A NAME="Index2474"></A>would not be possible, because
+virtual functions must have an address to put into the VTABLE. So the virtual
+function is an option, <I>and</I> the language defaults to nonvirtual, which is
+the fastest configuration. Stroustrup stated that his guideline was, &#8220;If
+you don&#8217;t use it, you don&#8217;t pay for it.&#8221;</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Thus, the
+<A NAME="Index2475"></A><A NAME="Index2476"></A><B>virtual </B>keyword is
+provided for efficiency tuning. When designing your classes, however, you
+shouldn&#8217;t be worrying about efficiency tuning. If you&#8217;re going to
+use polymorphism, use virtual functions everywhere. You only need to look for
+functions that can be made non-virtual when searching for ways to speed up your
+code (and there are usually much bigger gains to be had in other areas &#8211; a
+good profiler will do a better job of finding bottlenecks than you will by
+making guesses).</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Anecdotal evidence suggests that the size
+and speed impacts of going to C++ are within 10 percent of the size and speed of
+C, and often much closer to the same. The reason you might get better size and
+speed efficiency is because you may design a C++ program in a smaller, faster
+way than you would using
+C.</FONT><A NAME="_Toc305593268"></A><A NAME="_Toc305628740"></A><A NAME="_Toc312374052"></A><A NAME="_Toc472655029"></A><BR></P></DIV>
+<A NAME="Heading447"></A><FONT FACE = "Verdana"><H2 ALIGN="LEFT">
+Abstract base classes and pure virtual
+functions<BR><A NAME="Index2477"></A><A NAME="Index2478"></A><A NAME="Index2479"></A><A NAME="Index2480"></A><A NAME="Index2481"></A><A NAME="Index2482"></A></H2></FONT>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Often in a design, you want the base
+class to present <I>only</I> an interface for its derived classes. That is, you
+don&#8217;t want anyone to actually create an object of the base class, only to
+upcast to it so that its interface can be used. This is accomplished by making
+that class <I>abstract</I>, which happens if you give it at least one <I>pure
+virtual function</I>. You can recognize a pure virtual function because it uses
+the <B>virtual</B> keyword and is followed by <B>= 0</B>. If anyone tries to
+make an object of an abstract class, the compiler prevents them. This is a tool
+that allows you to enforce a particular design.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">When an abstract class is inherited, all
+pure virtual functions must be implemented, or the inherited class becomes
+abstract as well. Creating a pure virtual function allows you to put a member
+function in an interface without being forced to provide a possibly meaningless
+body of code for that member function. At the same time, a pure virtual function
+forces inherited classes to provide a definition for it. </FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">In all of the instrument examples, the
+functions in the base class <B>Instrument</B> were always &#8220;dummy&#8221;
+functions. If these functions are ever called, something is wrong. That&#8217;s
+because the intent of <B>Instrument</B> is to create a common interface for all
+of the classes derived from it.</FONT><BR></P></DIV>
+<DIV ALIGN="CENTER"><FONT FACE="Georgia"><IMG SRC="TIC2Vo18.gif"></FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">The only reason to establish the common
+interface<A NAME="Index2483"></A><A NAME="Index2484"></A> is so it can be
+expressed differently for each different subtype. It creates a basic form that
+determines what&#8217;s in common with all of the derived classes &#8211;
+nothing else. So <B>Instrument</B> is an appropriate candidate to be an abstract
+class. You create an abstract class when you only want to manipulate a set of
+classes through a common interface, but the common interface doesn&#8217;t need
+to have an implementation (or at least, a full implementation).
+</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">If you have a concept like <B>Instrument
+</B>that works as an abstract class, objects of that class almost always have no
+meaning. That is, <B>Instrument</B> is meant to express only the interface, and
+not a particular implementation, so creating an object that is only an
+<B>Instrument</B> makes no sense, and you&#8217;ll probably want to prevent the
+user from doing it. This can be accomplished by making all the virtual functions
+in <B>Instrument</B> print error messages, but that delays the appearance of the
+error information until runtime and it requires reliable exhaustive testing on
+the part of the user. It is much better to catch the problem at compile
+time.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Here is the syntax used for a pure
+virtual declaration:</FONT><BR></P></DIV>
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE><font color=#0000ff>virtual</font> <font color=#0000ff>void</font> f() = 0;</PRE></FONT></BLOCKQUOTE>
+
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">By doing this, you tell the compiler to
+reserve a slot for a function in the VTABLE<A NAME="Index2485"></A>, but not to
+put an address in that particular slot. Even if only one function in a class is
+declared as pure virtual, the VTABLE is incomplete.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">If the VTABLE for a class is incomplete,
+what is the compiler supposed to do when someone tries to make an object of that
+class? It cannot safely create an object of an abstract class, so you get an
+error message from the compiler. Thus, the compiler guarantees the purity of the
+abstract class. By making a class abstract, you ensure that the client
+programmer cannot misuse it.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Here&#8217;s <B>Instrument4.cpp</B>
+modified to use pure virtual functions. Because the class has nothing but pure
+virtual functions, we call it a <I>pure abstract class</I>:</FONT><BR></P></DIV>
+
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE><font color=#009900>//: C15:Instrument5.cpp</font>
+<font color=#009900>// Pure abstract base classes</font>
+#include &lt;iostream&gt;
+<font color=#0000ff>using</font> <font color=#0000ff>namespace</font> std;
+<font color=#0000ff>enum</font> note { middleC, Csharp, Cflat }; <font color=#009900>// Etc.</font>
+
+<font color=#0000ff>class</font> Instrument {
+<font color=#0000ff>public</font>:
+  <font color=#009900>// Pure virtual functions:</font>
+  <font color=#0000ff>virtual</font> <font color=#0000ff>void</font> play(note) <font color=#0000ff>const</font> = 0;
+  <font color=#0000ff>virtual</font> <font color=#0000ff>char</font>* what() <font color=#0000ff>const</font> = 0;
+  <font color=#009900>// Assume this will modify the object:</font>
+  <font color=#0000ff>virtual</font> <font color=#0000ff>void</font> adjust(<font color=#0000ff>int</font>) = 0;
+};
+<font color=#009900>// Rest of the file is the same ...</font>
+
+<font color=#0000ff>class</font> Wind : <font color=#0000ff>public</font> Instrument {
+<font color=#0000ff>public</font>:
+  <font color=#0000ff>void</font> play(note) <font color=#0000ff>const</font> {
+    cout &lt;&lt; <font color=#004488>"Wind::play"</font> &lt;&lt; endl;
+  }
+  <font color=#0000ff>char</font>* what() <font color=#0000ff>const</font> { <font color=#0000ff>return</font> <font color=#004488>"Wind"</font>; }
+  <font color=#0000ff>void</font> adjust(<font color=#0000ff>int</font>) {}
+};
+
+<font color=#0000ff>class</font> Percussion : <font color=#0000ff>public</font> Instrument {
+<font color=#0000ff>public</font>:
+  <font color=#0000ff>void</font> play(note) <font color=#0000ff>const</font> {
+    cout &lt;&lt; <font color=#004488>"Percussion::play"</font> &lt;&lt; endl;
+  }
+  <font color=#0000ff>char</font>* what() <font color=#0000ff>const</font> { <font color=#0000ff>return</font> <font color=#004488>"Percussion"</font>; }
+  <font color=#0000ff>void</font> adjust(<font color=#0000ff>int</font>) {}
+};
+
+<font color=#0000ff>class</font> Stringed : <font color=#0000ff>public</font> Instrument {
+<font color=#0000ff>public</font>:
+  <font color=#0000ff>void</font> play(note) <font color=#0000ff>const</font> {
+    cout &lt;&lt; <font color=#004488>"Stringed::play"</font> &lt;&lt; endl;
+  }
+  <font color=#0000ff>char</font>* what() <font color=#0000ff>const</font> { <font color=#0000ff>return</font> <font color=#004488>"Stringed"</font>; }
+  <font color=#0000ff>void</font> adjust(<font color=#0000ff>int</font>) {}
+};
+
+<font color=#0000ff>class</font> Brass : <font color=#0000ff>public</font> Wind {
+<font color=#0000ff>public</font>:
+  <font color=#0000ff>void</font> play(note) <font color=#0000ff>const</font> {
+    cout &lt;&lt; <font color=#004488>"Brass::play"</font> &lt;&lt; endl;
+  }
+  <font color=#0000ff>char</font>* what() <font color=#0000ff>const</font> { <font color=#0000ff>return</font> <font color=#004488>"Brass"</font>; }
+};
+
+<font color=#0000ff>class</font> Woodwind : <font color=#0000ff>public</font> Wind {
+<font color=#0000ff>public</font>:
+  <font color=#0000ff>void</font> play(note) <font color=#0000ff>const</font> {
+    cout &lt;&lt; <font color=#004488>"Woodwind::play"</font> &lt;&lt; endl;
+  }
+  <font color=#0000ff>char</font>* what() <font color=#0000ff>const</font> { <font color=#0000ff>return</font> <font color=#004488>"Woodwind"</font>; }
+};
+
+<font color=#009900>// Identical function from before:</font>
+<font color=#0000ff>void</font> tune(Instrument&amp; i) {
+  <font color=#009900>// ...</font>
+  i.play(middleC);
+}
+
+<font color=#009900>// New function:</font>
+<font color=#0000ff>void</font> f(Instrument&amp; i) { i.adjust(1); }
+
+<font color=#0000ff>int</font> main() {
+  Wind flute;
+  Percussion drum;
+  Stringed violin;
+  Brass flugelhorn;
+  Woodwind recorder;
+  tune(flute);
+  tune(drum);
+  tune(violin);
+  tune(flugelhorn);
+  tune(recorder);
+  f(flugelhorn);
+} <font color=#009900>///:~</font></PRE></FONT></BLOCKQUOTE>
+
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Pure virtual functions are helpful
+because they make explicit the abstractness of a class and tell both the user
+and the compiler how it was intended to be used.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Note that pure virtual functions prevent
+an abstract class from being passed into a function <I>by value</I>. Thus, it is
+also a way to prevent <I>object slicing</I> (which will be described
+shortly)<A NAME="Index2486"></A>. By making a class abstract, you can ensure
+that a pointer or reference is always used during upcasting to that
+class.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Just because one pure virtual function
+prevents the VTABLE from being completed doesn&#8217;t mean that you don&#8217;t
+want function bodies for some of the others. Often you will want to call a
+base-class version of a function, even if it is virtual. It&#8217;s always a
+good idea to put common code as close as possible to the root of your hierarchy.
+Not only does this save code space, it allows easy propagation of
+changes.</FONT><A NAME="_Toc312374053"></A><A NAME="_Toc472655030"></A><BR></P></DIV>
+<A NAME="Heading448"></A><FONT FACE = "Verdana"><H3 ALIGN="LEFT">
+Pure virtual
+definitions<BR><A NAME="Index2487"></A><A NAME="Index2488"></A><A NAME="Index2489"></A><A NAME="Index2490"></A></H3></FONT>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">It&#8217;s possible to provide a
+definition for a pure virtual function in the base class. You&#8217;re still
+telling the compiler not to allow objects of that abstract base class, and the
+pure virtual functions must still be defined in derived classes in order to
+create objects. However, there may be a common piece of code that you want some
+or all of the derived class definitions to call rather than duplicating that
+code in every function. </FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Here&#8217;s what a pure virtual
+definition looks like:</FONT><BR></P></DIV>
+
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE><font color=#009900>//: C15:PureVirtualDefinitions.cpp</font>
+<font color=#009900>// Pure virtual base definitions</font>
+#include &lt;iostream&gt;
+<font color=#0000ff>using</font> <font color=#0000ff>namespace</font> std;
+
+<font color=#0000ff>class</font> Pet {
+<font color=#0000ff>public</font>:
+  <font color=#0000ff>virtual</font> <font color=#0000ff>void</font> speak() <font color=#0000ff>const</font> = 0;
+  <font color=#0000ff>virtual</font> <font color=#0000ff>void</font> eat() <font color=#0000ff>const</font> = 0;
+  <font color=#009900>// Inline pure virtual definitions illegal:</font>
+  <font color=#009900>//!  virtual void sleep() const = 0 {}</font>
+};
+
+<font color=#009900>// OK, not defined inline</font>
+<font color=#0000ff>void</font> Pet::eat() <font color=#0000ff>const</font> {
+  cout &lt;&lt; <font color=#004488>"Pet::eat()"</font> &lt;&lt; endl;
+}
+
+<font color=#0000ff>void</font> Pet::speak() <font color=#0000ff>const</font> { 
+  cout &lt;&lt; <font color=#004488>"Pet::speak()"</font> &lt;&lt; endl;
+}
+
+<font color=#0000ff>class</font> Dog : <font color=#0000ff>public</font> Pet {
+<font color=#0000ff>public</font>:
+  <font color=#009900>// Use the common Pet code:</font>
+  <font color=#0000ff>void</font> speak() <font color=#0000ff>const</font> { Pet::speak(); }
+  <font color=#0000ff>void</font> eat() <font color=#0000ff>const</font> { Pet::eat(); }
+};
+
+<font color=#0000ff>int</font> main() {
+  Dog simba;  <font color=#009900>// Richard's dog</font>
+  simba.speak();
+  simba.eat();
+} <font color=#009900>///:~</font></PRE></FONT></BLOCKQUOTE>
+
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">The slot in the <B>Pet </B>VTABLE is
+still empty, but there happens to be a function by that name that you can call
+in the derived class.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">The other benefit to this feature is that
+it allows you to change from an ordinary virtual to a pure virtual without
+disturbing the existing code. (This is a way for you to locate classes that
+don&#8217;t override that virtual
+function.)</FONT><A NAME="_Toc305593269"></A><A NAME="_Toc305628741"></A><A NAME="_Toc312374054"></A><A NAME="_Toc472655031"></A><BR></P></DIV>
+<A NAME="Heading449"></A><FONT FACE = "Verdana"><H2 ALIGN="LEFT">
+Inheritance and the
+VTABLE<BR><A NAME="Index2491"></A><A NAME="Index2492"></A></H2></FONT>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">You can imagine what happens when you
+perform inheritance and override some of the virtual functions. The compiler
+creates a new VTABLE for your new class, and it inserts your new function
+addresses using the base-class function addresses for any virtual functions you
+don&#8217;t override. One way or another, for every object that can be created
+(that is, its class has no pure virtuals) there&#8217;s always a full set of
+function addresses in the VTABLE, so you&#8217;ll never be able to make a call
+to an address that isn&#8217;t there (which would be
+disastrous).</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">But what happens when you inherit and add
+new virtual functions in the <I>derived</I>
+class<A NAME="Index2493"></A><A NAME="Index2494"></A><A NAME="Index2495"></A><A NAME="Index2496"></A>?
+Here&#8217;s a simple example:</FONT><BR></P></DIV>
+
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE><font color=#009900>//: C15:AddingVirtuals.cpp</font>
+<font color=#009900>// Adding virtuals in derivation</font>
+#include &lt;iostream&gt;
+#include &lt;string&gt;
+<font color=#0000ff>using</font> <font color=#0000ff>namespace</font> std;
+
+<font color=#0000ff>class</font> Pet {
+  string pname;
+<font color=#0000ff>public</font>:
+  Pet(<font color=#0000ff>const</font> string&amp; petName) : pname(petName) {}
+  <font color=#0000ff>virtual</font> string name() <font color=#0000ff>const</font> { <font color=#0000ff>return</font> pname; }
+  <font color=#0000ff>virtual</font> string speak() <font color=#0000ff>const</font> { <font color=#0000ff>return</font> <font color=#004488>""</font>; }
+};
+
+<font color=#0000ff>class</font> Dog : <font color=#0000ff>public</font> Pet {
+  string name;
+<font color=#0000ff>public</font>:
+  Dog(<font color=#0000ff>const</font> string&amp; petName) : Pet(petName) {}
+  <font color=#009900>// New virtual function in the Dog class:</font>
+  <font color=#0000ff>virtual</font> string sit() <font color=#0000ff>const</font> {
+    <font color=#0000ff>return</font> Pet::name() + <font color=#004488>" sits"</font>;
+  }
+  string speak() <font color=#0000ff>const</font> { <font color=#009900>// Override</font>
+    <font color=#0000ff>return</font> Pet::name() + <font color=#004488>" says 'Bark!'"</font>;
+  }
+};
+
+<font color=#0000ff>int</font> main() {
+  Pet* p[] = {<font color=#0000ff>new</font> Pet(<font color=#004488>"generic"</font>),<font color=#0000ff>new</font> Dog(<font color=#004488>"bob"</font>)};
+  cout &lt;&lt; <font color=#004488>"p[0]-&gt;speak() = "</font>
+       &lt;&lt; p[0]-&gt;speak() &lt;&lt; endl;
+  cout &lt;&lt; <font color=#004488>"p[1]-&gt;speak() = "</font>
+       &lt;&lt; p[1]-&gt;speak() &lt;&lt; endl;
+<font color=#009900>//! cout &lt;&lt; "p[1]-&gt;sit() = "</font>
+<font color=#009900>//!      &lt;&lt; p[1]-&gt;sit() &lt;&lt; endl; // Illegal</font>
+} <font color=#009900>///:~</font></PRE></FONT></BLOCKQUOTE>
+
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">The class <B>Pet</B> contains a two
+virtual functions: <B>speak(&#160;)</B> and <B>name(&#160;)</B>. <B>Dog</B> adds
+a third virtual function called <B>sit(&#160;)</B>, as well as overriding the
+meaning of <B>speak(&#160;)</B>. A diagram will help you visualize what&#8217;s
+happening. Here are the VTABLEs <A NAME="Index2497"></A>created by the compiler
+for <B>Pet</B> and <B>Dog</B>:</FONT><BR></P></DIV>
+<DIV ALIGN="CENTER"><FONT FACE="Georgia"><IMG SRC="TIC2Vo19.gif"></FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Notice that the compiler maps the
+location of the <B>speak(&#160;)</B> address into exactly the same spot in the
+<B>Dog </B>VTABLE as it is in the <B>Pet</B> VTABLE. Similarly, if a class
+<B>Pug</B> is inherited from <B>Dog</B>, its version of <B>sit(&#160;)</B> would
+be placed in its VTABLE in exactly the same spot as it is in <B>Dog</B>. This is
+because (as you saw with the assembly-language example) the compiler generates
+code that uses a simple numerical offset into the VTABLE to select the virtual
+function. Regardless of the specific subtype the object belongs to, its VTABLE
+is laid out the same way, so calls to the virtual functions will always be made
+the same way.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">In this case, however, the compiler is
+working only with a pointer to a base-class object. The base class has only the
+<B>speak(&#160;)</B> and <B>name(&#160;) </B>functions, so those is the only
+functions the compiler will allow you to call. How could it possibly know that
+you are working with a <B>Dog</B> object, if it has only a pointer to a
+base-class object? That pointer might point to some other type, which
+doesn&#8217;t have a <B>sit(&#160;)</B> function. It may or may not have some
+other function address at that point in the VTABLE, but in either case, making a
+virtual call to that VTABLE address is not what you want to do. So the compiler
+is doing its job by protecting you from making virtual calls to functions that
+exist only in derived classes.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">There are some less-common cases in which
+you may know that the pointer actually points to an object of a specific
+subclass. If you want to call a function that only exists in that subclass, then
+you must cast the pointer. You can remove the error message produced by the
+previous program like this:</FONT><BR></P></DIV>
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE>  ((Dog*)p[1])-&gt;sit()</PRE></FONT></BLOCKQUOTE>
+
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Here, you happen to know that <B>p[1]</B>
+points to a <B>Dog</B> object, but in general you don&#8217;t know that. If your
+problem is set up so that you must know the exact types of all objects, you
+should rethink it, because you&#8217;re probably not using virtual functions
+properly. However, there are some situations in which the design works best (or
+you have no choice) if you know the exact type of all objects kept in a generic
+container. This is the problem of <I>run-time type identification</I>
+(RTTI)<A NAME="Index2498"></A><A NAME="Index2499"></A><A NAME="Index2500"></A><B>.</B></FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">RTTI is all about casting base-class
+pointers <I>down</I> to derived-class pointers (&#8220;up&#8221; and
+&#8220;down&#8221; are relative to a typical class diagram, with the base class
+at the top). Casting <I>up</I> happens automatically, with no coercion, because
+it&#8217;s completely safe. Casting <I>down</I> is unsafe because there&#8217;s
+no compile time information about the actual types, so you must know exactly
+what type the object is. If you cast it into the wrong type, you&#8217;ll be in
+trouble.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">RTTI is described later in this chapter,
+and Volume 2 of this book has a chapter devoted to the
+subject.</FONT><A NAME="_Toc472655032"></A><BR></P></DIV>
+<A NAME="Heading450"></A><FONT FACE = "Verdana"><H3 ALIGN="LEFT">
+Object slicing<BR><A NAME="Index2501"></A><A NAME="Index2502"></A></H3></FONT>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">There is a distinct difference between
+passing the addresses of objects and passing objects by value when using
+polymorphism. All the examples you&#8217;ve seen here, and virtually all the
+examples you should see, pass addresses and not values. This is because
+addresses all have the same
+size</FONT><A NAME="fnB58" HREF="#fn58">[58]</A><FONT FACE="Georgia">, so
+passing the address of an object of a derived type (which is usually a bigger
+object) is the same as passing the address of an object of the base type (which
+is usually a smaller object). As explained before, this is the goal when using
+polymorphism &#8211; code that manipulates a base type can transparently
+manipulate derived-type objects as well.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">If you upcast to an object instead of a
+pointer or reference, something will happen that may surprise you: the object is
+&#8220;sliced&#8221; until all that remains is the subobject that corresponds to
+the destination type of your cast. In the following example you can see what
+happens when an object is sliced:</FONT><BR></P></DIV>
+
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE><font color=#009900>//: C15:ObjectSlicing.cpp</font>
+#include &lt;iostream&gt;
+#include &lt;string&gt;
+<font color=#0000ff>using</font> <font color=#0000ff>namespace</font> std;
+
+<font color=#0000ff>class</font> Pet {
+  string pname;
+<font color=#0000ff>public</font>:
+  Pet(<font color=#0000ff>const</font> string&amp; name) : pname(name) {}
+  <font color=#0000ff>virtual</font> string name() <font color=#0000ff>const</font> { <font color=#0000ff>return</font> pname; }
+  <font color=#0000ff>virtual</font> string description() <font color=#0000ff>const</font> {
+    <font color=#0000ff>return</font> <font color=#004488>"This is "</font> + pname;
+  }
+};
+
+<font color=#0000ff>class</font> Dog : <font color=#0000ff>public</font> Pet {
+  string favoriteActivity;
+<font color=#0000ff>public</font>:
+  Dog(<font color=#0000ff>const</font> string&amp; name, <font color=#0000ff>const</font> string&amp; activity)
+    : Pet(name), favoriteActivity(activity) {}
+  string description() <font color=#0000ff>const</font> {
+    <font color=#0000ff>return</font> Pet::name() + <font color=#004488>" likes to "</font> +
+      favoriteActivity;
+  }
+};
+
+<font color=#0000ff>void</font> describe(Pet p) { <font color=#009900>// Slices the object</font>
+  cout &lt;&lt; p.description() &lt;&lt; endl;
+}
+
+<font color=#0000ff>int</font> main() {
+  Pet p(<font color=#004488>"Alfred"</font>);
+  Dog d(<font color=#004488>"Fluffy"</font>, <font color=#004488>"sleep"</font>);
+  describe(p);
+  describe(d);
+} <font color=#009900>///:~</font></PRE></FONT></BLOCKQUOTE>
+
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">The function <B>describe(&#160;)</B> is
+passed an object of type <B>Pet</B> <I>by value</I>. It then calls the virtual
+function <B>description(&#160;)</B> for the <B>Pet</B> object. In
+<B>main(&#160;)</B>, you might expect the first call to produce &#8220;This is
+Alfred,&#8221; and the second to produce &#8220;Fluffy likes to sleep.&#8221; In
+fact, both calls use the base-class version of
+<B>description(&#160;)</B>.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Two things are happening in this program.
+First, because <B>describe(&#160;) </B>accepts a <B>Pet</B> <I>object</I>
+(rather than a pointer or reference), any calls to <B>describe(&#160;)</B> will
+cause an object the size of <B>Pet</B> to be pushed on the stack and cleaned up
+after the call. This means that if an object of a class inherited from
+<B>Pet</B> is passed to <B>describe(&#160;)</B>, the compiler accepts it, but it
+copies only the <B>Pet</B> portion of the object. It <I>slices</I> the derived
+portion off of the object, like this: </FONT><BR></P></DIV>
+<DIV ALIGN="CENTER"><FONT FACE="Georgia"><IMG SRC="TIC2Vo20.gif"></FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Now you may wonder about the virtual
+function call. <B>Dog::description(&#160;) </B>makes use of portions of both
+<B>Pet</B> (which still exists) and <B>Dog</B>, which no longer exists because
+it was sliced off! So what happens when the virtual function is
+called?</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">You&#8217;re saved from disaster because
+the object is being passed by value. Because of this, the compiler knows the
+precise type of the object because the derived object has been forced to become
+a base object. When passing by value,<A NAME="Index2503"></A> the
+copy-constructor<A NAME="Index2504"></A><A NAME="Index2505"></A> for a <B>Pet
+</B>object is used, which initializes the VPTR to the <B>Pet</B> VTABLE and
+copies only the <B>Pet</B> parts of the object. There&#8217;s no explicit
+copy-constructor here, so the compiler synthesizes one. Under all
+interpretations, the object truly becomes a <B>Pet</B> during
+slicing.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Object slicing actually removes part of
+the existing object as it copies it into the new object, rather than simply
+changing the meaning of an address as when using a pointer or reference. Because
+of this, upcasting into an object is not done often; in fact, it&#8217;s usually
+something to watch out for and prevent. Note that, in this example, if
+<B>description(&#160;)</B> were made into a pure virtual function in the base
+class (which is not unreasonable, since it doesn&#8217;t really do anything in
+the base class), then the compiler would prevent object slicing because that
+wouldn&#8217;t allow you to &#8220;create&#8221; an object of the base type
+(which is what happens when you upcast by value). This could be the most
+important value of pure virtual functions: to prevent object slicing by
+generating a compile-time error message if someone tries to do
+it.</FONT><A NAME="_Toc305593270"></A><A NAME="_Toc305628742"></A><A NAME="_Toc312374055"></A><A NAME="_Toc472655033"></A><BR></P></DIV>
+<A NAME="Heading451"></A><FONT FACE = "Verdana"><H2 ALIGN="LEFT">
+Overloading &amp;
+overriding<BR><A NAME="Index2506"></A><A NAME="Index2507"></A></H2></FONT>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">In Chapter 14, you saw that redefining an
+overloaded function in the base class
+<A NAME="Index2508"></A><A NAME="Index2509"></A>hides all of the other
+base-class versions of that function. When <B>virtual</B> functions are involved
+the behavior is a little different. Consider a modified version of the
+<B>NameHiding.cpp</B> example from Chapter 14:</FONT><BR></P></DIV>
+
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE><font color=#009900>//: C15:NameHiding2.cpp</font>
+<font color=#009900>// Virtual functions restrict overloading</font>
+#include &lt;iostream&gt;
+#include &lt;string&gt;
+<font color=#0000ff>using</font> <font color=#0000ff>namespace</font> std;
+
+<font color=#0000ff>class</font> Base {
+<font color=#0000ff>public</font>:
+  <font color=#0000ff>virtual</font> <font color=#0000ff>int</font> f() <font color=#0000ff>const</font> { 
+    cout &lt;&lt; <font color=#004488>"Base::f()\n"</font>; 
+    <font color=#0000ff>return</font> 1; 
+  }
+  <font color=#0000ff>virtual</font> <font color=#0000ff>void</font> f(string) <font color=#0000ff>const</font> {}
+  <font color=#0000ff>virtual</font> <font color=#0000ff>void</font> g() <font color=#0000ff>const</font> {}
+};
+
+<font color=#0000ff>class</font> Derived1 : <font color=#0000ff>public</font> Base {
+<font color=#0000ff>public</font>:
+  <font color=#0000ff>void</font> g() <font color=#0000ff>const</font> {}
+};
+
+<font color=#0000ff>class</font> Derived2 : <font color=#0000ff>public</font> Base {
+<font color=#0000ff>public</font>:
+  <font color=#009900>// Overriding a virtual function:</font>
+  <font color=#0000ff>int</font> f() <font color=#0000ff>const</font> { 
+    cout &lt;&lt; <font color=#004488>"Derived2::f()\n"</font>; 
+    <font color=#0000ff>return</font> 2;
+  }
+};
+
+<font color=#0000ff>class</font> Derived3 : <font color=#0000ff>public</font> Base {
+<font color=#0000ff>public</font>:
+  <font color=#009900>// Cannot change return type:</font>
+  <font color=#009900>//! void f() const{ cout &lt;&lt; "Derived3::f()\n";}</font>
+};
+
+<font color=#0000ff>class</font> Derived4 : <font color=#0000ff>public</font> Base {
+<font color=#0000ff>public</font>:
+  <font color=#009900>// Change argument list:</font>
+  <font color=#0000ff>int</font> f(<font color=#0000ff>int</font>) <font color=#0000ff>const</font> { 
+    cout &lt;&lt; <font color=#004488>"Derived4::f()\n"</font>; 
+    <font color=#0000ff>return</font> 4; 
+  }
+};
+
+<font color=#0000ff>int</font> main() {
+  string s(<font color=#004488>"hello"</font>);
+  Derived1 d1;
+  <font color=#0000ff>int</font> x = d1.f();
+  d1.f(s);
+  Derived2 d2;
+  x = d2.f();
+<font color=#009900>//!  d2.f(s); // string version hidden</font>
+  Derived4 d4;
+  x = d4.f(1);
+<font color=#009900>//!  x = d4.f(); // f() version hidden</font>
+<font color=#009900>//!  d4.f(s); // string version hidden</font>
+  Base&amp; br = d4; <font color=#009900>// Upcast</font>
+<font color=#009900>//!  br.f(1); // Derived version unavailable</font>
+  br.f(); <font color=#009900>// Base version available</font>
+  br.f(s); <font color=#009900>// Base version abailable</font>
+} <font color=#009900>///:~</font></PRE></FONT></BLOCKQUOTE>
+
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">The first thing to notice is that in
+<B>Derived3</B>, the compiler will not allow you to change the return type of an
+overridden function (it will allow it if <B>f(&#160;)</B> is not virtual). This
+is an important restriction because the compiler must guarantee that you can
+polymorphically call the function through the base class, and if the base class
+is expecting an <B>int</B> to be returned from <B>f(&#160;)</B>, then the
+derived-class version of <B>f(&#160;)</B> must keep that contract or else things
+will break.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">The rule shown in Chapter 14 still works:
+if you override one of the overloaded member functions in the base class, the
+other overloaded versions become hidden in the derived class. In <B>main(&#160;)
+</B>the code that tests <B>Derived4</B> shows that this happens even if the new
+version of <B>f(&#160;)</B> isn&#8217;t actually overriding an existing virtual
+function interface &#8211; both of the base-class versions of <B>f(&#160;)</B>
+are hidden by <B>f(int)</B>. However, if you upcast <B>d4 </B>to <B>Base</B>,
+then only the base-class versions are available (because that&#8217;s what the
+base-class contract promises) and the derived-class version is not available
+(because it isn&#8217;t specified in the base
+class).</FONT><A NAME="_Toc472655034"></A><BR></P></DIV>
+<A NAME="Heading452"></A><FONT FACE = "Verdana"><H3 ALIGN="LEFT">
+Variant return type</H3></FONT>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">The <B>Derived3</B> class above suggests
+that you cannot modify the return type of a virtual function during overriding.
+This is generally true, but there is a special case in which you can slightly
+modify the return type. If you&#8217;re returning a pointer or a reference to a
+base class, then the overridden version of the function may return a pointer or
+reference to a class derived from what the base returns. For
+example:</FONT><BR></P></DIV>
+
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE><font color=#009900>//: C15:VariantReturn.cpp</font>
+<font color=#009900>// Returning a pointer or reference to a derived</font>
+<font color=#009900>// type during ovverriding</font>
+#include &lt;iostream&gt;
+#include &lt;string&gt;
+<font color=#0000ff>using</font> <font color=#0000ff>namespace</font> std;
+
+<font color=#0000ff>class</font> PetFood {
+<font color=#0000ff>public</font>:
+  <font color=#0000ff>virtual</font> string foodType() <font color=#0000ff>const</font> = 0;
+};
+
+<font color=#0000ff>class</font> Pet {
+<font color=#0000ff>public</font>:
+  <font color=#0000ff>virtual</font> string type() <font color=#0000ff>const</font> = 0;
+  <font color=#0000ff>virtual</font> PetFood* eats() = 0;
+};
+
+<font color=#0000ff>class</font> Bird : <font color=#0000ff>public</font> Pet {
+<font color=#0000ff>public</font>:
+  string type() <font color=#0000ff>const</font> { <font color=#0000ff>return</font> <font color=#004488>"Bird"</font>; }
+  <font color=#0000ff>class</font> BirdFood : <font color=#0000ff>public</font> PetFood {
+  <font color=#0000ff>public</font>:
+    string foodType() <font color=#0000ff>const</font> { 
+      <font color=#0000ff>return</font> <font color=#004488>"Bird food"</font>; 
+    }
+  };
+  <font color=#009900>// Upcast to base type:</font>
+  PetFood* eats() { <font color=#0000ff>return</font> &amp;bf; }
+<font color=#0000ff>private</font>:
+  BirdFood bf;
+};
+
+<font color=#0000ff>class</font> Cat : <font color=#0000ff>public</font> Pet {
+<font color=#0000ff>public</font>:
+  string type() <font color=#0000ff>const</font> { <font color=#0000ff>return</font> <font color=#004488>"Cat"</font>; }
+  <font color=#0000ff>class</font> CatFood : <font color=#0000ff>public</font> PetFood {
+  <font color=#0000ff>public</font>:
+    string foodType() <font color=#0000ff>const</font> { <font color=#0000ff>return</font> <font color=#004488>"Birds"</font>; }
+  };
+  <font color=#009900>// Return exact type instead:</font>
+  CatFood* eats() { <font color=#0000ff>return</font> &amp;cf; }
+<font color=#0000ff>private</font>:
+  CatFood cf;
+};
+
+<font color=#0000ff>int</font> main() {
+  Bird b; 
+  Cat c;
+  Pet* p[] = { &amp;b, &amp;c, };
+  <font color=#0000ff>for</font>(<font color=#0000ff>int</font> i = 0; i &lt; <font color=#0000ff>sizeof</font> p / <font color=#0000ff>sizeof</font> *p; i++)
+    cout &lt;&lt; p[i]-&gt;type() &lt;&lt; <font color=#004488>" eats "</font>
+         &lt;&lt; p[i]-&gt;eats()-&gt;foodType() &lt;&lt; endl;
+  <font color=#009900>// Can return the exact type:</font>
+  Cat::CatFood* cf = c.eats();
+  Bird::BirdFood* bf;
+  <font color=#009900>// Cannot return the exact type:</font>
+<font color=#009900>//!  bf = b.eats();</font>
+  <font color=#009900>// Must downcast:</font>
+  bf = <font color=#0000ff>dynamic_cast</font>&lt;Bird::BirdFood*&gt;(b.eats());
+} <font color=#009900>///:~</font></PRE></FONT></BLOCKQUOTE>
+
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">The <B>Pet::eats(&#160;)</B> member
+function returns a pointer to a <B>PetFood</B>. In <B>Bird</B>, this member
+function is overloaded exactly as in the base class, including the return type.
+That is, <B>Bird::eats(&#160;)</B> upcasts the <B>BirdFood</B> to a
+<B>PetFood</B>.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">But in <B>Cat</B>, the return type of
+<B>eats(&#160;)</B>  is a pointer to <B>CatFood</B>, a type derived from
+<B>PetFood</B>. The fact that the return type is inherited from the return type
+of the base-class function is the only reason this compiles. That way, the
+contract is still fulfilled; <B>eats(&#160;)</B> always returns a <B>PetFood</B>
+pointer.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">If you think polymorphically, this
+doesn&#8217;t seem necessary. Why not just upcast all the return types to
+<B>PetFood*</B>, just as <B>Bird::eats(&#160;)</B> did? This is typically a good
+solution, but at the end of <B>main(&#160;)</B>, you see the difference:
+<B>Cat::eats(&#160;)</B> can return the exact type of <B>PetFood</B>, whereas
+the return value of <B>Bird::eats(&#160;)</B> must be downcast to the exact
+type.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">So being able to return the exact type is
+a little more general, and doesn&#8217;t lose the specific type information by
+automatically upcasting. However, returning the base type will generally solve
+your problems so this is a rather specialized
+feature.</FONT><A NAME="_Toc472655035"></A><BR></P></DIV>
+<A NAME="Heading453"></A><FONT FACE = "Verdana"><H2 ALIGN="LEFT">
+virtual functions &amp;
+constructors<BR><A NAME="Index2510"></A><A NAME="Index2511"></A><A NAME="Index2512"></A></H2></FONT>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">When an object containing virtual
+functions is created, its VPTR <A NAME="Index2513"></A>must be initialized to
+point to the proper VTABLE<A NAME="Index2514"></A>. This must be done before
+there&#8217;s any possibility of calling a virtual function. As you might guess,
+because the constructor has the job of bringing an object into existence, it is
+also the constructor&#8217;s job to set up the VPTR. The compiler secretly
+inserts code into the beginning of the constructor that initializes the VPTR.
+And as described in Chapter 14, if you don&#8217;t explicitly create a
+constructor for a class, the compiler will synthesize one for you. If the class
+has virtual functions, the synthesized constructor will include the proper VPTR
+initialization code. This has several implications.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">The first concerns efficiency. The reason
+for <A NAME="Index2515"></A><A NAME="Index2516"></A><B>inline</B> functions is
+to reduce the calling overhead for small functions. If C++ didn&#8217;t provide
+<B>inline</B> functions, the preprocessor might be used to create these
+&#8220;macros.&#8221; However, the preprocessor has no concept of access or
+classes, and therefore couldn&#8217;t be used to create member function macros.
+In addition, with constructors that must have hidden code inserted by the
+compiler, a preprocessor macro wouldn&#8217;t work at all.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">You must be aware when hunting for
+efficiency<A NAME="Index2517"></A><A NAME="Index2518"></A><A NAME="Index2519"></A>
+holes that the compiler is inserting hidden code into your constructor function.
+Not only must it initialize the VPTR, it must also check the value of
+<B>this</B> (in case the <B>operator</B> <B>new</B> returns zero) and call
+base-class constructors. Taken together, this code can impact what you thought
+was a tiny inline function call. In particular, the size of the constructor may
+overwhelm the savings you get from reduced function-call overhead. If you make a
+lot of inline constructor calls, your code size can grow without any benefits in
+speed.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Of course, you probably won&#8217;t make
+all tiny constructors non-inline right away, because they&#8217;re much easier
+to write as inlines. But when you&#8217;re tuning your code, remember to
+consider removing the inline
+constructors.</FONT><A NAME="_Toc312374056"></A><A NAME="_Toc472655036"></A><BR></P></DIV>
+<A NAME="Heading454"></A><FONT FACE = "Verdana"><H3 ALIGN="LEFT">
+Order of constructor
+calls<BR><A NAME="Index2520"></A><A NAME="Index2521"></A></H3></FONT>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">The second interesting facet of
+constructors and virtual functions concerns the order of constructor calls and
+the way virtual calls are made within constructors.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><A NAME="Index2522"></A><A NAME="Index2523"></A><FONT FACE="Georgia">All
+base-class constructors are always called in the constructor for an inherited
+class. This makes sense because the constructor has a special job: to see that
+the object is built properly. A derived class has access only to its own
+members, and not those of the base class. Only the base-class constructor can
+properly initialize its own elements. Therefore it&#8217;s essential that all
+constructors get called; otherwise the entire object wouldn&#8217;t be
+constructed properly. That&#8217;s why the compiler enforces a constructor call
+for every portion of a derived class. It will call the default constructor if
+you don&#8217;t explicitly call a base-class constructor in the constructor
+initializer list. If there is no
+<A NAME="Index2524"></A><A NAME="Index2525"></A>default constructor, the
+compiler will complain.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">The order of the constructor calls is
+important. When you inherit, you know all about the base class and can access
+any <B>public</B> and <B>protected</B> members of the base class. This means you
+must be able to assume that all the members of the base class are valid when
+you&#8217;re in the derived class. In a normal member function, construction has
+already taken place, so all the members of all parts of the object have been
+built. Inside the constructor, however, you must be able to assume that all
+members that you use have been built. The only way to guarantee this is for the
+base-class constructor to be called first. Then when you&#8217;re in the
+derived-class constructor, all the members you can access in the base class have
+been initialized. &#8220;Knowing all members are valid&#8221; inside the
+constructor is also the reason that, whenever possible, you should initialize
+all member objects (that is, objects placed in the class using composition) in
+the <A NAME="Index2526"></A><A NAME="Index2527"></A>constructor initializer
+list. If you follow this practice, you can assume that all base class members
+<I>and</I> member objects of the current object have been
+initialized.</FONT><A NAME="_Toc312374057"></A><A NAME="_Toc472655037"></A><BR></P></DIV>
+<A NAME="Heading455"></A><FONT FACE = "Verdana"><H3 ALIGN="LEFT">
+Behavior of virtual functions inside
+constructors<BR><A NAME="Index2528"></A><A NAME="Index2529"></A><A NAME="Index2530"></A></H3></FONT>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">The hierarchy of constructor calls brings
+up an interesting dilemma. What happens if you&#8217;re inside a constructor and
+you call a virtual function? Inside an ordinary member function you can imagine
+what will happen &#8211; the virtual call is resolved at runtime because the
+object cannot know whether it belongs to the class the member function is in, or
+some class derived from it. For consistency, you might think this is what should
+happen inside constructors.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">This is not the case. If you call a
+virtual function inside a constructor, only the local version of the function is
+used. That is, the virtual mechanism doesn&#8217;t work within the
+constructor.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">This behavior makes sense for two
+reasons. Conceptually, the constructor&#8217;s job is to bring the object into
+existence (which is hardly an ordinary feat). Inside any constructor, the object
+may only be partially formed &#8211; you can only know that the base-class
+objects have been initialized, but you cannot know which classes are inherited
+from you. A virtual function call, however, reaches &#8220;forward&#8221; or
+&#8220;outward&#8221; into the inheritance hierarchy. It calls a function in a
+derived class. If you could do this inside a constructor, you&#8217;d be calling
+a function that might manipulate members that hadn&#8217;t been initialized yet,
+a sure recipe for disaster.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">The second reason is a mechanical one.
+When a constructor is called, one of the first things it does is initialize its
+VPTR<A NAME="Index2531"></A>. However, it can only know that it is of the
+&#8220;current&#8221; type &#8211; the type the constructor was written for. The
+constructor code is completely ignorant of whether or not the object is in the
+base of another class. When the compiler generates code for that constructor, it
+generates code for a constructor of that class, not a base class and not a class
+derived from it (because a class can&#8217;t know who inherits it). So the VPTR
+it uses must be for the VTABLE<A NAME="Index2532"></A> of <I>that</I> class. The
+VPTR remains initialized to that VTABLE for the rest of the object&#8217;s
+lifetime <I>unless</I> this isn&#8217;t the last constructor call. If a
+more-derived constructor is called afterwards, that constructor sets the VPTR to
+<I>its</I> VTABLE, and so on, until the last constructor finishes. The state of
+the VPTR is determined by the constructor that is called last. This is another
+reason why the <A NAME="Index2533"></A><A NAME="Index2534"></A>constructors are
+called in order from base to most-derived.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">But while all this series of constructor
+calls is taking place, each constructor has set the VPTR to its own VTABLE. If
+it uses the virtual mechanism for function calls, it will produce only a call
+through its own VTABLE, not the most-derived VTABLE (as would be the case after
+<I>all</I> the constructors were called). In addition, many compilers recognize
+that a virtual function call is being made inside a constructor, and perform
+early binding because they know that late-binding will produce a call only to
+the local function. In either event, you won&#8217;t get the results you might
+initially expect from a virtual function call inside a
+constructor.</FONT><A NAME="_Toc305593271"></A><A NAME="_Toc305628743"></A><A NAME="_Toc312374058"></A><A NAME="_Toc472655038"></A><BR></P></DIV>
+<A NAME="Heading456"></A><FONT FACE = "Verdana"><H2 ALIGN="LEFT">
+Destructors and virtual destructors</H2></FONT>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">You cannot use the
+<A NAME="Index2535"></A><B>virtual </B>keyword with
+<A NAME="Index2536"></A><A NAME="Index2537"></A>constructors, but destructors
+can and often must be virtual.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">The constructor<A NAME="Index2538"></A>
+has the special job of putting an object together piece-by-piece, first by
+calling the base constructor, then the more derived constructors in order of
+inheritance (it must also call member-object constructors along the way).
+Similarly, the destructor has a special job: it must disassemble an object that
+may belong to a hierarchy of classes. To do this, the compiler generates code
+that calls all the destructors, but in the <I>reverse</I> order that they are
+called by the constructor. That is, the destructor starts at the most-derived
+class and works its way down to the base class. This is the safe and desirable
+thing to do because  the current destructor can always know that the base-class
+members are alive and active. If you need to call a base-class member function
+inside your destructor, it is safe to do so. Thus, the destructor can perform
+its own cleanup, then call the next-down destructor, which will perform
+<I>its</I> own cleanup<A NAME="Index2539"></A>, etc. Each destructor knows what
+its class is derived <I>from</I>, but not what is derived from
+it.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">You should keep in mind that constructors
+and destructors are the only places where this hierarchy of calls must happen
+(and thus the proper hierarchy is automatically generated by the compiler). In
+all other functions, only <I>that</I> function will be called (and not
+base-class versions), whether it&#8217;s virtual or not. The only way for
+base-class versions of the same function to be called in ordinary functions
+(virtual or not) is if you <I>explicitly</I> call that
+function.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Normally, the action of the destructor is
+quite adequate. But what happens if you want to manipulate an object through a
+pointer to its base class (that is, manipulate the object through its generic
+interface)? This activity is a major objective in object-oriented programming.
+The problem occurs when you want to <B>delete</B> a pointer of this type for an
+object that has been created on the heap with <B>new</B>. If the pointer is to
+the base class, the compiler can only know to call the base-class version of the
+destructor during <B>delete</B>. Sound familiar? This is the same problem that
+virtual functions were created to solve for the general case. Fortunately,
+virtual functions work for destructors as they do for all other functions except
+constructors.</FONT><BR></P></DIV>
+
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE><font color=#009900>//: C15:VirtualDestructors.cpp</font>
+<font color=#009900>// Behavior of virtual vs. non-virtual destructor</font>
+#include &lt;iostream&gt;
+<font color=#0000ff>using</font> <font color=#0000ff>namespace</font> std;
+
+<font color=#0000ff>class</font> Base1 {
+<font color=#0000ff>public</font>:
+  ~Base1() { cout &lt;&lt; <font color=#004488>"~Base1()\n"</font>; }
+};
+
+<font color=#0000ff>class</font> Derived1 : <font color=#0000ff>public</font> Base1 {
+<font color=#0000ff>public</font>:
+  ~Derived1() { cout &lt;&lt; <font color=#004488>"~Derived1()\n"</font>; }
+};
+
+<font color=#0000ff>class</font> Base2 {
+<font color=#0000ff>public</font>:
+  <font color=#0000ff>virtual</font> ~Base2() { cout &lt;&lt; <font color=#004488>"~Base2()\n"</font>; }
+};
+
+<font color=#0000ff>class</font> Derived2 : <font color=#0000ff>public</font> Base2 {
+<font color=#0000ff>public</font>:
+  ~Derived2() { cout &lt;&lt; <font color=#004488>"~Derived2()\n"</font>; }
+};
+
+<font color=#0000ff>int</font> main() {
+  Base1* bp = <font color=#0000ff>new</font> Derived1; <font color=#009900>// Upcast</font>
+  <font color=#0000ff>delete</font> bp;
+  Base2* b2p = <font color=#0000ff>new</font> Derived2; <font color=#009900>// Upcast</font>
+  <font color=#0000ff>delete</font> b2p;
+} <font color=#009900>///:~</font></PRE></FONT></BLOCKQUOTE>
+
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">When you run the program, you&#8217;ll
+see that <B>delete bp</B> only calls the base-class destructor, while <B>delete
+b2p</B> calls the derived-class destructor followed by the base-class
+destructor, which is the behavior we desire. Forgetting to make a destructor
+<B>virtual</B> is an insidious bug because it often doesn&#8217;t directly
+affect the behavior of your program, but it can quietly introduce a memory leak.
+Also, the fact that <I>some</I> destruction is occurring can further mask the
+problem.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Even though the destructor, like the
+constructor, is an &#8220;exceptional&#8221; function, it is possible for the
+destructor to be virtual because the object already knows what type it is
+(whereas it doesn&#8217;t during construction). Once an object has been
+constructed, its VPTR is initialized, so virtual function calls can take
+place.</FONT><A NAME="_Toc472655039"></A><BR></P></DIV>
+<A NAME="Heading457"></A><FONT FACE = "Verdana"><H3 ALIGN="LEFT">
+Pure virtual destructors</H3></FONT>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">While
+<A NAME="Index2540"></A><A NAME="Index2541"></A><A NAME="Index2542"></A>pure
+virtual destructors are legal in Standard C++, there is an added constraint when
+using them: you must provide a function body for the pure virtual destructor.
+This seems counterintuitive;  how can a virtual function be &#8220;pure&#8221;
+if it needs a function body? But if you keep in mind that constructors and
+destructors are special operations it makes more sense, especially if you
+remember that all destructors in a class hierarchy are always called. If you
+<I>could</I> leave off the definition for a pure virtual destructor, what
+function body would be called during destruction? Thus, it&#8217;s absolutely
+necessary that the compiler and linker enforce the existence of a function body
+for a pure virtual destructor.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">If it&#8217;s pure, but it has to have a
+function body, what&#8217;s the value of it? The only difference you&#8217;ll
+see between the pure and non-pure virtual destructor is that the pure virtual
+destructor does cause the base class to be abstract, so you cannot create an
+object of the base class (although this would also be true if any other member
+function of the base class were pure virtual).</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Things are a bit confusing, however, when
+you inherit a class from one that contains a pure virtual destructor. Unlike
+every other pure virtual function, you are <I>not</I> required to provide a
+definition of a pure virtual destructor in the derived class. The fact that the
+following compiles and links is the proof:</FONT><BR></P></DIV>
+
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE><font color=#009900>//: C15:UnAbstract.cpp</font>
+<font color=#009900>// Pure virtual destructors </font>
+<font color=#009900>// seem to behave strangely</font>
+
+<font color=#0000ff>class</font> AbstractBase {
+<font color=#0000ff>public</font>:
+  <font color=#0000ff>virtual</font> ~AbstractBase() = 0;
+};
+
+AbstractBase::~AbstractBase() {}
+
+<font color=#0000ff>class</font> Derived : <font color=#0000ff>public</font> AbstractBase {};
+<font color=#009900>// No overriding of destructor necessary?</font>
+
+<font color=#0000ff>int</font> main() { Derived d; } <font color=#009900>///:~</font></PRE></FONT></BLOCKQUOTE>
+
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Normally, a pure virtual function in a
+base class would cause the derived class to be abstract unless it (and all other
+pure virtual functions) is given a definition. But here, this seems not to be
+the case. However, remember that the compiler <I>automatically</I> creates a
+destructor definition for every class if you don&#8217;t create one.
+That&#8217;s what&#8217;s happening here &#8211; the base class destructor is
+being quietly overridden, and thus the definition is being provided by the
+compiler and <B>Derived</B> is not actually abstract.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">This brings up an interesting question:
+What is the point of a pure virtual destructor? Unlike an ordinary pure virtual
+function, you <I>must</I> give it a function body. In a derived class, you
+aren&#8217;t forced to provide a definition since the compiler synthesizes the
+destructor for you. So what&#8217;s the difference between a regular virtual
+destructor and a pure virtual destructor?</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">The only distinction occurs when you have
+a class that only has a single pure virtual function: the destructor. In this
+case, the only effect of the purity of the destructor is to prevent the
+instantiation of the base class. If there were any other pure virtual functions,
+they would prevent the instantiation of the base class, but if there are no
+others, then the pure virtual destructor will do it. So, while the addition of a
+virtual destructor is essential, whether it&#8217;s pure or not isn&#8217;t so
+important.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">When you run the following example, you
+can see that the pure virtual function body is called after the derived class
+version, just as with any other destructor:</FONT><BR></P></DIV>
+
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE><font color=#009900>//: C15:PureVirtualDestructors.cpp</font>
+<font color=#009900>// Pure virtual destructors</font>
+<font color=#009900>// require a function body</font>
+#include &lt;iostream&gt;
+<font color=#0000ff>using</font> <font color=#0000ff>namespace</font> std;
+
+<font color=#0000ff>class</font> Pet {
+<font color=#0000ff>public</font>:
+  <font color=#0000ff>virtual</font> ~Pet() = 0;
+};
+
+Pet::~Pet() {
+  cout &lt;&lt; <font color=#004488>"~Pet()"</font> &lt;&lt; endl;
+}
+
+<font color=#0000ff>class</font> Dog : <font color=#0000ff>public</font> Pet {
+<font color=#0000ff>public</font>:
+  ~Dog() {
+    cout &lt;&lt; <font color=#004488>"~Dog()"</font> &lt;&lt; endl;
+  }
+};
+
+<font color=#0000ff>int</font> main() {
+  Pet* p = <font color=#0000ff>new</font> Dog; <font color=#009900>// Upcast</font>
+  <font color=#0000ff>delete</font> p; <font color=#009900>// Virtual destructor call</font>
+} <font color=#009900>///:~</font></PRE></FONT></BLOCKQUOTE>
+
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">As a guideline, any time you have a
+virtual function in a class, you should immediately add a virtual destructor
+(even if it does nothing). This way, you ensure against any surprises
+later.</FONT><A NAME="_Toc312374059"></A><A NAME="_Toc472655040"></A><BR></P></DIV>
+<A NAME="Heading458"></A><FONT FACE = "Verdana"><H3 ALIGN="LEFT">
+Virtuals in
+destructors<BR><A NAME="Index2543"></A><A NAME="Index2544"></A><A NAME="Index2545"></A></H3></FONT>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">There&#8217;s something that happens
+during destruction that you might not immediately expect. If you&#8217;re inside
+an ordinary member function and you call a virtual function, that function is
+called using the late-binding mechanism. This is not true with destructors,
+virtual or not. Inside a destructor, only the &#8220;local&#8221; version of the
+member function is called; the virtual mechanism is ignored.</FONT><BR></P></DIV>
+
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE><font color=#009900>//: C15:VirtualsInDestructors.cpp</font>
+<font color=#009900>// Virtual calls inside destructors</font>
+#include &lt;iostream&gt;
+<font color=#0000ff>using</font> <font color=#0000ff>namespace</font> std;
+
+<font color=#0000ff>class</font> Base {
+<font color=#0000ff>public</font>:
+  <font color=#0000ff>virtual</font> ~Base() { 
+    cout &lt;&lt; <font color=#004488>"Base1()\n"</font>; 
+    f(); 
+  }
+  <font color=#0000ff>virtual</font> <font color=#0000ff>void</font> f() { cout &lt;&lt; <font color=#004488>"Base::f()\n"</font>; }
+};
+
+<font color=#0000ff>class</font> Derived : <font color=#0000ff>public</font> Base {
+<font color=#0000ff>public</font>:
+  ~Derived() { cout &lt;&lt; <font color=#004488>"~Derived()\n"</font>; }
+  <font color=#0000ff>void</font> f() { cout &lt;&lt; <font color=#004488>"Derived::f()\n"</font>; }
+};
+
+<font color=#0000ff>int</font> main() {
+  Base* bp = <font color=#0000ff>new</font> Derived; <font color=#009900>// Upcast</font>
+  <font color=#0000ff>delete</font> bp;
+} <font color=#009900>///:~</font></PRE></FONT></BLOCKQUOTE>
+
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">During the destructor call,
+<B>Derived::f(&#160;)</B> is <I>not</I> called, even though <B>f(&#160;)</B> is
+virtual.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Why is this? Suppose the virtual
+mechanism <I>were</I> used inside the destructor. Then it would be possible for
+the virtual call to resolve to a function that was &#8220;farther out&#8221;
+(more derived) on the inheritance hierarchy than the current destructor. But
+destructors are called from the &#8220;outside in&#8221; (from the most-derived
+destructor down to the base destructor), so the actual function called would
+rely on portions of an object that have <I>already been destroyed</I>! Instead,
+the compiler resolves the calls at compile-time and calls only the
+&#8220;local&#8221; version of the function. Notice that the same is true for
+the constructor (as described earlier), but in the constructor&#8217;s case the
+type information wasn&#8217;t available, whereas in the destructor the
+information (that is, the VPTR) is there, but is isn&#8217;t
+reliable.</FONT><A NAME="_Toc472655041"></A><BR></P></DIV>
+<A NAME="Heading459"></A><FONT FACE = "Verdana"><H3 ALIGN="LEFT">
+Creating an object-based
+hierarchy<BR><A NAME="Index2546"></A><A NAME="Index2547"></A><A NAME="Index2548"></A><A NAME="Index2549"></A></H3></FONT>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">An issue that has been recurring
+throughout this book during the demonstration of the container classes
+<B>Stack</B> and <B>Stash</B> is the &#8220;ownership problem.&#8221; The
+&#8220;owner&#8221; refers to who or what is responsible for calling <B>delete
+</B>for objects that have been created dynamically (using <B>new</B>). The
+problem when using containers is that they need to be flexible enough to hold
+different types of objects. To do this, the containers have held <B>void</B>
+pointers and so they haven&#8217;t known the type of object they&#8217;ve held.
+Deleting a <B>void</B> pointer doesn&#8217;t call the destructor, so the
+container couldn&#8217;t be responsible for cleaning up its
+objects.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">One solution was presented in the example
+<B>C14:InheritStack.cpp</B>, in which the <B>Stack</B> was inherited into a new
+class that accepted and produced only <B>string</B> pointers. Since it knew that
+it could hold only pointers to <B>string</B> objects, it could properly delete
+them. This was a nice solution, but it requires you to inherit a new container
+class for each type that you want to hold in the container. (Although this seems
+tedious now, it will actually work quite well in Chapter 16, when templates are
+introduced.)</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">The problem is that you want the
+container to hold more than one type, but you don&#8217;t want to use
+<B>void</B> pointers. Another solution is to use polymorphism by forcing all the
+objects held in the container to be inherited from the same base class. That is,
+the container holds the objects of the base class, and then you can call virtual
+functions &#8211; in particular, you can call virtual destructors to solve the
+ownership problem.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><A NAME="Index2550"></A><A NAME="Index2551"></A><A NAME="Index2552"></A><FONT FACE="Georgia">This
+solution uses what is referred to as a <I>singly-rooted hierarchy</I> or an
+<I>object-based hierarchy</I> (because the root class of the hierarchy is
+usually named &#8220;Object&#8221;). It turns out that there are many other
+benefits to using a singly-rooted hierarchy; in fact, every other
+object-oriented language but C++ enforces the use of such a hierarchy &#8211;
+when you create a class, you are automatically inheriting it directly or
+indirectly from a common base class, a base class that was established by the
+creators of the language. In C++, it was thought that the enforced use of this
+common base class would cause too much overhead, so it was left out. However,
+you can choose to use a common base class in your own projects, and this subject
+will be examined further in Volume 2 of this book.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">To solve the ownership problem, we can
+create an extremely simple <B>Object</B> for the base class, which contains only
+a virtual destructor. The <B>Stack</B> can then hold classes inherited from
+<B>Object</B>: <A NAME="Index2553"></A></FONT><BR></P></DIV>
+
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE><font color=#009900>//: C15:OStack.h</font>
+<font color=#009900>// Using a singly-rooted hierarchy</font>
+#ifndef OSTACK_H
+#define OSTACK_H
+
+<font color=#0000ff>class</font> Object {
+<font color=#0000ff>public</font>:
+  <font color=#0000ff>virtual</font> ~Object() = 0;
+};
+
+<font color=#009900>// Required definition:</font>
+<font color=#0000ff>inline</font> Object::~Object() {}
+
+<font color=#0000ff>class</font> Stack {
+  <font color=#0000ff>struct</font> Link {
+    Object* data;
+    Link* next;
+    Link(Object* dat, Link* nxt) : 
+      data(dat), next(nxt) {}
+  }* head;
+<font color=#0000ff>public</font>:
+  Stack() : head(0) {}
+  ~Stack(){ 
+    <font color=#0000ff>while</font>(head)
+      <font color=#0000ff>delete</font> pop();
+  }
+  <font color=#0000ff>void</font> push(Object* dat) {
+    head = <font color=#0000ff>new</font> Link(dat, head);
+  }
+  Object* peek() <font color=#0000ff>const</font> { 
+    <font color=#0000ff>return</font> head ? head-&gt;data : 0;
+  }
+  Object* pop() {
+    <font color=#0000ff>if</font>(head == 0) <font color=#0000ff>return</font> 0;
+    Object* result = head-&gt;data;
+    Link* oldHead = head;
+    head = head-&gt;next;
+    <font color=#0000ff>delete</font> oldHead;
+    <font color=#0000ff>return</font> result;
+  }
+};
+#endif <font color=#009900>// OSTACK_H ///:~</font></PRE></FONT></BLOCKQUOTE>
+
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">To simplify things by keeping everything
+in the header file, the (required) definition for the pure virtual destructor is
+inlined into the header file, and <B>pop(&#160;)</B> (which might be considered
+too large for inlining) is also inlined.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><A NAME="Index2554"></A><A NAME="Index2555"></A><FONT FACE="Georgia"><B>Link</B>
+objects now hold pointers to <B>Object</B> rather than <B>void</B> pointers, and
+the <B>Stack</B> will only accept and return <B>Object</B> pointers. Now
+<B>Stack</B> is much more flexible, since it will hold lots of different types
+but will also destroy any objects that are left on the <B>Stack</B>. The new
+limitation (which will be finally removed when templates are applied to the
+problem in Chapter 16) is that anything that is placed on the <B>Stack</B> must
+be inherited from <B>Object</B>. That&#8217;s fine if you are starting your
+class from scratch, but what if you already have a class such as <B>string</B>
+that you want to be able to put onto the <B>Stack</B>? In this case, the new
+class must be both a <B>string</B> and an <B>Object</B>, which means it must be
+inherited from both classes. This is called <I>multiple inheritance</I> and it
+is the subject of an entire chapter in Volume 2 of this book (downloadable from
+<I>www.BruceEckel.com</I>). When you read that chapter, you&#8217;ll see that
+multiple inheritance can be fraught with complexity, and is a feature you should
+use sparingly. In this situation, however, everything is simple enough that we
+don&#8217;t trip across any multiple inheritance pitfalls:</FONT><BR></P></DIV>
+
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE><font color=#009900>//: C15:OStackTest.cpp</font>
+<font color=#009900>//{T} OStackTest.cpp</font>
+#include <font color=#004488>"OStack.h"</font>
+#include <font color=#004488>"../require.h"</font>
+#include &lt;fstream&gt;
+#include &lt;iostream&gt;
+#include &lt;string&gt;
+<font color=#0000ff>using</font> <font color=#0000ff>namespace</font> std;
+
+<font color=#009900>// Use multiple inheritance. We want </font>
+<font color=#009900>// both a string and an Object:</font>
+<font color=#0000ff>class</font> MyString: <font color=#0000ff>public</font> string, <font color=#0000ff>public</font> Object {
+<font color=#0000ff>public</font>:
+  ~MyString() {
+    cout &lt;&lt; <font color=#004488>"deleting string: "</font> &lt;&lt; *<font color=#0000ff>this</font> &lt;&lt; endl;
+  }
+  MyString(string s) : string(s) {}
+};
+
+<font color=#0000ff>int</font> main(<font color=#0000ff>int</font> argc, <font color=#0000ff>char</font>* argv[]) {
+  requireArgs(argc, 1); <font color=#009900>// File name is argument</font>
+  ifstream in(argv[1]);
+  assure(in, argv[1]);
+  Stack textlines;
+  string line;
+  <font color=#009900>// Read file and store lines in the stack:</font>
+  <font color=#0000ff>while</font>(getline(in, line))
+    textlines.push(<font color=#0000ff>new</font> MyString(line));
+  <font color=#009900>// Pop some lines from the stack:</font>
+  MyString* s;
+  <font color=#0000ff>for</font>(<font color=#0000ff>int</font> i = 0; i &lt; 10; i++) {
+    <font color=#0000ff>if</font>((s=(MyString*)textlines.pop())==0) <font color=#0000ff>break</font>;
+    cout &lt;&lt; *s &lt;&lt; endl;
+    <font color=#0000ff>delete</font> s; 
+  }
+  cout &lt;&lt; <font color=#004488>"Letting the destructor do the rest:"</font>
+    &lt;&lt; endl;
+} <font color=#009900>///:~</font></PRE></FONT></BLOCKQUOTE>
+
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Although this is similar to the previous
+version of the test program for <B>Stack</B>, you&#8217;ll notice that only 10
+elements are popped from the stack, which means there are probably some objects
+remaining. Because the <B>Stack </B>knows that it holds <B>Object</B>s, the
+destructor can properly clean things up, and you&#8217;ll see this in the output
+of the program, since the <B>MyString</B> objects print messages as they are
+destroyed.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Creating containers that hold
+<B>Object</B>s is not an unreasonable approach &#8211; <I>if</I> you have a
+singly-rooted hierarchy (enforced either by the language or by the requirement
+that every class inherit from <B>Object</B>). In that case, everything is
+guaranteed to be an <B>Object</B> and so it&#8217;s not very complicated to use
+the containers. In C++, however, you cannot expect this from every class, so
+you&#8217;re bound to trip over multiple inheritance if you take this approach.
+You&#8217;ll see in Chapter 16 that templates solve the problem in a much
+simpler and more elegant
+fashion.</FONT><A NAME="_Toc305593272"></A><A NAME="_Toc305628744"></A><A NAME="_Toc312374060"></A><A NAME="_Toc472655042"></A><BR></P></DIV>
+<A NAME="Heading460"></A><FONT FACE = "Verdana"><H2 ALIGN="LEFT">
+Operator
+overloading<BR><A NAME="Index2556"></A><A NAME="Index2557"></A><A NAME="Index2558"></A><A NAME="Index2559"></A><A NAME="Index2560"></A><A NAME="Index2561"></A></H2></FONT>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">You can make operators <B>virtual</B>
+just like other member functions. Implementing <B>virtual</B> operators often
+becomes confusing, however, because you may be operating on two objects, both
+with unknown types. This is usually the case with mathematical components (for
+which you often overload operators). For example, consider a system that deals
+with matrices, vectors and scalar values, all three of which are derived from
+class <B>Math</B>:</FONT><BR></P></DIV>
+
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE><font color=#009900>//: C15:OperatorPolymorphism.cpp</font>
+<font color=#009900>// Polymorphism with overloaded operators</font>
+#include &lt;iostream&gt;
+<font color=#0000ff>using</font> <font color=#0000ff>namespace</font> std;
+
+<font color=#0000ff>class</font> Matrix;
+<font color=#0000ff>class</font> Scalar;
+<font color=#0000ff>class</font> Vector;
+
+<font color=#0000ff>class</font> Math {
+<font color=#0000ff>public</font>:
+  <font color=#0000ff>virtual</font> Math&amp; <font color=#0000ff>operator</font>*(Math&amp; rv) = 0;
+  <font color=#0000ff>virtual</font> Math&amp; multiply(Matrix*) = 0;
+  <font color=#0000ff>virtual</font> Math&amp; multiply(Scalar*) = 0;
+  <font color=#0000ff>virtual</font> Math&amp; multiply(Vector*) = 0;
+  <font color=#0000ff>virtual</font> ~Math() {}
+};
+
+<font color=#0000ff>class</font> Matrix : <font color=#0000ff>public</font> Math {
+<font color=#0000ff>public</font>:
+  Math&amp; <font color=#0000ff>operator</font>*(Math&amp; rv) {
+    <font color=#0000ff>return</font> rv.multiply(<font color=#0000ff>this</font>); <font color=#009900>// 2nd dispatch</font>
+  }
+  Math&amp; multiply(Matrix*) {
+    cout &lt;&lt; <font color=#004488>"Matrix * Matrix"</font> &lt;&lt; endl;
+    <font color=#0000ff>return</font> *<font color=#0000ff>this</font>;
+  }
+  Math&amp; multiply(Scalar*) {
+    cout &lt;&lt; <font color=#004488>"Scalar * Matrix"</font> &lt;&lt; endl;
+    <font color=#0000ff>return</font> *<font color=#0000ff>this</font>;
+  }
+  Math&amp; multiply(Vector*) {
+    cout &lt;&lt; <font color=#004488>"Vector * Matrix"</font> &lt;&lt; endl;
+    <font color=#0000ff>return</font> *<font color=#0000ff>this</font>;
+  }
+};
+
+<font color=#0000ff>class</font> Scalar : <font color=#0000ff>public</font> Math  {
+<font color=#0000ff>public</font>:
+  Math&amp; <font color=#0000ff>operator</font>*(Math&amp; rv) {
+    <font color=#0000ff>return</font> rv.multiply(<font color=#0000ff>this</font>); <font color=#009900>// 2nd dispatch</font>
+  }
+  Math&amp; multiply(Matrix*) {
+    cout &lt;&lt; <font color=#004488>"Matrix * Scalar"</font> &lt;&lt; endl;
+    <font color=#0000ff>return</font> *<font color=#0000ff>this</font>;
+  }
+  Math&amp; multiply(Scalar*) {
+    cout &lt;&lt; <font color=#004488>"Scalar * Scalar"</font> &lt;&lt; endl;
+    <font color=#0000ff>return</font> *<font color=#0000ff>this</font>;
+  }
+  Math&amp; multiply(Vector*) {
+    cout &lt;&lt; <font color=#004488>"Vector * Scalar"</font> &lt;&lt; endl;
+    <font color=#0000ff>return</font> *<font color=#0000ff>this</font>;
+  }
+};
+
+<font color=#0000ff>class</font> Vector : <font color=#0000ff>public</font> Math  {
+<font color=#0000ff>public</font>:
+  Math&amp; <font color=#0000ff>operator</font>*(Math&amp; rv) {
+    <font color=#0000ff>return</font> rv.multiply(<font color=#0000ff>this</font>); <font color=#009900>// 2nd dispatch</font>
+  }
+  Math&amp; multiply(Matrix*) {
+    cout &lt;&lt; <font color=#004488>"Matrix * Vector"</font> &lt;&lt; endl;
+    <font color=#0000ff>return</font> *<font color=#0000ff>this</font>;
+  }
+  Math&amp; multiply(Scalar*) {
+    cout &lt;&lt; <font color=#004488>"Scalar * Vector"</font> &lt;&lt; endl;
+    <font color=#0000ff>return</font> *<font color=#0000ff>this</font>;
+  }
+  Math&amp; multiply(Vector*) {
+    cout &lt;&lt; <font color=#004488>"Vector * Vector"</font> &lt;&lt; endl;
+    <font color=#0000ff>return</font> *<font color=#0000ff>this</font>;
+  }
+};
+
+<font color=#0000ff>int</font> main() {
+  Matrix m; Vector v; Scalar s;
+  Math* math[] = { &amp;m, &amp;v, &amp;s };
+  <font color=#0000ff>for</font>(<font color=#0000ff>int</font> i = 0; i &lt; 3; i++)
+    <font color=#0000ff>for</font>(<font color=#0000ff>int</font> j = 0; j &lt; 3; j++) {
+      Math&amp; m1 = *math[i];
+      Math&amp; m2 = *math[j];
+      m1 * m2;
+    }
+} <font color=#009900>///:~</font></PRE></FONT></BLOCKQUOTE>
+
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">For simplicity, only the <B>operator*</B>
+has been overloaded. The goal is to be able to multiply any two <B>Math</B>
+objects and produce the desired result &#8211; and note that multiplying a
+matrix by a vector is a very different operation than multiplying a vector by a
+matrix.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">The problem is that, in
+<B>main(&#160;)</B>, the expression <B>m1 * m2</B> contains two upcast
+<B>Math</B> references, and thus two objects of unknown type. A virtual function
+is only capable of making a single dispatch &#8211; that is, determining the
+type of one unknown object. To determine both types a technique called
+<I>multiple dispatching</I> is used in this example, whereby what appears to be
+a single virtual function call results in a second virtual call. By the time
+this second call is made, you&#8217;ve determined both types of object, and can
+perform the proper activity. It&#8217;s not transparent at first, but if you
+stare at the example for awhile it should begin to make sense. This topic is
+explored in more depth in the Design Patterns chapter in Volume 2, which you can
+download at <I>www.BruceEckel.com</I>.
+</FONT><A NAME="_Toc472655043"></A><BR></P></DIV>
+<A NAME="Heading461"></A><FONT FACE = "Verdana"><H2 ALIGN="LEFT">
+Downcasting</H2></FONT>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">As you might guess, since there&#8217;s
+such a thing as <A NAME="Index2562"></A>upcasting &#8211; moving up an
+inheritance hierarchy &#8211; there should also be
+<A NAME="Index2563"></A><A NAME="Index2564"></A><I>downcasting</I> to move down
+a hierarchy. But upcasting is easy since as you move up an inheritance hierarchy
+the classes always converge to more general classes. That is, when you upcast
+you are always clearly derived from an ancestor class (typically only one,
+except in the case of multiple inheritance) but when you downcast there are
+usually several possibilities that you could cast to. More specifically, a
+<B>Circle</B> is a type of <B>Shape</B> (that&#8217;s the upcast), but if you
+try to downcast a <B>Shape</B> it could be a <B>Circle</B>, <B>Square</B>,
+<B>Triangle</B>, etc. So the dilemma is figuring out a way to safely downcast.
+(But an even more important issue is asking yourself why you&#8217;re
+downcasting in the first place instead of just using polymorphism to
+automatically figure out the correct type. The avoidance of downcasting is
+covered in Volume 2 of this book.)</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">C++ provides a special
+<A NAME="Index2565"></A><A NAME="Index2566"></A><I>explicit cast</I> (introduced
+in Chapter 3) called
+<A NAME="Index2567"></A><A NAME="Index2568"></A><B>dynamic_cast</B> that is a
+<A NAME="Index2569"></A><I>type-safe downcast</I> operation. When you use
+<B>dynamic_cast</B> to try to cast down to a particular type, the return value
+will be a pointer to the desired type only if the cast is proper and successful,
+otherwise it will return zero to indicate that this was not the correct type.
+Here&#8217;s a minimal example:</FONT><BR></P></DIV>
+
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE><font color=#009900>//: C15:DynamicCast.cpp</font>
+#include &lt;iostream&gt;
+<font color=#0000ff>using</font> <font color=#0000ff>namespace</font> std;
+
+<font color=#0000ff>class</font> Pet { <font color=#0000ff>public</font>: <font color=#0000ff>virtual</font> ~Pet(){}};
+<font color=#0000ff>class</font> Dog : <font color=#0000ff>public</font> Pet {};
+<font color=#0000ff>class</font> Cat : <font color=#0000ff>public</font> Pet {};
+
+<font color=#0000ff>int</font> main() {
+  Pet* b = <font color=#0000ff>new</font> Cat; <font color=#009900>// Upcast</font>
+  <font color=#009900>// Try to cast it to Dog*:</font>
+  Dog* d1 = <font color=#0000ff>dynamic_cast</font>&lt;Dog*&gt;(b);
+  <font color=#009900>// Try to cast it to Cat*:</font>
+  Cat* d2 = <font color=#0000ff>dynamic_cast</font>&lt;Cat*&gt;(b);
+  cout &lt;&lt; <font color=#004488>"d1 = "</font> &lt;&lt; (<font color=#0000ff>long</font>)d1 &lt;&lt; endl;
+  cout &lt;&lt; <font color=#004488>"d2 = "</font> &lt;&lt; (<font color=#0000ff>long</font>)d2 &lt;&lt; endl;
+} <font color=#009900>///:~</font></PRE></FONT></BLOCKQUOTE>
+
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">When you use <B>dynamic_cast</B>, you
+must be working with a true polymorphic hierarchy &#8211; one with
+<A NAME="Index2570"></A>virtual functions &#8211; because <B>dynamic_cast</B>
+uses information stored in the VTABLE to determine the actual type. Here, the
+base class contains a virtual destructor and that suffices. In
+<B>main(&#160;)</B>, a <B>Cat</B> pointer is upcast to a <B>Pet</B>, and then a
+downcast is attempted to both a <B>Dog</B> pointer and a <B>Cat</B> pointer.
+Both pointers are printed, and you&#8217;ll see when you run the program that
+the incorrect downcast produces a zero result. Of course, whenever you downcast
+you are responsible for checking to make sure that the result of the cast is
+nonzero. Also, you should not assume that the pointer will be exactly the same,
+because sometimes pointer adjustments take place during upcasting and
+downcasting (in particular, with multiple inheritance).</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">A <B>dynamic_cast </B>requires a little
+bit of extra overhead to run; not much, but if you&#8217;re doing a lot of
+<B>dynamic_cast</B>ing (in which case you should be seriously questioning your
+program design) this may become a performance issue. In some cases you may know
+something special during downcasting that allows you to say for sure what type
+you&#8217;re dealing with, in which case the extra overhead of the
+<B>dynamic_cast</B> becomes unnecessary, and you can use a
+<A NAME="Index2571"></A><A NAME="Index2572"></A><B>static_cast</B> instead.
+Here&#8217;s how it might work:</FONT><BR></P></DIV>
+
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE><font color=#009900>//: C15:StaticHierarchyNavigation.cpp</font>
+<font color=#009900>// Navigating class hierarchies with static_cast</font>
+#include &lt;iostream&gt;
+#include &lt;typeinfo&gt;
+<font color=#0000ff>using</font> <font color=#0000ff>namespace</font> std;
+
+<font color=#0000ff>class</font> Shape { <font color=#0000ff>public</font>: <font color=#0000ff>virtual</font> ~Shape() {}; };
+<font color=#0000ff>class</font> Circle : <font color=#0000ff>public</font> Shape {};
+<font color=#0000ff>class</font> Square : <font color=#0000ff>public</font> Shape {};
+<font color=#0000ff>class</font> Other {};
+
+<font color=#0000ff>int</font> main() {
+  Circle c;
+  Shape* s = &amp;c; <font color=#009900>// Upcast: normal and OK</font>
+  <font color=#009900>// More explicit but unnecessary:</font>
+  s = <font color=#0000ff>static_cast</font>&lt;Shape*&gt;(&amp;c);
+  <font color=#009900>// (Since upcasting is such a safe and common</font>
+  <font color=#009900>// operation, the cast becomes cluttering)</font>
+  Circle* cp = 0;
+  Square* sp = 0;
+  <font color=#009900>// Static Navigation of class hierarchies</font>
+  <font color=#009900>// requires extra type information:</font>
+  <font color=#0000ff>if</font>(<font color=#0000ff>typeid</font>(s) == <font color=#0000ff>typeid</font>(cp)) <font color=#009900>// C++ RTTI</font>
+    cp = <font color=#0000ff>static_cast</font>&lt;Circle*&gt;(s);
+  <font color=#0000ff>if</font>(<font color=#0000ff>typeid</font>(s) == <font color=#0000ff>typeid</font>(sp))
+    sp = <font color=#0000ff>static_cast</font>&lt;Square*&gt;(s);
+  <font color=#0000ff>if</font>(cp != 0)
+    cout &lt;&lt; <font color=#004488>"It's a circle!"</font> &lt;&lt; endl;
+  <font color=#0000ff>if</font>(sp != 0)
+    cout &lt;&lt; <font color=#004488>"It's a square!"</font> &lt;&lt; endl;
+  <font color=#009900>// Static navigation is ONLY an efficiency hack;</font>
+  <font color=#009900>// dynamic_cast is always safer. However:</font>
+  <font color=#009900>// Other* op = static_cast&lt;Other*&gt;(s);</font>
+  <font color=#009900>// Conveniently gives an error message, while</font>
+  Other* op2 = (Other*)s;
+  <font color=#009900>// does not</font>
+} <font color=#009900>///:~</font></PRE></FONT></BLOCKQUOTE>
+
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">In this program, a new feature is used
+that is not fully described until Volume 2 of this book, where a chapter is
+given to the topic: C++&#8217;s
+<A NAME="Index2573"></A><A NAME="Index2574"></A><A NAME="Index2575"></A><I>run-time
+type information</I> (RTTI) mechanism. RTTI allows you to discover type
+information that has been lost by upcasting. The <B>dynamic_cast </B>is actually
+one form of RTTI. Here, the
+<A NAME="Index2576"></A><A NAME="Index2577"></A><B>typeid</B> keyword (declared
+in the header file
+<A NAME="Index2578"></A><A NAME="Index2579"></A><B>&lt;typeinfo&gt;</B>)<B>
+</B>is used to detect the types of the pointers. You can see that the type of
+the upcast <B>Shape</B> pointer is successively compared to a <B>Circle</B>
+pointer and a <B>Square</B> pointer to see if there&#8217;s a match.
+There&#8217;s more to RTTI than <B>typeid</B>, and you can also imagine that it
+would be fairly easy to implement your own type information system using a
+virtual function.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">A <B>Circle</B> object is created and the
+address is upcast to a <B>Shape</B> pointer; the second version of the
+expression shows how you can use <B>static_cast</B> to be more explicit about
+the upcast. However, since an upcast is always safe and it&#8217;s a common
+thing to do, I consider an
+<A NAME="Index2580"></A><A NAME="Index2581"></A><A NAME="Index2582"></A>explicit
+cast for upcasting to be cluttering and unnecessary. </FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">RTTI is used to determine the type, and
+then <B>static_cast</B> is used to perform the downcast. But notice that in this
+design the process is effectively the same as using <B>dynamic_cast</B>, and the
+client programmer must do some testing to discover the cast that was actually
+successful. You&#8217;ll typically want a situation that&#8217;s more
+deterministic than in the example above before using <B>static_cast</B> rather
+than <B>dynamic_cast</B> (and, again, you want to carefully examine your design
+before using <B>dynamic_cast</B>).</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">If a class hierarchy has no
+<B>virtual</B> functions (which is a questionable design) or if you have other
+information that allows you to safely downcast, it&#8217;s a tiny bit faster to
+do the downcast<A NAME="Index2583"></A><A NAME="Index2584"></A> statically than
+with <B>dynamic_cast</B>. In addition, <B>static_cast</B> won&#8217;t allow you
+to cast out of the hierarchy, as the traditional cast will, so it&#8217;s safer.
+However, statically navigating class hierarchies is always risky and you should
+use <B>dynamic_cast</B> unless you have a special
+situation.</FONT><A NAME="_Toc472655044"></A><BR></P></DIV>
+<A NAME="Heading462"></A><FONT FACE = "Verdana"><H2 ALIGN="LEFT">
+Summary</H2></FONT>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Polymorphism
+<A NAME="Index2585"></A>&#8211; implemented in C++ with virtual functions
+&#8211; means &#8220;different forms.&#8221; In object-oriented programming, you
+have the same face (the common interface in the base class) and different forms
+using that face: the different versions of the virtual
+functions.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">You&#8217;ve seen in this chapter that
+it&#8217;s impossible to understand, or even create, an example of polymorphism
+without using data abstraction and inheritance. Polymorphism is a feature that
+cannot be viewed in isolation (like <B>const</B> or a <B>switch</B> statement,
+for example), but instead works only in concert, as part of a &#8220;big
+picture&#8221; of class relationships. People are often confused by other,
+non-object-oriented features of C++, like overloading and default arguments,
+which are sometimes presented as object-oriented. Don&#8217;t be fooled; if it
+isn&#8217;t late binding, it isn&#8217;t polymorphism.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">To use polymorphism &#8211; and thus,
+object-oriented techniques &#8211; effectively in your programs you must expand
+your view of programming to include not just members and messages of an
+individual class, but also the commonality among classes and their relationships
+with each other. Although this requires significant effort, it&#8217;s a worthy
+struggle, because the results are faster program development, better code
+organization, extensible programs, and easier code maintenance.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Polymorphism completes the
+object-oriented features of the language, but there are two more major
+features<A NAME="Index2586"></A> in C++: templates (which are introduced in
+Chapter 16 and covered in much more detail in Volume 2), and exception handling
+(which is covered in Volume 2). These features provide you as much increase in
+programming power as each of the object-oriented features: abstract data typing,
+inheritance, and
+polymorphism.</FONT><A NAME="_Toc312374061"></A><A NAME="_Toc472655045"></A><BR></P></DIV>
+<A NAME="Heading463"></A><FONT FACE = "Verdana"><H2 ALIGN="LEFT">
+Exercises</H2></FONT>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia" SIZE=2>Solutions to selected exercises
+can be found in the electronic document <I>The Thinking in C++ Annotated
+Solution Guide</I>, available for a small fee from
+www.BruceEckel.com.</FONT><FONT FACE="Georgia">
+<A NAME="Index2587"></A></FONT><BR></P></DIV>
+<OL>
+<LI><FONT FACE="Verdana">	</FONT><FONT FACE="Georgia">Create a simple
+&#8220;shape&#8221; hierarchy: a base class called <B>Shape</B> and derived
+classes called <B>Circle</B>, <B>Square</B>, and <B>Triangle</B>. In the base
+class, make a virtual function called <B>draw(&#160;),</B> and override this in
+the derived classes. Make an array of pointers to <B>Shape</B> objects that you
+create on the heap (and thus perform upcasting of the pointers), and call
+<B>draw(&#160;)</B> through the base-class pointers, to verify the behavior of
+the virtual function. If your debugger supports it, single-step through the
+code.</FONT><LI><FONT FACE="Verdana">	</FONT><FONT FACE="Georgia">Modify
+Exercise 1 so <B>draw(&#160;)</B> is a pure virtual function. Try creating an
+object of type <B>Shape</B>.<B> </B>Try to call the pure virtual function inside
+the constructor and see what happens. Leaving it as a pure virtual, give
+<B>draw(&#160;)</B> a
+definition.</FONT><LI><FONT FACE="Verdana">	</FONT><FONT FACE="Georgia">Expanding
+on Exercise 2, create a function that takes a <B>Shape</B> object <I>by
+value</I> and try to upcast a derived object in as an argument. See what
+happens. Fix the function by taking a reference to the <B>Shape</B>
+object.</FONT><LI><FONT FACE="Verdana">	</FONT><FONT FACE="Georgia">Modify
+<B>C14:Combined.cpp</B> so that <B>f(&#160;)</B> is <B>virtual</B> in the base
+class. Change <B>main(&#160;)</B> to perform an upcast and a virtual
+call.</FONT><LI><FONT FACE="Verdana">	</FONT><FONT FACE="Georgia">Modify
+<B>Instrument3.cpp</B> by adding a <B>virtual prepare(&#160;)</B> function.<B>
+</B>Call <B>prepare(&#160;)</B> inside
+<B>tune(&#160;)</B>.</FONT><LI><FONT FACE="Verdana">	</FONT><FONT FACE="Georgia">Create
+an inheritance hierarchy of <B>Rodent</B>: <B>Mouse</B>, <B>Gerbil</B>,
+<B>Hamster</B>, etc. In the base class, provide methods that are common to all
+<B>Rodent</B>s, and redefine these in the derived classes to perform different
+behaviors depending on the specific type of <B>Rodent</B>. Create an array of
+pointers to <B>Rodent</B>, fill it with different specific types of
+<B>Rodent</B>s, and call your base-class methods to see what
+happens.</FONT><LI><FONT FACE="Verdana">	</FONT><FONT FACE="Georgia">Modify
+Exercise 6 so that you use a <B>vector&lt;Rodent*&gt;</B> instead of an array of
+pointers. Make sure that memory is cleaned up
+properly.</FONT><LI><FONT FACE="Verdana">	</FONT><FONT FACE="Georgia">Starting
+with the previous <B>Rodent</B> hierarchy, inherit <B>BlueHamster</B> from
+<B>Hamster</B> (yes, there is such a thing; I had one when I was a kid),
+override the base-class methods, and show that the code that calls the
+base-class methods doesn&#8217;t need to change in order to accommodate the new
+type. </FONT><LI><FONT FACE="Verdana">	</FONT><FONT FACE="Georgia">Starting with
+the previous <B>Rodent</B> hierarchy, add a non virtual destructor, create an
+object of class <B>Hamster</B> using <B>new</B>, upcast the pointer to a
+<B>Rodent*</B>, and <B>delete</B> the pointer to show that it doesn&#8217;t call
+all the destructors in the hierarchy. Change the destructor to be <B>virtual</B>
+and demonstrate that the behavior is now
+correct.</FONT><LI><FONT FACE="Verdana">	</FONT><FONT FACE="Georgia">Starting
+with the previous <B>Rodent</B> hierarchy, modify <B>Rodent</B> so it is a pure
+abstract base
+class.</FONT><LI><FONT FACE="Verdana">	</FONT><FONT FACE="Georgia">Create an
+air-traffic control system with base-class <B>Aircraft</B> and various derived
+types. Create a <B>Tower</B> class with a <B>vector&lt;Aircraft*&gt;</B> that
+sends the appropriate messages to the various aircraft under its
+control.</FONT><LI><FONT FACE="Verdana">	</FONT><FONT FACE="Georgia">Create a
+model of a greenhouse by inheriting various types of <B>Plant</B> and building
+mechanisms into your greenhouse that take care of the
+plants.</FONT><LI><FONT FACE="Verdana">	</FONT><FONT FACE="Georgia">In
+<B>Early.cpp</B>, make <B>Pet</B> a pure abstract base
+class.</FONT><LI><FONT FACE="Verdana">	</FONT><FONT FACE="Georgia">In
+<B>AddingVirtuals.cpp</B>, make all the member functions of <B>Pet</B> pure
+virtuals, but provide a definition for <B>name(&#160;)</B>. Fix <B>Dog</B> as
+necessary, using the base-class definition of
+<B>name(&#160;)</B>.</FONT><LI><FONT FACE="Verdana">	</FONT><FONT FACE="Georgia">Write
+a small program to show the difference between calling a virtual function inside
+a normal member function and calling a virtual function inside a constructor.
+The program should prove that the two calls produce different
+results.</FONT><LI><FONT FACE="Verdana">	</FONT><FONT FACE="Georgia">Modify
+<B>VirtualsInDestructors.cpp</B> by inheriting a class from <B>Derived</B> and
+overriding <B>f(&#160;)</B> and the destructor. In <B>main(&#160;)</B>, create
+and upcast an object of your new type, then <B>delete</B>
+it.</FONT><LI><FONT FACE="Verdana">	</FONT><FONT FACE="Georgia">Take Exercise 16
+and add calls to <B>f(&#160;)</B> in each destructor. Explain what
+happens.</FONT><LI><FONT FACE="Verdana">	</FONT><FONT FACE="Georgia">Create a
+class that has a data member and a derived class that adds another data member.
+Write a non-member function that takes an object of the base class <I>by
+value</I> and prints out the size of that object using <B>sizeof</B>. In
+<B>main(&#160;)</B> create an object of the derived class, print out its size,
+and then call your function. Explain what
+happens.</FONT><LI><FONT FACE="Verdana">	</FONT><FONT FACE="Georgia">Create a
+simple example of a virtual function call and generate assembly output. Locate
+the assembly code for the virtual call and trace and explain the
+code.</FONT><LI><FONT FACE="Verdana">	</FONT><FONT FACE="Georgia">Write a class
+with one virtual function and one non-virtual function. Inherit a new class,
+make an object of this class, and upcast to a pointer of the base-class type.
+Use the <B>clock(&#160;)</B> function found in <B>&lt;ctime&gt;</B>
+(you&#8217;ll need to look this up in your local C library guide) to measure the
+difference between a virtual call and non-virtual call. You&#8217;ll need to
+make multiple calls to each function inside your timing loop in order to see the
+difference.</FONT><LI><FONT FACE="Verdana">	</FONT><FONT FACE="Georgia">Modify
+<B>C14:Order.cpp</B> by adding a virtual function in the base class of the
+<B>CLASS</B> macro (have it print something) and by making the destructor
+virtual. Make objects of the various subclasses and upcast them to the base
+class. Verify that the virtual behavior works and that proper construction and
+destruction takes
+place.</FONT><LI><FONT FACE="Verdana">	</FONT><FONT FACE="Georgia">Write a class
+with three overloaded virtual functions. Inherit a new class from this and
+override one of the functions. Create an object of your derived class. Can you
+call all the base class functions through the derived-class object? Upcast the
+address of the object to the base. Can you call all three functions through the
+base? Remove the overridden definition in the derived class. Now can you call
+all the base class functions through the derived-class
+object?</FONT><LI><FONT FACE="Verdana">	</FONT><FONT FACE="Georgia">Modify
+<B>VariantReturn.cpp</B> to show that its behavior works with references as well
+as pointers.</FONT><LI><FONT FACE="Verdana">	</FONT><FONT FACE="Georgia">In
+<B>Early.cpp</B>, how can you tell whether the compiler makes the call using
+early or late binding? Determine the case for your own
+compiler.<A NAME="D"></A></FONT><LI><FONT FACE="Verdana">	</FONT><FONT FACE="Georgia">Create
+a base class containing a <B>clone(&#160;)</B> function that returns a pointer
+to a <I>copy</I> of the current object. Derive two subclasses that override
+<B>clone(&#160;)</B> to return copies of their specific types. In
+<B>main(&#160;)</B>, create and upcast objects of your two derived types, then
+call <B>clone(&#160;)</B> for each and verify that the cloned copies are the
+correct subtypes. Experiment with your <B>clone(&#160;)</B> function so that you
+return the base type, then try returning the exact derived type. Can you think
+of situations in which the latter approach is
+necessary?</FONT><LI><FONT FACE="Verdana">	</FONT><FONT FACE="Georgia">Modify
+<B>OStackTest.cpp</B> by creating your own class, then multiply-inheriting it
+with <B>Object</B> to create something that can be placed into the <B>Stack</B>.
+Test your class in
+<B>main(&#160;)</B>.</FONT><LI><FONT FACE="Verdana">	</FONT><FONT FACE="Georgia">Add
+a type called <B>Tensor</B> to
+<B>OperatorPolymorphism.cpp</B>.</FONT><LI><FONT FACE="Verdana">	</FONT><FONT FACE="Georgia">(Intermediate)
+Create a base <B>class X</B> with no data members and no constructor, but with a
+virtual function. Create a <B>class Y </B>that inherits from <B>X</B>, but
+without an explicit constructor. Generate assembly code and examine it to
+determine if a constructor is created and called for <B>X</B>, and if so, what
+the code does. Explain what you discover. <B>X</B> has no default constructor,
+so why doesn&#8217;t the compiler
+complain?</FONT><LI><FONT FACE="Verdana">	</FONT><FONT FACE="Georgia">(Intermediate)
+Modify Exercise 28 by writing constructors for both classes so that each
+constructor calls a virtual function. Generate assembly code. Determine where
+the VPTR is being assigned inside each constructor. Is the virtual mechanism
+being used by your compiler inside the constructor? Establish why the local
+version of the function is still being
+called.</FONT><LI><FONT FACE="Verdana">	</FONT><FONT FACE="Georgia">(Advanced)
+If function calls to an object passed by value <I>weren&#8217;t</I> early-bound,
+a virtual call might access parts that didn&#8217;t exist. Is this possible?
+Write some code to force a virtual call, and see if this causes a crash. To
+explain the behavior, examine what happens when you pass an object by
+value.</FONT><LI><FONT FACE="Verdana">	</FONT><FONT FACE="Georgia">(Advanced)
+Find out exactly how much more time is required for a virtual function call by
+going to your processor&#8217;s assembly-language information or other technical
+manual and finding out the number of clock states required for a simple call
+versus the number required for the virtual function
+instructions.</FONT><LI><FONT FACE="Verdana">	</FONT><FONT FACE="Georgia">Determine
+the <B>sizeof</B> the VPTR for your implementation. Now multiply-inherit two
+classes that contain virtual functions. Did you get one VPTR or two in the
+derived
+class?</FONT><LI><FONT FACE="Verdana">	</FONT><FONT FACE="Georgia">Create a
+class with data members and virtual functions. Write a function that looks at
+the memory in an object of your class and prints out the various pieces of it.
+To do this you will need to experiment and iteratively discover where the VPTR
+is located in the
+object.</FONT><LI><FONT FACE="Verdana">	</FONT><FONT FACE="Georgia">Pretend that
+virtual functions don&#8217;t exist, and modify <B>Instrument4.cpp</B> so that
+it uses <B>dynamic_cast</B> to make the equivalent of the virtual calls. Explain
+why this is a bad
+idea.</FONT><LI><FONT FACE="Verdana">	</FONT><FONT FACE="Georgia">Modify
+<B>StaticHierarchyNavigation.cpp</B> so that instead of using C++ RTTI you
+create your own RTTI via a virtual function in the base class called
+<B>whatAmI(&#160;)</B> and an <B>enum type { Circles, Squares
+};</B>.</FONT><LI><FONT FACE="Verdana">	</FONT><FONT FACE="Georgia">Start with
+<B>PointerToMemberOperator.cpp</B> from Chapter 12 and show that polymorphism
+still works with pointers-to-members, even if <B>operator-&gt;* </B>is
+overloaded.</FONT><A NAME="TemplateChapter"></A><A NAME="_Toc305593274"></A><A NAME="_Toc305628746"></A><A NAME="_Toc312374062"></A></OL><FONT FACE = "Verdana"><H1 ALIGN="LEFT">
+</H1></FONT>
+<HR><DIV ALIGN="LEFT"><P><A NAME="fn54" HREF="#fnB54">[54]</A><FONT FACE="Georgia" SIZE=2>
+Compilers may implement virtual behavior any way they want, but the way
+it&#8217;s described here is an almost universal approach.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><A NAME="fn55" HREF="#fnB55">[55]</A><FONT FACE="Georgia" SIZE=2>
+Some compilers might have size issues here but it will be rare.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><A NAME="fn56" HREF="#fnB56">[56]</A><FONT FACE="Georgia" SIZE=2>
+Smalltalk, Java, and Python, for instance, use this approach with great
+success.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><A NAME="fn57" HREF="#fnB57">[57]</A><FONT FACE="Georgia" SIZE=2>
+At Bell Labs, where C++ was invented, there are a <I>lot</I> of C programmers.
+Making them all more efficient, even just a bit, saves the company many
+millions.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><A NAME="fn58" HREF="#fnB58">[58]</A><FONT FACE="Georgia" SIZE=2>
+Actually, not all pointers are the same size on all machines. In the context of
+this discussion, however, they can be considered to be the
+same.</FONT><BR></P></DIV>
+
+<DIV ALIGN="CENTER">
+    <FONT FACE="Verdana" size = "-1">
+     [ <a href="Chapter14.html">Previous Chapter</a> ] 
+    [ <a href="Contents.html">Table of Contents</a> ] 
+    [ <a href="DocIndex.html">Index</a> ]
+     [ <a href="Chapter16.html">Next Chapter</a> ] 
+    </FONT>
+    <BR>
+ Last Update:09/27/2001</P></DIV>
+
+</BODY>
+
+</HTML>

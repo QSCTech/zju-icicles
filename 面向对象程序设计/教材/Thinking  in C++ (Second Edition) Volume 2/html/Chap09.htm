@@ -1,0 +1,1613 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<HTML>
+<!--
+This document was converted from RTF source: 
+By rtftohtml 4.19
+See http://www.sunpack.com/RTF
+Filename:C:\TEMP\TicV2\html\TicV2.rtf
+Application Directory:C:\TOOLS\RTF2HTML\
+Subject:
+Author:Bruce Eckel
+Operator:Bruce Eckel
+Document Comments:
+Version Comments:
+Comments:
+Keywords:
+Translation Date:08/19/2001
+Translation Time:14:25:06
+Translation Platform:Win32
+Number of Output files:19
+This File:C:\TEMP\TicV2\html\Chap09.htm
+SplitDepth=1
+SkipNavPanel=1
+SkipLeadingToc=1
+SkipTrailingToc=1
+GenContents=1
+GenFrames=1
+GenIndex=1
+-->
+<HEAD lang="en"><META http-equiv="Content-Type" content="text/html">
+<TITLE>9: Run-time type identification</TITLE>
+</HEAD>
+
+<BODY  BGCOLOR="#FFFFFF"><DIV ALIGN="CENTER">
+  <a href="http://www.MindView.net">
+  <img src="mindview.gif" alt="MindView Inc." BORDER = "0"></a>
+  <CENTER>
+    <FONT FACE="Verdana, Tahoma, Arial, Helvetica, Sans" size = "-1">
+    [ <a href="README.txt">Viewing Hints</a> ]
+    [ <a href="RevisionHistory.htm">Revision History</a> ]
+    [ <a href="http://www.mindview.net/Books/TICPP/ThinkingInCPP2e.html">Book Home Page</a> ]
+    [ <a href="http://www.mindview.net/Etc/MailingList.html">Free Newsletter</a> ] <br>
+    [ <a href="http://www.mindview.net/Seminars">Seminars</a> ]
+    [ <a href="http://www.mindview.net/CDs">Seminars on CD ROM</a> ]
+    [ <a href="http://www.mindview.net/Services">Consulting</a> ]
+    </FONT>
+  <H2><FONT FACE="Verdana, Tahoma, Arial, Helvetica, Sans">
+  Thinking in C++, 2nd edition, Volume 2<br>
+  <small>Revision 4.0</small></FONT></H2>
+  <H3><FONT FACE="Verdana, Tahoma, Arial, Helvetica, Sans">
+  by Bruce Eckel &amp; Chuck Allison<br>&copy;2001 MindView, Inc.</FONT></H3>
+  
+    <FONT FACE="Verdana, Tahoma, Arial, Helvetica, Sans" size = "-1">
+     [ <a href="Part3.htm">Previous Chapter</a> ] 
+    
+    [ <a href="SimpCont.htm">Short TOC</a> ] 
+    [ <a href="Contents.htm">Table of Contents</a> ] 
+  
+        [ <a href="DocIdx.htm">Index</a> ]
+        
+     [ <a href="Chap10.htm">Next Chapter</a> ] 
+    </FONT>
+    
+  </CENTER>
+  </P></DIV><A NAME="_Toc305593307"></A><A NAME="_Toc305628779"></A><A NAME="_Toc312374132"></A><A NAME="_Toc519042080"></A><A NAME="Heading287"></A><FONT FACE = "Verdana, Tahoma, Arial, Helvetica, Sans"><H1 ALIGN="LEFT">
+9: Run-time type identification</H1></FONT>
+<DIV ALIGN="LEFT"><P><FONT FACE="Verdana" SIZE=4><a NAME="TIC2V2_CHAPTER9_I1"></a>
+Run-time
+type identification (RTTI) lets you find the exact type of an object when you
+have only a pointer or reference to the base type. </FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><A NAME="Index501"></A><A NAME="Index502"></A><FONT FACE="Georgia">This
+can be thought of as a &#8220;secondary&#8221; feature in C++, a pragmatism to
+help out when you get into messy situations. Normally, you&#8217;ll want to
+intentionally ignore the exact type of an object and let the virtual function
+mechanism implement the correct behavior for that type. But occasionally
+it&#8217;s useful to know the exact type of an object for which you only have a
+base pointer. Often this information allows you to perform a special-case
+operation more efficiently or prevent a base-class interface from becoming
+ungainly. It happens enough that most class libraries contain virtual functions
+to produce run-time type information. When exception handling was added to C++,
+it required the exact type information about objects. It became an easy next
+step to build access to that information into the
+language.
+[&nbsp;<a HREF="mailto:cda@freshsources.com?subject=[TICV2] TIC2V2_CHAPTER9_I1">Comment</a>&nbsp;]
+
+<a NAME="TIC2V2_CHAPTER9_I2"></a>
+</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">This chapter explains what RTTI is for
+and how to use it. In addition, it explains the why and how of the new C++ cast
+syntax, which has the same appearance as
+RTTI.
+[&nbsp;<a HREF="mailto:cda@freshsources.com?subject=[TICV2] TIC2V2_CHAPTER9_I2">Comment</a>&nbsp;]
+
+<a NAME="TIC2V2_CHAPTER9_I3"></a>
+</FONT><A NAME="_Toc305593308"></A><A NAME="_Toc305628780"></A><A NAME="_Toc312374133"></A><A NAME="_Toc519042081"></A><BR></P></DIV>
+<A NAME="Heading288"></A><FONT FACE = "Verdana, Tahoma, Arial, Helvetica, Sans"><H2 ALIGN="LEFT">
+The &#8220;Shape&#8221; example</H2></FONT>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">This is an example of a class hierarchy
+that uses polymorphism. The generic type is the base class
+<B>Shape<A NAME="Index503"></A><A NAME="Index504"></A></B>, and the specific
+derived types are <B>Circle</B>, <B>Square</B>, and
+<B>Triangle</B>:
+[&nbsp;<a HREF="mailto:cda@freshsources.com?subject=[TICV2] TIC2V2_CHAPTER9_I3">Comment</a>&nbsp;]
+
+<a NAME="TIC2V2_CHAPTER9_I4"></a>
+</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia"><IMG SRC="TicV201.gif"></FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">This is a typical class-hierarchy
+diagram, with the base class at the top and the derived classes growing
+downward. The normal goal in object-oriented
+programming<A NAME="Index505"></A><A NAME="Index506"></A> is for the bulk of
+your code to manipulate pointers to the base type (<B>Shape</B>, in this case)
+so if you decide to extend the program by adding a new class (<B>rhomboid</B>,
+derived from <B>Shape</B>, for example), the bulk of the code is not affected.
+In this example, the virtual function in the <B>Shape</B> interface is
+<B>draw(&#160;)</B>, so the intent is for the client programmer to call
+<B>draw(&#160;)</B> through a generic <B>Shape</B> pointer. <B>draw(&#160;)</B>
+is redefined in all the derived classes, and because it is a virtual function,
+the proper behavior will occur even though it is called through a generic
+<B>Shape</B> pointer.
+[&nbsp;<a HREF="mailto:cda@freshsources.com?subject=[TICV2] TIC2V2_CHAPTER9_I4">Comment</a>&nbsp;]
+
+<a NAME="TIC2V2_CHAPTER9_I5"></a>
+</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Thus, you generally create a specific
+object (<B>Circle</B>, <B>Square</B>, or <B>Triangle</B>), take its address and
+cast it to a <B>Shape*</B> (forgetting the specific type of the object), and use
+that anonymous pointer in the rest of the program. Historically, diagrams are
+drawn as seen above, so the act of casting from a more derived type to a base
+type is called
+<I>upcasting<A NAME="Index507"></A><A NAME="Index508"></A></I>.
+[&nbsp;<a HREF="mailto:cda@freshsources.com?subject=[TICV2] TIC2V2_CHAPTER9_I5">Comment</a>&nbsp;]
+
+<a NAME="TIC2V2_CHAPTER9_I6"></a>
+</FONT><A NAME="_Toc305593309"></A><A NAME="_Toc305628781"></A><A NAME="_Toc312374134"></A><A NAME="_Toc519042082"></A><BR></P></DIV>
+<A NAME="Heading289"></A><FONT FACE = "Verdana, Tahoma, Arial, Helvetica, Sans"><H2 ALIGN="LEFT">
+What is RTTI?</H2></FONT>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">But what if you have a special
+programming problem that&#8217;s easiest to solve if you know the exact type of
+a generic pointer<A NAME="Index509"></A><A NAME="Index510"></A>? For example,
+suppose you want to allow your users to highlight all the shapes of any
+particular type by turning them purple. This way, they can find all the
+triangles on the screen by highlighting them. Your natural first approach may be
+to try a virtual function like <B>TurnColorIfYouAreA(&#160;)</B>, which allows
+enumerated arguments of some type <B>color</B> and of <B>Shape::Circle</B>,
+<B>Shape::Square</B>, or
+<B>Shape::Triangle</B>.
+[&nbsp;<a HREF="mailto:cda@freshsources.com?subject=[TICV2] TIC2V2_CHAPTER9_I6">Comment</a>&nbsp;]
+
+<a NAME="TIC2V2_CHAPTER9_I7"></a>
+</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">To solve this sort of problem, most class
+library designers put virtual functions in the base class to return type
+information about the specific object at runtime. You may have seen library
+member functions with names like <B>isA(&#160;)</B> and <B>typeOf(&#160;)</B>.
+These are vendor-defined<A NAME="Index511"></A><A NAME="Index512"></A> RTTI
+functions. Using these functions, as you go through the list you can say,
+&#8220;If you&#8217;re a triangle, turn
+purple.&#8221;
+[&nbsp;<a HREF="mailto:cda@freshsources.com?subject=[TICV2] TIC2V2_CHAPTER9_I7">Comment</a>&nbsp;]
+
+<a NAME="TIC2V2_CHAPTER9_I8"></a>
+</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">When exception
+handling<A NAME="Index513"></A><A NAME="Index514"></A> was added to C++, the
+implementation required that some run-time type information be put into the
+virtual function tables. This meant that with a small language extension the
+programmer could also get the run-time type information about an object. All
+library vendors were adding their own RTTI <A NAME="Index515"></A>anyway, so it
+was included in the
+language.
+[&nbsp;<a HREF="mailto:cda@freshsources.com?subject=[TICV2] TIC2V2_CHAPTER9_I8">Comment</a>&nbsp;]
+
+<a NAME="TIC2V2_CHAPTER9_I9"></a>
+</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">RTTI, like exceptions, depends on type
+information residing in the virtual function table. If you try to use RTTI on a
+class that has no virtual
+functions<A NAME="Index516"></A><A NAME="Index517"></A><A NAME="Index518"></A>,
+you&#8217;ll get unexpected results.
+
+[&nbsp;<a HREF="mailto:cda@freshsources.com?subject=[TICV2] TIC2V2_CHAPTER9_I9">Comment</a>&nbsp;]
+
+<a NAME="TIC2V2_CHAPTER9_I10"></a>
+</FONT><A NAME="_Toc312374135"></A><A NAME="_Toc519042083"></A><BR></P></DIV>
+<A NAME="Heading290"></A><FONT FACE = "Verdana, Tahoma, Arial, Helvetica, Sans"><H3 ALIGN="LEFT">
+Two syntaxes for RTTI</H3></FONT>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">There are two different ways to use RTTI.
+The first acts like <B>sizeof(&#160;)</B> because it looks like a function, but
+it&#8217;s actually implemented by the compiler. <B>typeid(&#160;)
+<A NAME="Index519"></A><A NAME="Index520"></A></B>takes an argument that&#8217;s
+an object, a reference, or a pointer and returns a reference to a global<B>
+const</B> object of type
+<B>typeinfo<A NAME="Index521"></A><A NAME="Index522"></A></B>. These can be
+compared to each other with the <B>operator==</B> and <B>operator!=</B>, and you
+can also ask for the <B>name(&#160;)</B> of the type, which returns a string
+representation of the type name. Note that if you hand <B>typeid(&#160;) </B>a
+<B>Shape*</B>, it will say that the type is <B>Shape*</B>, so if you want to
+know the exact type it is pointing to, you must dereference the pointer. For
+example, if <B>s</B> is a
+<B>Shape*</B>,
+[&nbsp;<a HREF="mailto:cda@freshsources.com?subject=[TICV2] TIC2V2_CHAPTER9_I10">Comment</a>&nbsp;]
+
+<a NAME="TIC2V2_CHAPTER9_I11"></a>
+</FONT><BR></P></DIV>
+
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE>cout &lt;&lt; <font color=#0000ff>typeid</font>(*s).name() &lt;&lt; endl;</PRE></FONT></BLOCKQUOTE>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">will print out the type of the object
+<B>s</B> points to. 
+[&nbsp;<a HREF="mailto:cda@freshsources.com?subject=[TICV2] TIC2V2_CHAPTER9_I11">Comment</a>&nbsp;]
+
+<a NAME="TIC2V2_CHAPTER9_I12"></a>
+</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">You can also ask a <B>typeinfo</B> object
+if it precedes another <B>typeinfo</B> object in the implementation-defined
+&#8220;collation sequence,&#8221; using
+<B>before(typeinfo&amp;)<A NAME="Index523"></A><A NAME="Index524"></A></B>,
+which returns true or false. When you
+say,
+[&nbsp;<a HREF="mailto:cda@freshsources.com?subject=[TICV2] TIC2V2_CHAPTER9_I12">Comment</a>&nbsp;]
+
+<a NAME="TIC2V2_CHAPTER9_I13"></a>
+</FONT><BR></P></DIV>
+
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE><font color=#0000ff>if</font>(<font color=#0000ff>typeid</font>(me).before(<font color=#0000ff>typeid</font>(you))) <font color=#009900>// ...</font></PRE></FONT></BLOCKQUOTE>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">you&#8217;re asking if <B>me</B> occurs
+before <B>you</B> in the collation
+sequence.
+[&nbsp;<a HREF="mailto:cda@freshsources.com?subject=[TICV2] TIC2V2_CHAPTER9_I13">Comment</a>&nbsp;]
+
+<a NAME="TIC2V2_CHAPTER9_I14"></a>
+</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">The second syntax for RTTI is called a
+&#8220;type-safe
+downcast<A NAME="Index525"></A><A NAME="Index526"></A><A NAME="Index527"></A>.&#8221;
+The reason for the term &#8220;downcast&#8221; is (again) the historical
+arrangement of the class hierarchy diagram. If casting a <B>Circle*</B> to a
+<B>Shape*</B> is an upcast, then casting a <B>Shape*</B> to a <B>Circle*</B> is
+a downcast. However, you know a <B>Circle*</B> is also a <B>Shape*</B>,and the
+compiler freely allows an upcast assignment, but you <I>don&#8217;t</I> know
+that a <B>Shape*</B> is necessarily a <B>Circle*</B>, so the compiler
+doesn&#8217;t allow you to perform a downcast assignment without using an
+explicit cast. You can of course force your way through using ordinary C-style
+casts or a C++ <B>static_cast</B> (described at the end of this chapter), which
+says, &#8220;I hope this is actually a <B>Circle*</B>, and I&#8217;m going to
+pretend it is.&#8221; Without some explicit knowledge that it <I>is</I> in fact
+a <B>Circle</B>, this is a totally dangerous thing to do. A common approach in
+vendor-defined RTTI is to create some function that attempts to assign (for this
+example) a <B>Shape*</B> to a <B>Circle*</B>, checking the type in the process.
+If this function returns the address, it was successful; if it returns null, you
+didn&#8217;t have a
+<B>Circle*</B>.
+[&nbsp;<a HREF="mailto:cda@freshsources.com?subject=[TICV2] TIC2V2_CHAPTER9_I14">Comment</a>&nbsp;]
+
+<a NAME="TIC2V2_CHAPTER9_I15"></a>
+</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">The C++ RTTI typesafe-downcast follows
+this &#8220;attempt-to-cast&#8221; function form, but it uses (very logically)
+the template syntax to produce the special function
+<B>dynamic_cast<A NAME="Index528"></A><A NAME="Index529"></A></B>. So the
+example becomes
+[&nbsp;<a HREF="mailto:cda@freshsources.com?subject=[TICV2] TIC2V2_CHAPTER9_I15">Comment</a>&nbsp;]
+
+<a NAME="TIC2V2_CHAPTER9_I16"></a>
+</FONT><BR></P></DIV>
+
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE>Shape* sp = <font color=#0000ff>new</font> Circle;
+Circle* cp = <font color=#0000ff>dynamic_cast</font>&lt;Circle*&gt;(sp);
+<font color=#0000ff>if</font>(cp) cout &lt;&lt; <font color=#004488>"cast successful"</font>;</PRE></FONT></BLOCKQUOTE>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">The template argument for
+<B>dynamic_cast</B> is the type you want the function to produce, and this is
+the return value for the function. The function argument is what you are trying
+to cast from.
+[&nbsp;<a HREF="mailto:cda@freshsources.com?subject=[TICV2] TIC2V2_CHAPTER9_I16">Comment</a>&nbsp;]
+
+<a NAME="TIC2V2_CHAPTER9_I17"></a>
+</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Normally you might be hunting for one
+type (triangles to turn purple, for instance), but the following example
+fragment can be used if you want to count the number of various
+shapes.
+[&nbsp;<a HREF="mailto:cda@freshsources.com?subject=[TICV2] TIC2V2_CHAPTER9_I17">Comment</a>&nbsp;]
+
+<a NAME="TIC2V2_CHAPTER9_I18"></a>
+</FONT><BR></P></DIV>
+
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE>  Circle* cp = <font color=#0000ff>dynamic_cast</font>&lt;Circle*&gt;(sh);
+  Square* sp = <font color=#0000ff>dynamic_cast</font>&lt;Square*&gt;(sh);
+  Triangle* tp = <font color=#0000ff>dynamic_cast</font>&lt;Triangle*&gt;(sh);</PRE></FONT></BLOCKQUOTE><DIV ALIGN="LEFT"><P><A NAME="_Toc305593310"></A><A NAME="_Toc305628782"></A><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Of course this is contrived &#8211;
+you&#8217;d probably put a <B>static</B> data member in each type and increment
+it in the constructor. You would do something like that <I>if</I> you had
+control of the source code for the class and could change it. Here&#8217;s an
+example that counts shapes using both the <B>static</B> member approach and
+<B>dynamic_cast</B>:
+[&nbsp;<a HREF="mailto:cda@freshsources.com?subject=[TICV2] TIC2V2_CHAPTER9_I18">Comment</a>&nbsp;]
+
+<a NAME="TIC2V2_CHAPTER9_I19"></a>
+</FONT><BR></P></DIV>
+
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE><font color=#009900>//: C09:Rtshapes.cpp</font>
+<font color=#009900>// Counting shapes</font>
+<font color=#009900>//{L} ../TestSuite/Test</font>
+#include <font color=#004488>"..</font><font color=#004488>/purge.h"</font>
+#include &lt;iostream&gt;
+#include &lt;ctime&gt;
+#include &lt;typeinfo&gt;
+#include &lt;vector&gt;
+<font color=#0000ff>using</font> <font color=#0000ff>namespace</font> std;
+
+<font color=#0000ff>class</font> Shape {
+<font color=#0000ff>protected</font>:
+  <font color=#0000ff>static</font> <font color=#0000ff>int</font> count;
+<font color=#0000ff>public</font>:
+  Shape() { count++; }
+  <font color=#0000ff>virtual</font> ~Shape() { count--; }
+  <font color=#0000ff>virtual</font> <font color=#0000ff>void</font> draw() <font color=#0000ff>const</font> = 0;
+  <font color=#0000ff>static</font> <font color=#0000ff>int</font> quantity() { <font color=#0000ff>return</font> count; }
+};
+
+<font color=#0000ff>int</font> Shape::count = 0;
+
+<font color=#0000ff>class</font> SRectangle : <font color=#0000ff>public</font> Shape {
+  <font color=#0000ff>void</font> <font color=#0000ff>operator</font>=(SRectangle&amp;); <font color=#009900>// Disallow</font>
+<font color=#0000ff>protected</font>:
+  <font color=#0000ff>static</font> <font color=#0000ff>int</font> count;
+<font color=#0000ff>public</font>:
+  SRectangle() { count++; }
+  SRectangle(<font color=#0000ff>const</font> SRectangle&amp;) { count++;}
+  ~SRectangle() { count--; }
+  <font color=#0000ff>void</font> draw() <font color=#0000ff>const</font> {
+    cout &lt;&lt; <font color=#004488>"SRectangle::draw()"</font> &lt;&lt; endl;
+  }
+  <font color=#0000ff>static</font> <font color=#0000ff>int</font> quantity() { <font color=#0000ff>return</font> count; }
+};
+
+<font color=#0000ff>int</font> SRectangle::count = 0;
+
+<font color=#0000ff>class</font> SEllipse : <font color=#0000ff>public</font> Shape {
+  <font color=#0000ff>void</font> <font color=#0000ff>operator</font>=(SEllipse&amp;); <font color=#009900>// Disallow</font>
+<font color=#0000ff>protected</font>:
+  <font color=#0000ff>static</font> <font color=#0000ff>int</font> count;
+<font color=#0000ff>public</font>:
+  SEllipse() { count++; }
+  SEllipse(<font color=#0000ff>const</font> SEllipse&amp;) { count++; }
+  ~SEllipse() { count--; }
+  <font color=#0000ff>void</font> draw() <font color=#0000ff>const</font> {
+    cout &lt;&lt; <font color=#004488>"SEllipse::draw()"</font> &lt;&lt; endl;
+  }
+  <font color=#0000ff>static</font> <font color=#0000ff>int</font> quantity() { <font color=#0000ff>return</font> count; }
+};
+
+<font color=#0000ff>int</font> SEllipse::count = 0;
+
+<font color=#0000ff>class</font> SCircle : <font color=#0000ff>public</font> SEllipse {
+  <font color=#0000ff>void</font> <font color=#0000ff>operator</font>=(SCircle&amp;); <font color=#009900>// Disallow</font>
+<font color=#0000ff>protected</font>:
+  <font color=#0000ff>static</font> <font color=#0000ff>int</font> count;
+<font color=#0000ff>public</font>:
+  SCircle() { count++; }
+  SCircle(<font color=#0000ff>const</font> SCircle&amp;) { count++; }
+  ~SCircle() { count--; }
+  <font color=#0000ff>void</font> draw() <font color=#0000ff>const</font> {
+    cout &lt;&lt; <font color=#004488>"SCircle::draw()"</font> &lt;&lt; endl;
+  }
+  <font color=#0000ff>static</font> <font color=#0000ff>int</font> quantity() { <font color=#0000ff>return</font> count; }
+};
+
+<font color=#0000ff>int</font> SCircle::count = 0;
+
+<font color=#0000ff>int</font> main() {
+  vector&lt;Shape*&gt; shapes;
+  srand(time(0)); <font color=#009900>// Seed random number generator</font>
+  <font color=#0000ff>const</font> <font color=#0000ff>int</font> mod = 12;
+  <font color=#009900>// Create a random quantity of each type:</font>
+  <font color=#0000ff>for</font>(<font color=#0000ff>int</font> i = 0; i &lt; rand() % mod; i++)
+    shapes.push_back(<font color=#0000ff>new</font> SRectangle);
+  <font color=#0000ff>for</font>(<font color=#0000ff>int</font> j = 0; j &lt; rand() % mod; j++)
+    shapes.push_back(<font color=#0000ff>new</font> SEllipse);
+  <font color=#0000ff>for</font>(<font color=#0000ff>int</font> k = 0; k &lt; rand() % mod; k++)
+    shapes.push_back(<font color=#0000ff>new</font> SCircle);
+  <font color=#0000ff>int</font> nCircles = 0;
+  <font color=#0000ff>int</font> nEllipses = 0;
+  <font color=#0000ff>int</font> nRects = 0;
+  <font color=#0000ff>int</font> nShapes = 0;
+  <font color=#0000ff>for</font>(<font color=#0000ff>int</font> u = 0; u &lt; shapes.size(); u++) {
+    shapes[u]-&gt;draw();
+    <font color=#0000ff>if</font>(<font color=#0000ff>dynamic_cast</font>&lt;SCircle*&gt;(shapes[u]))
+      nCircles++;
+    <font color=#0000ff>if</font>(<font color=#0000ff>dynamic_cast</font>&lt;SEllipse*&gt;(shapes[u]))
+      nEllipses++;
+    <font color=#0000ff>if</font>(<font color=#0000ff>dynamic_cast</font>&lt;SRectangle*&gt;(shapes[u]))
+      nRects++;
+    <font color=#0000ff>if</font>(<font color=#0000ff>dynamic_cast</font>&lt;Shape*&gt;(shapes[u]))
+      nShapes++;
+  }
+  cout &lt;&lt; endl &lt;&lt; endl
+    &lt;&lt; <font color=#004488>"Circles = "</font> &lt;&lt; nCircles &lt;&lt; endl
+    &lt;&lt; <font color=#004488>"Ellipses = "</font> &lt;&lt; nEllipses &lt;&lt; endl
+    &lt;&lt; <font color=#004488>"Rectangles = "</font> &lt;&lt; nRects &lt;&lt; endl
+    &lt;&lt; <font color=#004488>"Shapes = "</font> &lt;&lt; nShapes &lt;&lt; endl
+    &lt;&lt; endl
+    &lt;&lt; <font color=#004488>"SCircle::quantity() = "</font>
+    &lt;&lt; SCircle::quantity() &lt;&lt; endl
+    &lt;&lt; <font color=#004488>"SEllipse::quantity() = "</font>
+    &lt;&lt; SEllipse::quantity() &lt;&lt; endl
+    &lt;&lt; <font color=#004488>"SRectangle::quantity() = "</font>
+    &lt;&lt; SRectangle::quantity() &lt;&lt; endl
+    &lt;&lt; <font color=#004488>"Shape::quantity() = "</font>
+    &lt;&lt; Shape::quantity() &lt;&lt; endl;
+  purge(shapes);
+} <font color=#009900>///:~</font></PRE></FONT></BLOCKQUOTE>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Both types work for this example, but the
+<B>static</B> member approach can be used only if you own the code and have
+installed the <B>static</B> members and functions (or if a vendor provides them
+for you). In addition, the syntax for RTTI may then be different from one class
+to
+another.
+[&nbsp;<a HREF="mailto:cda@freshsources.com?subject=[TICV2] TIC2V2_CHAPTER9_I19">Comment</a>&nbsp;]
+
+<a NAME="TIC2V2_CHAPTER9_I20"></a>
+</FONT><A NAME="_Toc312374136"></A><A NAME="_Toc519042084"></A><BR></P></DIV>
+<A NAME="Heading291"></A><FONT FACE = "Verdana, Tahoma, Arial, Helvetica, Sans"><H2 ALIGN="LEFT">
+Syntax specifics</H2></FONT>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">This section looks at the details of how
+the two forms of RTTI work, and how they
+differ.
+[&nbsp;<a HREF="mailto:cda@freshsources.com?subject=[TICV2] TIC2V2_CHAPTER9_I20">Comment</a>&nbsp;]
+
+<a NAME="TIC2V2_CHAPTER9_I21"></a>
+</FONT><A NAME="_Toc312374137"></A><A NAME="_Toc519042085"></A><BR></P></DIV>
+<A NAME="Heading292"></A><FONT FACE = "Verdana, Tahoma, Arial, Helvetica, Sans"><H3 ALIGN="LEFT">
+typeid(&#160;) with built-in types</H3></FONT>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">For consistency, the
+<B>typeid(&#160;)<A NAME="Index530"></A><A NAME="Index531"></A><A NAME="Index532"></A></B>
+operator works with built-in types. So the following expressions are
+true:
+[&nbsp;<a HREF="mailto:cda@freshsources.com?subject=[TICV2] TIC2V2_CHAPTER9_I21">Comment</a>&nbsp;]
+
+<a NAME="TIC2V2_CHAPTER9_I22"></a>
+</FONT><BR></P></DIV>
+
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE><font color=#009900>//: C09:TypeidAndBuiltins.cpp</font>
+<font color=#009900>//{L} ../TestSuite/Test</font>
+#include &lt;cassert&gt;
+#include &lt;typeinfo&gt;
+<font color=#0000ff>using</font> <font color=#0000ff>namespace</font> std;
+
+<font color=#0000ff>int</font> main() {
+  assert(<font color=#0000ff>typeid</font>(47) == <font color=#0000ff>typeid</font>(<font color=#0000ff>int</font>));
+  assert(<font color=#0000ff>typeid</font>(0) == <font color=#0000ff>typeid</font>(<font color=#0000ff>int</font>));
+  <font color=#0000ff>int</font> i;
+  assert(<font color=#0000ff>typeid</font>(i) == <font color=#0000ff>typeid</font>(<font color=#0000ff>int</font>));
+  assert(<font color=#0000ff>typeid</font>(&amp;i) == <font color=#0000ff>typeid</font>(<font color=#0000ff>int</font>*));
+} <font color=#009900>///:~</font></PRE></FONT></BLOCKQUOTE><DIV ALIGN="LEFT"><P><A NAME="_Toc312374138"></A><A NAME="_Toc519042086"></A><BR></P></DIV>
+<A NAME="Heading293"></A><FONT FACE = "Verdana, Tahoma, Arial, Helvetica, Sans"><H3 ALIGN="LEFT">
+Producing the proper type name</H3></FONT>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia"><B>typeid(&#160;)</B> must work properly
+in all situations. For example, the following class contains a nested
+class<A NAME="Index533"></A><A NAME="Index534"></A>:
+[&nbsp;<a HREF="mailto:cda@freshsources.com?subject=[TICV2] TIC2V2_CHAPTER9_I22">Comment</a>&nbsp;]
+
+<a NAME="TIC2V2_CHAPTER9_I23"></a>
+</FONT><BR></P></DIV>
+
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE><font color=#009900>//: C09:RTTIandNesting.cpp</font>
+<font color=#009900>//{L} ../TestSuite/Test</font>
+#include &lt;iostream&gt;
+#include &lt;typeinfo&gt;
+<font color=#0000ff>using</font> <font color=#0000ff>namespace</font> std;
+
+<font color=#0000ff>class</font> One {
+  <font color=#0000ff>class</font> Nested {};
+  Nested* n;
+<font color=#0000ff>public</font>:
+  One() : n(<font color=#0000ff>new</font> Nested) {}
+  ~One() { <font color=#0000ff>delete</font> n; }
+  Nested* nested() { <font color=#0000ff>return</font> n; }
+};
+
+<font color=#0000ff>int</font> main() {
+  One o;
+  cout &lt;&lt; <font color=#0000ff>typeid</font>(*o.nested()).name() &lt;&lt; endl;
+} <font color=#009900>///:~</font></PRE></FONT></BLOCKQUOTE>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">The <B>typeinfo::name(&#160;)</B> member
+function will still produce the proper class name; the result is
+<B>One::Nested</B>.
+[&nbsp;<a HREF="mailto:cda@freshsources.com?subject=[TICV2] TIC2V2_CHAPTER9_I23">Comment</a>&nbsp;]
+
+<a NAME="TIC2V2_CHAPTER9_I24"></a>
+</FONT><A NAME="_Toc312374139"></A><A NAME="_Toc519042087"></A><BR></P></DIV>
+<A NAME="Heading294"></A><FONT FACE = "Verdana, Tahoma, Arial, Helvetica, Sans"><H3 ALIGN="LEFT">
+Nonpolymorphic
+types<BR><A NAME="Index535"></A><A NAME="Index536"></A><A NAME="Index537"></A></H3></FONT>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Although <B>typeid(&#160;)</B> works with
+nonpolymorphic types (those that don&#8217;t have a virtual function in the base
+class), the information you get this way is dubious. For the following class
+hierarchy,
+[&nbsp;<a HREF="mailto:cda@freshsources.com?subject=[TICV2] TIC2V2_CHAPTER9_I24">Comment</a>&nbsp;]
+
+<a NAME="TIC2V2_CHAPTER9_I25"></a>
+</FONT><BR></P></DIV>
+
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE><font color=#009900>//: C09:RTTIWithoutPolymorphism.cpp</font>
+<font color=#009900>//{L} ../TestSuite/Test</font>
+#include &lt;cassert&gt;
+#include &lt;typeinfo&gt;
+<font color=#0000ff>using</font> <font color=#0000ff>namespace</font> std;
+
+<font color=#0000ff>class</font> X {
+ <font color=#0000ff>int</font> i; 
+<font color=#0000ff>public</font>:
+  <font color=#009900>// ...</font>
+};
+
+<font color=#0000ff>class</font> Y : <font color=#0000ff>public</font> X { 
+  <font color=#0000ff>int</font> j;
+<font color=#0000ff>public</font>:
+  <font color=#009900>// ...</font>
+};
+
+<font color=#0000ff>int</font> main() {
+  X* xp = <font color=#0000ff>new</font> Y;
+  assert(<font color=#0000ff>typeid</font>(*xp) == <font color=#0000ff>typeid</font>(X));
+  assert(<font color=#0000ff>typeid</font>(*xp) != <font color=#0000ff>typeid</font>(Y));
+} <font color=#009900>///:~</font></PRE></FONT></BLOCKQUOTE>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">If you create an object of the derived
+type and upcast it,
+[&nbsp;<a HREF="mailto:cda@freshsources.com?subject=[TICV2] TIC2V2_CHAPTER9_I25">Comment</a>&nbsp;]
+
+<a NAME="TIC2V2_CHAPTER9_I26"></a>
+</FONT><BR></P></DIV>
+
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE>X* xp = <font color=#0000ff>new</font> Y;</PRE></FONT></BLOCKQUOTE>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">The <B>typeid(&#160;)</B> operator will
+produce results, but not the ones you might expect. Because there&#8217;s no
+polymorphism, the static type information is
+used:
+[&nbsp;<a HREF="mailto:cda@freshsources.com?subject=[TICV2] TIC2V2_CHAPTER9_I26">Comment</a>&nbsp;]
+
+<a NAME="TIC2V2_CHAPTER9_I27"></a>
+</FONT><BR></P></DIV>
+
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE><font color=#0000ff>typeid</font>(*xp) == <font color=#0000ff>typeid</font>(X)
+<font color=#0000ff>typeid</font>(*xp) != <font color=#0000ff>typeid</font>(Y)</PRE></FONT></BLOCKQUOTE>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">RTTI is intended for use only with
+polymorphic
+classes.
+[&nbsp;<a HREF="mailto:cda@freshsources.com?subject=[TICV2] TIC2V2_CHAPTER9_I27">Comment</a>&nbsp;]
+
+<a NAME="TIC2V2_CHAPTER9_I28"></a>
+</FONT><A NAME="_Toc312374140"></A><A NAME="_Toc519042088"></A><BR></P></DIV>
+<A NAME="Heading295"></A><FONT FACE = "Verdana, Tahoma, Arial, Helvetica, Sans"><H3 ALIGN="LEFT">
+Casting to intermediate
+levels<BR><A NAME="Index538"></A><A NAME="Index539"></A></H3></FONT>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia"><B>dynamic_cast</B> can detect both exact
+types and, in an inheritance hierarchy with multiple levels, intermediate types.
+For example,
+[&nbsp;<a HREF="mailto:cda@freshsources.com?subject=[TICV2] TIC2V2_CHAPTER9_I28">Comment</a>&nbsp;]
+
+<a NAME="TIC2V2_CHAPTER9_I29"></a>
+</FONT><BR></P></DIV>
+
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE><font color=#009900>//: C09:DynamicCast.cpp</font>
+<font color=#009900>// Using the standard dynamic_cast operation</font>
+<font color=#009900>//{L} ../TestSuite/Test</font>
+#include &lt;cassert&gt;
+#include &lt;typeinfo&gt;
+<font color=#0000ff>using</font> <font color=#0000ff>namespace</font> std;
+
+<font color=#0000ff>class</font> D1 { 
+<font color=#0000ff>public</font>:
+  <font color=#0000ff>virtual</font> <font color=#0000ff>void</font> func() {} 
+  <font color=#0000ff>virtual</font> ~D1() {}
+};
+
+<font color=#0000ff>class</font> D2 { 
+<font color=#0000ff>public</font>:
+  <font color=#0000ff>virtual</font> <font color=#0000ff>void</font> bar() {} 
+};
+
+<font color=#0000ff>class</font> MI : <font color=#0000ff>public</font> D1, <font color=#0000ff>public</font> D2 {};
+<font color=#0000ff>class</font> Mi2 : <font color=#0000ff>public</font> MI {};
+
+<font color=#0000ff>int</font> main() {
+  D2* d2 = <font color=#0000ff>new</font> Mi2;
+  Mi2* mi2 = <font color=#0000ff>dynamic_cast</font>&lt;Mi2*&gt;(d2);
+  MI* mi = <font color=#0000ff>dynamic_cast</font>&lt;MI*&gt;(d2);
+  D1* d1 = <font color=#0000ff>dynamic_cast</font>&lt;D1*&gt;(d2);
+  assert(<font color=#0000ff>typeid</font>(d2) != <font color=#0000ff>typeid</font>(Mi2*));
+  assert(<font color=#0000ff>typeid</font>(d2) == <font color=#0000ff>typeid</font>(D2*));
+} <font color=#009900>///:~</font></PRE></FONT></BLOCKQUOTE>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">This has the extra complication of
+multiple
+inheritance<A NAME="Index540"></A><A NAME="Index541"></A><A NAME="Index542"></A>.
+If you create an <B>mi2</B> and upcast it to the root (in this case, one of the
+two possible roots is chosen), then the <B>dynamic_cast</B> back to either of
+the derived levels <B>MI</B> or <B>mi2</B> is successful.
+
+[&nbsp;<a HREF="mailto:cda@freshsources.com?subject=[TICV2] TIC2V2_CHAPTER9_I29">Comment</a>&nbsp;]
+
+<a NAME="TIC2V2_CHAPTER9_I30"></a>
+</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">You can even cast from one root to the
+other:
+[&nbsp;<a HREF="mailto:cda@freshsources.com?subject=[TICV2] TIC2V2_CHAPTER9_I30">Comment</a>&nbsp;]
+
+<a NAME="TIC2V2_CHAPTER9_I31"></a>
+</FONT><BR></P></DIV>
+
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE>  D1* d1 = <font color=#0000ff>dynamic_cast</font>&lt;D1*&gt;(d2);</PRE></FONT></BLOCKQUOTE>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">This is successful because <B>D2</B> is
+actually pointing to an <B>mi2</B> object, which contains a subobject of type
+<B>d1</B>.
+[&nbsp;<a HREF="mailto:cda@freshsources.com?subject=[TICV2] TIC2V2_CHAPTER9_I31">Comment</a>&nbsp;]
+
+<a NAME="TIC2V2_CHAPTER9_I32"></a>
+</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Casting to intermediate levels brings up
+an interesting difference between <B>dynamic_cast</B> and
+<B>typeid(&#160;)<A NAME="Index543"></A><A NAME="Index544"></A><A NAME="Index545"></A></B>.
+<B>typeid(&#160;)</B> always produces a reference to a <B>typeinfo</B> object
+that describes the <I>exact</I> type of the object. Thus it doesn&#8217;t give
+you intermediate-level information. In the following expression (which is true),
+<B>typeid(&#160;)</B> doesn&#8217;t see <B>d2</B> as a pointer to the derived
+type, like <B>dynamic_cast</B>
+does:
+[&nbsp;<a HREF="mailto:cda@freshsources.com?subject=[TICV2] TIC2V2_CHAPTER9_I32">Comment</a>&nbsp;]
+
+<a NAME="TIC2V2_CHAPTER9_I33"></a>
+</FONT><BR></P></DIV>
+
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE><font color=#0000ff>typeid</font>(d2) != <font color=#0000ff>typeid</font>(Mi2*)</PRE></FONT></BLOCKQUOTE>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">The type of <B>D2</B> is simply the exact
+type of the pointer:
+[&nbsp;<a HREF="mailto:cda@freshsources.com?subject=[TICV2] TIC2V2_CHAPTER9_I33">Comment</a>&nbsp;]
+
+<a NAME="TIC2V2_CHAPTER9_I34"></a>
+</FONT><BR></P></DIV>
+
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE><font color=#0000ff>typeid</font>(d2) == <font color=#0000ff>typeid</font>(D2*)</PRE></FONT></BLOCKQUOTE><DIV ALIGN="LEFT"><P><A NAME="_Toc312374141"></A><A NAME="_Toc519042089"></A><BR></P></DIV>
+<A NAME="Heading296"></A><FONT FACE = "Verdana, Tahoma, Arial, Helvetica, Sans"><H3 ALIGN="LEFT">
+void pointers</H3></FONT>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Run-time type identification
+doesn&#8217;t work with <B>void</B>
+pointers<A NAME="Index546"></A><A NAME="Index547"></A>:
+[&nbsp;<a HREF="mailto:cda@freshsources.com?subject=[TICV2] TIC2V2_CHAPTER9_I34">Comment</a>&nbsp;]
+
+<a NAME="TIC2V2_CHAPTER9_I35"></a>
+</FONT><BR></P></DIV>
+
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE><font color=#009900>//: C09:Voidrtti.cpp</font>
+<font color=#009900>// RTTI &amp; void pointers</font>
+<font color=#009900>//{L} ../TestSuite/Test</font>
+#include &lt;iostream&gt;
+#include &lt;typeinfo&gt;
+<font color=#0000ff>using</font> <font color=#0000ff>namespace</font> std;
+
+<font color=#0000ff>class</font> Stimpy {
+<font color=#0000ff>public</font>:
+  <font color=#0000ff>virtual</font> <font color=#0000ff>void</font> happy() {}
+  <font color=#0000ff>virtual</font> <font color=#0000ff>void</font> joy() {}
+  <font color=#0000ff>virtual</font> ~Stimpy() {}
+};
+
+<font color=#0000ff>int</font> main() {
+  <font color=#0000ff>void</font>* v = <font color=#0000ff>new</font> Stimpy;
+  <font color=#009900>// Error:</font>
+<font color=#009900>//!  Stimpy* s = dynamic_cast&lt;Stimpy*&gt;(v);</font>
+  <font color=#009900>// Error:</font>
+<font color=#009900>//!  cout &lt;&lt; typeid(*v).name() &lt;&lt; endl;</font>
+} <font color=#009900>///:~</font></PRE></FONT></BLOCKQUOTE>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">A <B>void*</B> truly means &#8220;no type
+information at
+all.&#8221;
+[&nbsp;<a HREF="mailto:cda@freshsources.com?subject=[TICV2] TIC2V2_CHAPTER9_I35">Comment</a>&nbsp;]
+
+<a NAME="TIC2V2_CHAPTER9_I36"></a>
+</FONT><A NAME="_Toc312374142"></A><A NAME="_Toc519042090"></A><BR></P></DIV>
+<A NAME="Heading297"></A><FONT FACE = "Verdana, Tahoma, Arial, Helvetica, Sans"><H3 ALIGN="LEFT">
+Using RTTI with templates<BR><A NAME="Index548"></A><A NAME="Index549"></A></H3></FONT>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Templates generate many different class
+names, and sometimes you&#8217;d like to print out information about what class
+you&#8217;re in. RTTI provides a convenient way to do this. The following
+example revisits the code in Chapter XX to print out the order of constructor
+and destructor
+calls<A NAME="Index550"></A><A NAME="Index551"></A><A NAME="Index552"></A>
+without using a preprocessor
+macro:
+[&nbsp;<a HREF="mailto:cda@freshsources.com?subject=[TICV2] TIC2V2_CHAPTER9_I36">Comment</a>&nbsp;]
+
+<a NAME="TIC2V2_CHAPTER9_I37"></a>
+</FONT><BR></P></DIV>
+
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE><font color=#009900>//: C09:ConstructorOrder.cpp</font>
+<font color=#009900>// Order of constructor calls</font>
+<font color=#009900>//{L} ../TestSuite/Test</font>
+#include &lt;iostream&gt;
+#include &lt;typeinfo&gt;
+<font color=#0000ff>using</font> <font color=#0000ff>namespace</font> std;
+
+<font color=#0000ff>template</font>&lt;<font color=#0000ff>int</font> id&gt; <font color=#0000ff>class</font> Announce {
+<font color=#0000ff>public</font>:
+  Announce() {
+    cout &lt;&lt; <font color=#0000ff>typeid</font>(*<font color=#0000ff>this</font>).name()
+         &lt;&lt; <font color=#004488>" constructor "</font> &lt;&lt; endl;
+  }
+  ~Announce() {
+    cout &lt;&lt; <font color=#0000ff>typeid</font>(*<font color=#0000ff>this</font>).name()
+         &lt;&lt; <font color=#004488>" destructor "</font> &lt;&lt; endl;
+  }
+};
+
+<font color=#0000ff>class</font> X : <font color=#0000ff>public</font> Announce&lt;0&gt; {
+  Announce&lt;1&gt; m1;
+  Announce&lt;2&gt; m2;
+<font color=#0000ff>public</font>:
+  X() { cout &lt;&lt; <font color=#004488>"X::X()"</font> &lt;&lt; endl; }
+  ~X() { cout &lt;&lt; <font color=#004488>"X::~X()"</font> &lt;&lt; endl; }
+};
+
+<font color=#0000ff>int</font> main() { X x; } <font color=#009900>///:~</font></PRE></FONT></BLOCKQUOTE>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">The
+<B>&lt;typeinfo&gt;<A NAME="Index553"></A></B> header must be included to call
+any member functions for the <B>typeinfo</B> object returned by
+<B>typeid(&#160;)</B>. The template uses a constant <B>int</B> to differentiate
+one class from another, but class arguments will work as well. Inside both the
+constructor and destructor, RTTI information is used to produce the name of the
+class to print. The class <B>X</B> uses both inheritance and composition to
+create a class that has an interesting order of constructor and destructor
+calls.
+[&nbsp;<a HREF="mailto:cda@freshsources.com?subject=[TICV2] TIC2V2_CHAPTER9_I37">Comment</a>&nbsp;]
+
+<a NAME="TIC2V2_CHAPTER9_I38"></a>
+</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">This technique is often useful in
+situations when you&#8217;re trying to understand how the language
+works.
+[&nbsp;<a HREF="mailto:cda@freshsources.com?subject=[TICV2] TIC2V2_CHAPTER9_I38">Comment</a>&nbsp;]
+
+<a NAME="TIC2V2_CHAPTER9_I39"></a>
+</FONT><A NAME="_Toc305593311"></A><A NAME="_Toc305628783"></A><A NAME="_Toc312374143"></A><A NAME="_Toc519042091"></A><BR></P></DIV>
+<A NAME="Heading298"></A><FONT FACE = "Verdana, Tahoma, Arial, Helvetica, Sans"><H2 ALIGN="LEFT">
+References<BR><A NAME="Index554"></A><A NAME="Index555"></A></H2></FONT>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">RTTI must adjust somewhat to work with
+references. The contrast between pointers and references occurs because a
+reference is always dereferenced for you by the compiler, whereas a
+pointer&#8217;s type <I>or</I> the type it points to may be examined.
+Here&#8217;s an example:
+[&nbsp;<a HREF="mailto:cda@freshsources.com?subject=[TICV2] TIC2V2_CHAPTER9_I39">Comment</a>&nbsp;]
+
+<a NAME="TIC2V2_CHAPTER9_I40"></a>
+</FONT><BR></P></DIV>
+
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE><font color=#009900>//: C09:RTTIwithReferences.cpp</font>
+<font color=#009900>//{L} ../TestSuite/Test</font>
+#include &lt;cassert&gt;
+#include &lt;typeinfo&gt;
+<font color=#0000ff>using</font> <font color=#0000ff>namespace</font> std;
+
+<font color=#0000ff>class</font> B {
+<font color=#0000ff>public</font>:
+  <font color=#0000ff>virtual</font> <font color=#0000ff>float</font> f() { <font color=#0000ff>return</font> 1.0;}
+  <font color=#0000ff>virtual</font> ~B() {}
+};
+
+<font color=#0000ff>class</font> D : <font color=#0000ff>public</font> B { <font color=#009900>/* ... */</font> };
+
+<font color=#0000ff>int</font> main() {
+  B* p = <font color=#0000ff>new</font> D;
+  B&amp; r = *p;
+  assert(<font color=#0000ff>typeid</font>(p) == <font color=#0000ff>typeid</font>(B*));
+  assert(<font color=#0000ff>typeid</font>(p) != <font color=#0000ff>typeid</font>(D*));
+  assert(<font color=#0000ff>typeid</font>(r) == <font color=#0000ff>typeid</font>(D));
+  assert(<font color=#0000ff>typeid</font>(*p) == <font color=#0000ff>typeid</font>(D));
+  assert(<font color=#0000ff>typeid</font>(*p) != <font color=#0000ff>typeid</font>(B));
+  assert(<font color=#0000ff>typeid</font>(&amp;r) == <font color=#0000ff>typeid</font>(B*));
+  assert(<font color=#0000ff>typeid</font>(&amp;r) != <font color=#0000ff>typeid</font>(D*));
+  assert(<font color=#0000ff>typeid</font>(r.f()) == <font color=#0000ff>typeid</font>(<font color=#0000ff>float</font>));
+} <font color=#009900>///:~</font></PRE></FONT></BLOCKQUOTE>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Whereas the type of pointer that
+<B>typeid(&#160;)</B> sees is the base type and not the derived type, the type
+it sees for the reference is the derived
+type:
+[&nbsp;<a HREF="mailto:cda@freshsources.com?subject=[TICV2] TIC2V2_CHAPTER9_I40">Comment</a>&nbsp;]
+
+<a NAME="TIC2V2_CHAPTER9_I41"></a>
+</FONT><BR></P></DIV>
+
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE><font color=#0000ff>typeid</font>(p) == <font color=#0000ff>typeid</font>(B*)
+<font color=#0000ff>typeid</font>(p) != <font color=#0000ff>typeid</font>(D*)
+<font color=#0000ff>typeid</font>(r) == <font color=#0000ff>typeid</font>(D)</PRE></FONT></BLOCKQUOTE>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Conversely, what the pointer points to is
+the derived type and not the base type, and taking the address of the reference
+produces the base type and not the derived
+type:
+[&nbsp;<a HREF="mailto:cda@freshsources.com?subject=[TICV2] TIC2V2_CHAPTER9_I41">Comment</a>&nbsp;]
+
+<a NAME="TIC2V2_CHAPTER9_I42"></a>
+</FONT><BR></P></DIV>
+
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE><font color=#0000ff>typeid</font>(*p) == <font color=#0000ff>typeid</font>(D)
+<font color=#0000ff>typeid</font>(*p) != <font color=#0000ff>typeid</font>(B)
+<font color=#0000ff>typeid</font>(&amp;r) == <font color=#0000ff>typeid</font>(B*)
+<font color=#0000ff>typeid</font>(&amp;r) != <font color=#0000ff>typeid</font>(D*)</PRE></FONT></BLOCKQUOTE>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Expressions may also be used with the
+<B>typeid(&#160;)</B> operator because they have a type as
+well:
+[&nbsp;<a HREF="mailto:cda@freshsources.com?subject=[TICV2] TIC2V2_CHAPTER9_I42">Comment</a>&nbsp;]
+
+<a NAME="TIC2V2_CHAPTER9_I43"></a>
+</FONT><BR></P></DIV>
+
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE><font color=#0000ff>typeid</font>(r.f()) == <font color=#0000ff>typeid</font>(<font color=#0000ff>float</font>)</PRE></FONT></BLOCKQUOTE><DIV ALIGN="LEFT"><P><A NAME="_Toc312374144"></A><A NAME="_Toc519042092"></A><BR></P></DIV>
+<A NAME="Heading299"></A><FONT FACE = "Verdana, Tahoma, Arial, Helvetica, Sans"><H3 ALIGN="LEFT">
+Exceptions</H3></FONT>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">When you perform a
+<B>dynamic_cast<A NAME="Index556"></A><A NAME="Index557"></A></B> to a
+reference, the result must be assigned to a reference. But what happens if the
+cast fails? There are no null
+references<A NAME="Index558"></A><A NAME="Index559"></A>, so this is the perfect
+place to throw an exception; the Standard C++ exception type is
+<B>bad_cast</B>,<A NAME="Index560"></A><A NAME="Index561"></A> but in the
+following example the ellipses are used to catch any
+exception:
+[&nbsp;<a HREF="mailto:cda@freshsources.com?subject=[TICV2] TIC2V2_CHAPTER9_I43">Comment</a>&nbsp;]
+
+<a NAME="TIC2V2_CHAPTER9_I44"></a>
+</FONT><BR></P></DIV>
+
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE><font color=#009900>//: C09:RTTIwithExceptions.cpp</font>
+<font color=#009900>//{L} ../TestSuite/Test</font>
+#include &lt;typeinfo&gt;
+#include &lt;iostream&gt;
+<font color=#0000ff>using</font> <font color=#0000ff>namespace</font> std;
+<font color=#0000ff>class</font> X { <font color=#0000ff>public</font>: <font color=#0000ff>virtual</font> ~X(){} };
+<font color=#0000ff>class</font> B { <font color=#0000ff>public</font>: <font color=#0000ff>virtual</font> ~B(){} };
+<font color=#0000ff>class</font> D : <font color=#0000ff>public</font> B {};
+
+<font color=#0000ff>int</font> main() {
+  D d;
+  B &amp; b = d; <font color=#009900>// Upcast to reference</font>
+  <font color=#0000ff>try</font> {
+    X&amp; xr = <font color=#0000ff>dynamic_cast</font>&lt;X&amp;&gt;(b);
+  } <font color=#0000ff>catch</font>(...) {
+    cout &lt;&lt; <font color=#004488>"dynamic_cast&lt;X&amp;&gt;(b) failed"</font> 
+         &lt;&lt; endl;
+  }
+  X* xp = 0;
+  <font color=#0000ff>try</font> {
+    <font color=#0000ff>typeid</font>(*xp); <font color=#009900>// Throws exception</font>
+  } <font color=#0000ff>catch</font>(<font color=#0000ff>bad_typeid</font>) {
+    cout &lt;&lt; <font color=#004488>"Bad typeid() expression"</font> &lt;&lt; endl;
+  }
+} <font color=#009900>///:~</font></PRE></FONT></BLOCKQUOTE>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">The failure, of course, is because
+<B>b</B> doesn&#8217;t actually point to an <B>X</B> object. If an exception was
+not thrown here, then <B>xr</B> would be unbound, and the guarantee that all
+objects or references are constructed storage would be
+broken.
+[&nbsp;<a HREF="mailto:cda@freshsources.com?subject=[TICV2] TIC2V2_CHAPTER9_I44">Comment</a>&nbsp;]
+
+<a NAME="TIC2V2_CHAPTER9_I45"></a>
+</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">An exception is also thrown if you try to
+dereference a null pointer in the process of calling
+<B>typeid(&#160;)<A NAME="Index562"></A><A NAME="Index563"></A></B>. The
+Standard C++ exception is called
+<B>bad_typeid<A NAME="Index564"></A><A NAME="Index565"></A><A NAME="Index566"></A></B>.
+[&nbsp;<a HREF="mailto:cda@freshsources.com?subject=[TICV2] TIC2V2_CHAPTER9_I45">Comment</a>&nbsp;]
+
+<a NAME="TIC2V2_CHAPTER9_I46"></a>
+</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Here (unlike the reference example above)
+you can avoid the exception by checking for a nonzero pointer value before
+attempting the operation; this is the preferred
+practice.
+[&nbsp;<a HREF="mailto:cda@freshsources.com?subject=[TICV2] TIC2V2_CHAPTER9_I46">Comment</a>&nbsp;]
+
+<a NAME="TIC2V2_CHAPTER9_I47"></a>
+</FONT><A NAME="_Toc305593312"></A><A NAME="_Toc305628784"></A><A NAME="_Toc312374145"></A><A NAME="_Toc519042093"></A><BR></P></DIV>
+<A NAME="Heading300"></A><FONT FACE = "Verdana, Tahoma, Arial, Helvetica, Sans"><H2 ALIGN="LEFT">
+Multiple
+inheritance<BR><A NAME="Index567"></A><A NAME="Index568"></A><A NAME="Index569"></A></H2></FONT>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Of course, the RTTI mechanisms must work
+properly with all the complexities of multiple inheritance, including
+<B>virtual</B> base
+classes:
+[&nbsp;<a HREF="mailto:cda@freshsources.com?subject=[TICV2] TIC2V2_CHAPTER9_I47">Comment</a>&nbsp;]
+
+<a NAME="TIC2V2_CHAPTER9_I48"></a>
+</FONT><BR></P></DIV>
+
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE><font color=#009900>//: C09:RTTIandMultipleInheritance.cpp</font>
+<font color=#009900>//{L} ../TestSuite/Test</font>
+#include &lt;iostream&gt;
+#include &lt;typeinfo&gt;
+<font color=#0000ff>using</font> <font color=#0000ff>namespace</font> std;
+
+<font color=#0000ff>class</font> BB {
+<font color=#0000ff>public</font>:
+  <font color=#0000ff>virtual</font> <font color=#0000ff>void</font> f() {}
+  <font color=#0000ff>virtual</font> ~BB() {}
+};
+<font color=#0000ff>class</font> B1 : <font color=#0000ff>virtual</font> <font color=#0000ff>public</font> BB {};
+<font color=#0000ff>class</font> B2 : <font color=#0000ff>virtual</font> <font color=#0000ff>public</font> BB {};
+<font color=#0000ff>class</font> MI : <font color=#0000ff>public</font> B1, <font color=#0000ff>public</font> B2 {};
+
+<font color=#0000ff>int</font> main() {
+  BB* bbp = <font color=#0000ff>new</font> MI; <font color=#009900>// Upcast</font>
+  <font color=#009900>// Proper name detection:</font>
+  cout &lt;&lt; <font color=#0000ff>typeid</font>(*bbp).name() &lt;&lt; endl;
+  <font color=#009900>// Dynamic_cast works properly:</font>
+  MI* mip = <font color=#0000ff>dynamic_cast</font>&lt;MI*&gt;(bbp);
+  <font color=#009900>// Can't force old-style cast:</font>
+  <font color=#009900>//! MI* mip2 = (MI*)bbp; // Compile error</font>
+} <font color=#009900>///:~</font></PRE></FONT></BLOCKQUOTE>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia"><B>typeid(&#160;) </B>properly detects
+the name of the actual object, even through the <B>virtual</B> base class
+pointer. The <B>dynamic_cast</B> also works correctly. But the compiler
+won&#8217;t even allow you to try to force a cast the old
+way:
+[&nbsp;<a HREF="mailto:cda@freshsources.com?subject=[TICV2] TIC2V2_CHAPTER9_I48">Comment</a>&nbsp;]
+
+<a NAME="TIC2V2_CHAPTER9_I49"></a>
+</FONT><BR></P></DIV>
+
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE>MI* mip = (MI*)bbp; <font color=#009900>// Compile-time error</font></PRE></FONT></BLOCKQUOTE>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">It knows this is never the right thing to
+do, so it requires that you use a
+<B>dynamic_cast</B>.
+[&nbsp;<a HREF="mailto:cda@freshsources.com?subject=[TICV2] TIC2V2_CHAPTER9_I49">Comment</a>&nbsp;]
+
+<a NAME="TIC2V2_CHAPTER9_I50"></a>
+</FONT><A NAME="_Toc305593313"></A><A NAME="_Toc305628785"></A><A NAME="_Toc312374146"></A><A NAME="_Toc519042094"></A><BR></P></DIV>
+<A NAME="Heading301"></A><FONT FACE = "Verdana, Tahoma, Arial, Helvetica, Sans"><H2 ALIGN="LEFT">
+Sensible uses for RTTI<BR><A NAME="Index570"></A></H2></FONT>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Because it allows you to discover type
+information from an anonymous polymorphic pointer, RTTI is ripe for misuse
+<A NAME="Index571"></A>by the novice because RTTI may make sense before virtual
+functions do. For many people coming from a procedural background, it&#8217;s
+very difficult not to organize their programs into sets of <B>switch</B>
+statements. They could accomplish this with RTTI and thus lose the very
+important value of polymorphism <A NAME="Index572"></A>in code development and
+maintenance. The intent of C++ is that you use virtual functions throughout your
+code, and you only use RTTI when you
+must.
+[&nbsp;<a HREF="mailto:cda@freshsources.com?subject=[TICV2] TIC2V2_CHAPTER9_I50">Comment</a>&nbsp;]
+
+<a NAME="TIC2V2_CHAPTER9_I51"></a>
+</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">However, using virtual functions as they
+are intended requires that you have control of the base-class definition because
+at some point in the extension of your program you may discover the base class
+doesn&#8217;t include the virtual function you need. If the base class comes
+from a library or is otherwise controlled by someone else, a solution to the
+problem is RTTI: You can inherit a new type and add your extra member function.
+Elsewhere in the code you can detect your particular type and call that member
+function. This doesn&#8217;t destroy the polymorphism and extensibility of the
+program, because adding a new type will not require you to hunt for switch
+statements. However, when you add new code in your main body that requires your
+new feature, you&#8217;ll have to detect your particular
+type.
+[&nbsp;<a HREF="mailto:cda@freshsources.com?subject=[TICV2] TIC2V2_CHAPTER9_I51">Comment</a>&nbsp;]
+
+<a NAME="TIC2V2_CHAPTER9_I52"></a>
+</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Putting a feature in a base class might
+mean that, for the benefit of one particular class, all the other classes
+derived from that base require some meaningless stub of a virtual function. This
+makes the interface less clear and annoys those who must redefine pure virtual
+functions when they derive from that base class. For example, suppose that in
+the <B>Wind5.cpp</B> program in Chapter XX you wanted to clear the spit valves
+of all the instruments in your orchestra that had them. One option is to put a
+<B>virtual ClearSpitValve(&#160;) </B>function in the base class
+<B>Instrument</B>, but this is confusing because it implies that
+<B>Percussion</B> and <B>electronic</B> instruments also have spit valves. RTTI
+provides a much more reasonable solution in this case because you can place the
+function in the specific class (<B>Wind </B>in this case) where it&#8217;s
+appropriate.
+[&nbsp;<a HREF="mailto:cda@freshsources.com?subject=[TICV2] TIC2V2_CHAPTER9_I52">Comment</a>&nbsp;]
+
+<a NAME="TIC2V2_CHAPTER9_I53"></a>
+</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Finally, RTTI will sometimes solve
+efficiency <A NAME="Index573"></A><A NAME="Index574"></A>problems. If your code
+uses polymorphism in a nice way, but it turns out that one of your objects
+reacts to this general-purpose code in a horribly inefficient way, you can pick
+that type out using RTTI and write case-specific code to improve the
+efficiency.
+[&nbsp;<a HREF="mailto:cda@freshsources.com?subject=[TICV2] TIC2V2_CHAPTER9_I53">Comment</a>&nbsp;]
+
+<a NAME="TIC2V2_CHAPTER9_I54"></a>
+</FONT><A NAME="_Toc312374147"></A><A NAME="_Toc519042095"></A><BR></P></DIV>
+<A NAME="Heading302"></A><FONT FACE = "Verdana, Tahoma, Arial, Helvetica, Sans"><H3 ALIGN="LEFT">
+Revisiting the trash recycler</H3></FONT>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Here&#8217;s the trash recycling
+simulation from Chapter XX, rewritten to use RTTI instead of building the
+information into the class
+hierarchy:
+[&nbsp;<a HREF="mailto:cda@freshsources.com?subject=[TICV2] TIC2V2_CHAPTER9_I54">Comment</a>&nbsp;]
+
+<a NAME="TIC2V2_CHAPTER9_I55"></a>
+</FONT><BR></P></DIV>
+
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE><font color=#009900>//: C09:Recycle2.cpp</font>
+<font color=#009900>// Chapter XX example w/ RTTI</font>
+<font color=#009900>//{L} ../TestSuite/Test</font>
+#include <font color=#004488>"..</font><font color=#004488>/purge.h"</font>
+#include &lt;fstream&gt;
+#include &lt;vector&gt;
+#include &lt;typeinfo&gt;
+#include &lt;cstdlib&gt;
+#include &lt;ctime&gt;
+<font color=#0000ff>using</font> <font color=#0000ff>namespace</font> std;
+ofstream out(<font color=#004488>"recycle2.out"</font>);
+
+<font color=#0000ff>class</font> Trash {
+  <font color=#0000ff>float</font> _weight;
+<font color=#0000ff>public</font>:
+  Trash(<font color=#0000ff>float</font> wt) : _weight(wt) {}
+  <font color=#0000ff>virtual</font> <font color=#0000ff>float</font> value() <font color=#0000ff>const</font> = 0;
+  <font color=#0000ff>float</font> weight() <font color=#0000ff>const</font> { <font color=#0000ff>return</font> _weight; }
+  <font color=#0000ff>virtual</font> ~Trash() { out &lt;&lt; <font color=#004488>"~Trash()\n"</font>; }
+};
+
+<font color=#0000ff>class</font> Aluminum : <font color=#0000ff>public</font> Trash {
+  <font color=#0000ff>static</font> <font color=#0000ff>float</font> val;
+<font color=#0000ff>public</font>:
+  Aluminum(<font color=#0000ff>float</font> wt) : Trash(wt) {}
+  <font color=#0000ff>float</font> value() <font color=#0000ff>const</font> { <font color=#0000ff>return</font> val; }
+  <font color=#0000ff>static</font> <font color=#0000ff>void</font> value(<font color=#0000ff>int</font> newval) {
+    val = newval;
+  }
+};
+
+<font color=#0000ff>float</font> Aluminum::val = 1.67;
+
+<font color=#0000ff>class</font> Paper : <font color=#0000ff>public</font> Trash {
+  <font color=#0000ff>static</font> <font color=#0000ff>float</font> val;
+<font color=#0000ff>public</font>:
+  Paper(<font color=#0000ff>float</font> wt) : Trash(wt) {}
+  <font color=#0000ff>float</font> value() <font color=#0000ff>const</font> { <font color=#0000ff>return</font> val; }
+  <font color=#0000ff>static</font> <font color=#0000ff>void</font> value(<font color=#0000ff>int</font> newval) {
+    val = newval;
+  }
+};
+
+<font color=#0000ff>float</font> Paper::val = 0.10;
+
+<font color=#0000ff>class</font> Glass : <font color=#0000ff>public</font> Trash {
+  <font color=#0000ff>static</font> <font color=#0000ff>float</font> val;
+<font color=#0000ff>public</font>:
+  Glass(<font color=#0000ff>float</font> wt) : Trash(wt) {}
+  <font color=#0000ff>float</font> value() <font color=#0000ff>const</font> { <font color=#0000ff>return</font> val; }
+  <font color=#0000ff>static</font> <font color=#0000ff>void</font> value(<font color=#0000ff>int</font> newval) {
+    val = newval;
+  }
+};
+
+<font color=#0000ff>float</font> Glass::val = 0.23;
+
+<font color=#009900>// Sums up the value of the Trash in a bin:</font>
+<font color=#0000ff>template</font>&lt;<font color=#0000ff>class</font> Container&gt; <font color=#0000ff>void</font>
+sumValue(Container&amp; bin, ostream&amp; os) {
+  <font color=#0000ff>typename</font> Container::iterator tally = 
+    bin.begin();
+  <font color=#0000ff>float</font> val = 0;
+  <font color=#0000ff>while</font>(tally != bin.end()) {
+    val += (*tally)-&gt;weight() * (*tally)-&gt;value();
+    os &lt;&lt; <font color=#004488>"weight of "</font>
+        &lt;&lt; <font color=#0000ff>typeid</font>(*tally).name()
+        &lt;&lt; <font color=#004488>" = "</font> &lt;&lt; (*tally)-&gt;weight() &lt;&lt; endl;
+    tally++;
+  }
+  os &lt;&lt; <font color=#004488>"Total value = "</font> &lt;&lt; val &lt;&lt; endl;
+}
+
+<font color=#0000ff>int</font> main() {
+  srand(time(0)); <font color=#009900>// Seed random number generator</font>
+  vector&lt;Trash*&gt; bin;
+  <font color=#009900>// Fill up the Trash bin:</font>
+  <font color=#0000ff>for</font>(<font color=#0000ff>int</font> i = 0; i &lt; 30; i++)
+    <font color=#0000ff>switch</font>(rand() % 3) {
+      <font color=#0000ff>case</font> 0 :
+        bin.push_back(<font color=#0000ff>new</font> Aluminum(rand() % 100));
+        <font color=#0000ff>break</font>;
+      <font color=#0000ff>case</font> 1 :
+        bin.push_back(<font color=#0000ff>new</font> Paper(rand() % 100));
+        <font color=#0000ff>break</font>;
+      <font color=#0000ff>case</font> 2 :
+        bin.push_back(<font color=#0000ff>new</font> Glass(rand() % 100));
+        <font color=#0000ff>break</font>;
+    }
+  <font color=#009900>// Note difference w/ chapter 14: Bins hold</font>
+  <font color=#009900>// exact type of object, not base type:</font>
+  vector&lt;Glass*&gt; glassBin;
+  vector&lt;Paper*&gt; paperBin;
+  vector&lt;Aluminum*&gt; alBin;
+  vector&lt;Trash*&gt;::iterator sorter = bin.begin();
+  <font color=#009900>// Sort the Trash:</font>
+  <font color=#0000ff>while</font>(sorter != bin.end()) {
+    Aluminum* ap =
+      <font color=#0000ff>dynamic_cast</font>&lt;Aluminum*&gt;(*sorter);
+    Paper* pp =
+      <font color=#0000ff>dynamic_cast</font>&lt;Paper*&gt;(*sorter);
+    Glass* gp =
+      <font color=#0000ff>dynamic_cast</font>&lt;Glass*&gt;(*sorter);
+    <font color=#0000ff>if</font>(ap) alBin.push_back(ap);
+    <font color=#0000ff>if</font>(pp) paperBin.push_back(pp);
+    <font color=#0000ff>if</font>(gp) glassBin.push_back(gp);
+    sorter++;
+  }
+  sumValue(alBin, out);
+  sumValue(paperBin, out);
+  sumValue(glassBin, out);
+  sumValue(bin, out);
+  purge(bin);
+} <font color=#009900>///:~</font></PRE></FONT></BLOCKQUOTE><DIV ALIGN="LEFT"><P><A NAME="_Toc305593314"></A><A NAME="_Toc305628786"></A><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">The nature of this problem is that the
+trash is thrown unclassified into a single bin, so the specific type information
+is lost. But later, the specific type information must be recovered to properly
+sort the trash, and so RTTI is used. In Chapter XX, an RTTI system was inserted
+into the class hierarchy, but as you can see here, it&#8217;s more convenient to
+use C++&#8217;s built-in
+RTTI.
+[&nbsp;<a HREF="mailto:cda@freshsources.com?subject=[TICV2] TIC2V2_CHAPTER9_I55">Comment</a>&nbsp;]
+
+<a NAME="TIC2V2_CHAPTER9_I56"></a>
+</FONT><A NAME="_Toc312374148"></A><A NAME="_Toc519042096"></A><BR></P></DIV>
+<A NAME="Heading303"></A><FONT FACE = "Verdana, Tahoma, Arial, Helvetica, Sans"><H2 ALIGN="LEFT">
+Mechanism &amp; overhead of RTTI<BR><A NAME="Index575"></A></H2></FONT>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Typically, RTTI is implemented by placing
+an additional pointer in the
+VTABLE<A NAME="Index576"></A><A NAME="Index577"></A>. This pointer points to the
+<B>typeinfo</B> <A NAME="Index578"></A><A NAME="Index579"></A>structure for that
+particular type. (Only one instance of the <B>typeinfo</B> structure is created
+for each new class.) So the effect of a <B>typeid(&#160;)</B> expression is
+quite simple: The VPTR is used to fetch the <B>typeinfo</B> pointer, and a
+reference to the resulting <B>typeinfo</B> structure is produced. Also, this is
+a deterministic process &#8211; you always know how long it&#8217;s going to
+take.
+[&nbsp;<a HREF="mailto:cda@freshsources.com?subject=[TICV2] TIC2V2_CHAPTER9_I56">Comment</a>&nbsp;]
+
+<a NAME="TIC2V2_CHAPTER9_I57"></a>
+</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">For a
+<B>dynamic_cast&lt;destination*&gt;(source_pointer)</B>, most cases are quite
+straightforward: <B>source_pointer</B>&#8217;s RTTI information is retrieved,
+and RTTI information for the type <B>destination*</B> is fetched. Then a library
+routine determines whether <B>source_pointer</B>&#8217;s type is of type
+<B>destination*</B> or a base class of <B>destination*</B>. The pointer it
+returns may be slightly adjusted because of multiple
+inheritance<A NAME="Index580"></A><A NAME="Index581"></A><A NAME="Index582"></A>
+if the base type isn&#8217;t the first base of the derived class. The situation
+is (of course) more complicated with multiple inheritance where a base type may
+appear more than once in an inheritance hierarchy and where virtual base classes
+are used.
+[&nbsp;<a HREF="mailto:cda@freshsources.com?subject=[TICV2] TIC2V2_CHAPTER9_I57">Comment</a>&nbsp;]
+
+<a NAME="TIC2V2_CHAPTER9_I58"></a>
+</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Because the library routine used for
+<B>dynamic_cast</B> must check through a list of base classes, the overhead for
+<B>dynamic_cast</B> is higher than <B>typeid(&#160;)</B> (but of course you get
+different information, which may be essential to your solution), and it&#8217;s
+nondeterministic because it may take more time to discover a base class than a
+derived class. In addition, <B>dynamic_cast</B> allows you to compare any type
+to any other type; you aren&#8217;t restricted to comparing types within the
+same hierarchy. This adds extra overhead to the library routine used by
+<B>dynamic_cast</B>.
+[&nbsp;<a HREF="mailto:cda@freshsources.com?subject=[TICV2] TIC2V2_CHAPTER9_I58">Comment</a>&nbsp;]
+
+<a NAME="TIC2V2_CHAPTER9_I59"></a>
+</FONT><A NAME="_Toc305593315"></A><A NAME="_Toc305628787"></A><A NAME="_Toc312374149"></A><A NAME="_Toc519042097"></A><BR></P></DIV>
+<A NAME="Heading304"></A><FONT FACE = "Verdana, Tahoma, Arial, Helvetica, Sans"><H2 ALIGN="LEFT">
+Creating your own RTTI<BR><A NAME="Index583"></A></H2></FONT>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">If your compiler doesn&#8217;t yet
+support RTTI, you can build it into your class libraries quite easily. This
+makes sense because RTTI was added to the language after observing that
+virtually all class libraries had some form of it anyway (and it was relatively
+&#8220;free&#8221; after exception handling was added because exceptions require
+exact knowledge of type
+information).
+[&nbsp;<a HREF="mailto:cda@freshsources.com?subject=[TICV2] TIC2V2_CHAPTER9_I59">Comment</a>&nbsp;]
+
+<a NAME="TIC2V2_CHAPTER9_I60"></a>
+</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Essentially, RTTI requires only a virtual
+function to identify the exact type of the class, and a function to take a
+pointer to the base type and cast it down to the more derived type; this
+function must produce a pointer to the more derived type. (You may also wish to
+handle references.) There are a number of approaches to implement your own RTTI,
+but all require a unique identifier for each class and a virtual function to
+produce type information. The following uses a <B>static</B> member function
+called <B>dynacast(&#160;)</B> that calls a type information function
+<B>dynamic_type(&#160;)</B>. Both functions must be defined for each new
+derivation:
+[&nbsp;<a HREF="mailto:cda@freshsources.com?subject=[TICV2] TIC2V2_CHAPTER9_I60">Comment</a>&nbsp;]
+
+<a NAME="TIC2V2_CHAPTER9_I61"></a>
+</FONT><BR></P></DIV>
+
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE><font color=#009900>//: C09:Selfrtti.cpp</font>
+<font color=#009900>// Your own RTTI system</font>
+<font color=#009900>//{L} ../TestSuite/Test</font>
+#include <font color=#004488>"..</font><font color=#004488>/purge.h"</font>
+#include &lt;iostream&gt;
+#include &lt;vector&gt;
+<font color=#0000ff>using</font> <font color=#0000ff>namespace</font> std;
+
+<font color=#0000ff>class</font> Security {
+<font color=#0000ff>protected</font>:
+  <font color=#0000ff>enum</font> { baseID = 1000 };
+<font color=#0000ff>public</font>:
+  <font color=#0000ff>virtual</font> <font color=#0000ff>int</font> dynamic_type(<font color=#0000ff>int</font> id) {
+    <font color=#0000ff>if</font>(id == baseID) <font color=#0000ff>return</font> 1;
+    <font color=#0000ff>return</font> 0;
+  }
+};
+
+<font color=#0000ff>class</font> Stock : <font color=#0000ff>public</font> Security {
+<font color=#0000ff>protected</font>:
+  <font color=#0000ff>enum</font> { typeID = baseID + 1 };
+<font color=#0000ff>public</font>:
+  <font color=#0000ff>int</font> dynamic_type(<font color=#0000ff>int</font> id) {
+    <font color=#0000ff>if</font>(id == typeID) <font color=#0000ff>return</font> 1;
+    <font color=#0000ff>return</font> Security::dynamic_type(id);
+  }
+  <font color=#0000ff>static</font> Stock* dynacast(Security* s) {
+    <font color=#0000ff>if</font>(s-&gt;dynamic_type(typeID))
+      <font color=#0000ff>return</font> (Stock*)s;
+    <font color=#0000ff>return</font> 0;
+  }
+};
+
+<font color=#0000ff>class</font> Bond : <font color=#0000ff>public</font> Security {
+<font color=#0000ff>protected</font>:
+  <font color=#0000ff>enum</font> { typeID = baseID + 2 };
+<font color=#0000ff>public</font>:
+  <font color=#0000ff>int</font> dynamic_type(<font color=#0000ff>int</font> id) {
+    <font color=#0000ff>if</font>(id == typeID) <font color=#0000ff>return</font> 1;
+    <font color=#0000ff>return</font> Security::dynamic_type(id);
+  }
+  <font color=#0000ff>static</font> Bond* dynacast(Security* s) {
+    <font color=#0000ff>if</font>(s-&gt;dynamic_type(typeID))
+      <font color=#0000ff>return</font> (Bond*)s;
+    <font color=#0000ff>return</font> 0;
+  }
+};
+
+<font color=#0000ff>class</font> Commodity : <font color=#0000ff>public</font> Security {
+<font color=#0000ff>protected</font>:
+  <font color=#0000ff>enum</font> { typeID = baseID + 3 };
+<font color=#0000ff>public</font>:
+  <font color=#0000ff>int</font> dynamic_type(<font color=#0000ff>int</font> id) {
+    <font color=#0000ff>if</font>(id == typeID) <font color=#0000ff>return</font> 1;
+    <font color=#0000ff>return</font> Security::dynamic_type(id);
+  }
+  <font color=#0000ff>static</font> Commodity* dynacast(Security* s) {
+    <font color=#0000ff>if</font>(s-&gt;dynamic_type(typeID))
+      <font color=#0000ff>return</font> (Commodity*)s;
+    <font color=#0000ff>return</font> 0;
+  }
+  <font color=#0000ff>void</font> special() {
+    cout &lt;&lt; <font color=#004488>"special Commodity function\n"</font>;
+  }
+};
+
+<font color=#0000ff>class</font> Metal : <font color=#0000ff>public</font> Commodity {
+<font color=#0000ff>protected</font>:
+  <font color=#0000ff>enum</font> { typeID = baseID + 4 };
+<font color=#0000ff>public</font>:
+  <font color=#0000ff>int</font> dynamic_type(<font color=#0000ff>int</font> id) {
+    <font color=#0000ff>if</font>(id == typeID) <font color=#0000ff>return</font> 1;
+    <font color=#0000ff>return</font> Commodity::dynamic_type(id);
+  }
+  <font color=#0000ff>static</font> Metal* dynacast(Security* s) {
+    <font color=#0000ff>if</font>(s-&gt;dynamic_type(typeID))
+      <font color=#0000ff>return</font> (Metal*)s;
+    <font color=#0000ff>return</font> 0;
+  }
+};
+
+<font color=#0000ff>int</font> main() {
+  vector&lt;Security*&gt; portfolio;
+  portfolio.push_back(<font color=#0000ff>new</font> Metal);
+  portfolio.push_back(<font color=#0000ff>new</font> Commodity);
+  portfolio.push_back(<font color=#0000ff>new</font> Bond);
+  portfolio.push_back(<font color=#0000ff>new</font> Stock);
+  vector&lt;Security*&gt;::iterator it = 
+    portfolio.begin();
+  <font color=#0000ff>while</font>(it != portfolio.end()) {
+    Commodity* cm = Commodity::dynacast(*it);
+    <font color=#0000ff>if</font>(cm) cm-&gt;special();
+    <font color=#0000ff>else</font> cout &lt;&lt; <font color=#004488>"not a Commodity"</font> &lt;&lt; endl;
+    it++;
+  }
+  cout &lt;&lt; <font color=#004488>"cast from intermediate pointer:\n"</font>;
+  Security* sp = <font color=#0000ff>new</font> Metal;
+  Commodity* cp = Commodity::dynacast(sp);
+  <font color=#0000ff>if</font>(cp) cout &lt;&lt; <font color=#004488>"it's a Commodity\n"</font>;
+  Metal* mp = Metal::dynacast(sp);
+  <font color=#0000ff>if</font>(mp) cout &lt;&lt; <font color=#004488>"it's a Metal too!\n"</font>;
+  purge(portfolio);
+} <font color=#009900>///:~</font></PRE></FONT></BLOCKQUOTE>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Each subclass must create its own
+<B>typeID</B>, redefine the <B>virtual dynamic_type(&#160;)</B> function to
+return that <B>typeID</B>, and define a <B>static</B> member called
+<B>dynacast(&#160;)</B>, which takes the base pointer (or a pointer at any level
+in a deeper hierarchy &#8211; in that case, the pointer is simply
+upcast).
+[&nbsp;<a HREF="mailto:cda@freshsources.com?subject=[TICV2] TIC2V2_CHAPTER9_I61">Comment</a>&nbsp;]
+
+<a NAME="TIC2V2_CHAPTER9_I62"></a>
+</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">In the classes derived from
+<B>Security</B>, you can see that each defines its own <B>typeID</B> enumeration
+by adding to <B>baseID</B>. It&#8217;s essential that <B>baseID</B> be directly
+accessible in the derived class because the <B>enum</B> must be evaluated at
+compile-time, so the usual approach of reading private data with an
+<B>inline</B> function would fail. This is a good example of the need for the
+<B>protected</B>
+<A NAME="Index584"></A>mechanism.
+[&nbsp;<a HREF="mailto:cda@freshsources.com?subject=[TICV2] TIC2V2_CHAPTER9_I62">Comment</a>&nbsp;]
+
+<a NAME="TIC2V2_CHAPTER9_I63"></a>
+</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">The <B>enum</B> <B>baseID</B> establishes
+a base identifier for all types derived from <B>Security</B>. That way, if an
+identifier clash ever occurs, you can change all the identifiers by changing the
+base value. (However, because this scheme doesn&#8217;t compare different
+inheritance trees, an identifier clash is unlikely). In all the classes, the
+class identifier number is <B>protected</B>, so it&#8217;s directly available to
+derived classes but not to the end
+user.
+[&nbsp;<a HREF="mailto:cda@freshsources.com?subject=[TICV2] TIC2V2_CHAPTER9_I63">Comment</a>&nbsp;]
+
+<a NAME="TIC2V2_CHAPTER9_I64"></a>
+</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">This example illustrates what built-in
+RTTI must cope with. Not only must you be able to determine the exact type, you
+must also be able to find out whether your exact type is <I>derived from</I> the
+type you&#8217;re looking for. For example, <B>Metal </B>is derived from
+<B>Commodity</B>,<B> </B>which has a function called <B>special(&#160;)</B>, so
+if you have a <B>Metal</B> object you can call <B>special(&#160;)</B> for it. If
+<B>dynamic_type(&#160;) </B>told you only the exact type of the object, you
+could ask it if a <B>Metal</B> were a <B>Commodity</B>, and it would say
+&#8220;no,&#8221; which is untrue. Therefore, the system must be set up so it
+will properly cast to intermediate types in a hierarchy as well as exact
+types.
+[&nbsp;<a HREF="mailto:cda@freshsources.com?subject=[TICV2] TIC2V2_CHAPTER9_I64">Comment</a>&nbsp;]
+
+<a NAME="TIC2V2_CHAPTER9_I65"></a>
+</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">The <B>dynacast(&#160;) </B>function
+determines the type information by calling the <B>virtual
+dynamic_type(&#160;)</B> function for the <B>Security</B> pointer it&#8217;s
+passed. This function takes an argument of the <B>typeID </B>for the class
+you&#8217;re trying to cast to. It&#8217;s a virtual function, so the function
+body is the one for the exact type of the object. Each
+<B>dynamic_type(&#160;)</B> function first checks to see if the identifier it
+was passed is an exact match for its own type. If that isn&#8217;t true, it must
+check to see if it matches a base type; this is accomplished by making a call to
+the base class <B>dynamic_type(&#160;)</B>. Just like a recursive function call,
+each <B>dynamic_type(&#160;) </B>checks against its own identifier. If it
+doesn&#8217;t find a match, it returns the result of calling the base class
+<B>dynamic_type(&#160;)</B>. When the root of the hierarchy is reached, zero<B>
+</B>is returned to indicate no match was
+found.
+[&nbsp;<a HREF="mailto:cda@freshsources.com?subject=[TICV2] TIC2V2_CHAPTER9_I65">Comment</a>&nbsp;]
+
+<a NAME="TIC2V2_CHAPTER9_I66"></a>
+</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">If <B>dynamic_type(&#160;)</B> returns
+one (for &#8220;true&#8221;) the object pointed to is either the exact type
+you&#8217;re asking about or derived from that type, and <B>dynacast(&#160;)</B>
+takes the <B>Security</B> pointer and casts it to the desired type. If the
+return value is false, <B>dynacast(&#160;)</B> returns zero to indicate the cast
+was unsuccessful. In this way it works just like the C++ <B>dynamic_cast</B>
+operator.
+[&nbsp;<a HREF="mailto:cda@freshsources.com?subject=[TICV2] TIC2V2_CHAPTER9_I66">Comment</a>&nbsp;]
+
+<a NAME="TIC2V2_CHAPTER9_I67"></a>
+</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">The C++ <B>dynamic_cast</B> operator does
+one more thing the above scheme can&#8217;t do: It compares types from one
+inheritance hierarchy to another, completely separate inheritance hierarchy.
+This adds generality to the system for those unusual cases where you want to
+compare across hierarchies, but it also adds some complexity and
+overhead.
+[&nbsp;<a HREF="mailto:cda@freshsources.com?subject=[TICV2] TIC2V2_CHAPTER9_I67">Comment</a>&nbsp;]
+
+<a NAME="TIC2V2_CHAPTER9_I68"></a>
+</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">You can easily imagine how to create a
+DYNAMIC_CAST macro that uses the above scheme and allows an easier transition to
+the built-in <B>dynamic_cast</B>
+operator.
+[&nbsp;<a HREF="mailto:cda@freshsources.com?subject=[TICV2] TIC2V2_CHAPTER9_I68">Comment</a>&nbsp;]
+
+<a NAME="TIC2V2_CHAPTER9_I69"></a>
+</FONT><A NAME="_Toc305593316"></A><A NAME="_Toc305628788"></A><A NAME="_Toc312374150"></A><A NAME="_Toc519042098"></A><BR></P></DIV>
+<A NAME="Heading305"></A><FONT FACE = "Verdana, Tahoma, Arial, Helvetica, Sans"><H2 ALIGN="LEFT">
+Explicit cast syntax</H2></FONT>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Whenever you use a cast, you&#8217;re
+breaking the type<A NAME="Index585"></A> system.
+<A NAME="Index586"></A></FONT><A NAME="fnB23" HREF="#fn23">[23]</A><A NAME="Index587"></A><FONT FACE="Georgia">
+You&#8217;re telling the compiler that even though you know an object is a
+certain type, you&#8217;re going to pretend it is a different type. This is an
+inherently dangerous activity, and a clear source of
+errors.
+[&nbsp;<a HREF="mailto:cda@freshsources.com?subject=[TICV2] TIC2V2_CHAPTER9_I69">Comment</a>&nbsp;]
+
+<a NAME="TIC2V2_CHAPTER9_I70"></a>
+</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Unfortunately, each cast is different:
+the name of the pretender type surrounded by parentheses. So if you are given a
+piece of code that isn&#8217;t working correctly and you know you want to
+examine all casts to see if they&#8217;re the source of the errors, how can you
+guarantee that you find all the casts? In a C program, you can&#8217;t. For one
+thing, the C compiler doesn&#8217;t always require a cast (it&#8217;s possible
+to assign dissimilar types <I>through</I> a void pointer without being forced to
+use a cast), and the casts all look different, so you can&#8217;t know if
+you&#8217;ve searched for every
+one.
+[&nbsp;<a HREF="mailto:cda@freshsources.com?subject=[TICV2] TIC2V2_CHAPTER9_I70">Comment</a>&nbsp;]
+
+<a NAME="TIC2V2_CHAPTER9_I71"></a>
+</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">To solve this problem, C++ provides a
+consistent casting syntax using four reserved words:
+<B>dynamic_cast<A NAME="Index588"></A></B> (the subject of the first part of
+this chapter), <B>const_cast<A NAME="Index589"></A></B>, <B>static_cast,
+<A NAME="Index590"></A></B>and<B> reinterpret_cast<A NAME="Index591"></A></B>.
+This window of opportunity opened up when the need for <B>dynamic_cast</B> arose
+&#8211; the meaning of the existing cast syntax was already far too overloaded
+to support any additional
+functionality.
+[&nbsp;<a HREF="mailto:cda@freshsources.com?subject=[TICV2] TIC2V2_CHAPTER9_I71">Comment</a>&nbsp;]
+
+<a NAME="TIC2V2_CHAPTER9_I72"></a>
+</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">By using these casts instead of the
+<B>(newtype)</B> syntax, you can easily search for<A NAME="Index592"></A> all
+the casts in any program. To support existing code, most compilers have various
+levels of error/warning generation that can be turned on and off. But if you
+turn on full errors for the explicit cast syntax, you can be guaranteed that
+you&#8217;ll find all the places in your project where casts occur, which will
+make bug-hunting much
+easier.
+[&nbsp;<a HREF="mailto:cda@freshsources.com?subject=[TICV2] TIC2V2_CHAPTER9_I72">Comment</a>&nbsp;]
+
+<a NAME="TIC2V2_CHAPTER9_I73"></a>
+</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">The following table describes the
+different forms of
+casting<A NAME="Index593"></A><A NAME="Index594"></A><A NAME="Index595"></A>:</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><TABLE BORDER>
+<TR VALIGN="TOP">
+<TD>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia"><B>static_cast</B></FONT><BR></P></DIV>
+</TD>
+<TD>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">For &#8220;well-behaved&#8221; and
+&#8220;reasonably well-behaved&#8221; casts, including things you might now do
+without a cast (e.g., an upcast or automatic type conversion).</FONT><BR></P></DIV>
+</TD>
+</TR>
+<TR VALIGN="TOP">
+<TD>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia"><B>const_cast</B></FONT><BR></P></DIV>
+</TD>
+<TD>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">To cast away <B>const</B> and/or
+<B>volatile</B>.</FONT><BR></P></DIV>
+</TD>
+</TR>
+<TR VALIGN="TOP">
+<TD>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia"><B>dynamic_cast</B></FONT><BR></P></DIV>
+</TD>
+<TD>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">For type-safe downcasting (described
+earlier in the chapter).</FONT><BR></P></DIV>
+</TD>
+</TR>
+<TR VALIGN="TOP">
+<TD>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia"><B>reinterpret_cast</B></FONT><BR></P></DIV>
+</TD>
+<TD>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">To cast to a completely different
+meaning. The key is that you&#8217;ll need to cast back to the original type to
+use it safely. The type you cast to is typically used only for bit twiddling or
+some other mysterious purpose. This is the most dangerous of all the
+casts.</FONT><BR></P></DIV>
+</TD>
+</TR>
+</TABLE></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">The three explicit casts will be
+described more completely in the following
+sections.
+[&nbsp;<a HREF="mailto:cda@freshsources.com?subject=[TICV2] TIC2V2_CHAPTER9_I73">Comment</a>&nbsp;]
+
+<a NAME="TIC2V2_CHAPTER9_I74"></a>
+</FONT><A NAME="_Toc305593317"></A><A NAME="_Toc305628789"></A><A NAME="_Toc312374154"></A><A NAME="_Toc519042099"></A><BR></P></DIV>
+<A NAME="Heading306"></A><FONT FACE = "Verdana, Tahoma, Arial, Helvetica, Sans"><H2 ALIGN="LEFT">
+Summary</H2></FONT>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">RTTI is a convenient extra feature, a bit
+of icing on the cake. Although normally you upcast a pointer to a base class and
+then use the generic interface of that base class (via virtual functions),
+occasionally you get into a corner where things can be more effective if you
+know the exact type of the object pointed to by the base pointer, and
+that&#8217;s what RTTI provides. Because some form of virtual-function-based
+RTTI has appeared in almost all class libraries, this is a useful feature
+because it means
+[&nbsp;<a HREF="mailto:cda@freshsources.com?subject=[TICV2] TIC2V2_CHAPTER9_I74">Comment</a>&nbsp;]
+
+<a NAME="TIC2V2_CHAPTER9_I75"></a>
+</FONT><BR></P></DIV>
+<OL>
+<LI><FONT FACE="Verdana">	</FONT><FONT FACE="Georgia">You don&#8217;t have to
+build it into your own
+libraries.</FONT><LI><FONT FACE="Verdana">	</FONT><FONT FACE="Georgia">You
+don&#8217;t have to worry whether it will be built into someone else&#8217;s
+library.</FONT><LI><FONT FACE="Verdana">	</FONT><FONT FACE="Georgia">You
+don&#8217;t have the extra programming overhead of maintaining an RTTI scheme
+during
+inheritance.</FONT><LI><FONT FACE="Verdana">	</FONT><FONT FACE="Georgia">The
+syntax is consistent, so you don&#8217;t have to figure out a new one for each
+library.</FONT></OL><DIV ALIGN="LEFT"><P><FONT FACE="Georgia">While RTTI is a
+convenience, like most features in C++ it can be misused by either a naive or
+determined programmer. The most common misuse may come from the programmer who
+doesn&#8217;t understand virtual functions and uses RTTI to do type-check coding
+instead. The philosophy of C++ seems to be to provide you with powerful tools
+and guard for type violations and integrity, but if you want to deliberately
+misuse or get around a language feature, there&#8217;s nothing to stop you.
+Sometimes a slight burn is the fastest way to gain
+experience.
+[&nbsp;<a HREF="mailto:cda@freshsources.com?subject=[TICV2] TIC2V2_CHAPTER9_I75">Comment</a>&nbsp;]
+
+<a NAME="TIC2V2_CHAPTER9_I76"></a>
+</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">The explicit cast syntax will be a big
+help during debugging because casting opens a hole into your type system and
+allows errors to slip in. The explicit cast syntax will allow you to more easily
+locate these error
+entryways.
+[&nbsp;<a HREF="mailto:cda@freshsources.com?subject=[TICV2] TIC2V2_CHAPTER9_I76">Comment</a>&nbsp;]
+
+<a NAME="TIC2V2_CHAPTER9_I77"></a>
+</FONT><A NAME="_Toc312374155"></A><A NAME="_Toc519042100"></A><BR></P></DIV>
+<A NAME="Heading307"></A><FONT FACE = "Verdana, Tahoma, Arial, Helvetica, Sans"><H2 ALIGN="LEFT">
+Exercises</H2></FONT>
+<OL>
+<LI><FONT FACE="Verdana">	</FONT><FONT FACE="Georgia">Modify C16:AutoCounter.h
+in volume 1 of this book so that it becomes a useful debugging tool. It will be
+used as a nested member of each class that you are interested in tracing. Turn
+AutoCounter into a template that takes the class name of the surrounding class
+as the template argument, and in all the error messages use RTTI to print out
+the name of the
+class.
+[&nbsp;<a HREF="mailto:cda@freshsources.com?subject=[TICV2] TIC2V2_CHAPTER9_I77">Comment</a>&nbsp;]
+
+<a NAME="TIC2V2_CHAPTER9_I78"></a>
+</FONT><LI><FONT FACE="Verdana">	</FONT><FONT FACE="Georgia">Use
+RTTI to assist in program debugging by printing out the exact name of a template
+using typeid(&#160;). Instantiate the template for various types and see what
+the results
+are.
+[&nbsp;<a HREF="mailto:cda@freshsources.com?subject=[TICV2] TIC2V2_CHAPTER9_I78">Comment</a>&nbsp;]
+
+<a NAME="TIC2V2_CHAPTER9_I79"></a>
+</FONT><LI><FONT FACE="Verdana">	</FONT><FONT FACE="Georgia">Implement
+the function TurnColorIfYouAreA(&#160;) described earlier in this chapter using
+RTTI.
+[&nbsp;<a HREF="mailto:cda@freshsources.com?subject=[TICV2] TIC2V2_CHAPTER9_I79">Comment</a>&nbsp;]
+
+<a NAME="TIC2V2_CHAPTER9_I80"></a>
+</FONT><LI><FONT FACE="Verdana">	</FONT><FONT FACE="Georgia">Modify
+the Instrument hierarchy from Chapter XX by first copying Wind5.cpp to a new
+location. Now add a virtual ClearSpitValve(&#160;) function to the Wind class,
+and redefine it for all the classes inherited from Wind. Instantiate a TStash to
+hold Instrument pointers and fill it up with various types of Instrument objects
+created using new. Now use RTTI to move through the container looking for
+objects in class Wind, or derived from Wind. Call the ClearSpitValve(&#160;)
+function for these objects. Notice that it would unpleasantly confuse the
+Instrument base class if it contained a ClearSpitValve(&#160;)
+function.
+[&nbsp;<a HREF="mailto:cda@freshsources.com?subject=[TICV2] TIC2V2_CHAPTER9_I80">Comment</a>&nbsp;]
+
+</FONT></OL>
+<HR><DIV ALIGN="LEFT"><P><A NAME="fn23" HREF="#fnB23">[23]</A><FONT FACE="Georgia" SIZE=2>
+See Jos&eacute;e Lajoie , &#8220;The new cast notation and the bool data
+type,&#8221; C++ Report, September, 1994 pp. 46-51.</FONT><BR></P></DIV>
+
+<DIV ALIGN="CENTER">
+    <FONT FACE="Verdana, Tahoma, Arial, Helvetica, Sans" size = "-1">
+     [ <a href="Part3.htm">Previous Chapter</a> ] 
+    
+    [ <a href="SimpCont.htm">Short TOC</a> ] 
+    [ <a href="Contents.htm">Table of Contents</a> ] 
+  
+        [ <a href="DocIdx.htm">Index</a> ]
+        
+     [ <a href="Chap10.htm">Next Chapter</a> ] 
+    </FONT>
+    <BR>
+ Last Update:08/19/2001</P></DIV>
+
+</BODY>
+
+</HTML>

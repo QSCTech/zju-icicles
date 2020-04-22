@@ -1,0 +1,1517 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<HTML>
+<!--
+This document was converted from RTF source: 
+By rtftohtml 4.19
+See http://www.sunpack.com/RTF
+Filename:TIC2Vone.rtf
+Application Directory:C:\TOOLS\RTF2HTML\
+Subject:
+Author:Bruce Eckel
+Operator:Bruce Eckel
+Document Comments:
+Version Comments:
+Comments:
+Keywords:
+Translation Date:09/27/2001
+Translation Time:05:25:50
+Translation Platform:Win32
+Number of Output files:22
+This File:Chapter13.html
+SplitDepth=1
+SkipNavPanel=1
+SkipLeadingToc=1
+SkipTrailingToc=1
+GenContents=1
+GenFrames=1
+GenIndex=1
+-->
+<HEAD lang="en"><META http-equiv="Content-Type" content="text/html">
+<TITLE>13: Dynamic Object Creation</TITLE>
+</HEAD>
+
+<BODY  BGCOLOR="#FFFFFF"><DIV ALIGN="CENTER">
+  <a href="http://www.MindView.net">
+  <img src="mindview-head.gif" alt="MindView Inc." BORDER = "0"></a>
+  <CENTER>
+    <FONT FACE="Verdana" size = "-1">
+    [ <a href="README-HTML.txt">Viewing Hints</a> ]
+    [ <a href="http://www.mindview.net/CPPServices/SolutionGuide.html">Exercise Solutions</a> ]
+    [ <a href="http://www.mindview.net/ThinkingInCPP2e.html">Volume 2</a> ]
+    [ <a href="http://www.mindview.net/MailingList.html">Free Newsletter</a> ] <br>
+    [ <a href="http://www.mindview.net/CPPServices/#PublicSeminars">Seminars</a> ]
+    [ <a href="http://www.mindview.net/CPPServices/#SeminarsOnCD">Seminars on CD ROM</a> ]
+    [ <a href="http://www.mindview.net/CPPServices/#ConsultingServices">Consulting</a> ]
+    </FONT>
+  <H2><FONT FACE="Verdana">
+  Thinking in C++, 2nd ed. Volume 1</FONT></H2></FONT>
+  <H3><FONT FACE="Verdana">&copy;2000 by Bruce Eckel</FONT></H3></FONT>
+  
+    <FONT FACE="Verdana" size = "-1">
+     [ <a href="Chapter12.html">Previous Chapter</a> ] 
+    [ <a href="Contents.html">Table of Contents</a> ] 
+    [ <a href="DocIndex.html">Index</a> ]
+     [ <a href="Chapter14.html">Next Chapter</a> ] 
+    </FONT>
+    
+  </CENTER>
+  </P></DIV><A NAME="_Toc472654966"></A><A NAME="Heading381"></A><FONT FACE = "Verdana"><H1 ALIGN="LEFT">
+13: Dynamic Object Creation</H1></FONT>
+<DIV ALIGN="LEFT"><P><FONT FACE="Verdana" SIZE=4>Sometimes you know the exact
+quantity, type, and lifetime<A NAME="Index2132"></A><A NAME="Index2133"></A> of
+the objects in your program. But not
+always.<A NAME="Index2134"></A></FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">How many planes will an air-traffic
+system need to handle? How many shapes will a CAD system use? How many nodes
+will there be in a network?</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">To solve the general programming problem,
+it&#8217;s essential that you be able to create and destroy objects at runtime.
+Of course, C has always provided the <I>dynamic memory allocation</I> functions
+<A NAME="Index2135"></A><A NAME="Index2136"></A><A NAME="Index2137"></A><B>malloc(&#160;)
+</B>and <B>free(&#160;) </B>(along with variants of <B>malloc(&#160;)</B>) that
+allocate storage from the <I>heap</I> (also called the <I>free store</I>) at
+runtime.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">However, this simply won&#8217;t work in
+C++. The constructor <A NAME="Index2138"></A>doesn&#8217;t allow you to hand it
+the address of the memory to initialize, and for good reason. If you could do
+that, you
+might<A NAME="Index2139"></A><A NAME="Index2140"></A>:</FONT><BR></P></DIV>
+<OL>
+<LI><FONT FACE="Verdana">	</FONT><FONT FACE="Georgia">Forget. Then guaranteed
+initialization of objects in C++ wouldn&#8217;t be
+guaranteed.</FONT><LI><FONT FACE="Verdana">	</FONT><FONT FACE="Georgia">Accidentally
+do something to the object before you initialize it, expecting the right thing
+to happen.</FONT><LI><FONT FACE="Verdana">	</FONT><FONT FACE="Georgia">Hand it
+the wrong-sized object.</FONT></OL><DIV ALIGN="LEFT"><P><FONT FACE="Georgia">And of
+course, even if you did everything correctly, anyone who modifies your program
+is prone to the same errors. Improper initialization is responsible for a large
+portion of programming problems, so it&#8217;s especially important to guarantee
+constructor calls for objects created on the heap.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">So how does C++ guarantee proper
+<A NAME="Index2141"></A><A NAME="Index2142"></A><A NAME="Index2143"></A><A NAME="Index2144"></A>initialization
+and cleanup, but allow you to create objects dynamically on the
+heap?</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">The answer is by bringing dynamic object
+creation into the core of the language. <B>malloc(&#160;)</B> and
+<B>free(&#160;)</B> are library functions, and thus outside the control of the
+compiler. However, if you have an <I>operator</I> to perform the combined act of
+dynamic storage allocation and initialization and another operator to perform
+the combined act of cleanup and releasing storage, the compiler can still
+guarantee that constructors and destructors will be called for all
+objects.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">In this chapter, you&#8217;ll learn how
+C++&#8217;s <B>new</B> and <B>delete</B> elegantly solve this problem by safely
+creating objects on the
+heap.</FONT><A NAME="_Toc305593243"></A><A NAME="_Toc305628715"></A><A NAME="_Toc312373992"></A><A NAME="_Toc472654967"></A><BR></P></DIV>
+<A NAME="Heading382"></A><FONT FACE = "Verdana"><H2 ALIGN="LEFT">
+Object creation</H2></FONT>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">When a C++ object is created, two events
+occur:</FONT><BR></P></DIV>
+<OL>
+<LI><FONT FACE="Verdana">	</FONT><FONT FACE="Georgia">Storage is allocated for
+the object.</FONT><LI><FONT FACE="Verdana">	</FONT><FONT FACE="Georgia">The
+constructor is called to initialize that
+storage.</FONT></OL><DIV ALIGN="LEFT"><P><FONT FACE="Georgia">By now you should
+believe that step two <I>always</I> happens. C++ enforces it because
+uninitialized objects are a major source of program bugs. It doesn&#8217;t
+matter where or how the object is created &#8211; the constructor is always
+called.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Step one, however, can occur in several
+ways, or at alternate
+times<A NAME="Index2145"></A><A NAME="Index2146"></A><A NAME="Index2147"></A><A NAME="Index2148"></A><A NAME="Index2149"></A><A NAME="Index2150"></A><A NAME="Index2151"></A><A NAME="Index2152"></A>:</FONT><BR></P></DIV>
+<OL>
+<LI><FONT FACE="Verdana">	</FONT><FONT FACE="Georgia">Storage can be allocated
+before the program begins, in the static storage area. This storage exists for
+the life of the
+program.</FONT><LI><FONT FACE="Verdana">	</FONT><FONT FACE="Georgia">Storage can
+be created on the stack whenever a particular execution point is reached (an
+opening brace). That storage is released automatically at the complementary
+execution point (the closing brace). These stack-allocation operations are built
+into the instruction set of the processor and are very efficient. However, you
+have to know exactly how many variables you need when you&#8217;re writing the
+program so the compiler can generate the right
+code.</FONT><LI><FONT FACE="Verdana">	</FONT><FONT FACE="Georgia">Storage can be
+allocated from a pool of memory called the heap (also known as the free store).
+This is called dynamic memory allocation. To allocate this memory, a function is
+called at runtime; this means you can decide at any time that you want some
+memory and how much you need. You are also responsible for determining when to
+release the memory, which means the lifetime of that memory can be as long as
+you choose &#8211; it isn&#8217;t determined by
+scope.</FONT></OL><DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Often these three
+regions are placed in a single contiguous piece of physical memory: the static
+area, the stack, and the heap (in an order determined by the compiler writer).
+However, there are no rules. The stack may be in a special place, and the heap
+may be implemented by making calls for chunks of memory from the operating
+system. As a programmer, these things are normally shielded from you, so all you
+need to think about is that the memory is there when you call for
+it.</FONT><A NAME="_Toc312373993"></A><A NAME="_Toc472654968"></A><BR></P></DIV>
+<A NAME="Heading383"></A><FONT FACE = "Verdana"><H3 ALIGN="LEFT">
+C&#8217;s approach to the heap</H3></FONT>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">To allocate memory dynamically at
+runtime, C provides functions in its standard library:
+<B>malloc(&#160;)<A NAME="Index2153"></A></B> and its variants
+<B>calloc(&#160;)<A NAME="Index2154"></A></B> and
+<B>realloc(&#160;)<A NAME="Index2155"></A></B> to produce memory from the
+heap<A NAME="Index2156"></A><A NAME="Index2157"></A>, and
+<B>free(&#160;)<A NAME="Index2158"></A></B> to release the memory back to the
+heap. These functions are pragmatic but primitive and require understanding and
+care on the part of the programmer. To create an instance of a class on the heap
+using C&#8217;s dynamic memory functions, you&#8217;d have to do something like
+this:</FONT><BR></P></DIV>
+
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE><font color=#009900>//: C13:MallocClass.cpp</font>
+<font color=#009900>// Malloc with class objects</font>
+<font color=#009900>// What you'd have to do if not for "new"</font>
+#include <font color=#004488>"../require.h"</font>
+#include &lt;cstdlib&gt; <font color=#009900>// malloc() &amp; free()</font>
+#include &lt;cstring&gt; <font color=#009900>// memset()</font>
+#include &lt;iostream&gt;
+<font color=#0000ff>using</font> <font color=#0000ff>namespace</font> std;
+
+<font color=#0000ff>class</font> Obj {
+  <font color=#0000ff>int</font> i, j, k;
+  <font color=#0000ff>enum</font> { sz = 100 };
+  <font color=#0000ff>char</font> buf[sz];
+<font color=#0000ff>public</font>:
+  <font color=#0000ff>void</font> initialize() { <font color=#009900>// Can't use constructor</font>
+    cout &lt;&lt; <font color=#004488>"initializing Obj"</font> &lt;&lt; endl;
+    i = j = k = 0;
+    memset(buf, 0, sz);
+  }
+  <font color=#0000ff>void</font> destroy() <font color=#0000ff>const</font> { <font color=#009900>// Can't use destructor</font>
+    cout &lt;&lt; <font color=#004488>"destroying Obj"</font> &lt;&lt; endl;
+  }
+};
+
+<font color=#0000ff>int</font> main() {
+  Obj* obj = (Obj*)malloc(<font color=#0000ff>sizeof</font>(Obj));
+  require(obj != 0);
+  obj-&gt;initialize();
+  <font color=#009900>// ... sometime later:</font>
+  obj-&gt;destroy();
+  free(obj);
+} <font color=#009900>///:~</font></PRE></FONT></BLOCKQUOTE>
+
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">You can see the use of
+<B>malloc(&#160;)</B> to create storage for the object in the
+line:</FONT><BR></P></DIV>
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE>Obj* obj = (Obj*)malloc(<font color=#0000ff>sizeof</font>(Obj));</PRE></FONT></BLOCKQUOTE>
+
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Here, the user must determine the size of
+the object (one place for an error). <B>malloc(&#160;)</B> returns a
+<B>void*</B> because it just produces a patch of memory, not an object. C++
+doesn&#8217;t allow a <B>void*</B> to be assigned to any other pointer, so it
+must be cast.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Because <B>malloc(&#160;)</B> may fail to
+find any memory (in which case it returns zero), you must check the returned
+pointer to make sure it was successful.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">But the worst problem is this
+line:</FONT><BR></P></DIV>
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE>Obj-&gt;initialize();</PRE></FONT></BLOCKQUOTE>
+
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">If users make it this far correctly, they
+must remember to initialize the object before it is used. Notice that a
+constructor was not used because the constructor <A NAME="Index2159"></A>cannot
+be called
+explicitly</FONT><A NAME="fnB50" HREF="#fn50">[50]</A><FONT FACE="Georgia">
+&#8211; it&#8217;s called for you by the compiler when an object is created. The
+problem here is that the user now has the option to forget to perform the
+initialization before the object is used, thus reintroducing a major source of
+bugs.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">It also turns out that many programmers
+seem to find C&#8217;s dynamic memory functions too confusing and complicated;
+it&#8217;s not uncommon to find C programmers who use virtual memory
+<A NAME="Index2160"></A>machines allocating huge arrays of variables in the
+static storage area to avoid thinking about dynamic memory allocation. Because
+C++ is attempting to make library use safe and effortless for the casual
+programmer, C&#8217;s approach to dynamic memory is
+unacceptable.</FONT><A NAME="_Toc312373994"></A><A NAME="_Toc472654969"></A><BR></P></DIV>
+<A NAME="Heading384"></A><FONT FACE = "Verdana"><H3 ALIGN="LEFT">
+operator new</H3></FONT>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">The solution in C++ is to combine all the
+actions necessary to create an object into a single operator called
+<B>new<A NAME="Index2161"></A><A NAME="Index2162"></A></B>. When you create an
+object with <B>new</B> (using a
+<I>new-expression<A NAME="Index2163"></A><A NAME="Index2164"></A></I>), it
+allocates enough storage on the heap to hold the object and calls the
+constructor for that storage. Thus, if you say</FONT><BR></P></DIV>
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE>MyType *fp = <font color=#0000ff>new</font> MyType(1,2);</PRE></FONT></BLOCKQUOTE>
+
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">at runtime, the equivalent of
+<B>malloc(sizeof(MyType))</B> is called (often, it is literally a call to
+<B>malloc(&#160;)<A NAME="Index2165"></A></B>), and the constructor for
+<B>MyType</B> is called with the resulting address as the <B>this</B>
+<A NAME="Index2166"></A>pointer, using <B>(1,2)</B> as the argument list. By the
+time the pointer is assigned to <B>fp</B>, it&#8217;s a live, initialized object
+&#8211; you can&#8217;t even get your hands on it before then. It&#8217;s also
+automatically the proper <B>MyType</B> type so no cast
+<A NAME="Index2167"></A>is necessary.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">The default <B>new</B> checks to make
+sure the memory allocation was successful before passing the address to the
+constructor, so you don&#8217;t have to explicitly determine if the call was
+successful. Later in the chapter you&#8217;ll find out what happens if
+there&#8217;s no memory left.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">You can create a new-expression using any
+constructor available for the class. If the constructor has no arguments, you
+write the new-expression without the constructor argument list:</FONT><BR></P></DIV>
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE>MyType *fp = <font color=#0000ff>new</font> MyType;</PRE></FONT></BLOCKQUOTE>
+
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Notice how simple the process of creating
+objects on the heap becomes &#8211; a single expression, with all the sizing,
+conversions, and safety checks built in. It&#8217;s as easy to create an object
+on the heap as it is on the
+stack.</FONT><A NAME="_Toc312373995"></A><A NAME="_Toc472654970"></A><BR></P></DIV>
+<A NAME="Heading385"></A><FONT FACE = "Verdana"><H3 ALIGN="LEFT">
+operator delete</H3></FONT>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">The complement to the new-expression is
+the <I>delete-expression<A NAME="Index2168"></A></I>, which first calls the
+destructor and then releases the memory (often with a call to
+<B>free(&#160;)<A NAME="Index2169"></A></B>). Just as a new-expression returns a
+pointer to the object, a delete-expression requires the address of an
+object.</FONT><BR></P></DIV>
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE><font color=#0000ff>delete</font> fp;</PRE></FONT></BLOCKQUOTE>
+
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">This destructs and then releases the
+storage for the dynamically allocated <B>MyType</B> object created
+earlier.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia"><B>delete<A NAME="Index2170"></A></B> can
+be called only for an object created by <B>new</B>. If you <B>malloc(&#160;)</B>
+(or <B>calloc(&#160;)</B> or <B>realloc(&#160;)</B>) an object and then
+<B>delete</B> it, the behavior is undefined. Because most default
+implementations of <B>new</B> and <B>delete</B> use <B>malloc(&#160;)</B> and
+<B>free(&#160;)</B>, you&#8217;d probably end up releasing the memory without
+calling the destructor.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">If the pointer you&#8217;re deleting is
+zero<A NAME="Index2171"></A>, nothing will happen. For this reason, people often
+recommend setting a pointer to zero immediately after you delete it, to prevent
+deleting it twice. Deleting an object more than once is definitely a bad thing
+to do, and will cause
+problems<A NAME="Index2172"></A>.</FONT><A NAME="_Toc312373996"></A><A NAME="_Toc472654971"></A><BR></P></DIV>
+<A NAME="Heading386"></A><FONT FACE = "Verdana"><H3 ALIGN="LEFT">
+A simple example</H3></FONT>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">This example shows that initialization
+takes place:</FONT><BR></P></DIV>
+
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE><font color=#009900>//: C13:Tree.h</font>
+#ifndef TREE_H
+#define TREE_H
+#include &lt;iostream&gt;
+
+<font color=#0000ff>class</font> Tree {
+  <font color=#0000ff>int</font> height;
+<font color=#0000ff>public</font>:
+  Tree(<font color=#0000ff>int</font> treeHeight) : height(treeHeight) {}
+  ~Tree() { std::cout &lt;&lt; <font color=#004488>"*"</font>; }
+  <font color=#0000ff>friend</font> std::ostream&amp;
+  <font color=#0000ff>operator</font>&lt;&lt;(std::ostream&amp; os, <font color=#0000ff>const</font> Tree* t) {
+    <font color=#0000ff>return</font> os &lt;&lt; <font color=#004488>"Tree height is: "</font>
+              &lt;&lt; t-&gt;height &lt;&lt; std::endl;
+  }
+}; 
+#endif <font color=#009900>// TREE_H ///:~</font></PRE></FONT></BLOCKQUOTE>
+
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE><font color=#009900>//: C13:NewAndDelete.cpp</font>
+<font color=#009900>// Simple demo of new &amp; delete</font>
+#include <font color=#004488>"Tree.h"</font>
+<font color=#0000ff>using</font> <font color=#0000ff>namespace</font> std;
+
+<font color=#0000ff>int</font> main() {
+  Tree* t = <font color=#0000ff>new</font> Tree(40);
+  cout &lt;&lt; t;
+  <font color=#0000ff>delete</font> t;
+} <font color=#009900>///:~</font></PRE></FONT></BLOCKQUOTE>
+
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">We can prove that the constructor is
+called by printing out the value of the <B>Tree</B>. Here, it&#8217;s done by
+overloading the <B>operator&lt;&lt;</B> to use with an <B>ostream</B> and a
+<B>Tree*<A NAME="Index2173"></A><A NAME="Index2174"></A><A NAME="Index2175"></A></B>.
+Note, however, that even though the function is declared as a
+<B>friend<A NAME="Index2176"></A></B>, it is defined as an inline! This is a
+mere convenience &#8211; defining a <B>friend</B> function as an inline to a
+class doesn&#8217;t change the <B>friend</B> status or the fact that it&#8217;s
+a global function and not a class member function. Also notice that the return
+value is the result of the entire output expression, which is an
+<B>ostream&amp;</B> (which it must be, to satisfy the return value type of the
+function).</FONT><A NAME="_Toc312373997"></A><A NAME="_Toc472654972"></A><BR></P></DIV>
+<A NAME="Heading387"></A><FONT FACE = "Verdana"><H3 ALIGN="LEFT">
+Memory manager overhead<BR><A NAME="Index2177"></A><A NAME="Index2178"></A></H3></FONT>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">When you create automatic objects on the
+stack, the size of the objects
+<A NAME="Index2179"></A><A NAME="Index2180"></A>and their lifetime is built
+right into the generated code, because the compiler knows the exact type,
+quantity, and scope<A NAME="Index2181"></A>. Creating objects on the heap
+<A NAME="Index2182"></A><A NAME="Index2183"></A><A NAME="Index2184"></A>involves
+additional overhead, both in time and in space. Here&#8217;s a typical scenario.
+(You can replace <B>malloc(&#160;)</B> <A NAME="Index2185"></A>with
+<B>calloc(&#160;)<A NAME="Index2186"></A></B> or
+<B>realloc(&#160;)<A NAME="Index2187"></A></B>.)</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">You call <B>malloc(&#160;)</B>, which
+requests a block of memory from the pool. (This code may actually be part of
+<B>malloc(&#160;)</B>.)</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">The pool is searched for a block of
+memory large enough to satisfy the request. This is done by checking a map or
+directory of some sort that shows which blocks are currently in use and which
+are available. It&#8217;s a quick process, but it may take several tries so it
+might not be deterministic &#8211; that is, you can&#8217;t necessarily count on
+<B>malloc(&#160;)<A NAME="Index2188"></A></B> always taking exactly the same
+amount of time.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Before a pointer to that block is
+returned, the size and location of the block must be recorded so further calls
+to <B>malloc(&#160;)</B> won&#8217;t use it, and so that when you call
+<B>free(&#160;)<A NAME="Index2189"></A></B>, the system knows how much memory to
+release.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">The way all this is implemented can vary
+widely. For example, there&#8217;s nothing to prevent primitives for memory
+allocation being implemented in the processor. If you&#8217;re curious, you can
+write test programs to try to guess the way your <B>malloc(&#160;)</B> is
+implemented. You can also read the library source code, if you have it (the GNU
+C sources are always
+available).</FONT><A NAME="_Toc305593244"></A><A NAME="_Toc305628716"></A><A NAME="_Toc312373998"></A><A NAME="_Toc472654973"></A><BR></P></DIV>
+<A NAME="Heading388"></A><FONT FACE = "Verdana"><H2 ALIGN="LEFT">
+Early examples redesigned</H2></FONT>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Using <B>new</B> and <B>delete</B>, the
+<B>Stash</B> example introduced previously in this book can be rewritten using
+all the features discussed in the book so far. Examining the new code will also
+give you a useful review of the topics.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">At this point in the book, neither the
+<B>Stash</B> nor <B>Stack</B> classes will
+&#8220;own&#8221;<A NAME="Index2190"></A><A NAME="Index2191"></A> the objects
+they point to; that is, when the <B>Stash</B> or <B>Stack</B> object goes out of
+scope, it will not call <B>delete</B> for all the objects it points to. The
+reason this is not possible is because, in an attempt to be generic, they hold
+<B>void</B> <A NAME="Index2192"></A>pointers<A NAME="Index2193"></A>. If you
+<B>delete</B> a <B>void</B> pointer, the only thing that happens is the memory
+gets released, because there&#8217;s no type information and no way for the
+compiler to know what destructor to
+call.</FONT><A NAME="_Toc472654974"></A><BR></P></DIV>
+<A NAME="Heading389"></A><FONT FACE = "Verdana"><H3 ALIGN="LEFT">
+delete void* is probably a
+bug<BR><A NAME="Index2194"></A><A NAME="Index2195"></A></H3></FONT>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">It&#8217;s worth making a point that if
+you call <B>delete</B> for a <B>void*</B>, it&#8217;s almost certainly going to
+be a bug in your program unless the destination of that pointer is very simple;
+in particular, it should not have a destructor. Here&#8217;s an example to show
+you what happens:</FONT><BR></P></DIV>
+
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE><font color=#009900>//: C13:BadVoidPointerDeletion.cpp</font>
+<font color=#009900>// Deleting void pointers can cause memory leaks</font>
+#include &lt;iostream&gt;
+<font color=#0000ff>using</font> <font color=#0000ff>namespace</font> std;
+
+<font color=#0000ff>class</font> Object {
+  <font color=#0000ff>void</font>* data; <font color=#009900>// Some storage</font>
+  <font color=#0000ff>const</font> <font color=#0000ff>int</font> size;
+  <font color=#0000ff>const</font> <font color=#0000ff>char</font> id;
+<font color=#0000ff>public</font>:
+  Object(<font color=#0000ff>int</font> sz, <font color=#0000ff>char</font> c) : size(sz), id(c) {
+    data = <font color=#0000ff>new</font> <font color=#0000ff>char</font>[size];
+    cout &lt;&lt; <font color=#004488>"Constructing object "</font> &lt;&lt; id 
+         &lt;&lt; <font color=#004488>", size = "</font> &lt;&lt; size &lt;&lt; endl;
+  }
+  ~Object() { 
+    cout &lt;&lt; <font color=#004488>"Destructing object "</font> &lt;&lt; id &lt;&lt; endl;
+    <font color=#0000ff>delete</font> []data; <font color=#009900>// OK, just releases storage,</font>
+    <font color=#009900>// no destructor calls are necessary</font>
+  }
+};
+
+<font color=#0000ff>int</font> main() {
+  Object* a = <font color=#0000ff>new</font> Object(40, 'a');
+  <font color=#0000ff>delete</font> a;
+  <font color=#0000ff>void</font>* b = <font color=#0000ff>new</font> Object(40, 'b');
+  <font color=#0000ff>delete</font> b;
+} <font color=#009900>///:~</font></PRE></FONT></BLOCKQUOTE>
+
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">The class <B>Object</B> contains a
+<B>void*</B> that is initialized to &#8220;raw&#8221; data (it doesn&#8217;t
+point to objects that have destructors). In the <B>Object</B> destructor,
+<B>delete</B> is called for this <B>void*</B> with no ill effects, since the
+only thing we need to happen is for the storage to be released.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">However, in <B>main(&#160;)</B> you can
+see that it&#8217;s very necessary that <B>delete</B> know what type of object
+it&#8217;s working with. Here&#8217;s the output:</FONT><BR></P></DIV>
+
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE>Constructing object a, size = 40
+Destructing object a
+Constructing object b, size = 40</PRE></FONT></BLOCKQUOTE>
+
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Because <B>delete a</B> knows that
+<B>a</B> points to an <B>Object</B>, the destructor is called and thus the
+storage allocated for <B>data</B> is released. However, if you manipulate an
+object through a <B>void*</B> as in the case of <B>delete b</B>, the only thing
+that happens is that the storage for the <B>Object</B> is released &#8211; but
+the destructor is not called so there is no release of the memory that
+<B>data</B> points to. When this program compiles, you probably won&#8217;t see
+any warning messages; the compiler assumes you know what you&#8217;re doing. So
+you get a very quiet memory leak.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">If you have a
+<A NAME="Index2196"></A>memory leak in your program, search through all the
+<B>delete</B> statements and check the type of pointer being deleted. If
+it&#8217;s a <B>void*</B> then you&#8217;ve probably found one source of your
+memory leak (C++ provides ample other opportunities for memory leaks,
+however).</FONT><A NAME="_Toc472654975"></A><BR></P></DIV>
+<A NAME="Heading390"></A><FONT FACE = "Verdana"><H3 ALIGN="LEFT">
+Cleanup responsibility with pointers</H3></FONT>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">To make the <B>Stash </B>and <B>Stack
+</B>containers flexible (able to hold any type of object), they will hold
+<B>void </B>pointers. This means that when a pointer is returned from the
+<B>Stash</B> or <B>Stack</B> object, you must cast it to the proper type before
+using it; as seen above, you must also cast it to the proper type before
+deleting it or you&#8217;ll get a memory leak.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">The other memory leak issue has to do
+with making sure that <B>delete </B>is actually called for each object pointer
+held in the container. The container cannot &#8220;own&#8221; the pointer
+because it holds it as a <B>void*</B> and thus cannot perform the proper
+cleanup. The user must be responsible for cleaning up the objects. This produces
+a serious problem if you add pointers to objects created on the stack <I>and
+</I>objects created on the heap to the same container because a
+delete-expression is unsafe for a pointer that hasn&#8217;t been allocated on
+the heap. (And when you fetch a pointer back from the container, how will you
+know where its object has been allocated?) Thus, you must be sure that objects
+stored in the following versions of <B>Stash </B>and <B>Stack </B>are made only
+on the heap, either through careful programming or by creating classes that can
+only be built on the heap.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">It&#8217;s also important to make sure
+that the client programmer takes responsibility for cleaning up all the pointers
+in the container. You&#8217;ve seen in previous examples how the <B>Stack</B>
+class checks in its destructor that all the <B>Link</B> objects have been
+popped. For a <B>Stash</B> of pointers, however, another approach is
+needed.</FONT><A NAME="_Toc312374000"></A><A NAME="_Toc472654976"></A><BR></P></DIV>
+<A NAME="Heading391"></A><FONT FACE = "Verdana"><H3 ALIGN="LEFT">
+Stash for pointers<BR><A NAME="Index2197"></A></H3></FONT>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">This new version of the <B>Stash</B>
+class, called <B>PStash</B>, holds <I>pointers</I> to objects that exist by
+themselves on the heap, whereas the old <B>Stash</B> in earlier chapters copied
+the objects by value into the <B>Stash</B> container. Using <B>new</B> and
+<B>delete</B>, it&#8217;s easy and safe to hold pointers to objects that have
+been created on the heap.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Here&#8217;s the header file for the
+&#8220;pointer <B>Stash</B>&#8221;:</FONT><BR></P></DIV>
+
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE><font color=#009900>//: C13:PStash.h</font>
+<font color=#009900>// Holds pointers instead of objects</font>
+#ifndef PSTASH_H
+#define PSTASH_H
+
+<font color=#0000ff>class</font> PStash {
+  <font color=#0000ff>int</font> quantity; <font color=#009900>// Number of storage spaces</font>
+  <font color=#0000ff>int</font> next; <font color=#009900>// Next empty space</font>
+   <font color=#009900>// Pointer storage:</font>
+  <font color=#0000ff>void</font>** storage;
+  <font color=#0000ff>void</font> inflate(<font color=#0000ff>int</font> increase);
+<font color=#0000ff>public</font>:
+  PStash() : quantity(0), storage(0), next(0) {}
+  ~PStash();
+  <font color=#0000ff>int</font> add(<font color=#0000ff>void</font>* element);
+  <font color=#0000ff>void</font>* <font color=#0000ff>operator</font>[](<font color=#0000ff>int</font> index) <font color=#0000ff>const</font>; <font color=#009900>// Fetch</font>
+  <font color=#009900>// Remove the reference from this PStash:</font>
+  <font color=#0000ff>void</font>* remove(<font color=#0000ff>int</font> index);
+  <font color=#009900>// Number of elements in Stash:</font>
+  <font color=#0000ff>int</font> count() <font color=#0000ff>const</font> { <font color=#0000ff>return</font> next; }
+};
+#endif <font color=#009900>// PSTASH_H ///:~</font></PRE></FONT></BLOCKQUOTE>
+
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">The underlying data elements are fairly
+similar, but now <B>storage</B> is an array of <B>void </B>pointers, and the
+allocation of storage for that array is performed with
+<A NAME="Index2198"></A><B>new</B> instead of <B>malloc(&#160;)</B>. In the
+expression</FONT><BR></P></DIV>
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE><font color=#0000ff>void</font>** st = <font color=#0000ff>new</font> <font color=#0000ff>void</font>*[quantity + increase];</PRE></FONT></BLOCKQUOTE>
+
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">the type of object allocated is a
+<B>void*</B>, so the expression allocates an array of <B>void</B>
+pointers.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">The destructor deletes the storage where
+the <B>void</B> pointers are held rather than attempting to delete what they
+point at (which, as previously noted, will release their storage and not call
+the destructors because a <B>void</B>
+pointer<A NAME="Index2199"></A><A NAME="Index2200"></A> has no type
+information).</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">The other change is the replacement of
+the <B>fetch(&#160;)</B> function with <B>operator[
+]<A NAME="Index2201"></A></B>, which makes more sense syntactically. Again,
+however, a <B>void*</B> is returned, so the user must remember what types are
+stored in the container and cast the pointers when fetching them out (a problem
+that will be repaired in future chapters).</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Here are the member function
+definitions:</FONT><BR></P></DIV>
+
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE><font color=#009900>//: C13:PStash.cpp {O}</font>
+<font color=#009900>// Pointer Stash definitions</font>
+#include <font color=#004488>"PStash.h"</font>
+#include <font color=#004488>"../require.h"</font>
+#include &lt;iostream&gt;
+#include &lt;cstring&gt; <font color=#009900>// 'mem' functions</font>
+<font color=#0000ff>using</font> <font color=#0000ff>namespace</font> std;
+
+<font color=#0000ff>int</font> PStash::add(<font color=#0000ff>void</font>* element) {
+  <font color=#0000ff>const</font> <font color=#0000ff>int</font> inflateSize = 10;
+  <font color=#0000ff>if</font>(next &gt;= quantity)
+    inflate(inflateSize);
+  storage[next++] = element;
+  <font color=#0000ff>return</font>(next - 1); <font color=#009900>// Index number</font>
+}
+
+<font color=#009900>// No ownership:</font>
+PStash::~PStash() {
+  <font color=#0000ff>for</font>(<font color=#0000ff>int</font> i = 0; i &lt; next; i++)
+    require(storage[i] == 0, 
+      <font color=#004488>"PStash not cleaned up"</font>);
+  <font color=#0000ff>delete</font> []storage; 
+}
+
+<font color=#009900>// Operator overloading replacement for fetch</font>
+<font color=#0000ff>void</font>* PStash::<font color=#0000ff>operator</font>[](<font color=#0000ff>int</font> index) <font color=#0000ff>const</font> {
+  require(index &gt;= 0,
+    <font color=#004488>"PStash::operator[] index negative"</font>);
+  <font color=#0000ff>if</font>(index &gt;= next)
+    <font color=#0000ff>return</font> 0; <font color=#009900>// To indicate the end</font>
+  <font color=#009900>// Produce pointer to desired element:</font>
+  <font color=#0000ff>return</font> storage[index];
+}
+
+<font color=#0000ff>void</font>* PStash::remove(<font color=#0000ff>int</font> index) {
+  <font color=#0000ff>void</font>* v = <font color=#0000ff>operator</font>[](index);
+  <font color=#009900>// "Remove" the pointer:</font>
+  <font color=#0000ff>if</font>(v != 0) storage[index] = 0;
+  <font color=#0000ff>return</font> v;
+}
+
+<font color=#0000ff>void</font> PStash::inflate(<font color=#0000ff>int</font> increase) {
+  <font color=#0000ff>const</font> <font color=#0000ff>int</font> psz = <font color=#0000ff>sizeof</font>(<font color=#0000ff>void</font>*);
+  <font color=#0000ff>void</font>** st = <font color=#0000ff>new</font> <font color=#0000ff>void</font>*[quantity + increase];
+  memset(st, 0, (quantity + increase) * psz);
+  memcpy(st, storage, quantity * psz);
+  quantity += increase;
+  <font color=#0000ff>delete</font> []storage; <font color=#009900>// Old storage</font>
+  storage = st; <font color=#009900>// Point to new memory</font>
+} <font color=#009900>///:~</font></PRE></FONT></BLOCKQUOTE>
+
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">The <B>add(&#160;)</B> function is
+effectively the same as before, except that a pointer is stored instead of a
+copy of the whole object.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">The <B>inflate(&#160;)</B> code is
+modified to handle the allocation of an array of <B>void*</B> instead of the
+previous design, which was only working with raw bytes. Here, instead of using
+the prior approach of copying by array indexing, the Standard C library function
+<A NAME="Index2202"></A><B>memset(&#160;)</B> is first used to set all the new
+memory to zero (this is not strictly necessary, since the <B>PStash</B> is
+presumably managing all the memory correctly &#8211; but it usually
+doesn&#8217;t hurt to throw in a bit of extra care). Then
+<A NAME="Index2203"></A><B>memcpy(&#160;)</B> moves the existing data from the
+old location to the new. Often, functions like <B>memset(&#160;)</B> and
+<B>memcpy(&#160;)</B> have been optimized over time, so they may be faster than
+the loops shown previously. But with a function like <B>inflate(&#160;) </B>that
+will probably not be used that often you may not see a performance difference.
+However, the fact that the function calls are more concise than the loops may
+help prevent coding errors.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">To put the responsibility of object
+cleanup squarely on the shoulders of the client programmer, there are two ways
+to access the pointers in the <B>PStash</B>: the <B>operator[]</B>, which simply
+returns the pointer but leaves it as a member of the container, and a second
+member function <B>remove(&#160;)</B>, which returns the pointer but also
+removes it from the container by assigning that position to zero. When the
+destructor for <B>PStash </B>is called, it checks to make sure that all object
+pointers have been removed; if not, you&#8217;re notified so you can prevent a
+memory leak (more elegant solutions will be forthcoming in later
+chapters).</FONT><BR></P></DIV>
+<A NAME="Heading392"></A><FONT FACE = "Verdana"><H4 ALIGN="LEFT">
+A test</H4></FONT>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Here&#8217;s the old test program for
+<B>Stash</B> rewritten for the <B>PStash</B>:</FONT><BR></P></DIV>
+
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE><font color=#009900>//: C13:PStashTest.cpp</font>
+<font color=#009900>//{L} PStash</font>
+<font color=#009900>// Test of pointer Stash</font>
+#include <font color=#004488>"PStash.h"</font>
+#include <font color=#004488>"../require.h"</font>
+#include &lt;iostream&gt;
+#include &lt;fstream&gt;
+#include &lt;string&gt;
+<font color=#0000ff>using</font> <font color=#0000ff>namespace</font> std;
+
+<font color=#0000ff>int</font> main() {
+  PStash intStash;
+  <font color=#009900>// 'new' works with built-in types, too. Note</font>
+  <font color=#009900>// the "pseudo-constructor" syntax:</font>
+  <font color=#0000ff>for</font>(<font color=#0000ff>int</font> i = 0; i &lt; 25; i++)
+    intStash.add(<font color=#0000ff>new</font> <font color=#0000ff>int</font>(i));
+  <font color=#0000ff>for</font>(<font color=#0000ff>int</font> j = 0; j &lt; intStash.count(); j++)
+    cout &lt;&lt; <font color=#004488>"intStash["</font> &lt;&lt; j &lt;&lt; <font color=#004488>"] = "</font>
+         &lt;&lt; *(<font color=#0000ff>int</font>*)intStash[j] &lt;&lt; endl;
+  <font color=#009900>// Clean up:</font>
+  <font color=#0000ff>for</font>(<font color=#0000ff>int</font> k = 0; k &lt; intStash.count(); k++)
+    <font color=#0000ff>delete</font> intStash.remove(k);
+  ifstream in (<font color=#004488>"PStashTest.cpp"</font>);
+  assure(in, <font color=#004488>"PStashTest.cpp"</font>);
+  PStash stringStash;
+  string line;
+  <font color=#0000ff>while</font>(getline(in, line))
+    stringStash.add(<font color=#0000ff>new</font> string(line));
+  <font color=#009900>// Print out the strings:</font>
+  <font color=#0000ff>for</font>(<font color=#0000ff>int</font> u = 0; stringStash[u]; u++)
+    cout &lt;&lt; <font color=#004488>"stringStash["</font> &lt;&lt; u &lt;&lt; <font color=#004488>"] = "</font>
+         &lt;&lt; *(string*)stringStash[u] &lt;&lt; endl;
+  <font color=#009900>// Clean up:</font>
+  <font color=#0000ff>for</font>(<font color=#0000ff>int</font> v = 0; v &lt; stringStash.count(); v++)
+    <font color=#0000ff>delete</font> (string*)stringStash.remove(v);
+} <font color=#009900>///:~</font></PRE></FONT></BLOCKQUOTE>
+
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">As before, <B>Stash</B>es are created and
+filled with information, but this time the information is the pointers resulting
+from <B>new</B>-expressions. In the first case, note the line:</FONT><BR></P></DIV>
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE>intStash.add(<font color=#0000ff>new</font> <font color=#0000ff>int</font>(i));</PRE></FONT></BLOCKQUOTE>
+
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">The expression <B>new int(i)</B> uses the
+pseudo-constructor form<A NAME="Index2204"></A><A NAME="Index2205"></A>, so
+storage for a new <B>int</B> object is created on the heap, and the <B>int</B>
+is initialized to the value <B>i</B>.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">During printing, the value returned by
+<B>PStash::operator[ ]</B> must be cast to the proper type; this is repeated for
+the rest of the <B>PStash</B> objects in the program. It&#8217;s an undesirable
+effect of using <B>void</B> pointers
+<A NAME="Index2206"></A><A NAME="Index2207"></A>as the underlying representation
+and will be fixed in later chapters.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">The second test opens the source code
+file and reads it one line at a time into another <B>PStash</B>. Each line is
+read into a <A NAME="Index2208"></A><B>string</B> using
+<A NAME="Index2209"></A><B>getline(&#160;)</B>, then a <B>new</B> <B>string</B>
+is created from <B>line</B> to make an independent copy of that line. If we just
+passed in the address of <B>line </B>each time, we&#8217;d get a whole bunch of
+pointers pointing to <B>line</B>, which would only contain the last line that
+was read from the file.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">When fetching the pointers, you see the
+expression:</FONT><BR></P></DIV>
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE>*(string*)stringStash[v]</PRE></FONT></BLOCKQUOTE>
+
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">The pointer returned from <B>operator[
+]</B> must be cast to a <B>string*</B> to give it the proper type. Then the
+<B>string*</B> is dereferenced so the expression evaluates to an object, at
+which point the compiler sees a <B>string</B> object to send to
+<B>cout</B>.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">The objects created on the heap must be
+destroyed through the use of the <B>remove(&#160;) </B>statement or else
+you&#8217;ll get a message at runtime telling you that you haven&#8217;t
+completely cleaned up the objects in the <B>PStash</B>.<B> </B>Notice that in
+the case of the <B>int</B> pointers, no cast is necessary because there&#8217;s
+no destructor for an <B>int</B> and all we need is memory
+release:</FONT><BR></P></DIV>
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE><font color=#0000ff>delete</font> intStash.remove(k);</PRE></FONT></BLOCKQUOTE>
+
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">However, for the <B>string</B> pointers,
+if you forget to do the cast you&#8217;ll have another (quiet) memory leak, so
+the cast is essential:</FONT><BR></P></DIV>
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE><font color=#0000ff>delete</font> (string*)stringStash.remove(k);</PRE></FONT></BLOCKQUOTE>
+
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Some of these issues (but not all) can be
+removed using templates (which you&#8217;ll learn about in Chapter
+16).</FONT><A NAME="_Toc305593245"></A><A NAME="_Toc305628717"></A><A NAME="_Toc312374002"></A><A NAME="_Toc472654977"></A><BR></P></DIV>
+<A NAME="Heading393"></A><FONT FACE = "Verdana"><H2 ALIGN="LEFT">
+new &amp; delete for
+arrays<BR><A NAME="Index2210"></A><A NAME="Index2211"></A><A NAME="Index2212"></A></H2></FONT>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">In C++, you can create arrays of objects
+on the stack or on the heap with equal ease, and (of course) the constructor is
+called for each object in the array. There&#8217;s one constraint, however:
+There must be a default
+constructor<A NAME="Index2213"></A><A NAME="Index2214"></A>, except for
+aggregate initialization on the stack (see Chapter 6), because a constructor
+with no arguments must be called for every object.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">When creating arrays of objects on the
+heap using <B>new</B>, there&#8217;s something else you must do. An example of
+such an array is</FONT><BR></P></DIV>
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE>MyType* fp = <font color=#0000ff>new</font> MyType[100];</PRE></FONT></BLOCKQUOTE>
+
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">This allocates enough storage on the heap
+for 100 <B>MyType</B> objects and calls the constructor for each one. Now,
+however, you simply have a <B>MyType*</B>, which is exactly the same as
+you&#8217;d get if you said</FONT><BR></P></DIV>
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE>MyType* fp2 = <font color=#0000ff>new</font> MyType;</PRE></FONT></BLOCKQUOTE>
+
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">to create a single object. Because you
+wrote the code, you know that <B>fp</B> is actually the starting address of an
+array, so it makes sense to select array elements using an expression like
+<B>fp[3]</B>. But what happens when you destroy the array? The
+statements</FONT><BR></P></DIV>
+
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE><font color=#0000ff>delete</font> fp2; <font color=#009900>// OK</font>
+<font color=#0000ff>delete</font> fp;  <font color=#009900>// Not the desired effect</font></PRE></FONT></BLOCKQUOTE>
+
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">look exactly the same, and their effect
+will be the same. The destructor will be called for the <B>MyType</B> object
+pointed to by the given address, and then the storage will be released. For
+<B>fp2</B> this is fine, but for <B>fp</B> this means that the other 99
+destructor calls won&#8217;t be made. The proper amount of storage will still be
+released, however, because it is allocated in one big chunk, and the size of the
+whole chunk is stashed somewhere by the allocation routine.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">The solution requires you to give the
+compiler the information that this is actually the starting address of an array.
+This is accomplished with the following syntax:</FONT><BR></P></DIV>
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE><font color=#0000ff>delete</font> []fp;</PRE></FONT></BLOCKQUOTE>
+
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">The empty brackets tell the compiler to
+generate code that fetches the number of objects in the array, stored somewhere
+when the array is created, and calls the destructor for that many array objects.
+This is actually an improved syntax from the earlier form, which you may still
+occasionally see in old code:</FONT><BR></P></DIV>
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE><font color=#0000ff>delete</font> [100]fp;</PRE></FONT></BLOCKQUOTE>
+
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">which forced the programmer to include
+the number of objects in the array and introduced the possibility that the
+programmer would get it wrong. The additional overhead of letting the compiler
+handle it was very low, and it was considered better to specify the number of
+objects in one place instead of
+two.</FONT><A NAME="_Toc312374003"></A><A NAME="_Toc472654978"></A><BR></P></DIV>
+<A NAME="Heading394"></A><FONT FACE = "Verdana"><H3 ALIGN="LEFT">
+Making a pointer more like an
+array<BR><A NAME="Index2215"></A><A NAME="Index2216"></A></H3></FONT>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">As an aside, the <B>fp</B> defined above
+can be changed to point to anything, which doesn&#8217;t make sense for the
+starting address of an array. It makes more sense to define it as a constant, so
+any attempt to modify the pointer will be flagged as an error. To get this
+effect, you might try</FONT><BR></P></DIV>
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE><font color=#0000ff>int</font> <font color=#0000ff>const</font>* q = <font color=#0000ff>new</font> <font color=#0000ff>int</font>[10];</PRE></FONT></BLOCKQUOTE>
+
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">or</FONT><BR></P></DIV>
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE><font color=#0000ff>const</font> <font color=#0000ff>int</font>* q = <font color=#0000ff>new</font> <font color=#0000ff>int</font>[10];</PRE></FONT></BLOCKQUOTE>
+
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">but in both cases the <B>const</B> will
+bind to the <B>int</B>, that is, what is being pointed <I>to</I>, rather than
+the quality of the pointer itself. Instead, you must say</FONT><BR></P></DIV>
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE><font color=#0000ff>int</font>* <font color=#0000ff>const</font> q = <font color=#0000ff>new</font> <font color=#0000ff>int</font>[10];</PRE></FONT></BLOCKQUOTE>
+
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Now the array elements in <B>q</B> can be
+modified, but any change to <B>q</B> (like <B>q++</B>) is illegal, as it is with
+an ordinary array
+identifier.</FONT><A NAME="_Toc305593246"></A><A NAME="_Toc305628718"></A><A NAME="_Toc312374004"></A><A NAME="_Toc472654979"></A><BR></P></DIV>
+<A NAME="Heading395"></A><FONT FACE = "Verdana"><H2 ALIGN="LEFT">
+Running out of storage<BR><A NAME="Index2217"></A></H2></FONT>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">What happens when the <B>operator new<U>(
+)<A NAME="Index2218"></A><A NAME="Index2219"></A></U></B> cannot find a
+contiguous block of storage large enough to hold the desired object? A special
+function called the <I>new-handler<A NAME="Index2220"></A></I> is called. Or
+rather, a pointer to a function is checked, and if the pointer is nonzero, then
+the function it points to is called. </FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">The default behavior for the new-handler
+is to <A NAME="Index2221"></A><I>throw an exception</I>, a subject covered in
+Volume 2. However, if you&#8217;re using heap allocation in your program,
+it&#8217;s wise to at least replace the new-handler with a message that says
+you&#8217;ve run out of memory and then aborts the program. That way, during
+debugging, you&#8217;ll have a clue about what happened. For the final program
+you&#8217;ll want to use more robust recovery.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">You replace the new-handler by including
+<B>new.h </B>and then calling <B>set_new_handler(&#160;)</B> with the address of
+the function you want installed:</FONT><BR></P></DIV>
+
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE><font color=#009900>//: C13:NewHandler.cpp</font>
+<font color=#009900>// Changing the new-handler</font>
+#include &lt;iostream&gt;
+#include &lt;cstdlib&gt;
+#include &lt;<font color=#0000ff>new</font>&gt;
+<font color=#0000ff>using</font> <font color=#0000ff>namespace</font> std;
+
+<font color=#0000ff>int</font> count = 0;
+
+<font color=#0000ff>void</font> out_of_memory() {
+  cerr &lt;&lt; <font color=#004488>"memory exhausted after "</font> &lt;&lt; count 
+    &lt;&lt; <font color=#004488>" allocations!"</font> &lt;&lt; endl;
+  exit(1);
+}
+
+<font color=#0000ff>int</font> main() {
+  set_new_handler(out_of_memory);
+  <font color=#0000ff>while</font>(1) {
+    count++;
+    <font color=#0000ff>new</font> <font color=#0000ff>int</font>[1000]; <font color=#009900>// Exhausts memory</font>
+  }
+} <font color=#009900>///:~</font></PRE></FONT></BLOCKQUOTE>
+
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">The new-handler function must take no
+arguments and have a <B>void</B> return value. The <B>while</B> loop will keep
+allocating <B>int</B> objects (and throwing away their return addresses) until
+the free store is exhausted. At the very next call to <B>new</B>, no storage can
+be allocated, so the new-handler will be called.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">The behavior of the new-handler is tied
+to <B>operator new<U>( )</U></B>, so if you overload <B>operator new<U>(
+)</U></B> (covered in the next section) the new-handler will not be called by
+default. If you still want the new-handler to be called you&#8217;ll have to
+write the code to do so inside your overloaded <B>operator new<U>(
+)</U></B>.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Of course, you can write more
+sophisticated new-handlers, even one to try to reclaim memory (commonly known as
+a <I>garbage collector<A NAME="Index2222"></A></I>). This is not a job for the
+novice
+programmer.</FONT><A NAME="_Toc305593247"></A><A NAME="_Toc305628719"></A><A NAME="_Toc312374005"></A><A NAME="_Toc472654980"></A><BR></P></DIV>
+<A NAME="Heading396"></A><FONT FACE = "Verdana"><H2 ALIGN="LEFT">
+Overloading new &amp;
+delete<BR><A NAME="Index2223"></A><A NAME="Index2224"></A><A NAME="Index2225"></A></H2></FONT>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">When you create a
+new-expression<A NAME="Index2226"></A>, two things occur. First, storage is
+allocated using the <B>operator new<U>( )</U></B>, then the constructor is
+called. In a delete-expression<A NAME="Index2227"></A>, the destructor is
+called, then storage is deallocated using the <B>operator delete<U>( )</U></B>.
+The constructor and destructor calls are never under your control (otherwise you
+might accidentally subvert them), but you <I>can </I>change the storage
+allocation functions <B>operator new<U>( )</U></B> and <B>operator delete<U>(
+)</U></B>.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">The memory allocation
+<A NAME="Index2228"></A><A NAME="Index2229"></A>system used by <B>new</B> and
+<B>delete</B> is designed for general-purpose use. In special situations,
+however, it doesn&#8217;t serve your needs. The most common reason to change the
+allocator is <A NAME="Index2230"></A>efficiency: You might be creating and
+destroying so many objects of a particular class that it has become a speed
+bottleneck. C++ allows you to overload <B>new</B> and <B>delete</B> to implement
+your own storage allocation scheme, so you can handle problems like
+this.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Another issue is
+<A NAME="Index2231"></A><A NAME="Index2232"></A>heap fragmentation. By
+allocating objects of different sizes it&#8217;s possible to break up the heap
+so that you effectively run out of storage. That is, the storage might be
+available, but because of fragmentation no piece is big enough to satisfy your
+needs. By creating your own allocator for a particular class, you can ensure
+this never happens.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">In embedded and real-time systems, a
+program may have to run for a very long time with restricted resources. Such a
+system may also require that memory allocation always take the same amount of
+time, and there&#8217;s no allowance for heap exhaustion or fragmentation. A
+custom memory allocator is the solution; otherwise, programmers will avoid using
+<B>new</B> and <B>delete</B> altogether in such cases and miss out on a valuable
+C++ asset.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">When you overload <B>operator new<U>(
+)</U></B> and <B>operator delete<U>( )</U></B>, it&#8217;s important to remember
+that you&#8217;re changing only the way <I>raw storage is allocated</I>. The
+compiler will simply call your <B>new</B> instead of the default version to
+allocate storage, then call the constructor for that storage. So, although the
+compiler allocates storage <I>and</I> calls the constructor when it sees
+<B>new</B>, all you can change when you overload <B>new</B> is the storage
+allocation portion. (<B>delete</B> has a similar limitation.)</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">When you overload <B>operator</B>
+<B>new<U>( )</U></B>, you also replace the behavior when it runs out of memory,
+so you must decide what to do in your <B>operator new<U>( )</U></B>: return
+zero, write a loop to call the new-handler and retry allocation, or (typically)
+throw a <B>bad_alloc</B> exception (discussed in Volume 2, available at
+<I>www.BruceEckel.com</I>).</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Overloading <B>new</B> and <B>delete</B>
+is like overloading any other operator. However, you have a choice of
+overloading the global allocator or using a different allocator for a particular
+class.</FONT><A NAME="_Toc312374006"></A><A NAME="_Toc472654981"></A><BR></P></DIV>
+<A NAME="Heading397"></A><FONT FACE = "Verdana"><H3 ALIGN="LEFT">
+Overloading global new &amp;
+delete<BR><A NAME="Index2233"></A><A NAME="Index2234"></A><A NAME="Index2235"></A><A NAME="Index2236"></A></H3></FONT>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">This is the drastic approach, when the
+global versions of <B>new</B> and <B>delete</B> are unsatisfactory for the whole
+system. If you overload the global versions, you make the defaults completely
+inaccessible &#8211; you can&#8217;t even call them from inside your
+redefinitions.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">The overloaded <B>new</B> must take an
+argument of <B>size_t<A NAME="Index2237"></A></B> (the Standard C standard type
+for sizes). This argument is generated and passed to you by the compiler and is
+the size of the object you&#8217;re responsible for allocating. You must return
+a pointer either to an object of that size (or bigger, if you have some reason
+to do so), or to zero if you can&#8217;t find the memory (in which case the
+constructor is <I>not</I> called!). However, if you can&#8217;t find the memory,
+you should probably do something more informative than just returning zero, like
+calling the new-handler or throwing an exception, to signal that there&#8217;s a
+problem.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">The return value of <B>operator new<U>(
+)</U></B> is a <B>void*</B>, <I>not</I> a pointer to any particular type. All
+you&#8217;ve done is produce memory, not a finished object &#8211; that
+doesn&#8217;t happen until the constructor is called, an act the compiler
+guarantees and which is out of your control.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">The <B>operator delete<U>( )</U></B>
+takes a <B>void*</B> to memory that was allocated by <B>operator new</B>.
+It&#8217;s a <B>void*</B> because <B>operator delete </B>only gets the pointer
+<I>after</I> the destructor is called, which removes the object-ness from the
+piece of storage. The return type is <B>void</B>.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Here&#8217;s a simple example showing how
+to overload the global <B>new</B> and <B>delete</B>:</FONT><BR></P></DIV>
+
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE><font color=#009900>//: C13:GlobalOperatorNew.cpp</font>
+<font color=#009900>// Overload global new/delete</font>
+#include &lt;cstdio&gt;
+#include &lt;cstdlib&gt;
+<font color=#0000ff>using</font> <font color=#0000ff>namespace</font> std;
+
+<font color=#0000ff>void</font>* <font color=#0000ff>operator</font> <font color=#0000ff>new</font>(size_t sz) {
+  printf(<font color=#004488>"operator new: %d Bytes\n"</font>, sz);
+  <font color=#0000ff>void</font>* m = malloc(sz);
+  <font color=#0000ff>if</font>(!m) puts(<font color=#004488>"out of memory"</font>);
+  <font color=#0000ff>return</font> m;
+}
+
+<font color=#0000ff>void</font> <font color=#0000ff>operator</font> <font color=#0000ff>delete</font>(<font color=#0000ff>void</font>* m) {
+  puts(<font color=#004488>"operator delete"</font>);
+  free(m);
+}
+
+<font color=#0000ff>class</font> S {
+  <font color=#0000ff>int</font> i[100];
+<font color=#0000ff>public</font>:
+  S() { puts(<font color=#004488>"S::S()"</font>); }
+  ~S() { puts(<font color=#004488>"S::~S()"</font>); }
+};
+
+<font color=#0000ff>int</font> main() {
+  puts(<font color=#004488>"creating &amp; destroying an int"</font>);
+  <font color=#0000ff>int</font>* p = <font color=#0000ff>new</font> <font color=#0000ff>int</font>(47);
+  <font color=#0000ff>delete</font> p;
+  puts(<font color=#004488>"creating &amp; destroying an s"</font>);
+  S* s = <font color=#0000ff>new</font> S;
+  <font color=#0000ff>delete</font> s;
+  puts(<font color=#004488>"creating &amp; destroying S[3]"</font>);
+  S* sa = <font color=#0000ff>new</font> S[3];
+  <font color=#0000ff>delete</font> []sa;
+} <font color=#009900>///:~</font></PRE></FONT></BLOCKQUOTE>
+
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Here you can see the general form for
+overloading <B>new</B> and <B>delete</B>. These use the Standard C library
+functions <A NAME="Index2238"></A><B>malloc(&#160;)</B> and
+<A NAME="Index2239"></A><B>free(&#160;)</B> for the allocators (which is
+probably what the default <B>new</B> and <B>delete</B> use as well!). However,
+they also print messages about what they are doing. Notice that
+<A NAME="Index2240"></A><B>printf(&#160;)</B> and
+<A NAME="Index2241"></A><B>puts(&#160;)</B> are used rather than
+<B>iostreams</B>. This is because when an <B>iostream</B>
+<A NAME="Index2242"></A>object is created (like the global <B>cin</B>,
+<B>cout</B>, and <B>cerr</B>), it calls <B>new</B> to allocate memory. With
+<B>printf(&#160;)</B>, you don&#8217;t get into a deadlock because it
+doesn&#8217;t call <B>new </B>to initialize itself.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">In <B>main(&#160;)</B>, objects of
+built-in types are created to prove that the overloaded <B>new</B> and
+<B>delete</B> are also called in that case. Then a single object of type
+<B>S</B> is created, followed by an array of <B>S</B>. For the array,
+you&#8217;ll see from the number of bytes requested that extra memory is
+allocated to store information (inside the array) about the number of objects it
+holds. In all cases, the global overloaded versions of <B>new</B> and
+<B>delete</B> are
+used.</FONT><A NAME="_Toc312374007"></A><A NAME="_Toc472654982"></A><BR></P></DIV>
+<A NAME="Heading398"></A><FONT FACE = "Verdana"><H3 ALIGN="LEFT">
+Overloading new &amp; delete for a
+class<BR><A NAME="Index2243"></A><A NAME="Index2244"></A><A NAME="Index2245"></A><A NAME="Index2246"></A></H3></FONT>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Although you don&#8217;t have to
+explicitly say <B>static</B>, when you overload <B>new </B>and <B>delete</B> for
+a class, you&#8217;re creating <B>static</B> member functions. As before, the
+syntax is the same as overloading any other operator. When the compiler sees you
+use <B>new</B> to create an object of your class, it chooses the member
+<B>operator new<U>( )</U></B> over the global version. However, the global
+versions of <B>new</B> and <B>delete</B> are used for all other types of objects
+(unless they have their own <B>new</B> and <B>delete</B>).</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">In the following example, a primitive
+storage allocation system
+<A NAME="Index2247"></A><A NAME="Index2248"></A><A NAME="Index2249"></A>is
+created for the class <B>Framis</B>. A chunk of memory is set aside in the
+static data area at program start-up, and that memory is used to allocate space
+for objects of type <B>Framis</B>. To determine which blocks have been
+allocated, a simple array of bytes is used, one byte for each
+block:</FONT><BR></P></DIV>
+
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE><font color=#009900>//: C13:Framis.cpp</font>
+<font color=#009900>// Local overloaded new &amp; delete</font>
+#include &lt;cstddef&gt; <font color=#009900>// Size_t</font>
+#include &lt;fstream&gt;
+#include &lt;iostream&gt;
+#include &lt;<font color=#0000ff>new</font>&gt;
+<font color=#0000ff>using</font> <font color=#0000ff>namespace</font> std;
+ofstream out(<font color=#004488>"Framis.out"</font>);
+
+<font color=#0000ff>class</font> Framis {
+  <font color=#0000ff>enum</font> { sz = 10 };
+  <font color=#0000ff>char</font> c[sz]; <font color=#009900>// To take up space, not used</font>
+  <font color=#0000ff>static</font> <font color=#0000ff>unsigned</font> <font color=#0000ff>char</font> pool[];
+  <font color=#0000ff>static</font> <font color=#0000ff>bool</font> alloc_map[];
+<font color=#0000ff>public</font>:
+  <font color=#0000ff>enum</font> { psize = 100 };  <font color=#009900>// frami allowed</font>
+  Framis() { out &lt;&lt; <font color=#004488>"Framis()\n"</font>; }
+  ~Framis() { out &lt;&lt; <font color=#004488>"~Framis() ... "</font>; }
+  <font color=#0000ff>void</font>* <font color=#0000ff>operator</font> <font color=#0000ff>new</font>(size_t) <font color=#0000ff>throw</font>(bad_alloc);
+  <font color=#0000ff>void</font> <font color=#0000ff>operator</font> <font color=#0000ff>delete</font>(<font color=#0000ff>void</font>*);
+};
+<font color=#0000ff>unsigned</font> <font color=#0000ff>char</font> Framis::pool[psize * <font color=#0000ff>sizeof</font>(Framis)];
+<font color=#0000ff>bool</font> Framis::alloc_map[psize] = {<font color=#0000ff>false</font>};
+
+<font color=#009900>// Size is ignored -- assume a Framis object</font>
+<font color=#0000ff>void</font>* 
+Framis::<font color=#0000ff>operator</font> <font color=#0000ff>new</font>(size_t) <font color=#0000ff>throw</font>(bad_alloc) {
+  <font color=#0000ff>for</font>(<font color=#0000ff>int</font> i = 0; i &lt; psize; i++)
+    <font color=#0000ff>if</font>(!alloc_map[i]) {
+      out &lt;&lt; <font color=#004488>"using block "</font> &lt;&lt; i &lt;&lt; <font color=#004488>" ... "</font>;
+      alloc_map[i] = <font color=#0000ff>true</font>; <font color=#009900>// Mark it used</font>
+      <font color=#0000ff>return</font> pool + (i * <font color=#0000ff>sizeof</font>(Framis));
+    }
+  out &lt;&lt; <font color=#004488>"out of memory"</font> &lt;&lt; endl;
+  <font color=#0000ff>throw</font> bad_alloc();
+}
+
+<font color=#0000ff>void</font> Framis::<font color=#0000ff>operator</font> <font color=#0000ff>delete</font>(<font color=#0000ff>void</font>* m) {
+  <font color=#0000ff>if</font>(!m) <font color=#0000ff>return</font>; <font color=#009900>// Check for null pointer</font>
+  <font color=#009900>// Assume it was created in the pool</font>
+  <font color=#009900>// Calculate which block number it is:</font>
+  <font color=#0000ff>unsigned</font> <font color=#0000ff>long</font> block = (<font color=#0000ff>unsigned</font> <font color=#0000ff>long</font>)m
+    - (<font color=#0000ff>unsigned</font> <font color=#0000ff>long</font>)pool;
+  block /= <font color=#0000ff>sizeof</font>(Framis);
+  out &lt;&lt; <font color=#004488>"freeing block "</font> &lt;&lt; block &lt;&lt; endl;
+  <font color=#009900>// Mark it free:</font>
+  alloc_map[block] = <font color=#0000ff>false</font>;
+}
+
+<font color=#0000ff>int</font> main() {
+  Framis* f[Framis::psize];
+  <font color=#0000ff>try</font> {
+    <font color=#0000ff>for</font>(<font color=#0000ff>int</font> i = 0; i &lt; Framis::psize; i++)
+      f[i] = <font color=#0000ff>new</font> Framis;
+    <font color=#0000ff>new</font> Framis; <font color=#009900>// Out of memory</font>
+  } <font color=#0000ff>catch</font>(bad_alloc) {
+    cerr &lt;&lt; <font color=#004488>"Out of memory!"</font> &lt;&lt; endl;
+  }
+  <font color=#0000ff>delete</font> f[10];
+  f[10] = 0;
+  <font color=#009900>// Use released memory:</font>
+  Framis* x = <font color=#0000ff>new</font> Framis;
+  <font color=#0000ff>delete</font> x;
+  <font color=#0000ff>for</font>(<font color=#0000ff>int</font> j = 0; j &lt; Framis::psize; j++)
+    <font color=#0000ff>delete</font> f[j]; <font color=#009900>// Delete f[10] OK</font>
+} <font color=#009900>///:~</font></PRE></FONT></BLOCKQUOTE>
+
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">The pool of memory for the <B>Framis</B>
+heap is created by allocating an array of bytes large enough to hold
+<B>psize</B> <B>Framis</B> objects. The allocation map is <B>psize</B> elements
+long, so there&#8217;s one <B>bool </B>for every block. All the values in the
+allocation map are initialized to <B>false</B> using the aggregate
+initialization trick of setting the first element so the compiler automatically
+initializes all the rest to their normal default value (which is <B>false</B>,
+in the case of <B>bool</B>).</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">The local <B>operator new<U>( )</U></B>
+has the same syntax as the global one. All it does is search through the
+allocation map looking for a <B>false</B> value, then sets that location to
+<B>true</B> to indicate it&#8217;s been allocated and returns the address of the
+corresponding memory block. If it can&#8217;t find any memory, it issues a
+message to the trace file and throws a <B>bad_alloc</B>
+exception.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">This is the first example of
+<A NAME="Index2250"></A>exceptions that you&#8217;ve seen in this book. Since
+detailed discussion of exceptions is delayed until Volume 2, this is a very
+simple use of them. In <B>operator new<U>( )</U></B> there are two artifacts of
+exception handling. First, the function argument list is followed by
+<A NAME="Index2251"></A><A NAME="Index2252"></A><B>throw(bad_alloc)</B>, which
+tells the compiler and the reader that this function may throw an exception of
+type <A NAME="Index2253"></A><B>bad_alloc</B>. Second, if there&#8217;s no more
+memory the function actually does throw the exception in the statement <B>throw
+bad_alloc</B>. When an exception is thrown, the function stops executing and
+control is passed to an <I>exception handler</I>, which is expressed as a
+<B>catch</B> clause.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">In <B>main(&#160;)</B>, you see the other
+part of the picture, which is the <I>try-catch</I> clause. The
+<A NAME="Index2254"></A><A NAME="Index2255"></A><B>try</B> block is surrounded
+by braces and contains all the code that may throw exceptions &#8211; in this
+case, any call to <B>new</B> that involves <B>Framis</B> objects. Immediately
+following the <B>try</B> block is one or more
+<A NAME="Index2256"></A><A NAME="Index2257"></A><B>catch</B> clauses, each one
+specifying the type of exception that they catch. In this case,
+<B>catch(bad_alloc)</B> says that that <B>bad_alloc</B> exceptions will be
+caught here. This particular <B>catch</B> clause is only executed when a
+<B>bad_alloc</B> exception is thrown, and execution continues after the end of
+the last <B>catch</B> clause in the group (there&#8217;s only one here, but
+there could be more).</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">In this example, it&#8217;s OK to use
+iostreams <A NAME="Index2258"></A>because the global <B>operator new<U>(
+)</U></B> and <B>delete<U>( )</U></B> are untouched.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">The <B>operator delete<U>( )</U></B>
+assumes the <B>Framis</B> address was created in the pool. This is a fair
+assumption, because the local <B>operator new<U>( )</U></B> will be called
+whenever you create a single <B>Framis</B> object on the heap &#8211; but not an
+array of them: global <B>new</B> is used for arrays. So the user might
+accidentally have called <B>operator delete<U>( )</U></B> without using the
+empty bracket syntax to indicate array destruction. This would cause a problem.
+Also, the user might be deleting a pointer to an object created on the stack. If
+you think these things could occur, you might want to add a line to make sure
+the address is within the pool and on a correct boundary (you may also begin to
+see the potential of <A NAME="Index2259"></A>overloaded <B>new</B> and
+<B>delete</B> for finding memory leaks).</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia"><B>operator delete<U>( )</U></B>
+calculates the block in the pool that this pointer represents, and then sets the
+allocation map&#8217;s flag for that block to false to indicate the block has
+been released.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">In <B>main(&#160;)</B>, enough
+<B>Framis</B> objects are dynamically allocated to run out of memory; this
+checks the out-of-memory behavior. Then one of the objects is freed, and another
+one is created to show that the released memory is reused.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Because this allocation scheme is
+specific to <B>Framis</B> objects, it&#8217;s probably much faster than the
+general-purpose memory allocation scheme used for the default <B>new</B> and
+<B>delete</B>. However, you should note that it doesn&#8217;t automatically work
+if inheritance is used (inheritance is covered in Chapter
+14).</FONT><A NAME="_Toc312374008"></A><A NAME="_Toc472654983"></A><BR></P></DIV>
+<A NAME="Heading399"></A><FONT FACE = "Verdana"><H3 ALIGN="LEFT">
+Overloading new &amp; delete for
+arrays<BR><A NAME="Index2260"></A><A NAME="Index2261"></A><A NAME="Index2262"></A><A NAME="Index2263"></A></H3></FONT>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">If you overload operator <B>new</B> and
+<B>delete</B> for a class, those operators are called whenever you create an
+object of that class. However, if you create an <I>array</I> of those class
+objects, the global <B>operator</B> <B>new<U>( )</U></B> is called to allocate
+enough storage for the array all at once, and the global <B>operator</B>
+<B>delete<U>( )</U></B> is called to release that storage. You can control the
+allocation of arrays of objects by overloading the special array versions of
+<B>operator new[ ]</B> and <B>operator delete[ ]</B> for the class. Here&#8217;s
+an example that shows when the two different versions are
+called:</FONT><BR></P></DIV>
+
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE><font color=#009900>//: C13:ArrayOperatorNew.cpp</font>
+<font color=#009900>// Operator new for arrays</font>
+#include &lt;<font color=#0000ff>new</font>&gt; <font color=#009900>// Size_t definition</font>
+#include &lt;fstream&gt;
+<font color=#0000ff>using</font> <font color=#0000ff>namespace</font> std;
+ofstream trace(<font color=#004488>"ArrayOperatorNew.out"</font>);
+
+<font color=#0000ff>class</font> Widget {
+  <font color=#0000ff>enum</font> { sz = 10 };
+  <font color=#0000ff>int</font> i[sz];
+<font color=#0000ff>public</font>:
+  Widget() { trace &lt;&lt; <font color=#004488>"*"</font>; }
+  ~Widget() { trace &lt;&lt; <font color=#004488>"~"</font>; }
+  <font color=#0000ff>void</font>* <font color=#0000ff>operator</font> <font color=#0000ff>new</font>(size_t sz) {
+    trace &lt;&lt; <font color=#004488>"Widget::new: "</font>
+         &lt;&lt; sz &lt;&lt; <font color=#004488>" bytes"</font> &lt;&lt; endl;
+    <font color=#0000ff>return</font> ::<font color=#0000ff>new</font> <font color=#0000ff>char</font>[sz];
+  }
+  <font color=#0000ff>void</font> <font color=#0000ff>operator</font> <font color=#0000ff>delete</font>(<font color=#0000ff>void</font>* p) {
+    trace &lt;&lt; <font color=#004488>"Widget::delete"</font> &lt;&lt; endl;
+    ::<font color=#0000ff>delete</font> []p;
+  }
+  <font color=#0000ff>void</font>* <font color=#0000ff>operator</font> <font color=#0000ff>new</font>[](size_t sz) {
+    trace &lt;&lt; <font color=#004488>"Widget::new[]: "</font>
+         &lt;&lt; sz &lt;&lt; <font color=#004488>" bytes"</font> &lt;&lt; endl;
+    <font color=#0000ff>return</font> ::<font color=#0000ff>new</font> <font color=#0000ff>char</font>[sz];
+  }
+  <font color=#0000ff>void</font> <font color=#0000ff>operator</font> <font color=#0000ff>delete</font>[](<font color=#0000ff>void</font>* p) {
+    trace &lt;&lt; <font color=#004488>"Widget::delete[]"</font> &lt;&lt; endl;
+    ::<font color=#0000ff>delete</font> []p;
+  }
+};
+
+<font color=#0000ff>int</font> main() {
+  trace &lt;&lt; <font color=#004488>"new Widget"</font> &lt;&lt; endl;
+  Widget* w = <font color=#0000ff>new</font> Widget;
+  trace &lt;&lt; <font color=#004488>"\ndelete Widget"</font> &lt;&lt; endl;
+  <font color=#0000ff>delete</font> w;
+  trace &lt;&lt; <font color=#004488>"\nnew Widget[25]"</font> &lt;&lt; endl;
+  Widget* wa = <font color=#0000ff>new</font> Widget[25];
+  trace &lt;&lt; <font color=#004488>"\ndelete []Widget"</font> &lt;&lt; endl;
+  <font color=#0000ff>delete</font> []wa;
+} <font color=#009900>///:~</font></PRE></FONT></BLOCKQUOTE>
+
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Here, the global versions of <B>new</B>
+and <B>delete</B> are called so the effect is the same as having no overloaded
+versions of <B>new</B> and <B>delete</B> except that trace information is added.
+Of course, you can use any memory allocation scheme you want in the overloaded
+<B>new</B> and <B>delete</B>.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">You can see that the syntax of array
+<B>new</B> and <B>delete</B> is the same as for the individual object versions
+except for the addition of the brackets. In both cases you&#8217;re handed the
+size of the memory you must allocate. The size handed to the array version will
+be the size of the entire array. It&#8217;s worth keeping in mind that the
+<I>only</I> thing the overloaded <B>operator</B> <B>new<U>( )</U></B> is
+required to do is hand back a pointer to a large enough memory block. Although
+you may perform initialization on that memory, normally that&#8217;s the job of
+the constructor that will automatically be called for your memory by the
+compiler.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">The constructor and destructor simply
+print out characters so you can see when they&#8217;ve been called. Here&#8217;s
+what the trace file looks like for one compiler:</FONT><BR></P></DIV>
+
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE><font color=#0000ff>new</font> Widget
+Widget::<font color=#0000ff>new</font>: 40 bytes
+*
+<font color=#0000ff>delete</font> Widget
+~Widget::<font color=#0000ff>delete</font>
+
+<font color=#0000ff>new</font> Widget[25]
+Widget::<font color=#0000ff>new</font>[]: 1004 bytes
+*************************
+<font color=#0000ff>delete</font> []Widget
+~~~~~~~~~~~~~~~~~~~~~~~~~Widget::<font color=#0000ff>delete</font>[] </PRE></FONT></BLOCKQUOTE>
+
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Creating an individual object requires 40
+bytes, as you might expect. (This machine uses four bytes for an <B>int</B>.)
+The <B>operator new<U>( )</U></B> is called, then the constructor (indicated by
+the <B>*</B>). In a complementary fashion, calling <B>delete</B> causes the
+destructor to be called, then the <B>operator delete<U>(
+)</U></B>.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">When an array of <B>Widget</B> objects is
+created, the array version of <B>operator new<U>( )</U></B> is used, as
+promised. But notice that the size requested is four more bytes than expected.
+This extra four bytes is where the system keeps information about the array, in
+particular, the number of objects in the array. That way, when you
+say</FONT><BR></P></DIV>
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE><font color=#0000ff>delete</font> []Widget;</PRE></FONT></BLOCKQUOTE>
+
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">the brackets tell the compiler it&#8217;s
+an array of objects, so the compiler generates code to look for the number of
+objects in the array and to call the destructor that many times. You can see
+that, even though the array <B>operator new<U>( )</U></B> and <B>operator
+delete<U>( )</U></B> are only called once for the entire array chunk, the
+default constructor and destructor are called for each object in the
+array.</FONT><A NAME="_Toc312374009"></A><A NAME="_Toc472654984"></A><BR></P></DIV>
+<A NAME="Heading400"></A><FONT FACE = "Verdana"><H3 ALIGN="LEFT">
+Constructor calls</H3></FONT>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Considering that</FONT><BR></P></DIV>
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE>MyType* f = <font color=#0000ff>new</font> MyType;</PRE></FONT></BLOCKQUOTE>
+
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">calls <B>new</B> to allocate a
+<B>MyType</B>-sized piece of storage, then invokes the <B>MyType</B> constructor
+on that storage, what happens if the storage allocation in <B>new</B> fails? The
+constructor <A NAME="Index2264"></A><A NAME="Index2265"></A>is not called in
+that case, so although you still have an unsuccessfully created object, at least
+you haven&#8217;t invoked the constructor and handed it a zero <B>this
+</B>pointer. Here&#8217;s an example to prove it:</FONT><BR></P></DIV>
+
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE><font color=#009900>//: C13:NoMemory.cpp</font>
+<font color=#009900>// Constructor isn't called if new fails</font>
+#include &lt;iostream&gt;
+#include &lt;<font color=#0000ff>new</font>&gt; <font color=#009900>// bad_alloc definition</font>
+<font color=#0000ff>using</font> <font color=#0000ff>namespace</font> std;
+
+<font color=#0000ff>class</font> NoMemory {
+<font color=#0000ff>public</font>:
+  NoMemory() {
+    cout &lt;&lt; <font color=#004488>"NoMemory::NoMemory()"</font> &lt;&lt; endl;
+  }
+  <font color=#0000ff>void</font>* <font color=#0000ff>operator</font> <font color=#0000ff>new</font>(size_t sz) <font color=#0000ff>throw</font>(bad_alloc){
+    cout &lt;&lt; <font color=#004488>"NoMemory::operator new"</font> &lt;&lt; endl;
+    <font color=#0000ff>throw</font> bad_alloc(); <font color=#009900>// "Out of memory"</font>
+  }
+};
+
+<font color=#0000ff>int</font> main() {
+  NoMemory* nm = 0;
+  <font color=#0000ff>try</font> {
+    nm = <font color=#0000ff>new</font> NoMemory;
+  } <font color=#0000ff>catch</font>(bad_alloc) {
+    cerr &lt;&lt; <font color=#004488>"Out of memory exception"</font> &lt;&lt; endl;
+  }
+  cout &lt;&lt; <font color=#004488>"nm = "</font> &lt;&lt; nm &lt;&lt; endl;
+} <font color=#009900>///:~</font></PRE></FONT></BLOCKQUOTE>
+
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">When the program runs, it does not print
+the constructor message, only the message from <B>operator new<U>( )</U></B> and
+the message in the exception handler. Because <B>new</B> never returns, the
+constructor is never called so its message is not printed.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">It&#8217;s important that <B>nm</B> be
+initialized to zero because the <B>new</B> expression never completes, and the
+pointer should be zero to make sure you don&#8217;t misuse it. However, you
+should actually do more in the exception handler than just print out a message
+and continue on as if the object had been successfully created. Ideally, you
+will do something that will cause the program to recover from the problem, or at
+the least exit after logging an error.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">In earlier versions of C++ it was
+standard practice to return zero from <B>new</B> if storage allocation failed.
+That would prevent construction from occurring. However, if you try to return
+zero from <B>new</B> with a Standard-conforming compiler, it should tell you
+that you ought to throw <B>bad_alloc</B>
+instead.</FONT><A NAME="_Toc312374010"></A><A NAME="_Toc472654985"></A><BR></P></DIV>
+<A NAME="Heading401"></A><FONT FACE = "Verdana"><H3 ALIGN="LEFT">
+placement new &amp; delete</H3></FONT>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">There are two other, less common, uses
+for overloading <B>operator new<U>(
+)</U></B>.<A NAME="Index2266"></A><A NAME="Index2267"></A><A NAME="Index2268"></A><A NAME="Index2269"></A><A NAME="Index2270"></A></FONT><BR></P></DIV>
+<OL>
+<LI><FONT FACE="Verdana">	</FONT><FONT FACE="Georgia">You may want to place an
+object in a specific location in memory. This is especially important with
+hardware-oriented embedded systems where an object may be synonymous with a
+particular piece of
+hardware.</FONT><LI><FONT FACE="Verdana">	</FONT><FONT FACE="Georgia">You may
+want to be able to choose from different allocators when calling
+<B>new</B>.</FONT></OL><DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Both of these
+situations are solved with the same mechanism: The overloaded <B>operator
+new<U>( )</U></B> can take more than one argument. As you&#8217;ve seen before,
+the first argument is always the size of the object, which is secretly
+calculated and passed by the compiler. But the other arguments can be anything
+you want &#8211; the address you want the object placed at, a reference to a
+memory allocation function or object, or anything else that is convenient for
+you.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">The way that you pass the extra arguments
+to <B>operator new<U>( )</U></B> during a call may seem slightly curious at
+first. You put the argument list (<I>without</I> the <B>size_t </B>argument,
+which is handled by the compiler) after the keyword <B>new</B> and before the
+class name of the object you&#8217;re creating. For example,</FONT><BR></P></DIV>
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE>X* xp = <font color=#0000ff>new</font>(a) X;</PRE></FONT></BLOCKQUOTE>
+
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">will pass <B>a</B> as the second argument
+to <B>operator new<U>( )</U></B>. Of course, this can work only if such an
+<B>operator new<U>( )</U></B> has been declared.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Here&#8217;s an example showing how you
+can place an object at a particular location:</FONT><BR></P></DIV>
+
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE><font color=#009900>//: C13:PlacementOperatorNew.cpp</font>
+<font color=#009900>// Placement with operator new()</font>
+#include &lt;cstddef&gt; <font color=#009900>// Size_t</font>
+#include &lt;iostream&gt;
+<font color=#0000ff>using</font> <font color=#0000ff>namespace</font> std;
+
+<font color=#0000ff>class</font> X {
+  <font color=#0000ff>int</font> i;
+<font color=#0000ff>public</font>:
+  X(<font color=#0000ff>int</font> ii = 0) : i(ii) {
+    cout &lt;&lt; <font color=#004488>"this = "</font> &lt;&lt; <font color=#0000ff>this</font> &lt;&lt; endl;
+  }
+  ~X() {
+    cout &lt;&lt; <font color=#004488>"X::~X(): "</font> &lt;&lt; <font color=#0000ff>this</font> &lt;&lt; endl;
+  }
+  <font color=#0000ff>void</font>* <font color=#0000ff>operator</font> <font color=#0000ff>new</font>(size_t, <font color=#0000ff>void</font>* loc) {
+    <font color=#0000ff>return</font> loc;
+  }
+};
+
+<font color=#0000ff>int</font> main() {
+  <font color=#0000ff>int</font> l[10];
+  cout &lt;&lt; <font color=#004488>"l = "</font> &lt;&lt; l &lt;&lt; endl;
+  X* xp = <font color=#0000ff>new</font>(l) X(47); <font color=#009900>// X at location l</font>
+  xp-&gt;X::~X(); <font color=#009900>// Explicit destructor call</font>
+  <font color=#009900>// ONLY use with placement!</font>
+} <font color=#009900>///:~</font></PRE></FONT></BLOCKQUOTE>
+
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Notice that <B>operator new</B> only
+returns the pointer that&#8217;s passed to it. Thus, the caller decides where
+the object is going to sit, and the constructor is called for that memory as
+part of the new-expression.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Although this example shows only one
+additional argument, there&#8217;s nothing to prevent you from adding more if
+you need them for other purposes.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">A dilemma occurs when you want to destroy
+the object. There&#8217;s only one version of <B>operator delete</B>, so
+there&#8217;s no way to say, &#8220;Use my special deallocator for this
+object.&#8221; You want to call the destructor, but you don&#8217;t want the
+memory to be released by the dynamic memory mechanism because it wasn&#8217;t
+allocated on the heap.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">The answer is a very special syntax. You
+can explicitly call the destructor, as in</FONT><BR></P></DIV>
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE>xp-&gt;X::~X(); <font color=#009900>// Explicit destructor call</font></PRE></FONT></BLOCKQUOTE>
+
+<DIV ALIGN="LEFT"><P><A NAME="Index2271"></A><FONT FACE="Georgia">A stern warning
+is in order here. Some people see this as a way to destroy objects at some time
+before the end of the scope, rather than either adjusting the scope or (more
+correctly) using dynamic object creation if they want the object&#8217;s
+lifetime to be determined at runtime. You will have serious problems if you call
+the destructor this way for an ordinary object created on the stack because the
+destructor will be called again at the end of the scope. If you call the
+destructor this way for an object that was created on the heap, the destructor
+will execute, but the memory won&#8217;t be released, which probably isn&#8217;t
+what you want. The only reason that the destructor can be called explicitly this
+way is to support the placement syntax for <B>operator new</B>.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">There&#8217;s also a placement
+<B>operator delete</B> that is only called if a constructor for a placement
+<B>new</B> expression throws an exception (so that the memory is automatically
+cleaned up during the exception). The placement <B>operator delete</B> has an
+argument list that corresponds to the placement <B>operator new</B> that is
+called before the constructor throws the exception. This topic will be explored
+in the exception handling chapter in Volume
+2.</FONT><A NAME="_Toc305593248"></A><A NAME="_Toc305628720"></A><A NAME="_Toc312374011"></A><A NAME="_Toc472654986"></A><BR></P></DIV>
+<A NAME="Heading402"></A><FONT FACE = "Verdana"><H2 ALIGN="LEFT">
+Summary</H2></FONT>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">It&#8217;s convenient and optimally
+efficient to create automatic objects on the stack, but to solve the general
+programming problem you must be able to create and destroy objects at any time
+during a program&#8217;s execution, particularly to respond to information from
+outside the program. Although C&#8217;s dynamic memory allocation will get
+storage from the heap, it doesn&#8217;t provide the ease of use and guaranteed
+construction necessary in C++. By bringing dynamic object creation into the core
+of the language with <B>new</B> and <B>delete</B>, you can create objects on the
+heap as easily as making them on the stack. In addition, you get a great deal of
+flexibility. You can change the behavior of <B>new</B> and <B>delete</B> if they
+don&#8217;t suit your needs, particularly if they aren&#8217;t efficient enough.
+Also, you can modify what happens when the heap runs out of
+storage.</FONT><A NAME="_Toc312374012"></A><A NAME="_Toc472654987"></A><BR></P></DIV>
+<A NAME="Heading403"></A><FONT FACE = "Verdana"><H2 ALIGN="LEFT">
+Exercises</H2></FONT>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia" SIZE=2>Solutions to selected exercises
+can be found in the electronic document <I>The Thinking in C++ Annotated
+Solution Guide</I>, available for a small fee from
+www.BruceEckel.com.</FONT><BR></P></DIV>
+<OL>
+<LI><FONT FACE="Verdana">	</FONT><FONT FACE="Georgia">Create a <B>class Counted
+</B>that contains an <B>int</B> <B>id</B> and a <B>static int count</B>. The
+default constructor should
+begin:</FONT><BR><FONT FACE="Georgia"><B>Counted(&#160;) : id(count++) {</B>. It
+should also print its <B>id</B> and that it&#8217;s being created. The
+destructor should print that it&#8217;s being destroyed and its <B>id</B>. Test
+your class.</FONT><LI><FONT FACE="Verdana">	</FONT><FONT FACE="Georgia">Prove to
+yourself that <B>new</B> and <B>delete</B> always call the constructors and
+destructors by creating an object of <B>class Counted </B>(from Exercise 1) with
+<B>new</B> and destroying it with <B>delete</B>. Also create and destroy an
+array of these objects on the
+heap.</FONT><LI><FONT FACE="Verdana">	</FONT><FONT FACE="Georgia">Create a
+<B>PStash</B> object and fill it with <B>new</B> objects from Exercise 1.
+Observe what happens when this <B>PStash</B> object goes out of scope and its
+destructor is
+called.</FONT><LI><FONT FACE="Verdana">	</FONT><FONT FACE="Georgia">Create a
+<B>vector&lt; Counted*&gt;</B> and fill it with pointers to <B>new Counted</B>
+objects (from Exercise 1). Move through the <B>vector</B> and print the
+<B>Counted </B>objects, then move through again and <B>delete</B> each
+one.</FONT><LI><FONT FACE="Verdana">	</FONT><FONT FACE="Georgia">Repeat Exercise
+4, but add a member function <B>f(&#160;)</B> to <B>Counted</B> that prints a
+message. Move through the <B>vector</B> and call <B>f(&#160;)</B> for each
+object.</FONT><LI><FONT FACE="Verdana">	</FONT><FONT FACE="Georgia">Repeat
+Exercise 5 using a
+<B>PStash</B>.</FONT><LI><FONT FACE="Verdana">	</FONT><FONT FACE="Georgia">Repeat
+Exercise 5 using <B>Stack4.h</B> from Chapter
+9.</FONT><LI><FONT FACE="Verdana">	</FONT><FONT FACE="Georgia">Dynamically
+create an array of objects of <B>class Counted </B>(from Exercise 1). Call
+<B>delete</B> for the resulting pointer, <I>without the square brackets</I>.
+Explain the
+results.</FONT><LI><FONT FACE="Verdana">	</FONT><FONT FACE="Georgia">Create an
+object of <B>class Counted </B>(from Exercise 1) using <B>new</B>, cast the
+resulting pointer to a <B>void*</B>, and delete that. Explain the
+results.</FONT><LI><FONT FACE="Verdana">	</FONT><FONT FACE="Georgia">Execute
+<B>NewHandler.cpp</B> on your machine to see the resulting count. Calculate the
+amount of free store available for your
+program.</FONT><LI><FONT FACE="Verdana">	</FONT><FONT FACE="Georgia">Create a
+class with an overloaded operator <B>new</B> and <B>delete</B>, both the
+single-object versions and the array versions. Demonstrate that both versions
+work.</FONT><LI><FONT FACE="Verdana">	</FONT><FONT FACE="Georgia">Devise a test
+for <B>Framis.cpp</B> to show yourself approximately how much faster the custom
+<B>new</B> and <B>delete</B> run than the global <B>new</B> and
+<B>delete</B>.</FONT><LI><FONT FACE="Verdana">	</FONT><FONT FACE="Georgia">Modify
+<B>NoMemory.cpp</B> so that it contains an array of <B>int </B>and so that it
+actually allocates memory instead of throwing <B>bad_alloc</B>. In
+<B>main(&#160;)</B>, set up a <B>while</B> loop like the one in
+<B>NewHandler.cpp</B> to run out of memory and see what happens if your
+<B>operator new</B> does not test to see if the memory is successfully
+allocated. Then add the check to your <B>operator new</B> and throw
+<B>bad_alloc</B>.</FONT><LI><FONT FACE="Verdana">	</FONT><FONT FACE="Georgia">Create
+a class with a placement <B>new</B> with a second argument of type
+<B>string</B>. The class should contain a <B>static vector&lt;string&gt;
+</B>where the second <B>new</B> argument is stored. The placement <B>new
+</B>should allocate storage as normal. In <B>main(&#160;)</B>, make calls to
+your placement <B>new</B> with <B>string</B> arguments that describe the calls
+(you may want to use the preprocessor&#8217;s <B>__FILE__</B> and
+<B>__LINE__</B>
+macros).</FONT><LI><FONT FACE="Verdana">	</FONT><FONT FACE="Georgia">Modify
+<B>ArrayOperatorNew.cpp</B> by adding a <B>static vector&lt;Widget*&gt;</B> that
+adds each <B>Widget</B> address that is allocated in <B>operator new<U>(
+)</U></B> and removes it when it is released via <B>operator delete<U>(
+)</U></B>. (You may need to look up information about <B>vector</B> in your
+Standard C++ Library documentation or in the 2<SUP>nd</SUP> volume of this book,
+available at the Web site.) Create a second class called <B>MemoryChecker
+</B>that has a destructor that prints out the number of <B>Widget</B> pointers
+in your <B>vector</B>. Create a program with a single global instance of
+<B>MemoryChecker</B> and in <B>main(&#160;)</B>, dynamically allocate and
+destroy several objects and arrays of <B>Widget</B>. Show that
+<B>MemoryChecker</B> reveals memory
+leaks.</FONT><A NAME="_Toc305593250"></A><A NAME="_Toc305628722"></A><A NAME="_Toc312374013"></A></OL><FONT FACE = "Verdana"><H1 ALIGN="LEFT">
+</H1></FONT>
+<HR><DIV ALIGN="LEFT"><P><A NAME="fn50" HREF="#fnB50">[50]</A><FONT FACE="Georgia" SIZE=2>
+There is a special syntax called <I>placement new</I> that allows you to call a
+constructor for a pre-allocated piece of memory. This is introduced later in the
+chapter.</FONT><BR></P></DIV>
+
+<DIV ALIGN="CENTER">
+    <FONT FACE="Verdana" size = "-1">
+     [ <a href="Chapter12.html">Previous Chapter</a> ] 
+    [ <a href="Contents.html">Table of Contents</a> ] 
+    [ <a href="DocIndex.html">Index</a> ]
+     [ <a href="Chapter14.html">Next Chapter</a> ] 
+    </FONT>
+    <BR>
+ Last Update:09/27/2001</P></DIV>
+
+</BODY>
+
+</HTML>

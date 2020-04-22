@@ -1,0 +1,1013 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<HTML>
+<!--
+This document was converted from RTF source: 
+By rtftohtml 4.19
+See http://www.sunpack.com/RTF
+Filename:TIC2Vone.rtf
+Application Directory:C:\TOOLS\RTF2HTML\
+Subject:
+Author:Bruce Eckel
+Operator:Bruce Eckel
+Document Comments:
+Version Comments:
+Comments:
+Keywords:
+Translation Date:09/27/2001
+Translation Time:05:25:32
+Translation Platform:Win32
+Number of Output files:22
+This File:Chapter05.html
+SplitDepth=1
+SkipNavPanel=1
+SkipLeadingToc=1
+SkipTrailingToc=1
+GenContents=1
+GenFrames=1
+GenIndex=1
+-->
+<HEAD lang="en"><META http-equiv="Content-Type" content="text/html">
+<TITLE>5: Hiding the Implementation</TITLE>
+</HEAD>
+
+<BODY  BGCOLOR="#FFFFFF"><DIV ALIGN="CENTER">
+  <a href="http://www.MindView.net">
+  <img src="mindview-head.gif" alt="MindView Inc." BORDER = "0"></a>
+  <CENTER>
+    <FONT FACE="Verdana" size = "-1">
+    [ <a href="README-HTML.txt">Viewing Hints</a> ]
+    [ <a href="http://www.mindview.net/CPPServices/SolutionGuide.html">Exercise Solutions</a> ]
+    [ <a href="http://www.mindview.net/ThinkingInCPP2e.html">Volume 2</a> ]
+    [ <a href="http://www.mindview.net/MailingList.html">Free Newsletter</a> ] <br>
+    [ <a href="http://www.mindview.net/CPPServices/#PublicSeminars">Seminars</a> ]
+    [ <a href="http://www.mindview.net/CPPServices/#SeminarsOnCD">Seminars on CD ROM</a> ]
+    [ <a href="http://www.mindview.net/CPPServices/#ConsultingServices">Consulting</a> ]
+    </FONT>
+  <H2><FONT FACE="Verdana">
+  Thinking in C++, 2nd ed. Volume 1</FONT></H2></FONT>
+  <H3><FONT FACE="Verdana">&copy;2000 by Bruce Eckel</FONT></H3></FONT>
+  
+    <FONT FACE="Verdana" size = "-1">
+     [ <a href="Chapter04.html">Previous Chapter</a> ] 
+    [ <a href="Contents.html">Table of Contents</a> ] 
+    [ <a href="DocIndex.html">Index</a> ]
+     [ <a href="Chapter06.html">Next Chapter</a> ] 
+    </FONT>
+    
+  </CENTER>
+  </P></DIV><A NAME="_Toc472654835"></A><FONT FACE = "Verdana"><H1 ALIGN="LEFT">
+5: Hiding the Implementation</H1></FONT>
+<A NAME="Heading208"></A><FONT FACE = "Verdana"><H1 ALIGN="LEFT">
+</H1></FONT>
+<DIV ALIGN="LEFT"><P><FONT FACE="Verdana" SIZE=4>A typical C library contains a
+<B>struct</B> and some </FONT><BR><FONT FACE="Verdana" SIZE=4>associated
+functions to act on that <B>struct</B>. So far,
+</FONT><BR><FONT FACE="Verdana" SIZE=4>you've seen how C++ takes functions that
+are <I>conceptually</I> associated and makes them <I>literally</I> associated by
+</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">putting the function declarations inside
+the scope of the <B>struct</B>, changing the way functions are called for the
+<B>struct</B>, eliminating the passing of the structure address as the first
+argument, and adding a new type name to the program (so you don&#8217;t have to
+create a <B>typedef</B> for the <B>struct</B> tag).</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">These are all convenient &#8211; they
+help you organize your code and make it easier to write and read. However, there
+are other important issues when making libraries easier in C++, especially the
+issues of safety and control. This chapter looks at the subject of boundaries in
+structures.</FONT><A NAME="_Toc312373837"></A><A NAME="_Toc472654836"></A><BR></P></DIV>
+<A NAME="Heading209"></A><FONT FACE = "Verdana"><H2 ALIGN="LEFT">
+Setting limits</H2></FONT>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">In any relationship it&#8217;s important
+to have boundaries that are respected by all parties involved. When you create a
+library, you establish a relationship with the <I>client
+programmer<A NAME="Index1179"></A><A NAME="Index1180"></A></I> who uses that
+library to build an application or another library.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">In a C
+<A NAME="Index1181"></A><A NAME="Index1182"></A><B>struct</B>, as with most
+things in C, there are no rules. Client programmers can do anything they want
+with that <B>struct</B>, and there&#8217;s no way to force any particular
+behaviors. For example, even though you saw in the last chapter the importance
+of the functions named <B>initialize(&#160;)</B> and <B>cleanup(&#160;)</B>, the
+client programmer has the option not to call those functions. (We&#8217;ll look
+at a better approach in the next chapter.) And even though you would really
+prefer that the client programmer not directly manipulate some of the members of
+your <B>struct</B>, in C there&#8217;s no way to prevent it. Everything&#8217;s
+naked to the world.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">There are two reasons for controlling
+access
+<A NAME="Index1183"></A><A NAME="Index1184"></A><A NAME="Index1185"></A><A NAME="Index1186"></A>to
+members. The first is to keep the client programmer&#8217;s hands off tools they
+shouldn&#8217;t touch, tools that are necessary for the internal machinations of
+the data type, but not part of the interface the client programmer needs to
+solve their particular problems. This is actually a service to client
+programmers because they can easily see what&#8217;s important to them and what
+they can ignore.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">The second reason for access control is
+to allow the library designer to change the internal workings of the structure
+without worrying about how it will affect the client programmer. In the
+<B>Stack</B> example in the last chapter, you might want to allocate the storage
+in big chunks, for speed, rather than creating new storage each time an element
+is added. If the interface and implementation are clearly separated and
+protected, you can accomplish this and require only a relink by the client
+programmer.<A NAME="Index1187"></A><A NAME="Index1188"></A><A NAME="Index1189"></A></FONT><A NAME="_Toc312373838"></A><A NAME="_Toc472654837"></A><BR></P></DIV>
+<A NAME="Heading210"></A><FONT FACE = "Verdana"><H2 ALIGN="LEFT">
+C++ access control</H2></FONT>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">C++ introduces three new keywords to set
+the boundaries in a structure: <B>public</B>, <B>private</B>, and
+<B>protected</B>. Their use and meaning are remarkably straightforward. These
+<I>access specifiers</I>
+<A NAME="Index1190"></A><A NAME="Index1191"></A><A NAME="Index1192"></A>are used
+only in a structure declaration, and they change the boundary for all the
+declarations that follow them. Whenever you use an access specifier, it must be
+followed by a colon.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><A NAME="Index1193"></A><FONT FACE="Georgia"><B>public</B>
+<A NAME="Index1194"></A>means all member declarations that follow are available
+to everyone. <B>public</B> members are like <B>struct</B> members. For example,
+the following <B>struct</B> declarations are identical:</FONT><BR></P></DIV>
+
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE><font color=#009900>//: C05:Public.cpp</font>
+<font color=#009900>// Public is just like C's struct</font>
+
+<font color=#0000ff>struct</font> A {
+  <font color=#0000ff>int</font> i;
+  <font color=#0000ff>char</font> j;
+  <font color=#0000ff>float</font> f;
+  <font color=#0000ff>void</font> func();
+};
+
+<font color=#0000ff>void</font> A::func() {}
+
+<font color=#0000ff>struct</font> B {
+<font color=#0000ff>public</font>:
+  <font color=#0000ff>int</font> i;
+  <font color=#0000ff>char</font> j;
+  <font color=#0000ff>float</font> f;
+  <font color=#0000ff>void</font> func();
+};
+
+<font color=#0000ff>void</font> B::func() {}  
+
+<font color=#0000ff>int</font> main() {
+  A a; B b;
+  a.i = b.i = 1;
+  a.j = b.j = 'c';
+  a.f = b.f = 3.14159;
+  a.func();
+  b.func();
+} <font color=#009900>///:~</font></PRE></FONT></BLOCKQUOTE>
+
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">The
+<A NAME="Index1195"></A><B>private</B> <A NAME="Index1196"></A>keyword, on the
+other hand, means that no one can access that member except you, the creator of
+the type, inside function members of that type. <B>private</B> is a brick wall
+between you and the client programmer; if someone tries to access a
+<B>private</B> member, they&#8217;ll get a compile-time error. In <B>struct
+B</B> in the example above, you may want to make portions of the representation
+(that is, the data members) hidden, accessible only to you:</FONT><BR></P></DIV>
+
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE><font color=#009900>//: C05:Private.cpp</font>
+<font color=#009900>// Setting the boundary</font>
+
+<font color=#0000ff>struct</font> B {
+<font color=#0000ff>private</font>:
+  <font color=#0000ff>char</font> j;
+  <font color=#0000ff>float</font> f;
+<font color=#0000ff>public</font>:
+  <font color=#0000ff>int</font> i;
+  <font color=#0000ff>void</font> func();
+};
+
+<font color=#0000ff>void</font> B::func() {
+  i = 0;
+  j = '0';
+  f = 0.0;
+};
+
+<font color=#0000ff>int</font> main() {
+  B b;
+  b.i = 1;    <font color=#009900>// OK, public</font>
+<font color=#009900>//!  b.j = '1';  // Illegal, private</font>
+<font color=#009900>//!  b.f = 1.0;  // Illegal, private</font>
+} <font color=#009900>///:~</font></PRE></FONT></BLOCKQUOTE>
+
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Although <B>func(&#160;)</B> can access
+any member of <B>B</B> (because <B>func(&#160;)</B> is a member of <B>B</B>,
+thus automatically granting it permission), an ordinary global function like
+<B>main(&#160;)</B> cannot. Of course, neither can member functions of other
+structures. Only the functions that are clearly stated in the structure
+declaration (the &#8220;contract&#8221;) can have access to <B>private</B>
+members.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">There is no required order for access
+specifiers<A NAME="Index1197"></A><A NAME="Index1198"></A><A NAME="Index1199"></A>,
+and they may appear more than once. They affect all the members declared after
+them and before the next access
+specifier.</FONT><A NAME="_Toc312373839"></A><A NAME="_Toc472654838"></A><BR></P></DIV>
+<A NAME="Heading211"></A><FONT FACE = "Verdana"><H3 ALIGN="LEFT">
+protected</H3></FONT>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">The last access specifier is
+<A NAME="Index1200"></A><B>protected<A NAME="Index1201"></A></B>.
+<B>protected</B> acts just like <B>private</B>, with one exception that we
+can&#8217;t really talk about right now: &#8220;Inherited&#8221; structures
+(which cannot access <B>private </B>members) are granted access to
+<B>protected</B> members. This will become clearer in Chapter 14 when
+inheritance is introduced.  For current purposes, consider <B>protected</B> to
+be just like
+<B>private</B>.</FONT><A NAME="_Toc312373840"></A><A NAME="_Toc472654839"></A><BR></P></DIV>
+<A NAME="Heading212"></A><FONT FACE = "Verdana"><H2 ALIGN="LEFT">
+Friends</H2></FONT>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">What if you want to explicitly grant
+access to a function that isn&#8217;t a member of the current structure? This is
+accomplished by declaring that function a <A NAME="Index1202"></A><B>friend</B>
+<A NAME="Index1203"></A><I>inside</I> the structure declaration. It&#8217;s
+important that the <B>friend</B> declaration occurs inside the structure
+declaration because you (and the compiler) must be able to read the structure
+declaration and see every rule about the size and behavior of that data type.
+And a very important rule in any relationship is, &#8220;Who can access my
+private implementation?&#8221;</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">The class controls which code has access
+to its members. There&#8217;s no magic way to &#8220;break in&#8221; from the
+outside if you aren&#8217;t a <B>friend</B>; you can&#8217;t declare a new class
+and say, &#8220;Hi, I&#8217;m a friend of <B>Bob</B>!&#8221; and expect to see
+the <B>private</B> and <B>protected</B> members of <B>Bob</B>.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">You can declare a global function as a
+<B>friend<A NAME="Index1204"></A><A NAME="Index1205"></A><A NAME="Index1206"></A></B>,
+and you can also declare a member function of another
+structure<A NAME="Index1207"></A><A NAME="Index1208"></A><A NAME="Index1209"></A>,
+or even an entire structure, as a <B>friend</B>. Here&#8217;s an example
+<A NAME="Index1210"></A><A NAME="Index1211"></A>:</FONT><BR></P></DIV>
+
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE><font color=#009900>//: C05:Friend.cpp</font>
+<font color=#009900>// Friend allows special access</font>
+
+<font color=#009900>// Declaration (incomplete type specification):</font>
+<font color=#0000ff>struct</font> X;
+
+<font color=#0000ff>struct</font> Y {
+  <font color=#0000ff>void</font> f(X*);
+};
+
+<font color=#0000ff>struct</font> X { <font color=#009900>// Definition</font>
+<font color=#0000ff>private</font>:
+  <font color=#0000ff>int</font> i;
+<font color=#0000ff>public</font>:
+  <font color=#0000ff>void</font> initialize();
+  <font color=#0000ff>friend</font> <font color=#0000ff>void</font> g(X*, <font color=#0000ff>int</font>); <font color=#009900>// Global friend</font>
+  <font color=#0000ff>friend</font> <font color=#0000ff>void</font> Y::f(X*);  <font color=#009900>// Struct member friend</font>
+  <font color=#0000ff>friend</font> <font color=#0000ff>struct</font> Z; <font color=#009900>// Entire struct is a friend</font>
+  <font color=#0000ff>friend</font> <font color=#0000ff>void</font> h();
+};
+
+<font color=#0000ff>void</font> X::initialize() { 
+  i = 0; 
+}
+
+<font color=#0000ff>void</font> g(X* x, <font color=#0000ff>int</font> i) { 
+  x-&gt;i = i; 
+}
+
+<font color=#0000ff>void</font> Y::f(X* x) { 
+  x-&gt;i = 47; 
+}
+
+<font color=#0000ff>struct</font> Z {
+<font color=#0000ff>private</font>:
+  <font color=#0000ff>int</font> j;
+<font color=#0000ff>public</font>:
+  <font color=#0000ff>void</font> initialize();
+  <font color=#0000ff>void</font> g(X* x);
+};
+
+<font color=#0000ff>void</font> Z::initialize() { 
+  j = 99;
+}
+
+<font color=#0000ff>void</font> Z::g(X* x) { 
+  x-&gt;i += j; 
+}
+
+<font color=#0000ff>void</font> h() {
+  X x;
+  x.i = 100; <font color=#009900>// Direct data manipulation</font>
+}
+
+<font color=#0000ff>int</font> main() {
+  X x;
+  Z z;
+  z.g(&amp;x);
+} <font color=#009900>///:~</font></PRE></FONT></BLOCKQUOTE>
+
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia"><B>struct Y</B> has a member function
+<B>f(&#160;)</B> that will modify an object of type <B>X</B>. This is a bit of a
+conundrum because the C++ compiler requires you to declare everything before you
+can refer to it, so <B>struct Y</B> must be declared before its member
+<B>Y::f(X*)</B> can be declared as a friend in <B>struct X</B>. But for
+<B>Y::f(X*)</B> to be declared, <B>struct X</B> must be declared
+first!</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Here&#8217;s the solution. Notice that
+<B>Y::f(X*)</B> takes the <I>address</I> of an <B>X</B>
+object<A NAME="Index1212"></A><A NAME="Index1213"></A>. This is critical because
+the compiler always knows how to pass an address, which is of a fixed size
+regardless of the object being passed, even if it doesn&#8217;t have full
+information about the size of the type. If you try to pass the whole object,
+however, the compiler must see the entire structure definition of <B>X</B>, to
+know the size and how to pass it, before it allows you to declare a function
+such as <B>Y::g(X)</B>. </FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">By passing the address of an <B>X</B>,
+the compiler allows you to make an <I>incomplete type specification</I>
+<A NAME="Index1214"></A><A NAME="Index1215"></A><A NAME="Index1216"></A>of
+<B>X</B> prior to declaring <B>Y::f(X*)</B>. This is accomplished in the
+declaration: <A NAME="Index1217"></A><A NAME="Index1218"></A></FONT><BR></P></DIV>
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE><font color=#0000ff>struct</font> X;</PRE></FONT></BLOCKQUOTE>
+
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">This declaration simply tells the
+compiler there&#8217;s a <B>struct</B> by that name, so it&#8217;s OK to refer
+to it as long as you don&#8217;t require any more knowledge than the
+name.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Now, in <B>struct X</B>, the function
+<B>Y::f(X*)</B> can be declared as a <B>friend</B> with no problem. If you tried
+to declare it before the compiler had seen the full specification for <B>Y</B>,
+it would have given you an error. This is a safety feature to ensure consistency
+and eliminate bugs.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Notice the two other <B>friend</B>
+functions. The first declares an ordinary global function <B>g(&#160;)</B> as a
+<B>friend</B>. But <B>g(&#160;)</B> has not been previously declared at the
+global scope! It turns out that <B>friend</B> can be used this way to
+simultaneously declare the function <I>and</I> give it <B>friend</B> status.
+This extends to entire structures: </FONT><BR></P></DIV>
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE><font color=#0000ff>friend</font> <font color=#0000ff>struct</font> Z;</PRE></FONT></BLOCKQUOTE>
+
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">is an incomplete type specification for
+<B>Z</B>, and it gives the entire structure <B>friend</B>
+status.</FONT><A NAME="_Toc312373841"></A><A NAME="_Toc472654840"></A><BR></P></DIV>
+<A NAME="Heading213"></A><FONT FACE = "Verdana"><H3 ALIGN="LEFT">
+Nested friends<BR><A NAME="Index1219"></A><A NAME="Index1220"></A></H3></FONT>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Making a structure nested doesn&#8217;t
+automatically give it access to <B>private</B> members. To accomplish this, you
+must follow a particular form: first, declare (without defining) the nested
+structure, then declare it as a <B>friend</B>, and finally define the structure.
+The structure definition must be separate from the <B>friend</B> declaration,
+otherwise it would be seen by the compiler as a non-member. Here&#8217;s an
+example:</FONT><BR></P></DIV>
+
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE><font color=#009900>//: C05:NestFriend.cpp</font>
+<font color=#009900>// Nested friends</font>
+#include &lt;iostream&gt;
+#include &lt;cstring&gt; <font color=#009900>// memset()</font>
+<font color=#0000ff>using</font> <font color=#0000ff>namespace</font> std;
+<font color=#0000ff>const</font> <font color=#0000ff>int</font> sz = 20;
+
+<font color=#0000ff>struct</font> Holder {
+<font color=#0000ff>private</font>:
+  <font color=#0000ff>int</font> a[sz];
+<font color=#0000ff>public</font>:
+  <font color=#0000ff>void</font> initialize();
+  <font color=#0000ff>struct</font> Pointer;
+  <font color=#0000ff>friend</font> <font color=#0000ff>struct</font> Pointer;
+  <font color=#0000ff>struct</font> Pointer {
+  <font color=#0000ff>private</font>:
+    Holder* h;
+    <font color=#0000ff>int</font>* p;
+  <font color=#0000ff>public</font>:
+    <font color=#0000ff>void</font> initialize(Holder* h);
+    <font color=#009900>// Move around in the array:</font>
+    <font color=#0000ff>void</font> next();
+    <font color=#0000ff>void</font> previous();
+    <font color=#0000ff>void</font> top();
+    <font color=#0000ff>void</font> end();
+    <font color=#009900>// Access values:</font>
+    <font color=#0000ff>int</font> read();
+    <font color=#0000ff>void</font> set(<font color=#0000ff>int</font> i);
+  };
+};
+
+<font color=#0000ff>void</font> Holder::initialize() {
+  memset(a, 0, sz * <font color=#0000ff>sizeof</font>(<font color=#0000ff>int</font>));
+}
+
+<font color=#0000ff>void</font> Holder::Pointer::initialize(Holder* rv) {
+  h = rv;
+  p = rv-&gt;a;
+}
+
+<font color=#0000ff>void</font> Holder::Pointer::next() {
+  <font color=#0000ff>if</font>(p &lt; &amp;(h-&gt;a[sz - 1])) p++;
+}
+
+<font color=#0000ff>void</font> Holder::Pointer::previous() {
+  <font color=#0000ff>if</font>(p &gt; &amp;(h-&gt;a[0])) p--;
+}
+
+<font color=#0000ff>void</font> Holder::Pointer::top() {
+  p = &amp;(h-&gt;a[0]);
+}
+
+<font color=#0000ff>void</font> Holder::Pointer::end() {
+  p = &amp;(h-&gt;a[sz - 1]);
+}
+
+<font color=#0000ff>int</font> Holder::Pointer::read() {
+  <font color=#0000ff>return</font> *p;
+}
+
+<font color=#0000ff>void</font> Holder::Pointer::set(<font color=#0000ff>int</font> i) {
+  *p = i;
+}
+
+<font color=#0000ff>int</font> main() {
+  Holder h;
+  Holder::Pointer hp, hp2;
+  <font color=#0000ff>int</font> i;
+
+  h.initialize();
+  hp.initialize(&amp;h);
+  hp2.initialize(&amp;h);
+  <font color=#0000ff>for</font>(i = 0; i &lt; sz; i++) {
+    hp.set(i);
+    hp.next();
+  }
+  hp.top();
+  hp2.end();
+  <font color=#0000ff>for</font>(i = 0; i &lt; sz; i++) {
+    cout &lt;&lt; <font color=#004488>"hp = "</font> &lt;&lt; hp.read()
+         &lt;&lt; <font color=#004488>", hp2 = "</font> &lt;&lt; hp2.read() &lt;&lt; endl;
+    hp.next();
+    hp2.previous();
+  }
+} <font color=#009900>///:~</font></PRE></FONT></BLOCKQUOTE>
+
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Once <B>Pointer </B>is declared, it is
+granted access to the private members of <B>Holder</B> by
+saying:</FONT><BR></P></DIV>
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE><font color=#0000ff>friend</font> <U><font color=#0000ff>struct</font> </U>Pointer;</PRE></FONT></BLOCKQUOTE>
+
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">The <B>struct Holder</B> contains an
+array of <B>int</B>s and the <B>Pointer</B> allows you to access them. Because
+<B>Pointer</B> is strongly associated with <B>Holder</B>, it&#8217;s sensible to
+make it a member structure of <B>Holder</B>. But because <B>Pointer</B> is a
+separate class from <B>Holder</B>, you can make more than one of them in
+<B>main(&#160;)</B> and use them to select different parts of the array.
+<B>Pointer</B> is a structure instead of a raw C pointer, so you can guarantee
+that it will always safely point inside the <B>Holder</B>.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">The Standard C library function
+<A NAME="Index1221"></A><B>memset(&#160;)</B> (in
+<A NAME="Index1222"></A><A NAME="Index1223"></A><B>&lt;cstring&gt;</B>) is used
+for convenience in the program above. It sets all memory starting at a
+particular address (the first argument) to a particular value (the second
+argument) for <B>n</B> bytes past the starting address (<B>n</B> is the third
+argument). Of course, you could have simply used a loop to iterate through all
+the memory, but <B>memset(&#160;)</B> is available, well-tested (so it&#8217;s
+less likely you&#8217;ll introduce an error), and probably more efficient than
+if you coded it by
+hand.</FONT><A NAME="_Toc312373842"></A><A NAME="_Toc472654841"></A><BR></P></DIV>
+<A NAME="Heading214"></A><FONT FACE = "Verdana"><H3 ALIGN="LEFT">
+Is it pure?</H3></FONT>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">The class definition gives you an audit
+trail, so you can see from looking at the class which functions have permission
+to modify the private parts of the class. If a function is a <B>friend</B>, it
+means that it isn&#8217;t a member, but you want to give permission to modify
+private data anyway, and it must be listed in the class definition so everyone
+can see that it&#8217;s one of the privileged functions. </FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><A NAME="Index1224"></A><A NAME="Index1225"></A><A NAME="Index1226"></A><A NAME="Index1227"></A><A NAME="Index1228"></A><FONT FACE="Georgia">C++
+is a hybrid object-oriented language, not a pure one, and <B>friend</B> was
+added to get around practical problems that crop up. It&#8217;s fine to point
+out that this makes the language less &#8220;pure,&#8221; because C++ <I>is</I>
+designed to be pragmatic, not to aspire to an abstract
+ideal.</FONT><A NAME="_Toc312373843"></A><A NAME="_Toc472654842"></A><BR></P></DIV>
+<A NAME="Heading215"></A><FONT FACE = "Verdana"><H2 ALIGN="LEFT">
+Object layout</H2></FONT>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Chapter 4 stated that a <B>struct</B>
+written for a C compiler and later compiled with C++ would be unchanged. This
+referred primarily to the object layout of the <B>struct</B>, that is, where the
+storage for the individual variables is positioned in the memory allocated for
+the object. If the C++ compiler changed the layout
+<A NAME="Index1229"></A><A NAME="Index1230"></A><A NAME="Index1231"></A>of C
+<B>struct</B>s, then any C code you wrote that inadvisably took advantage of
+knowledge of the positions of variables in the <B>struct</B> would
+break.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">When you start using access specifiers,
+however, you&#8217;ve moved completely into the C++ realm, and things change a
+bit. Within a particular &#8220;<A NAME="Index1232"></A>access block&#8221; (a
+group of declarations delimited by access specifiers), the variables are
+guaranteed to be laid out contiguously, as in C. However, the access blocks may
+not appear in the object in the order that you declare them. Although the
+compiler will <I>usually</I> lay the blocks out exactly as you see them, there
+is no rule about it, because a particular machine architecture and/or operating
+environment may have explicit support for
+<A NAME="Index1233"></A><A NAME="Index1234"></A><B>private</B> and
+<A NAME="Index1235"></A><A NAME="Index1236"></A><B>protected</B> that might
+require those blocks to be placed in special memory locations. The language
+specification doesn&#8217;t want to restrict this kind of
+advantage.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Access specifiers are part of the
+structure and don&#8217;t affect the objects created from the structure. All of
+the access specification information disappears before the program is run;
+generally this happens during compilation. In a running program, objects become
+&#8220;regions of storage&#8221; and nothing more. If you really want to, you
+can break all the rules and access the memory directly, as you can in C. C++ is
+not designed to prevent you from doing unwise things. It just provides you with
+a much easier, highly desirable alternative.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">In general, it&#8217;s not a good idea to
+depend on anything that&#8217;s implementation-specific when you&#8217;re
+writing a program. When you must have implementation-specific dependencies,
+encapsulate them inside a structure so that any porting changes are focused in
+one
+place.</FONT><A NAME="_Toc312373844"></A><A NAME="_Toc472654843"></A><BR></P></DIV>
+<A NAME="Heading216"></A><FONT FACE = "Verdana"><H2 ALIGN="LEFT">
+The class</H2></FONT>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Access control is often referred to as
+<I>implementation hiding<A NAME="Index1237"></A><A NAME="Index1238"></A></I>.
+Including functions within structures (often referred to as
+encapsulation</FONT><A NAME="fnB36" HREF="#fn36">[36]</A><A NAME="Index1239"></A><FONT FACE="Georgia">)
+produces a data type with characteristics and behaviors, but access control puts
+boundaries within that data type, for two important reasons. The first is to
+establish what the client programmers can and can&#8217;t use. You can build
+your internal mechanisms into the structure without worrying that client
+programmers will think that these mechanisms are part of the interface they
+should be using.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">This feeds directly into the second
+reason, which is to separate the interface from the implementation.
+<A NAME="Index1240"></A><A NAME="Index1241"></A><A NAME="Index1242"></A> If the
+structure is used in a set of programs, but the client programmers can&#8217;t
+do anything but send messages to the <B>public</B> interface, then you can
+change anything that&#8217;s <B>private</B> without requiring modifications to
+their code.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Encapsulation and access control, taken
+together, invent something more than a C <B>struct</B>. We&#8217;re now in the
+world of object-oriented programming, where a structure is describing a class of
+objects as you would describe a class of fishes or a class of birds: Any object
+belonging to this class will share these characteristics and behaviors.
+That&#8217;s what the structure declaration has become, a description of the way
+all objects of this type will look and act.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">In the original OOP
+<A NAME="Index1243"></A>language, Simula-67<A NAME="Index1244"></A>, the keyword
+<A NAME="Index1245"></A><B>class</B> <A NAME="Index1246"></A>was used to
+describe a new data type. This apparently inspired Stroustrup to choose the same
+keyword for C++, to emphasize that this was the focal point of the whole
+language: the creation of new data types that are more than just C
+<B>struct</B>s with functions. This certainly seems like adequate justification
+for a new keyword.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">However, the use of <B>class</B> in C++
+comes close to being an unnecessary keyword. It&#8217;s identical to the
+<B>struct</B> keyword in absolutely every way except one: <B>class</B> defaults
+to <B>private</B>, whereas <B>struct</B> defaults to <B>public</B>. Here are two
+structures that produce the same result:</FONT><BR></P></DIV>
+
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE><font color=#009900>//: C05:Class.cpp</font>
+<font color=#009900>// Similarity of struct and class</font>
+
+<font color=#0000ff>struct</font> A {
+<font color=#0000ff>private</font>:
+  <font color=#0000ff>int</font> i, j, k;
+<font color=#0000ff>public</font>:
+  <font color=#0000ff>int</font> f();
+  <font color=#0000ff>void</font> g();
+};
+
+<font color=#0000ff>int</font> A::f() { 
+  <font color=#0000ff>return</font> i + j + k; 
+}
+
+<font color=#0000ff>void</font> A::g() { 
+  i = j = k = 0; 
+}
+
+<font color=#009900>// Identical results are produced with:</font>
+
+<font color=#0000ff>class</font> B {
+  <font color=#0000ff>int</font> i, j, k;
+<font color=#0000ff>public</font>:
+  <font color=#0000ff>int</font> f();
+  <font color=#0000ff>void</font> g();
+};
+
+<font color=#0000ff>int</font> B::f() { 
+  <font color=#0000ff>return</font> i + j + k; 
+}
+
+<font color=#0000ff>void</font> B::g() { 
+  i = j = k = 0; 
+} 
+
+<font color=#0000ff>int</font> main() {
+  A a;
+  B b;
+  a.f(); a.g();
+  b.f(); b.g();
+} <font color=#009900>///:~</font></PRE></FONT></BLOCKQUOTE>
+
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">The <B>class</B> is the fundamental OOP
+concept in C++. It is one of the keywords that will <I>not </I>be set in bold in
+this book &#8211; it becomes annoying with a word repeated as often as
+&#8220;class.&#8221; The shift to classes is so important that I suspect
+Stroustrup&#8217;s preference would have been to throw <B>struct</B> out
+altogether, but the need for backwards compatibility with C wouldn&#8217;t allow
+that.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Many people prefer a style of creating
+classes that is more <B>struct</B>-like than class-like, because you override
+the &#8220;default-to-<B>private</B>&#8221; behavior of the class by starting
+out with <B>public</B> elements:</FONT><BR></P></DIV>
+
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE><font color=#0000ff>class</font> X {
+<font color=#0000ff>public</font>:
+  <font color=#0000ff>void</font> interface_function();
+<font color=#0000ff>private</font>:
+  <font color=#0000ff>void</font> private_function();
+  <font color=#0000ff>int</font> internal_representation;
+}; </PRE></FONT></BLOCKQUOTE>
+
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">The logic behind this is that it makes
+more sense for the reader to see the members of interest first, then they can
+ignore anything that says <B>private</B>. Indeed, the only reasons all the other
+members must be declared in the class at all are so the compiler knows how big
+the objects are and can allocate them properly, and so it can guarantee
+consistency.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">The examples in this book, however, will
+put the <B>private</B> members first, like this:</FONT><BR></P></DIV>
+
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE><font color=#0000ff>class</font> X {
+  <font color=#0000ff>void</font> private_function();
+  <font color=#0000ff>int</font> internal_representation;
+<font color=#0000ff>public</font>:
+  <font color=#0000ff>void</font> interface_function();
+}; </PRE></FONT></BLOCKQUOTE>
+
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Some people even go to the trouble of
+decorating their own private names:</FONT><BR></P></DIV>
+
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE><font color=#0000ff>class</font> Y {
+<font color=#0000ff>public</font>:
+  <font color=#0000ff>void</font> f();
+<font color=#0000ff>private</font>:
+  <font color=#0000ff>int</font> mX;  <font color=#009900>// "Self-decorated" name</font>
+}; </PRE></FONT></BLOCKQUOTE>
+
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Because <B>mX</B> is already hidden in
+the scope of <B>Y</B>, the <B>m</B> (for &#8220;member&#8221;) is unnecessary.
+However, in projects with many global variables (something you should strive to
+avoid, but which is sometimes inevitable in existing projects), it is helpful to
+be able to distinguish inside a member function definition which data is global
+and which is a
+member.</FONT><A NAME="_Toc312373845"></A><A NAME="_Toc472654844"></A><BR></P></DIV>
+<A NAME="Heading217"></A><FONT FACE = "Verdana"><H3 ALIGN="LEFT">
+Modifying Stash to use access control</H3></FONT>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">It makes sense to take the examples from
+Chapter 4 and modify them to use classes and access control. Notice how the
+client programmer portion of the interface is now clearly distinguished, so
+there&#8217;s no possibility of client programmers accidentally manipulating a
+part of the class that they shouldn&#8217;t.
+<A NAME="Index1247"></A></FONT><BR></P></DIV>
+
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE><font color=#009900>//: C05:Stash.h</font>
+<font color=#009900>// Converted to use access control</font>
+#ifndef STASH_H
+#define STASH_H
+
+<font color=#0000ff>class</font> Stash {
+  <font color=#0000ff>int</font> size;      <font color=#009900>// Size of each space</font>
+  <font color=#0000ff>int</font> quantity;  <font color=#009900>// Number of storage spaces</font>
+  <font color=#0000ff>int</font> next;      <font color=#009900>// Next empty space</font>
+  <font color=#009900>// Dynamically allocated array of bytes:</font>
+  <font color=#0000ff>unsigned</font> <font color=#0000ff>char</font>* storage;
+  <font color=#0000ff>void</font> inflate(<font color=#0000ff>int</font> increase);
+<font color=#0000ff>public</font>:
+  <font color=#0000ff>void</font> initialize(<font color=#0000ff>int</font> size);
+  <font color=#0000ff>void</font> cleanup();
+  <font color=#0000ff>int</font> add(<font color=#0000ff>void</font>* element);
+  <font color=#0000ff>void</font>* fetch(<font color=#0000ff>int</font> index);
+  <font color=#0000ff>int</font> count();
+};
+#endif <font color=#009900>// STASH_H ///:~</font></PRE></FONT></BLOCKQUOTE>
+
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">The <B>inflate(&#160;)</B> function has
+been made <B>private</B> because it is used only by the <B>add(&#160;)</B>
+function and is thus part of the underlying implementation, not the interface.
+This means that, sometime later, you can change the underlying implementation to
+use a different system for memory management.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Other than the name of the include file,
+the header above is the only thing that&#8217;s been changed for this example.
+The implementation file and test file are the
+same.</FONT><A NAME="_Toc312373846"></A><A NAME="_Toc472654845"></A><BR></P></DIV>
+<A NAME="Heading218"></A><FONT FACE = "Verdana"><H3 ALIGN="LEFT">
+Modifying Stack to use access control</H3></FONT>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">As a second example, here&#8217;s the
+<B>Stack</B> turned into a class. Now the nested data structure is
+<B>private</B>, which is nice because it ensures that the client programmer will
+neither have to look at it nor be able to depend on the internal representation
+of the <B>Stack</B>: <A NAME="Index1248"></A></FONT><BR></P></DIV>
+
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE><font color=#009900>//: C05:Stack2.h</font>
+<font color=#009900>// Nested structs via linked list</font>
+#ifndef STACK2_H
+#define STACK2_H
+
+<font color=#0000ff>class</font> Stack {
+  <font color=#0000ff>struct</font> Link {
+    <font color=#0000ff>void</font>* data;
+    Link* next;
+    <font color=#0000ff>void</font> initialize(<font color=#0000ff>void</font>* dat, Link* nxt);
+  }* head;
+<font color=#0000ff>public</font>:
+  <font color=#0000ff>void</font> initialize();
+  <font color=#0000ff>void</font> push(<font color=#0000ff>void</font>* dat);
+  <font color=#0000ff>void</font>* peek();
+  <font color=#0000ff>void</font>* pop();
+  <font color=#0000ff>void</font> cleanup();
+};
+#endif <font color=#009900>// STACK2_H ///:~</font></PRE></FONT></BLOCKQUOTE>
+
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">As before, the implementation
+doesn&#8217;t change and so it is not repeated here. The test, too, is
+identical. The only thing that&#8217;s been changed is the robustness of the
+class interface. The real value of access control is to prevent you from
+crossing boundaries during development. In fact, <A NAME="Index1249"></A>the
+compiler is the only thing that knows about the protection level of class
+members. There is no access control information mangled into the member name
+that carries through to the linker. All the protection checking is done by the
+compiler; it has vanished by
+runtime.<A NAME="Index1250"></A><A NAME="Index1251"></A><A NAME="Index1252"></A></FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Notice that the interface presented to
+the client programmer is now truly that of a push-down
+stack<A NAME="Index1253"></A><A NAME="Index1254"></A>. It happens to be
+implemented as a linked list<A NAME="Index1255"></A><A NAME="Index1256"></A>,
+but you can change that without affecting what the client programmer interacts
+with, or (more importantly) a single line of client
+code.</FONT><A NAME="_Toc312373847"></A><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><A NAME="Index1257"></A><A NAME="Index1258"></A><A NAME="_Toc472654846"></A><BR></P></DIV>
+<A NAME="Heading219"></A><FONT FACE = "Verdana"><H2 ALIGN="LEFT">
+Handle classes</H2></FONT>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Access control in C++ allows you to
+separate interface from implementation, but the implementation hiding
+<A NAME="Index1259"></A><A NAME="Index1260"></A>is only partial. The compiler
+must still see the declarations for all parts of an object in order to create
+and manipulate it properly. You could imagine a programming language that
+requires only the public interface of an object and allows the private
+implementation to be hidden, but C++ performs type checking statically (at
+compile time) as much as possible. This means that you&#8217;ll learn as early
+as possible if there&#8217;s an error. It also means that your program is more
+efficient. However, including the private implementation has two effects: the
+implementation is visible even if you can&#8217;t easily access it, and it can
+cause needless
+recompilation<A NAME="Index1261"></A><A NAME="Index1262"></A><A NAME="Index1263"></A>.</FONT><A NAME="_Toc312373848"></A><A NAME="_Toc472654847"></A><BR></P></DIV>
+<A NAME="Heading220"></A><FONT FACE = "Verdana"><H3 ALIGN="LEFT">
+Hiding the implementation</H3></FONT>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Some projects cannot afford to have their
+implementation visible to the client programmer. It may show strategic
+information in a library header file that the company doesn&#8217;t want
+available to competitors. You may be working on a system where
+security<A NAME="Index1264"></A> is an issue &#8211; an encryption algorithm,
+for example &#8211; and you don&#8217;t want to expose any clues in a header
+file that might help people to crack the code. Or you may be putting your
+library in a &#8220;hostile&#8221; environment, where the
+programmers<A NAME="Index1265"></A> will directly access the private components
+anyway, using pointers <A NAME="Index1266"></A>and
+casting<A NAME="Index1267"></A>. In all these situations, it&#8217;s valuable to
+have the actual structure compiled inside an implementation file rather than
+exposed in a header
+file.</FONT><A NAME="_Toc312373849"></A><A NAME="_Toc472654848"></A><BR></P></DIV>
+<A NAME="Heading221"></A><FONT FACE = "Verdana"><H3 ALIGN="LEFT">
+Reducing recompilation</H3></FONT>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">The project manager in your programming
+environment will cause a recompilation of a file if that file is touched (that
+is, modified) <I>or</I> if another file it&#8217;s dependent upon &#8211; that
+is, an included header file &#8211; is touched. This means that any time you
+make a change to a class, whether it&#8217;s to the public interface or to the
+private member declarations, you&#8217;ll force a recompilation of anything that
+includes that header file. This is often referred to as the
+<A NAME="Index1268"></A><A NAME="Index1269"></A><A NAME="Index1270"></A><I>fragile
+base-class problem</I>. For a large project in its early stages this can be very
+unwieldy because the underlying implementation may change often; if the project
+is very big, the time for compiles can prohibit rapid
+turnaround.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">The technique to solve this is sometimes
+called <I>handle classes <A NAME="Index1271"></A></I>or the &#8220;Cheshire
+cat&#8221;<A NAME="Index1272"></A><A NAME="Index1273"></A></FONT><A NAME="fnB37" HREF="#fn37">[37]</A><A NAME="Index1274"></A><A NAME="Index1275"></A><FONT FACE="Georgia">
+&#8211; everything about the implementation disappears except for a single
+pointer, the &#8220;smile.&#8221; The pointer refers to a structure whose
+definition is in the implementation file along with all the member function
+definitions. Thus, as long as the interface is unchanged, the header file is
+untouched. The implementation can change at will, and only the implementation
+file needs to be recompiled and relinked with the project.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Here&#8217;s a simple example
+demonstrating the technique. The header file contains only the public interface
+and a single pointer of an incompletely specified class:</FONT><BR></P></DIV>
+
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE><font color=#009900>//: C05:Handle.h</font>
+<font color=#009900>// Handle classes</font>
+#ifndef HANDLE_H
+#define HANDLE_H
+
+<font color=#0000ff>class</font> Handle {
+  <font color=#0000ff>struct</font> Cheshire; <font color=#009900>// Class declaration only</font>
+  Cheshire* smile;
+<font color=#0000ff>public</font>:
+  <font color=#0000ff>void</font> initialize();
+  <font color=#0000ff>void</font> cleanup();
+  <font color=#0000ff>int</font> read();
+  <font color=#0000ff>void</font> change(<font color=#0000ff>int</font>);
+};
+#endif <font color=#009900>// HANDLE_H ///:~</font></PRE></FONT></BLOCKQUOTE>
+
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">This is all the client programmer is able
+to see. The line </FONT><BR></P></DIV>
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE><font color=#0000ff>struct</font> Cheshire;</PRE></FONT></BLOCKQUOTE>
+
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">is an <I>incomplete type
+specification</I>
+<A NAME="Index1276"></A><A NAME="Index1277"></A><A NAME="Index1278"></A>or a
+<I>class declaration</I> <A NAME="Index1279"></A><A NAME="Index1280"></A>(A
+<I>class definition</I> <A NAME="Index1281"></A><A NAME="Index1282"></A>includes
+the body of the class.) It tells the compiler that <B>Cheshire</B> is a
+structure name, but it doesn&#8217;t give any details about the <B>struct</B>.
+This is only enough information to create a pointer to the <B>struct</B>; you
+can&#8217;t create an object until the structure body has been provided. In this
+technique, that structure body is hidden away in the implementation
+file:</FONT><BR></P></DIV>
+
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE><font color=#009900>//: C05:Handle.cpp {O}</font>
+<font color=#009900>// Handle implementation</font>
+#include <font color=#004488>"Handle.h"</font>
+#include <font color=#004488>"../require.h"</font>
+
+<font color=#009900>// Define Handle's implementation:</font>
+<font color=#0000ff>struct</font> Handle::Cheshire {
+  <font color=#0000ff>int</font> i;
+};
+
+<font color=#0000ff>void</font> Handle::initialize() {
+  smile = <font color=#0000ff>new</font> Cheshire;
+  smile-&gt;i = 0;
+}
+
+<font color=#0000ff>void</font> Handle::cleanup() {
+  <font color=#0000ff>delete</font> smile;
+}
+
+<font color=#0000ff>int</font> Handle::read() {
+  <font color=#0000ff>return</font> smile-&gt;i;
+}
+
+<font color=#0000ff>void</font> Handle::change(<font color=#0000ff>int</font> x) {
+  smile-&gt;i = x;
+} <font color=#009900>///:~</font></PRE></FONT></BLOCKQUOTE>
+
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia"><B>Cheshire</B> is a nested structure, so
+it must be defined with scope
+resolution<A NAME="Index1283"></A><A NAME="Index1284"></A>:</FONT><BR></P></DIV>
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE><font color=#0000ff>struct</font> Handle::Cheshire {</PRE></FONT></BLOCKQUOTE>
+
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">In <B>Handle::initialize(&#160;)</B>,
+storage is allocated for a <B>Cheshire</B> structure, and in
+<B>Handle::cleanup(&#160;)</B> this storage is released. This storage is used in
+lieu of all the data elements you&#8217;d normally put into the <B>private</B>
+section of the class. When you compile <B>Handle.cpp</B>, this structure
+definition is hidden away in the object file where no one can see it. If you
+change the elements of <B>Cheshire</B>, the only file that must be recompiled is
+<B>Handle.cpp</B> because the header file is untouched.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">The use of <B>Handle</B> is like the use
+of any class: include the header, create objects, and send
+messages.</FONT><BR></P></DIV>
+
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE><font color=#009900>//: C05:UseHandle.cpp</font>
+<font color=#009900>//{L} Handle</font>
+<font color=#009900>// Use the Handle class</font>
+#include <font color=#004488>"Handle.h"</font>
+
+<font color=#0000ff>int</font> main() {
+  Handle u;
+  u.initialize();
+  u.read();
+  u.change(1);
+  u.cleanup();
+} <font color=#009900>///:~</font></PRE></FONT></BLOCKQUOTE>
+
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">The only thing the client programmer can
+access is the public interface, so as long as the implementation is the only
+thing that changes, the file above never needs recompilation. Thus, although
+this isn&#8217;t perfect implementation hiding, it&#8217;s a big
+improvement.</FONT><A NAME="_Toc312373850"></A><A NAME="_Toc472654849"></A><BR></P></DIV>
+<A NAME="Heading222"></A><FONT FACE = "Verdana"><H2 ALIGN="LEFT">
+Summary</H2></FONT>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Access control in C++ gives valuable
+control to the creator of a class. The users of the class can clearly see
+exactly what they can use and what to ignore. More important, though, is the
+ability to ensure that no client programmer becomes dependent on any part of the
+underlying implementation of a class. If you know this as the creator of the
+class, you can change the underlying implementation with the knowledge that no
+client programmer will be affected by the changes because they can&#8217;t
+access that part of the class.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">When you have the ability to change the
+underlying implementation, you can not only improve your design
+<A NAME="Index1285"></A>at some later time, but you also have the freedom to
+make mistakes<A NAME="Index1286"></A>. No matter how carefully you plan and
+design, you&#8217;ll make mistakes. Knowing that it&#8217;s relatively safe to
+make these mistakes means you&#8217;ll be more experimental, you&#8217;ll learn
+faster, and you&#8217;ll finish your project sooner.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">The public interface to a class is what
+the client programmer <I>does</I> see, so that is the most important part of the
+class to get &#8220;right&#8221; during analysis and design. But even that
+allows you some leeway for change. If you don&#8217;t get the interface right
+the first time, you can <I>add</I> more functions<A NAME="Index1287"></A>, as
+long as you don&#8217;t remove any that client programmers have already used in
+their
+code.</FONT><A NAME="_Toc312373851"></A><A NAME="_Toc472654850"></A><BR></P></DIV>
+<A NAME="Heading223"></A><FONT FACE = "Verdana"><H2 ALIGN="LEFT">
+Exercises</H2></FONT>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia" SIZE=2>Solutions to selected exercises
+can be found in the electronic document <I>The Thinking in C++ Annotated
+Solution Guide</I>, available for a small fee from
+www.BruceEckel.com.</FONT><BR></P></DIV>
+<OL>
+<LI><FONT FACE="Verdana">	</FONT><FONT FACE="Georgia">Create a class with
+<B>public</B>, <B>private</B>, and <B>protected</B> data members and function
+members. Create an object of this class and see what kind of compiler messages
+you get when you try to access all the class
+members.</FONT><LI><FONT FACE="Verdana">	</FONT><FONT FACE="Georgia">Write a
+<B>struct</B> called <B>Lib</B> that contains three <B>string</B> objects
+<B>a</B>, <B>b,</B> and <B>c</B>. In <B>main(&#160;)</B> create a <B>Lib</B>
+object called <B>x </B>and assign to <B>x.a</B>, <B>x.b</B>, and <B>x.c</B>.
+Print out the values. Now replace <B>a</B>, <B>b,</B> and <B>c</B> with an array
+of <B>string s[3]</B>. Show that your code in <B>main(&#160;)</B> breaks as a
+result of the change.<B> </B>Now create a <B>class</B> called <B>Libc</B>, with
+<B>private</B> <B>string</B> objects <B>a</B>, <B>b,</B> and <B>c</B>, and
+member functions <B>seta(&#160;)</B>, <B>geta(&#160;)</B>, <B>setb(&#160;)</B>,
+<B>getb(&#160;)</B>, <B>setc(&#160;)</B>, and <B>getc(&#160;)</B> to set and get
+the values. Write <B>main(&#160;)</B> as before. Now change the <B>private</B>
+<B>string</B> objects <B>a</B>, <B>b,</B> and <B>c</B> to a <B>private </B>array
+of <B>string s[3]</B>. Show that the code in <B>main(&#160;)</B> does <I>not</I>
+break as a result of the
+change.</FONT><LI><FONT FACE="Verdana">	</FONT><FONT FACE="Georgia">Create a
+class and a global <B>friend</B> function that manipulates the <B>private</B>
+data in the
+class.</FONT><LI><FONT FACE="Verdana">	</FONT><FONT FACE="Georgia">Write two
+classes, each of which has a member function that takes a pointer to an object
+of the other class. Create instances of both objects in <B>main(&#160;)</B> and
+call the aforementioned member function in each
+class.</FONT><LI><FONT FACE="Verdana">	</FONT><FONT FACE="Georgia">Create three
+classes. The first class contains <B>private </B>data, and grants friendship to
+the entire second class and to a member function of the third class. In
+<B>main(&#160;)</B>, demonstrate that all of these work
+correctly.</FONT><LI><FONT FACE="Verdana">	</FONT><FONT FACE="Georgia">Create a
+<B>Hen</B> class. Inside this, nest a <B>Nest</B> class. Inside <B>Nest</B>,
+place an <B>Egg</B> class. Each class should have a <B>display(&#160;)</B>
+member function. In <B>main(&#160;)</B>, create an instance of each class and
+call the <B>display(&#160;)</B> function for each
+one.</FONT><LI><FONT FACE="Verdana">	</FONT><FONT FACE="Georgia">Modify Exercise
+6 so that <B>Nest</B> and <B>Egg</B> each contain <B>private</B> data. Grant
+friendship to allow the enclosing classes access to this <B>private</B>
+data.</FONT><LI><FONT FACE="Verdana">	</FONT><FONT FACE="Georgia">Create a class
+with data members distributed among numerous <B>public</B>, <B>private,</B> and
+<B>protected</B> sections. Add a member function <B>showMap(&#160;)</B> that
+prints the names of each of these data members and their addresses. If possible,
+compile and run this program on more than one compiler and/or computer and/or
+operating system to see if there are layout differences in the
+object.</FONT><LI><FONT FACE="Verdana">	</FONT><FONT FACE="Georgia">Copy the
+implementation and test files for <B>Stash </B>in Chapter 4 so that you can
+compile and test <B>Stash.h</B> in this
+chapter.</FONT><LI><FONT FACE="Verdana">	</FONT><FONT FACE="Georgia">Place
+objects of the <B>Hen</B> class from Exercise 6 in a <B>Stash</B>. Fetch them
+out and print them (if you have not already done so, you will need to add
+<B>Hen::print(&#160;)</B>).</FONT><LI><FONT FACE="Verdana">	</FONT><FONT FACE="Georgia">Copy
+the implementation and test files for <B>Stack </B>in Chapter 4 so that you can
+compile and test <B>Stack2.h</B> in this
+chapter.</FONT><LI><FONT FACE="Verdana">	</FONT><FONT FACE="Georgia">Place
+objects of the <B>Hen</B> class from Exercise 6 in a <B>Stack</B>. Fetch them
+out and print them (if you have not already done so, you will need to add
+<B>Hen::print(&#160;)</B>).</FONT><LI><FONT FACE="Verdana">	</FONT><FONT FACE="Georgia">Modify
+<B>Cheshire</B> in <B>Handle.cpp</B>, and verify that your project manager
+recompiles and relinks only this file, but doesn&#8217;t recompile
+<B>UseHandle.cpp</B>.</FONT><LI><FONT FACE="Verdana">	</FONT><FONT FACE="Georgia">Create
+a <B>StackOfInt</B> class (a stack that holds <B>int</B>s) using the
+&#8220;Cheshire cat&#8221; technique that hides the low-level data structure you
+use to store the elements in a class called <B>StackImp</B>. Implement two
+versions of <B>StackImp</B>: one that uses a fixed-length array of <B>int</B>,
+and one that uses a <B>vector&lt;int&gt;</B>. Have a preset maximum size for the
+stack so you don&#8217;t have to worry about expanding the array in the first
+version. Note that the <B>StackOfInt.h</B> class doesn&#8217;t have to change
+with
+<B>StackImp</B>.</FONT><A NAME="_Toc465909219"></A><A NAME="_Toc465909632"></A><A NAME="_Toc466014543"></A><A NAME="_Toc466073453"></A><A NAME="_Toc466083254"></A><A NAME="_Toc468608060"></A><A NAME="_Toc468771381"></A><A NAME="_Toc312373852"></A><A NAME="_Toc469811384"></A><A NAME="_Toc469821269"></A><A NAME="_Toc469821685"></A><A NAME="_Toc469825366"></A><A NAME="_Toc469874271"></A><A NAME="_Toc470615927"></A><A NAME="_Toc470655065"></A><A NAME="_Toc470821049"></A><A NAME="_Toc470821466"></A><A NAME="_Toc470911563"></A><A NAME="_Toc471359044"></A><A NAME="_Toc471489464"></A><A NAME="_Toc471528895"></A><A NAME="_Toc471795051"></A><A NAME="_Toc471965628"></A><A NAME="_Toc472045630"></A><A NAME="_Toc472255834"></A><A NAME="_Toc472654437"></A><A NAME="_Toc472654851"></A></OL><FONT FACE = "Verdana"><H1 ALIGN="LEFT">
+</H1></FONT>
+<DIV ALIGN="LEFT"><P><FONT FACE="Verdana"><B></B></FONT><BR></P></DIV>
+<FONT FACE = "Verdana"><H1 ALIGN="LEFT">
+</H1></FONT>
+
+<HR><DIV ALIGN="LEFT"><P><A NAME="fn36" HREF="#fnB36">[36]</A><FONT FACE="Georgia" SIZE=2>
+As noted before, sometimes access control is referred to as
+encapsulation.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><A NAME="fn37" HREF="#fnB37">[37]</A><FONT FACE="Georgia" SIZE=2>
+This name is attributed to John Carolan, one of the early pioneers in C++, and
+of course, Lewis Carroll. This technique can also be seen as a form of the
+&#8220;bridge&#8221; design pattern, described in Volume 2.</FONT><BR></P></DIV>
+
+<DIV ALIGN="CENTER">
+    <FONT FACE="Verdana" size = "-1">
+     [ <a href="Chapter04.html">Previous Chapter</a> ] 
+    [ <a href="Contents.html">Table of Contents</a> ] 
+    [ <a href="DocIndex.html">Index</a> ]
+     [ <a href="Chapter06.html">Next Chapter</a> ] 
+    </FONT>
+    <BR>
+ Last Update:09/27/2001</P></DIV>
+
+</BODY>
+
+</HTML>

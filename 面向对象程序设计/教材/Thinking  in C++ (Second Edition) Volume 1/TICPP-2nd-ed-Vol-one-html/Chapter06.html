@@ -1,0 +1,1075 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<HTML>
+<!--
+This document was converted from RTF source: 
+By rtftohtml 4.19
+See http://www.sunpack.com/RTF
+Filename:TIC2Vone.rtf
+Application Directory:C:\TOOLS\RTF2HTML\
+Subject:
+Author:Bruce Eckel
+Operator:Bruce Eckel
+Document Comments:
+Version Comments:
+Comments:
+Keywords:
+Translation Date:09/27/2001
+Translation Time:05:25:33
+Translation Platform:Win32
+Number of Output files:22
+This File:Chapter06.html
+SplitDepth=1
+SkipNavPanel=1
+SkipLeadingToc=1
+SkipTrailingToc=1
+GenContents=1
+GenFrames=1
+GenIndex=1
+-->
+<HEAD lang="en"><META http-equiv="Content-Type" content="text/html">
+<TITLE>6: Initialization &amp; Cleanup</TITLE>
+</HEAD>
+
+<BODY  BGCOLOR="#FFFFFF"><DIV ALIGN="CENTER">
+  <a href="http://www.MindView.net">
+  <img src="mindview-head.gif" alt="MindView Inc." BORDER = "0"></a>
+  <CENTER>
+    <FONT FACE="Verdana" size = "-1">
+    [ <a href="README-HTML.txt">Viewing Hints</a> ]
+    [ <a href="http://www.mindview.net/CPPServices/SolutionGuide.html">Exercise Solutions</a> ]
+    [ <a href="http://www.mindview.net/ThinkingInCPP2e.html">Volume 2</a> ]
+    [ <a href="http://www.mindview.net/MailingList.html">Free Newsletter</a> ] <br>
+    [ <a href="http://www.mindview.net/CPPServices/#PublicSeminars">Seminars</a> ]
+    [ <a href="http://www.mindview.net/CPPServices/#SeminarsOnCD">Seminars on CD ROM</a> ]
+    [ <a href="http://www.mindview.net/CPPServices/#ConsultingServices">Consulting</a> ]
+    </FONT>
+  <H2><FONT FACE="Verdana">
+  Thinking in C++, 2nd ed. Volume 1</FONT></H2></FONT>
+  <H3><FONT FACE="Verdana">&copy;2000 by Bruce Eckel</FONT></H3></FONT>
+  
+    <FONT FACE="Verdana" size = "-1">
+     [ <a href="Chapter05.html">Previous Chapter</a> ] 
+    [ <a href="Contents.html">Table of Contents</a> ] 
+    [ <a href="DocIndex.html">Index</a> ]
+     [ <a href="Chapter07.html">Next Chapter</a> ] 
+    </FONT>
+    
+  </CENTER>
+  </P></DIV><A NAME="_Toc472654852"></A><A NAME="Heading224"></A><FONT FACE = "Verdana"><H1 ALIGN="LEFT">
+6: Initialization &amp; Cleanup</H1></FONT>
+<DIV ALIGN="LEFT"><P><FONT FACE="Verdana" SIZE=4>Chapter 4 made a significant
+improvement in library </FONT><BR><FONT FACE="Verdana" SIZE=4>use by taking all
+the scattered components of a typical </FONT><BR><FONT FACE="Verdana" SIZE=4>C
+library and encapsulating them into a structure (an abstract data type, called a
+<I>class</I> from now on). </FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">This not only provides a single unified
+point of entry into a library component, but it also hides the names of the
+functions within the class name. In Chapter 5, access control (implementation
+hiding) was introduced. This gives the class designer a way to establish clear
+boundaries for determining what the client programmer is allowed to manipulate
+and what is off limits. It means the internal mechanisms of a data type&#8217;s
+operation are under the control and discretion of the class designer, and
+it&#8217;s clear to client programmers what members they can and should pay
+attention to.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Together, encapsulation and access
+control make a significant step in improving the ease of library use. The
+concept of &#8220;new data type&#8221; they provide is better in some ways than
+the existing built-in data types from C. The C++ compiler can now provide
+type-checking guarantees for that data type and thus ensure a level of safety
+when that data type is being used.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">When it comes to safety, however,
+there&#8217;s a lot more the compiler can do for us than C provides. In this and
+future chapters, you&#8217;ll see additional features that have been engineered
+into C++ that make the bugs in your program almost leap out and grab you,
+sometimes before you even compile the program, but usually in the form of
+compiler warnings and errors. For this reason, you will soon get used to the
+unlikely-sounding scenario that a C++ program that compiles often runs right the
+first time.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Two of these safety issues are
+initialization and cleanup. A large segment of C bugs occur when the programmer
+forgets to initialize or clean up a variable. This is especially true with C
+libraries, when client programmers don&#8217;t know how to initialize a
+<B>struct</B>, or even that they must. (Libraries often do not include an
+initialization function, so the client programmer is forced to initialize the
+<B>struct</B> by hand.) Cleanup is a special problem because C programmers are
+comfortable with forgetting about variables once they are finished, so any
+cleaning up that may be necessary for a library&#8217;s <B>struct</B> is often
+missed.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">In C++, the concept of initialization and
+cleanup is essential for easy library use and to eliminate the many subtle bugs
+that occur when the client programmer forgets to perform these activities. This
+chapter examines the features in C++ that help guarantee proper initialization
+and
+cleanup.</FONT><A NAME="_Toc312373853"></A><A NAME="_Toc472654853"></A><BR></P></DIV>
+<A NAME="Heading225"></A><FONT FACE = "Verdana"><H2 ALIGN="LEFT">
+Guaranteed initialization with the constructor</H2></FONT>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Both the <B>Stash</B> and <B>Stack</B>
+classes defined previously have a function called <B>initialize(&#160;)</B>,
+which hints by its name that it should be called before using the object in any
+other way. Unfortunately, this means the client programmer must ensure proper
+initialization. Client programmers are prone to miss details like initialization
+in their headlong rush to make your amazing library solve their problem. In C++,
+initialization is too important to leave to the client programmer. The class
+designer can guarantee initialization of every object by providing a special
+function called the
+<I>constructor<A NAME="Index1288"></A><A NAME="Index1289"></A></I>. If a class
+has a constructor, the compiler automatically calls that constructor at the
+point an object is created, before client programmers can get their hands on the
+object. The constructor call isn&#8217;t even an option for the client
+programmer; it is performed by the compiler at the point the object
+<A NAME="Index1290"></A><A NAME="Index1291"></A>is defined.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">The next challenge is what to name this
+function. There are two issues. The first is that any name you use is something
+that can potentially clash with a name you might like to use as a member in the
+class. The second is that because the compiler is responsible for calling the
+constructor, it must always know which function to call. The solution Stroustrup
+chose seems the easiest and most logical: the <A NAME="Index1292"></A>name of
+the constructor <A NAME="Index1293"></A>is the same as the name of the class. It
+makes sense that such a function will be called automatically on
+initialization.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Here&#8217;s a simple class with a
+constructor:</FONT><BR></P></DIV>
+
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE><font color=#0000ff>class</font> X {
+  <font color=#0000ff>int</font> i;
+<font color=#0000ff>public</font>:
+  X();  <font color=#009900>// Constructor</font>
+}; </PRE></FONT></BLOCKQUOTE>
+
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Now, when an object is
+defined,</FONT><BR></P></DIV>
+
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE><font color=#0000ff>void</font> f() {
+  X a;
+  <font color=#009900>// ...</font>
+} </PRE></FONT></BLOCKQUOTE>
+
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">the same thing happens as if <B>a</B>
+were an <B>int</B>: storage is allocated for the object. But when the program
+reaches the <I>sequence point</I>
+<A NAME="Index1294"></A><A NAME="Index1295"></A>(point of execution) where
+<B>a</B> is defined, the constructor is called automatically. That is, the
+compiler quietly inserts the call to <B>X::X(&#160;)</B> for the object <B>a</B>
+at the point of definition. Like any member function, the first (secret)
+argument to the constructor is the
+<A NAME="Index1296"></A><A NAME="Index1297"></A><B>this </B>pointer &#8211; the
+address of the object for which it is being called. In the case of the
+constructor, however, <B>this</B> is pointing to an un-initialized block of
+memory, and it&#8217;s the job of the constructor to initialize this memory
+properly.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Like any function, the constructor can
+have arguments<A NAME="Index1298"></A><A NAME="Index1299"></A> to allow you to
+specify how an object is created, give it initialization values, and so on.
+Constructor arguments provide you with a way to guarantee that all parts of your
+object are initialized to appropriate values. For example, if a class
+<B>Tree</B> has a constructor that takes a single integer argument denoting the
+height of the tree, then you must create a tree object like
+this:</FONT><BR></P></DIV>
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE>Tree t(12);  <font color=#009900>// 12-foot tree</font></PRE></FONT></BLOCKQUOTE>
+
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">If <B>Tree(int)</B> is your only
+constructor, the compiler won&#8217;t let you create an object any other way.
+(We&#8217;ll look at multiple constructors and different ways to call
+constructors in the next chapter.)</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">That&#8217;s really all there is to a
+constructor; it&#8217;s a specially named function that is called automatically
+by the compiler for every object at the point of that object&#8217;s creation.
+Despite it&#8217;s simplicity, it is exceptionally valuable because it
+eliminates a large class of problems and makes the code easier to write and
+read. In the preceding code fragment, for example, you don&#8217;t see an
+explicit function call to some <B>initialize(&#160;)</B> function that is
+conceptually separate from definition. In C++, definition and initialization are
+unified concepts &#8211; you can&#8217;t have one without the
+other.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Both the constructor and destructor are
+very unusual types of functions: they have no return
+value<A NAME="Index1300"></A><A NAME="Index1301"></A>. This is distinctly
+different from a <B>void</B> return value, in which the function returns nothing
+but you still have the option to make it something else. Constructors and
+destructors return nothing and you don&#8217;t have an option. The acts of
+bringing an object into and out of the program are special, like birth and
+death, and the compiler always makes the function calls itself, to make sure
+they happen. If there were a return value, and if you could select your own, the
+compiler would somehow have to know what to do with the return value, or the
+client programmer would have to explicitly call constructors and destructors,
+which would eliminate their
+safety.</FONT><A NAME="_Toc312373854"></A><A NAME="_Toc472654854"></A><BR></P></DIV>
+<A NAME="Heading226"></A><FONT FACE = "Verdana"><H2 ALIGN="LEFT">
+Guaranteed cleanup with the destructor</H2></FONT>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">As a C programmer, you often think about
+the importance of initialization, but it&#8217;s rarer to think about cleanup.
+After all, what do you need to do to clean up an <B>int</B>? Just forget about
+it. However, with libraries, just &#8220;letting go&#8221; of an object once
+you&#8217;re done with it is not so safe. What if it modifies some piece of
+hardware, or puts something on the screen, or allocates storage on the heap? If
+you just forget about it, your object never achieves closure upon its exit from
+this world. In C++, cleanup is as important as initialization and is therefore
+guaranteed with the
+<A NAME="Index1302"></A>destructor<A NAME="Index1303"></A>.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">The syntax for the destructor is similar
+to that for the constructor: the class name is used for the name of the
+function. However, the destructor is distinguished from the constructor by a
+leading tilde (<B>~</B>). In addition, the destructor never has any arguments
+<A NAME="Index1304"></A>because destruction never needs any options.
+Here&#8217;s the declaration for a destructor:</FONT><BR></P></DIV>
+
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE><font color=#0000ff>class</font> Y {
+<font color=#0000ff>public</font>:
+  ~Y();
+}; </PRE></FONT></BLOCKQUOTE>
+
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">The destructor is called automatically by
+the compiler when the object goes out of
+scope<A NAME="Index1305"></A><A NAME="Index1306"></A>. You can see where the
+constructor gets called by the point of definition of the object, but the only
+evidence for a destructor call is the closing brace of the scope that surrounds
+the object. Yet the destructor is still called, even when you use
+<A NAME="Index1307"></A><B>goto</B> <A NAME="Index1308"></A>to jump out of a
+scope. (<B>goto</B> still exists in C++ for backward compatibility with C and
+for the times when it comes in handy.) You should note that a <I>nonlocal
+goto<A NAME="Index1309"></A><A NAME="Index1310"></A></I>, implemented by the
+Standard C library functions <B>setjmp(&#160;)</B> <A NAME="Index1311"></A>and
+<B>longjmp(&#160;)</B>, <A NAME="Index1312"></A>doesn&#8217;t cause destructors
+to be called. (This is the specification, even if your compiler doesn&#8217;t
+implement it that way. Relying on a feature that isn&#8217;t in the
+specification means your code is nonportable.)</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Here&#8217;s an example demonstrating the
+features of constructors and destructors you&#8217;ve seen so
+far:</FONT><BR></P></DIV>
+
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE><font color=#009900>//: C06:Constructor1.cpp</font>
+<font color=#009900>// Constructors &amp; destructors</font>
+#include &lt;iostream&gt;
+<font color=#0000ff>using</font> <font color=#0000ff>namespace</font> std;
+
+<font color=#0000ff>class</font> Tree {
+  <font color=#0000ff>int</font> height;
+<font color=#0000ff>public</font>:
+  Tree(<font color=#0000ff>int</font> initialHeight);  <font color=#009900>// Constructor</font>
+  ~Tree();  <font color=#009900>// Destructor</font>
+  <font color=#0000ff>void</font> grow(<font color=#0000ff>int</font> years);
+  <font color=#0000ff>void</font> printsize();
+};
+
+Tree::Tree(<font color=#0000ff>int</font> initialHeight) {
+  height = initialHeight;
+}
+
+Tree::~Tree() {
+  cout &lt;&lt; <font color=#004488>"inside Tree destructor"</font> &lt;&lt; endl;
+  printsize();
+}
+
+<font color=#0000ff>void</font> Tree::grow(<font color=#0000ff>int</font> years) {
+  height += years;
+}
+
+<font color=#0000ff>void</font> Tree::printsize() {
+  cout &lt;&lt; <font color=#004488>"Tree height is "</font> &lt;&lt; height &lt;&lt; endl;
+}
+
+<font color=#0000ff>int</font> main() {
+  cout &lt;&lt; <font color=#004488>"before opening brace"</font> &lt;&lt; endl;
+  {
+    Tree t(12);
+    cout &lt;&lt; <font color=#004488>"after Tree creation"</font> &lt;&lt; endl;
+    t.printsize();
+    t.grow(4);
+    cout &lt;&lt; <font color=#004488>"before closing brace"</font> &lt;&lt; endl;
+  }
+  cout &lt;&lt; <font color=#004488>"after closing brace"</font> &lt;&lt; endl;
+} <font color=#009900>///:~</font></PRE></FONT></BLOCKQUOTE>
+
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Here&#8217;s the output of the above
+program:</FONT><BR></P></DIV>
+
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE>before opening brace
+after Tree creation
+Tree height is 12
+before closing brace
+inside Tree destructor
+Tree height is 16
+after closing brace</PRE></FONT></BLOCKQUOTE>
+
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">You can see that the destructor is
+automatically called at the closing brace of the scope that encloses
+it.</FONT><A NAME="_Toc312373855"></A><A NAME="_Toc472654855"></A><BR></P></DIV>
+<A NAME="Heading227"></A><FONT FACE = "Verdana"><H2 ALIGN="LEFT">
+Elimination of the definition
+block<BR><A NAME="Index1313"></A><A NAME="Index1314"></A></H2></FONT>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">In C<A NAME="Index1315"></A>, you must
+always define all the variables at the beginning of a block, after the opening
+brace. This is not an uncommon requirement in programming languages, and the
+reason given has often been that it&#8217;s &#8220;good programming
+style.&#8221; On this point, I have my suspicions. It has always seemed
+inconvenient to me, as a programmer, to pop back to the beginning of a block
+every time I need a new variable. I also find code more readable when the
+variable definition is close to its point of
+use.<A NAME="Index1316"></A></FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Perhaps these arguments are stylistic. In
+C++, however, there&#8217;s a significant problem in being forced to define all
+objects at the beginning of a scope. If a constructor exists, it must be called
+when the object is created. However, if the constructor takes one or more
+initialization arguments, how do you know you will have that initialization
+information at the beginning of a scope? In the general programming situation,
+you won&#8217;t. Because C has no concept of <B>private</B>, this separation of
+definition and initialization is no problem. However, C++ guarantees that when
+an object is created, it is simultaneously initialized. This ensures that you
+will have no uninitialized objects running around in your system. C
+doesn&#8217;t care; in fact, C <I>encourages</I> this practice by requiring you
+to define variables at the beginning of a block before you necessarily have the
+initialization
+information</FONT><A NAME="fnB38" HREF="#fn38">[38]</A><FONT FACE="Georgia">.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">In general, C++ will not allow you to
+create an object before you have the initialization information for the
+constructor. Because of this, the language wouldn&#8217;t be feasible if you had
+to define variables at the beginning of a scope. In fact, the style of the
+language seems to encourage the definition of an object as close to its point of
+use as possible. In C++, any rule that applies to an &#8220;object&#8221;
+automatically refers to an object of a built-in type as well. This means that
+any class object or variable of a built-in type can also be defined at any point
+in a scope. It also means that you can wait until you have the information for a
+variable before defining it, so you can always
+<A NAME="Index1317"></A><A NAME="Index1318"></A>define and initialize at the
+same time:</FONT><BR></P></DIV>
+
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE><font color=#009900>//: C06:DefineInitialize.cpp</font>
+<font color=#009900>// Defining variables anywhere</font>
+#include <font color=#004488>"../require.h"</font>
+#include &lt;iostream&gt;
+#include &lt;string&gt;
+<font color=#0000ff>using</font> <font color=#0000ff>namespace</font> std;
+
+<font color=#0000ff>class</font> G {
+  <font color=#0000ff>int</font> i;
+<font color=#0000ff>public</font>:
+  G(<font color=#0000ff>int</font> ii);
+};
+
+G::G(<font color=#0000ff>int</font> ii) { i = ii; }
+
+<font color=#0000ff>int</font> main() {
+  cout &lt;&lt; <font color=#004488>"initialization value? "</font>;
+  <font color=#0000ff>int</font> retval = 0;
+  cin &gt;&gt; retval;
+  require(retval != 0);
+  <font color=#0000ff>int</font> y = retval + 3;
+  G g(y);
+} <font color=#009900>///:~</font></PRE></FONT></BLOCKQUOTE>
+
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">You can see that some code is executed,
+then <B>retval</B> is defined, initialized, and used to capture user input, and
+then <B>y</B> and <B>g</B> are defined. C, on the other hand, does not allow a
+variable to be defined anywhere except at the beginning of the
+scope.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">In general, you should define variables
+as close to their point of use as possible, and always initialize them when they
+are defined. (This is a stylistic suggestion for built-in types, where
+initialization is optional.) This is a safety issue. By reducing the duration of
+the variable&#8217;s availability within the scope, you are reducing the chance
+it will be misused in some other part of the scope. In addition, readability is
+improved because the reader doesn&#8217;t have to jump back and forth to the
+beginning of the scope to know the type of a
+variable.</FONT><A NAME="_Toc312373856"></A><A NAME="_Toc472654856"></A><BR></P></DIV>
+<A NAME="Heading228"></A><FONT FACE = "Verdana"><H3 ALIGN="LEFT">
+for loops</H3></FONT>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">In C++, you will often see a <B>for</B>
+loop <A NAME="Index1319"></A><A NAME="Index1320"></A>counter defined right
+inside the <B>for</B> expression:</FONT><BR></P></DIV>
+
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE><font color=#0000ff>for</font>(<font color=#0000ff>int</font> j = 0; j &lt; 100; j++) {
+    cout &lt;&lt; <font color=#004488>"j = "</font> &lt;&lt; j &lt;&lt; endl;
+}
+<font color=#0000ff>for</font>(<font color=#0000ff>int</font> i = 0; i &lt; 100; i++)
+ cout &lt;&lt; <font color=#004488>"i = "</font> &lt;&lt; i &lt;&lt; endl;</PRE></FONT></BLOCKQUOTE>
+
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">The statements above are important
+special cases, which cause confusion to new C++ programmers.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">The variables <B>i</B> and <B>j</B> are
+defined directly inside the <B>for</B> expression (which you cannot do in C).
+They are then available for use in the <B>for</B> loop. It&#8217;s a very
+convenient syntax because the context removes all question about the purpose of
+<B>i</B> and <B>j</B>, so you don&#8217;t need to use such ungainly names as
+<B>i_loop_counter</B> for clarity.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">However, some confusion may result if you
+expect the lifetimes of the variables <B>i </B>and <B>j </B>to extend beyond the
+scope of the for loop &#8211; they do
+not</FONT><A NAME="fnB39" HREF="#fn39">[39]</A><A NAME="Index1321"></A><A NAME="Index1322"></A><A NAME="Index1323"></A><A NAME="Index1324"></A><FONT FACE="Georgia">.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Chapter 3 points out that <B>while</B>
+and <B>switch</B> statements also allow the definition of objects in their
+control expressions, although this usage seems far less important than with the
+<B>for</B> loop.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Watch out for local variables that
+<A NAME="Index1325"></A><A NAME="Index1326"></A><A NAME="Index1327"></A>hide
+variables from the enclosing scope. In general, using the same name for a nested
+variable and a variable that is global to that scope is confusing and error
+prone</FONT><A NAME="fnB40" HREF="#fn40">[40]</A><FONT FACE="Georgia">.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">I find small scopes an indicator of good
+design. If you have several pages for a single function, perhaps you&#8217;re
+trying to do too much with that function. More granular functions are not only
+more useful, but it&#8217;s also easier to find
+bugs<A NAME="Index1328"></A>.</FONT><A NAME="_Toc312373857"></A><A NAME="_Toc472654857"></A><BR></P></DIV>
+<A NAME="Heading229"></A><FONT FACE = "Verdana"><H3 ALIGN="LEFT">
+Storage allocation</H3></FONT>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">A variable can now be defined at any
+point in a scope, so it might seem that the storage for a variable may not be
+defined until its point of definition. It&#8217;s actually more likely that the
+compiler will follow the practice in C of allocating all the storage for a scope
+at the opening brace of that scope. It doesn&#8217;t matter because, as a
+programmer, you can&#8217;t access the storage (a.k.a. the object) until it has
+been defined</FONT><A NAME="fnB41" HREF="#fn41">[41]</A><FONT FACE="Georgia">.
+Although the storage is
+allocated<A NAME="Index1329"></A><A NAME="Index1330"></A> at the beginning of
+the <A NAME="Index1331"></A>block, the constructor call doesn&#8217;t happen
+until the sequence point where the object is defined because the identifier
+isn&#8217;t available until then. The compiler even checks to make sure that you
+don&#8217;t put the object definition (and thus the constructor call) where the
+sequence point <A NAME="Index1332"></A><A NAME="Index1333"></A>only
+conditionally passes through it, such as in a
+<A NAME="Index1334"></A><B>switch</B> <A NAME="Index1335"></A>statement or
+somewhere a <A NAME="Index1336"></A><B>goto</B> <A NAME="Index1337"></A>can jump
+past it. Uncommenting the statements in the following code will generate a
+warning or an error:</FONT><BR></P></DIV>
+
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE><font color=#009900>//: C06:Nojump.cpp</font>
+<font color=#009900>// Can't jump past constructors</font>
+
+<font color=#0000ff>class</font> X {
+<font color=#0000ff>public</font>:
+  X();
+};
+
+X::X() {}
+
+<font color=#0000ff>void</font> f(<font color=#0000ff>int</font> i) {
+  <font color=#0000ff>if</font>(i &lt; 10) {
+   <font color=#009900>//! goto jump1; // Error: goto bypasses init</font>
+  }
+  X x1;  <font color=#009900>// Constructor called here</font>
+ jump1:
+  <font color=#0000ff>switch</font>(i) {
+    <font color=#0000ff>case</font> 1 :
+      X x2;  <font color=#009900>// Constructor called here</font>
+      <font color=#0000ff>break</font>;
+  <font color=#009900>//! case 2 : // Error: case bypasses init</font>
+      X x3;  <font color=#009900>// Constructor called here</font>
+      <font color=#0000ff>break</font>;
+  }
+} 
+
+<font color=#0000ff>int</font> main() {
+  f(9);
+  f(11);
+}<font color=#009900>///:~ </font></PRE></FONT></BLOCKQUOTE>
+
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">In the code above, both the <B>goto</B>
+and the <B>switch</B> can potentially jump past the sequence point where a
+constructor is called. That object will then be in scope even if the constructor
+hasn&#8217;t been called, so the compiler gives an error message. This once
+again guarantees <A NAME="Index1338"></A><A NAME="Index1339"></A>that an object
+cannot be created unless it is also initialized.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">All the storage allocation discussed here
+happens, of course, on the stack<A NAME="Index1340"></A>. The storage is
+allocated by the compiler by moving the stack pointer &#8220;down&#8221; (a
+relative term, which may indicate an increase or decrease of the actual stack
+pointer <A NAME="Index1341"></A>value, depending on your machine). Objects can
+also be allocated on the heap using <B>new</B>, which is something we&#8217;ll
+explore further in Chapter
+13.</FONT><A NAME="_Toc312373858"></A><A NAME="_Toc472654858"></A><BR></P></DIV>
+<A NAME="Heading230"></A><FONT FACE = "Verdana"><H2 ALIGN="LEFT">
+Stash with constructors and destructors</H2></FONT>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">The examples from previous chapters have
+obvious functions that map to constructors and destructors:
+<B>initialize(&#160;)</B> and <B>cleanup(&#160;)</B>. Here&#8217;s the
+<B>Stash</B> header using constructors and destructors:
+<A NAME="Index1342"></A></FONT><BR></P></DIV>
+
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE><font color=#009900>//: C06:Stash2.h</font>
+<font color=#009900>// With constructors &amp; destructors</font>
+#ifndef STASH2_H
+#define STASH2_H
+
+<font color=#0000ff>class</font> Stash {
+  <font color=#0000ff>int</font> size;      <font color=#009900>// Size of each space</font>
+  <font color=#0000ff>int</font> quantity;  <font color=#009900>// Number of storage spaces</font>
+  <font color=#0000ff>int</font> next;      <font color=#009900>// Next empty space</font>
+  <font color=#009900>// Dynamically allocated array of bytes:</font>
+  <font color=#0000ff>unsigned</font> <font color=#0000ff>char</font>* storage;
+  <font color=#0000ff>void</font> inflate(<font color=#0000ff>int</font> increase);
+<font color=#0000ff>public</font>:
+  Stash(<font color=#0000ff>int</font> size);
+  ~Stash();
+  <font color=#0000ff>int</font> add(<font color=#0000ff>void</font>* element);
+  <font color=#0000ff>void</font>* fetch(<font color=#0000ff>int</font> index);
+  <font color=#0000ff>int</font> count();
+};
+#endif <font color=#009900>// STASH2_H ///:~</font></PRE></FONT></BLOCKQUOTE>
+
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">The only member function definitions that
+are changed are <B>initialize(&#160;)</B> and <B>cleanup(&#160;)</B>, which have
+been replaced with a constructor and destructor:</FONT><BR></P></DIV>
+
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE><font color=#009900>//: C06:Stash2.cpp {O}</font>
+<font color=#009900>// Constructors &amp; destructors</font>
+#include <font color=#004488>"Stash2.h"</font>
+#include <font color=#004488>"../require.h"</font>
+#include &lt;iostream&gt;
+#include &lt;cassert&gt;
+<font color=#0000ff>using</font> <font color=#0000ff>namespace</font> std;
+<font color=#0000ff>const</font> <font color=#0000ff>int</font> increment = 100;
+
+Stash::Stash(<font color=#0000ff>int</font> sz) {
+  size = sz;
+  quantity = 0;
+  storage = 0;
+  next = 0;
+}
+
+<font color=#0000ff>int</font> Stash::add(<font color=#0000ff>void</font>* element) {
+  <font color=#0000ff>if</font>(next &gt;= quantity) <font color=#009900>// Enough space left?</font>
+    inflate(increment);
+  <font color=#009900>// Copy element into storage,</font>
+  <font color=#009900>// starting at next empty space:</font>
+  <font color=#0000ff>int</font> startBytes = next * size;
+  <font color=#0000ff>unsigned</font> <font color=#0000ff>char</font>* e = (<font color=#0000ff>unsigned</font> <font color=#0000ff>char</font>*)element;
+  <font color=#0000ff>for</font>(<font color=#0000ff>int</font> i = 0; i &lt; size; i++)
+    storage[startBytes + i] = e[i];
+  next++;
+  <font color=#0000ff>return</font>(next - 1); <font color=#009900>// Index number</font>
+}
+
+<font color=#0000ff>void</font>* Stash::fetch(<font color=#0000ff>int</font> index) {
+  require(0 &lt;= index, <font color=#004488>"Stash::fetch (-)index"</font>);
+  <font color=#0000ff>if</font>(index &gt;= next)
+    <font color=#0000ff>return</font> 0; <font color=#009900>// To indicate the end</font>
+  <font color=#009900>// Produce pointer to desired element:</font>
+  <font color=#0000ff>return</font> &amp;(storage[index * size]);
+}
+
+<font color=#0000ff>int</font> Stash::count() {
+  <font color=#0000ff>return</font> next; <font color=#009900>// Number of elements in CStash</font>
+}
+
+<font color=#0000ff>void</font> Stash::inflate(<font color=#0000ff>int</font> increase) {
+  require(increase &gt; 0, 
+    <font color=#004488>"Stash::inflate zero or negative increase"</font>);
+  <font color=#0000ff>int</font> newQuantity = quantity + increase;
+  <font color=#0000ff>int</font> newBytes = newQuantity * size;
+  <font color=#0000ff>int</font> oldBytes = quantity * size;
+  <font color=#0000ff>unsigned</font> <font color=#0000ff>char</font>* b = <font color=#0000ff>new</font> <font color=#0000ff>unsigned</font> <font color=#0000ff>char</font>[newBytes];
+  <font color=#0000ff>for</font>(<font color=#0000ff>int</font> i = 0; i &lt; oldBytes; i++)
+    b[i] = storage[i]; <font color=#009900>// Copy old to new</font>
+  <font color=#0000ff>delete</font> [](storage); <font color=#009900>// Old storage</font>
+  storage = b; <font color=#009900>// Point to new memory</font>
+  quantity = newQuantity;
+}
+
+Stash::~Stash() {
+  <font color=#0000ff>if</font>(storage != 0) {
+   cout &lt;&lt; <font color=#004488>"freeing storage"</font> &lt;&lt; endl;
+   <font color=#0000ff>delete</font> []storage;
+  }
+} <font color=#009900>///:~</font></PRE></FONT></BLOCKQUOTE>
+
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">You can see that the <B>require.h</B>
+functions are being used to watch for programmer errors, instead of
+<B>assert(&#160;)</B>. The output of a failed <B>assert(&#160;)</B> is not as
+useful as that of the <B>require.h</B> functions (which will be shown later in
+the book).</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Because <B>inflate(&#160;)</B> is
+private, the only way a <B>require(&#160;)</B> could fail is if one of the other
+member functions accidentally passed an incorrect value to
+<B>inflate(&#160;)</B>. If you are certain this can&#8217;t happen, you could
+consider removing the <B>require(&#160;)</B>, but you might keep in mind that
+until the class is stable, there&#8217;s always the possibility that new code
+might be added to the class that could cause errors. The cost of the
+<B>require(&#160;)</B> is low (and could be automatically removed using the
+preprocessor) and the value of code robustness is high.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Notice in the following test program how
+the definitions for <B>Stash</B> objects appear right before they are needed,
+and how the initialization appears as part of the definition, in the constructor
+argument list:</FONT><BR></P></DIV>
+
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE><font color=#009900>//: C06:Stash2Test.cpp</font>
+<font color=#009900>//{L} Stash2</font>
+<font color=#009900>// Constructors &amp; destructors</font>
+#include <font color=#004488>"Stash2.h"</font>
+#include <font color=#004488>"../require.h"</font>
+#include &lt;fstream&gt;
+#include &lt;iostream&gt;
+#include &lt;string&gt;
+<font color=#0000ff>using</font> <font color=#0000ff>namespace</font> std;
+
+<font color=#0000ff>int</font> main() {
+  Stash intStash(<font color=#0000ff>sizeof</font>(<font color=#0000ff>int</font>));
+  <font color=#0000ff>for</font>(<font color=#0000ff>int</font> i = 0; i &lt; 100; i++)
+    intStash.add(&amp;i);
+  <font color=#0000ff>for</font>(<font color=#0000ff>int</font> j = 0; j &lt; intStash.count(); j++)
+    cout &lt;&lt; <font color=#004488>"intStash.fetch("</font> &lt;&lt; j &lt;&lt; <font color=#004488>") = "</font>
+         &lt;&lt; *(<font color=#0000ff>int</font>*)intStash.fetch(j)
+         &lt;&lt; endl;
+  <font color=#0000ff>const</font> <font color=#0000ff>int</font> bufsize = 80;
+  Stash stringStash(<font color=#0000ff>sizeof</font>(<font color=#0000ff>char</font>) * bufsize);
+  ifstream in(<font color=#004488>"Stash2Test.cpp"</font>);
+  assure(in, <font color=#004488>" Stash2Test.cpp"</font>);
+  string line;
+  <font color=#0000ff>while</font>(getline(in, line))
+    stringStash.add((<font color=#0000ff>char</font>*)line.c_str());
+  <font color=#0000ff>int</font> k = 0;
+  <font color=#0000ff>char</font>* cp;
+  <font color=#0000ff>while</font>((cp = (<font color=#0000ff>char</font>*)stringStash.fetch(k++))!=0)
+    cout &lt;&lt; <font color=#004488>"stringStash.fetch("</font> &lt;&lt; k &lt;&lt; <font color=#004488>") = "</font>
+         &lt;&lt; cp &lt;&lt; endl;
+} <font color=#009900>///:~</font></PRE></FONT></BLOCKQUOTE>
+
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Also notice how the
+<B>cleanup(&#160;)</B> calls have been eliminated, but the
+<A NAME="Index1343"></A>destructors are still automatically
+<A NAME="Index1344"></A>called when <B>intStash</B> and <B>stringStash</B> go
+out of scope.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">One thing to be aware of in the
+<B>Stash</B> examples: I&#8217;m being very careful to use only built-in types;
+that is, those without destructors. If you were to try to copy class objects
+into the <B>Stash</B>, you&#8217;d run into all kinds of problems and it
+wouldn&#8217;t work right. The Standard C++ Library can actually make correct
+copies of objects into its containers, but this is a rather messy and
+complicated process. In the following <B>Stack</B> example, you&#8217;ll see
+that pointers are used to sidestep this issue, and in a later chapter the
+<B>Stash</B> will be converted so that it uses
+pointers.</FONT><A NAME="_Toc312373859"></A><A NAME="_Toc472654859"></A><BR></P></DIV>
+<A NAME="Heading231"></A><FONT FACE = "Verdana"><H2 ALIGN="LEFT">
+Stack with constructors &amp; destructors</H2></FONT>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Reimplementing the linked list
+<A NAME="Index1345"></A><A NAME="Index1346"></A>(inside <B>Stack</B>)<B>
+</B>with constructors and destructors shows how neatly constructors and
+destructors work with <B>new </B>and <B>delete</B>. Here&#8217;s the modified
+header file: <A NAME="Index1347"></A></FONT><BR></P></DIV>
+
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE><font color=#009900>//: C06:Stack3.h</font>
+<font color=#009900>// With constructors/destructors</font>
+#ifndef STACK3_H
+#define STACK3_H
+
+<font color=#0000ff>class</font> Stack {
+  <font color=#0000ff>struct</font> Link {
+    <font color=#0000ff>void</font>* data;
+    Link* next;
+    Link(<font color=#0000ff>void</font>* dat, Link* nxt);
+    ~Link();
+  }* head;
+<font color=#0000ff>public</font>:
+  Stack();
+  ~Stack();
+  <font color=#0000ff>void</font> push(<font color=#0000ff>void</font>* dat);
+  <font color=#0000ff>void</font>* peek();
+  <font color=#0000ff>void</font>* pop();
+};
+#endif <font color=#009900>// STACK3_H ///:~</font></PRE></FONT></BLOCKQUOTE>
+
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Not only does <B>Stack</B> have a
+constructor and destructor, but so does the nested <STRIKE>class
+</STRIKE><U>struct </U><B>Link</B>:</FONT><BR></P></DIV>
+
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE><font color=#009900>//: C06:Stack3.cpp {O}</font>
+<font color=#009900>// Constructors/destructors</font>
+#include <font color=#004488>"Stack3.h"</font>
+#include <font color=#004488>"../require.h"</font>
+<font color=#0000ff>using</font> <font color=#0000ff>namespace</font> std;
+
+Stack::Link::Link(<font color=#0000ff>void</font>* dat, Link* nxt) {
+  data = dat;
+  next = nxt;
+}
+
+Stack::Link::~Link() { }
+
+Stack::Stack() { head = 0; }
+
+<font color=#0000ff>void</font> Stack::push(<font color=#0000ff>void</font>* dat) {
+  head = <font color=#0000ff>new</font> Link(dat,head);
+}
+
+<font color=#0000ff>void</font>* Stack::peek() { 
+  require(head != 0, <font color=#004488>"Stack empty"</font>);
+  <font color=#0000ff>return</font> head-&gt;data; 
+}
+
+<font color=#0000ff>void</font>* Stack::pop() {
+  <font color=#0000ff>if</font>(head == 0) <font color=#0000ff>return</font> 0;
+  <font color=#0000ff>void</font>* result = head-&gt;data;
+  Link* oldHead = head;
+  head = head-&gt;next;
+  <font color=#0000ff>delete</font> oldHead;
+  <font color=#0000ff>return</font> result;
+}
+
+Stack::~Stack() {
+  require(head == 0, <font color=#004488>"Stack not empty"</font>);
+} <font color=#009900>///:~</font></PRE></FONT></BLOCKQUOTE>
+
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">The <B>Link::Link(&#160;)</B> constructor
+simply initializes the <B>data</B> and <B>next</B> pointers, so in
+<B>Stack::push(&#160;)</B> the line</FONT><BR></P></DIV>
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE>head = <font color=#0000ff>new</font> Link(dat,head);</PRE></FONT></BLOCKQUOTE>
+
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">not only allocates a new link (using
+dynamic object creation with the keyword <B>new</B>, introduced in Chapter 4),
+but it also neatly initializes the pointers for that link.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">You may wonder why the destructor for
+<B>Link</B> doesn&#8217;t do anything &#8211; in particular, why doesn&#8217;t
+it <B>delete</B> the <B>data</B> pointer? There are two problems. In Chapter 4,
+where the <B>Stack</B> was introduced, it was pointed out that you cannot
+properly <B>delete</B> a <B>void</B> pointer if it points to an object (an
+assertion that will be proven in Chapter 13). But in addition, if the
+<B>Link</B> destructor deleted the <B>data</B> pointer, <B>pop(&#160;)</B> would
+end up returning a pointer to a deleted object, which would definitely be a bug.
+This is sometimes referred to as the issue of
+<A NAME="Index1348"></A><I>ownership</I>: the <B>Link</B> and thus the
+<B>Stack</B> only holds the pointers, but is not responsible for cleaning them
+up. This means that you must be very careful that you know who <I>is</I>
+responsible. For example, if you don&#8217;t <B>pop(&#160;)</B> and
+<B>delete</B> all the pointers on the <B>Stack</B>, they won&#8217;t get cleaned
+up automatically by the <B>Stack</B>&#8217;s destructor. This can be a sticky
+issue and leads to <A NAME="Index1349"></A><A NAME="Index1350"></A>memory leaks,
+so knowing who is responsible for cleaning up an object can make the difference
+between a successful program and a buggy one &#8211; that&#8217;s why
+<B>Stack::~Stack(&#160;)</B> prints an error message if the <B>Stack</B> object
+isn&#8217;t empty upon destruction.<B> </B></FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Because the allocation and cleanup of the
+<B>Link</B> objects are hidden within <B>Stack</B> &#8211; it&#8217;s part of
+the underlying implementation &#8211; you don&#8217;t see it happening in the
+test program, although you <I>are</I> responsible for deleting the pointers that
+come back from <B>pop(&#160;)</B>:</FONT><BR></P></DIV>
+
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE><font color=#009900>//: C06:Stack3Test.cpp</font>
+<font color=#009900>//{L} Stack3</font>
+<font color=#009900>//{T} Stack3Test.cpp</font>
+<font color=#009900>// Constructors/destructors</font>
+#include <font color=#004488>"Stack3.h"</font>
+#include <font color=#004488>"../require.h"</font>
+#include &lt;fstream&gt;
+#include &lt;iostream&gt;
+#include &lt;string&gt;
+<font color=#0000ff>using</font> <font color=#0000ff>namespace</font> std;
+
+<font color=#0000ff>int</font> main(<font color=#0000ff>int</font> argc, <font color=#0000ff>char</font>* argv[]) {
+  requireArgs(argc, 1); <font color=#009900>// File name is argument</font>
+  ifstream in(argv[1]);
+  assure(in, argv[1]);
+  Stack textlines;
+  string line;
+  <font color=#009900>// Read file and store lines in the stack:</font>
+  <font color=#0000ff>while</font>(getline(in, line))
+    textlines.push(<font color=#0000ff>new</font> string(line));
+  <font color=#009900>// Pop the lines from the stack and print them:</font>
+  string* s;
+  <font color=#0000ff>while</font>((s = (string*)textlines.pop()) != 0) {
+    cout &lt;&lt; *s &lt;&lt; endl;
+    <font color=#0000ff>delete</font> s; 
+  }
+} <font color=#009900>///:~</font></PRE></FONT></BLOCKQUOTE>
+
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">In this case, all the lines in
+<B>textlines</B> are popped and deleted, but if they weren&#8217;t, you&#8217;d
+get a <B>require(&#160;)</B> message that would mean there was a memory
+leak.</FONT><A NAME="_Toc312373860"></A><A NAME="_Toc472654860"></A><BR></P></DIV>
+<A NAME="Heading232"></A><FONT FACE = "Verdana"><H2 ALIGN="LEFT">
+Aggregate initialization</H2></FONT>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">An <I>aggregate</I> is just what it
+sounds like: a bunch of things clumped together. This definition includes
+aggregates of mixed types, like <B>struct</B>s and <B>class</B>es. An array is
+an aggregate of a single type.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Initializing aggregates can be
+error-prone and tedious. C++ <I>aggregate
+initialization<A NAME="Index1351"></A><A NAME="Index1352"></A></I> makes it much
+safer. When you create an object that&#8217;s an aggregate, all you must do is
+make an assignment, and the initialization will be taken care of by the
+compiler. This assignment <A NAME="Index1353"></A>comes in several flavors,
+depending on the type of aggregate you&#8217;re dealing with, but in all cases
+the elements in the assignment must be surrounded by curly braces. For an array
+of built-in types this is quite simple:</FONT><BR></P></DIV>
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE><font color=#0000ff>int</font> a[5] = { 1, 2, 3, 4, 5 };</PRE></FONT></BLOCKQUOTE>
+
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">If you try to give more initializers
+<A NAME="Index1354"></A>than there are array elements, the compiler gives an
+error message. But what happens if you give <I>fewer</I> initializers? For
+example:</FONT><BR></P></DIV>
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE><font color=#0000ff>int</font> b[6] = {0};</PRE></FONT></BLOCKQUOTE>
+
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Here, the compiler will use the first
+initializer for the first array element, and then use zero for all the elements
+without initializers. Notice this initialization behavior doesn&#8217;t occur if
+you define an array without a list of initializers. So the expression above is a
+succinct way to initialize <A NAME="Index1355"></A>an array to
+zero<A NAME="Index1356"></A>, without using a <B>for</B> loop, and without any
+possibility of an off-by-one error
+<A NAME="Index1357"></A><A NAME="Index1358"></A><A NAME="Index1359"></A>(Depending
+on the compiler, it may also be more efficient than the <B>for</B>
+loop.)</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">A second shorthand for arrays is
+<I>automatic
+counting<A NAME="Index1360"></A><A NAME="Index1361"></A><A NAME="Index1362"></A></I>,
+in which you let the compiler determine the size of the array based on the
+number of initializers:</FONT><BR></P></DIV>
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE><font color=#0000ff>int</font> c[] = { 1, 2, 3, 4 };</PRE></FONT></BLOCKQUOTE>
+
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Now if you decide to add another element
+to the array, you simply add another initializer. If you can set your code up so
+it needs to be changed in only one spot, you reduce the chance of errors during
+modification. But how do you determine the size of the array? The expression
+<A NAME="Index1363"></A><B>sizeof c / sizeof *c</B> (size of the entire array
+divided by the size of the first element) does the trick in a way that
+doesn&#8217;t need to be changed if the array size
+<A NAME="Index1364"></A><A NAME="Index1365"></A>changes</FONT><A NAME="fnB42" HREF="#fn42">[42]</A><FONT FACE="Georgia">:</FONT><BR></P></DIV>
+
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE><font color=#0000ff>for</font>(<font color=#0000ff>int</font> i = 0; i &lt; <font color=#0000ff>sizeof</font> c / <font color=#0000ff>sizeof</font> *c; i++)
+ c[i]++;</PRE></FONT></BLOCKQUOTE>
+
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Because structures are also aggregates,
+they can be initialized in a similar fashion. Because a C-style <B>struct</B>
+has all of its members <B>public</B>, they can be assigned
+directly:</FONT><BR></P></DIV>
+
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE><font color=#0000ff>struct</font> X {
+  <font color=#0000ff>int</font> i;
+  <font color=#0000ff>float</font> f;
+  <font color=#0000ff>char</font> c;
+};
+
+X x1 = { 1, 2.2, 'c' };</PRE></FONT></BLOCKQUOTE>
+
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">If<A NAME="Index1366"></A><A NAME="Index1367"></A><A NAME="Index1368"></A><A NAME="Index1369"></A>
+you have an array of such objects, you can initialize them by using a nested set
+of curly braces for each object:</FONT><BR></P></DIV>
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE>X x2[3] = { {1, 1.1, 'a'}, {2, 2.2, 'b'} };</PRE></FONT></BLOCKQUOTE>
+
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Here, the third object is initialized to
+zero.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">If any of the data members are
+<B>private</B> (which is typically the case for a well-designed class in C++),
+or even if everything&#8217;s <B>public</B> but there&#8217;s a constructor,
+things are different. In the examples above, the initializers are assigned
+directly to the elements of the aggregate, but constructors are a way of forcing
+initialization to occur through a formal interface. Here, the constructors must
+be called to perform the initialization. So if you have a <B>struct</B> that
+looks like this,</FONT><BR></P></DIV>
+
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE><font color=#0000ff>struct</font> Y {
+  <font color=#0000ff>float</font> f;
+  <font color=#0000ff>int</font> i;
+  Y(<font color=#0000ff>int</font> a);
+}; </PRE></FONT></BLOCKQUOTE>
+
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">You must indicate constructor calls. The
+best approach is the explicit one as follows:</FONT><BR></P></DIV>
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE>Y y1[] = { Y(1), Y(2), Y(3) };</PRE></FONT></BLOCKQUOTE>
+
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">You get three objects and three
+constructor calls. Any<I> </I>time you have a constructor, whether it&#8217;s a
+<B>struct</B> with all members <B>public</B> or a <B>class</B> with
+<B>private</B> data members, all the initialization must go through the
+constructor, even if you&#8217;re using aggregate
+initialization.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Here&#8217;s a second example showing
+multiple constructor arguments:</FONT><BR></P></DIV>
+
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE><font color=#009900>//: C06:Multiarg.cpp</font>
+<font color=#009900>// Multiple constructor arguments</font>
+<font color=#009900>// with aggregate initialization</font>
+#include &lt;iostream&gt;
+<font color=#0000ff>using</font> <font color=#0000ff>namespace</font> std;
+
+<font color=#0000ff>class</font> Z {
+  <font color=#0000ff>int</font> i, j;
+<font color=#0000ff>public</font>:
+  Z(<font color=#0000ff>int</font> ii, <font color=#0000ff>int</font> jj);
+  <font color=#0000ff>void</font> print();
+};
+
+Z::Z(<font color=#0000ff>int</font> ii, <font color=#0000ff>int</font> jj) {
+  i = ii;
+  j = jj;
+}
+
+<font color=#0000ff>void</font> Z::print() {
+  cout &lt;&lt; <font color=#004488>"i = "</font> &lt;&lt; i &lt;&lt; <font color=#004488>", j = "</font> &lt;&lt; j &lt;&lt; endl;
+}
+
+<font color=#0000ff>int</font> main() {
+  Z zz[] = { Z(1,2), Z(3,4), Z(5,6), Z(7,8) };
+  <font color=#0000ff>for</font>(<font color=#0000ff>int</font> i = 0; i &lt; <font color=#0000ff>sizeof</font> zz / <font color=#0000ff>sizeof</font> *zz; i++)
+    zz[i].print();
+} <font color=#009900>///:~</font></PRE></FONT></BLOCKQUOTE>
+
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Notice that it looks like an explicit
+constructor is called for each object in the
+array.</FONT><A NAME="_Toc312373861"></A><A NAME="_Toc472654861"></A><BR></P></DIV>
+<A NAME="Heading233"></A><FONT FACE = "Verdana"><H2 ALIGN="LEFT">
+Default constructors</H2></FONT>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">A <I>default constructor</I>
+<A NAME="Index1370"></A><A NAME="Index1371"></A>is one that can be called with
+no arguments. A default constructor is used to create a &#8220;vanilla
+object,&#8221; but it&#8217;s also important when the compiler is told to create
+an object but isn&#8217;t given any details. For example, if you take the
+<B>struct Y</B> defined previously and use it in a definition like
+this,</FONT><BR></P></DIV>
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE>Y y2[2] = { Y(1) };</PRE></FONT></BLOCKQUOTE>
+
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">the compiler will complain that it cannot
+find a default constructor. The second object in the array wants to be created
+with no arguments, and that&#8217;s where the compiler looks for a default
+constructor. In fact, if you simply define an array of <B>Y</B>
+objects,</FONT><BR></P></DIV>
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE>Y y3[7];</PRE></FONT></BLOCKQUOTE>
+
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">the compiler will complain because it
+must have a default constructor to initialize every object in the array.
+</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">The same problem occurs if you create an
+individual object like this:</FONT><BR></P></DIV>
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE>Y y4;</PRE></FONT></BLOCKQUOTE>
+
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Remember, if you have a constructor, the
+compiler ensures that construction <I>always </I>happens, regardless of the
+situation.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">The default constructor is so important
+that <I>if</I> (and only if) there are no <A NAME="Index1372"></A>constructors
+for a structure (<B>struct</B> or <B>class</B>), the
+<A NAME="Index1373"></A>compiler will automatically create one for you. So this
+works:</FONT><BR></P></DIV>
+
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE><font color=#009900>//: C06:AutoDefaultConstructor.cpp</font>
+<font color=#009900>// Automatically-generated default constructor</font>
+
+<font color=#0000ff>class</font> V {
+  <font color=#0000ff>int</font> i;  <font color=#009900>// private</font>
+}; <font color=#009900>// No constructor</font>
+
+<font color=#0000ff>int</font> main() {
+  V v, v2[10];
+} <font color=#009900>///:~</font></PRE></FONT></BLOCKQUOTE>
+
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">If any constructors are defined, however,
+and there&#8217;s no default constructor, the instances of <B>V</B> above will
+generate compile-time errors.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">You might think that the
+compiler-synthesized <A NAME="Index1374"></A>constructor should do some
+intelligent initialization, like setting all the memory for the object to zero.
+But it doesn&#8217;t &#8211; that would add extra overhead but be out of the
+programmer&#8217;s control. If you want the memory to be initialized to zero,
+you must do it yourself by writing the default constructor
+explicitly.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Although the compiler will create a
+default constructor for you, the behavior of the compiler-synthesized
+constructor is rarely what you want. You should treat this feature as a safety
+net, but use it sparingly. In general, you should define your constructors
+explicitly and not allow the compiler to do it for
+you.<A NAME="Index1375"></A><A NAME="Index1376"></A><A NAME="Index1377"></A><A NAME="_Toc312373862"></A></FONT><A NAME="_Toc472654862"></A><BR></P></DIV>
+<A NAME="Heading234"></A><FONT FACE = "Verdana"><H2 ALIGN="LEFT">
+Summary</H2></FONT>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">The seemingly elaborate mechanisms
+provided by C++ should give you a strong hint about the critical importance
+placed on initialization and cleanup in the language. As Stroustrup was
+designing C++, one of the first observations he made about productivity in C was
+that a significant portion of programming problems are caused by improper
+initialization of variables. These kinds of bugs are hard to find, and similar
+issues apply to improper cleanup. Because constructors and destructors allow you
+to <I>guarantee</I> proper initialization and cleanup (the compiler will not
+allow an object to be created and destroyed without the proper constructor and
+destructor calls), you get complete control and safety.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Aggregate initialization is included in a
+similar vein &#8211; it prevents you from making typical initialization mistakes
+with aggregates of built-in types and makes your code more
+succinct.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Safety during coding is a big issue in
+C++. Initialization and cleanup are an important part of this, but you&#8217;ll
+also see other safety issues as the book
+progresses.</FONT><A NAME="_Toc312373863"></A><A NAME="_Toc472654863"></A><BR></P></DIV>
+<A NAME="Heading235"></A><FONT FACE = "Verdana"><H2 ALIGN="LEFT">
+Exercises</H2></FONT>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia" SIZE=2>Solutions to selected exercises
+can be found in the electronic document <I>The Thinking in C++ Annotated
+Solution Guide</I>, available for a small fee from
+www.BruceEckel.com.</FONT><BR></P></DIV>
+<OL>
+<LI><FONT FACE="Verdana">	</FONT><FONT FACE="Georgia">Write a simple class
+called <B>Simple </B>with a constructor that prints something to tell you that
+it&#8217;s been called. In <B>main(&#160;)</B> make an object of your
+class.</FONT><LI><FONT FACE="Verdana">	</FONT><FONT FACE="Georgia">Add a
+destructor to Exercise 1 that prints out a message to tell you that it&#8217;s
+been called.</FONT><LI><FONT FACE="Verdana">	</FONT><FONT FACE="Georgia">Modify
+Exercise 2 so that the class contains an <B>int</B> member. Modify the
+constructor so that it takes an <B>int</B> argument that it stores in the class
+member. Both the constructor and destructor should print out the <B>int</B>
+value as part of their message, so you can see the objects as they are created
+and
+destroyed.</FONT><LI><FONT FACE="Verdana">	</FONT><FONT FACE="Georgia">Demonstrate
+that destructors are still called even when <B>goto</B> is used to jump out of a
+loop.</FONT><LI><FONT FACE="Verdana">	</FONT><FONT FACE="Georgia">Write two
+<B>for</B> loops that print out values from zero to 10. In the first, define the
+loop counter before the <B>for</B> loop, and in the second, define the loop
+counter in the control expression of the <B>for</B> loop. For the second part of
+this exercise, modify the identifier in the second <B>for</B> loop so that it as
+the same name as the loop counter for the first and see what your compiler
+does.</FONT><LI><FONT FACE="Verdana">	</FONT><FONT FACE="Georgia">Modify the
+<B>Handle.h</B>, <B>Handle.cpp</B>, and <B>UseHandle.cpp </B>files at the end of
+Chapter 5 to use constructors and
+destructors.</FONT><LI><FONT FACE="Verdana">	</FONT><FONT FACE="Georgia">Use
+aggregate initialization to create an array of <B>double</B> in which you
+specify the size of the array but do not provide enough elements. Print out this
+array using <B>sizeof </B>to determine the size of the array. Now create an
+array of <B>double</B> using aggregate initialization <I>and</I> automatic
+counting. Print out the
+array.</FONT><LI><FONT FACE="Verdana">	</FONT><FONT FACE="Georgia">Use aggregate
+initialization to create an array of <B>string</B> objects. Create a
+<B>Stack</B> to hold these <B>string</B>s and step through your array, pushing
+each <B>string</B> on your <B>Stack</B>. Finally, <B>pop</B> the <B>string</B>s
+off your <B>Stack</B> and print each
+one.</FONT><LI><FONT FACE="Verdana">	</FONT><FONT FACE="Georgia">Demonstrate
+automatic counting and aggregate initialization with an array of objects of the
+class you created in Exercise 3. Add a member function to that class that prints
+a message. Calculate the size of the array and move through it, calling your new
+member
+function.</FONT><LI><FONT FACE="Verdana">	</FONT><FONT FACE="Georgia">Create a
+class without any constructors, and show that you can create objects with the
+default constructor. Now create a nondefault constructor (one with an argument)
+for the class, and try compiling again. Explain what
+happened.</FONT><A NAME="_Toc465909232"></A><A NAME="_Toc465909645"></A><A NAME="_Toc466014556"></A><A NAME="_Toc466073466"></A><A NAME="_Toc466083267"></A><A NAME="_Toc468608073"></A><A NAME="_Toc468771394"></A><A NAME="_Toc312373864"></A><A NAME="_Toc469811397"></A><A NAME="_Toc469821282"></A><A NAME="_Toc469821698"></A><A NAME="_Toc469825379"></A><A NAME="_Toc469874284"></A><A NAME="_Toc470615940"></A><A NAME="_Toc470655078"></A><A NAME="_Toc470821062"></A><A NAME="_Toc470821479"></A><A NAME="_Toc470911576"></A><A NAME="_Toc471359057"></A><A NAME="_Toc471489477"></A><A NAME="_Toc471528908"></A><A NAME="_Toc471795064"></A><A NAME="_Toc471965641"></A><A NAME="_Toc472045643"></A><A NAME="_Toc472255847"></A><A NAME="_Toc472654450"></A><A NAME="_Toc472654864"></A></OL><FONT FACE = "Verdana"><H1 ALIGN="LEFT">
+</H1></FONT>
+<DIV ALIGN="LEFT"><P><FONT FACE="Verdana"><B></B></FONT><BR></P></DIV>
+<FONT FACE = "Verdana"><H1 ALIGN="LEFT">
+</H1></FONT>
+
+
+<HR><DIV ALIGN="LEFT"><P><A NAME="fn38" HREF="#fnB38">[38]</A><FONT FACE="Georgia" SIZE=2>
+C99, The updated version of Standard C, allows variables to be defined at any
+point in a scope, like C++.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><A NAME="fn39" HREF="#fnB39">[39]</A><FONT FACE="Georgia" SIZE=2>
+An earlier iteration of the C++ draft standard said the variable lifetime
+extended to the end of the scope that enclosed the <B>for</B> loop. Some
+compilers still implement that, but it is not correct so your code will only be
+portable if you limit the scope to the <B>for</B> loop.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><A NAME="fn40" HREF="#fnB40">[40]</A><FONT FACE="Georgia" SIZE=2>
+The Java language considers this such a bad idea that it flags such code as an
+error.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><A NAME="fn41" HREF="#fnB41">[41]</A><FONT FACE="Georgia" SIZE=2>
+OK, you probably could by fooling around with pointers, but you&#8217;d be very,
+very bad.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><A NAME="fn42" HREF="#fnB42">[42]</A><FONT FACE="Georgia" SIZE=2>
+In Volume 2 of this book (freely available at www.BruceEckel.com), you&#8217;ll
+see a more succinct calculation of an array size using
+templates.</FONT><BR></P></DIV>
+
+<DIV ALIGN="CENTER">
+    <FONT FACE="Verdana" size = "-1">
+     [ <a href="Chapter05.html">Previous Chapter</a> ] 
+    [ <a href="Contents.html">Table of Contents</a> ] 
+    [ <a href="DocIndex.html">Index</a> ]
+     [ <a href="Chapter07.html">Next Chapter</a> ] 
+    </FONT>
+    <BR>
+ Last Update:09/27/2001</P></DIV>
+
+</BODY>
+
+</HTML>

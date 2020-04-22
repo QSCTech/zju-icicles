@@ -1,0 +1,1624 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<HTML>
+<!--
+This document was converted from RTF source: 
+By rtftohtml 4.19
+See http://www.sunpack.com/RTF
+Filename:TIC2Vone.rtf
+Application Directory:C:\TOOLS\RTF2HTML\
+Subject:
+Author:Bruce Eckel
+Operator:Bruce Eckel
+Document Comments:
+Version Comments:
+Comments:
+Keywords:
+Translation Date:09/27/2001
+Translation Time:05:25:35
+Translation Platform:Win32
+Number of Output files:22
+This File:Chapter08.html
+SplitDepth=1
+SkipNavPanel=1
+SkipLeadingToc=1
+SkipTrailingToc=1
+GenContents=1
+GenFrames=1
+GenIndex=1
+-->
+<HEAD lang="en"><META http-equiv="Content-Type" content="text/html">
+<TITLE>8: Constants</TITLE>
+</HEAD>
+
+<BODY  BGCOLOR="#FFFFFF"><DIV ALIGN="CENTER">
+  <a href="http://www.MindView.net">
+  <img src="mindview-head.gif" alt="MindView Inc." BORDER = "0"></a>
+  <CENTER>
+    <FONT FACE="Verdana" size = "-1">
+    [ <a href="README-HTML.txt">Viewing Hints</a> ]
+    [ <a href="http://www.mindview.net/CPPServices/SolutionGuide.html">Exercise Solutions</a> ]
+    [ <a href="http://www.mindview.net/ThinkingInCPP2e.html">Volume 2</a> ]
+    [ <a href="http://www.mindview.net/MailingList.html">Free Newsletter</a> ] <br>
+    [ <a href="http://www.mindview.net/CPPServices/#PublicSeminars">Seminars</a> ]
+    [ <a href="http://www.mindview.net/CPPServices/#SeminarsOnCD">Seminars on CD ROM</a> ]
+    [ <a href="http://www.mindview.net/CPPServices/#ConsultingServices">Consulting</a> ]
+    </FONT>
+  <H2><FONT FACE="Verdana">
+  Thinking in C++, 2nd ed. Volume 1</FONT></H2></FONT>
+  <H3><FONT FACE="Verdana">&copy;2000 by Bruce Eckel</FONT></H3></FONT>
+  
+    <FONT FACE="Verdana" size = "-1">
+     [ <a href="Chapter07.html">Previous Chapter</a> ] 
+    [ <a href="Contents.html">Table of Contents</a> ] 
+    [ <a href="DocIndex.html">Index</a> ]
+     [ <a href="Chapter09.html">Next Chapter</a> ] 
+    </FONT>
+    
+  </CENTER>
+  </P></DIV><A NAME="_Toc472654876"></A><FONT FACE = "Verdana"><H1 ALIGN="LEFT">
+8: Constants</H1></FONT>
+<A NAME="Heading247"></A><FONT FACE = "Verdana"><H1 ALIGN="LEFT">
+</H1></FONT>
+<DIV ALIGN="LEFT"><P><FONT FACE="Verdana" SIZE=4>The concept of <I>constant</I>
+(expressed by the <A NAME="Index1446"></A><B>const</B> keyword) was created to
+allow the programmer to </FONT><BR><FONT FACE="Verdana" SIZE=4>draw a line
+between what changes and what doesn&#8217;t. This provides safety and control in
+a C++ </FONT><BR><FONT FACE="Verdana" SIZE=4>programming
+project.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Since its origin, <B>const</B> has taken
+on a number of different purposes. In the meantime it trickled back into the C
+language where its meaning was changed. All this can seem a bit confusing at
+first, and in this chapter you&#8217;ll learn when, why, and how to use the
+<B>const</B> keyword. At the end there&#8217;s a discussion of <B>volatile</B>,
+which is a near cousin to <B>const</B> (because they both concern change) and
+has identical syntax.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">The first motivation for <B>const</B>
+seems to have been to eliminate the use of preprocessor <B>#define</B>s for
+value substitution. It has since been put to use for pointers, function
+arguments, return types, class objects and member functions. All of these have
+slightly different but conceptually compatible meanings and will be looked at in
+separate sections in this
+chapter.</FONT><A NAME="_Toc305628675"></A><A NAME="_Toc312373903"></A><A NAME="_Toc472654877"></A><BR></P></DIV>
+<A NAME="Heading248"></A><FONT FACE = "Verdana"><H2 ALIGN="LEFT">
+Value substitution</H2></FONT>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">When programming in
+<A NAME="Index1447"></A>C, the preprocessor <A NAME="Index1448"></A>is liberally
+used to create macros and to substitute values.
+<A NAME="Index1449"></A><A NAME="Index1450"></A> Because the preprocessor simply
+does text replacement and has no concept nor facility for type checking,
+preprocessor value substitution introduces subtle problems that can be avoided
+in C++ by using <B>const</B> <A NAME="Index1451"></A>values.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">The typical use of the preprocessor to
+substitute values for names in C looks like this:</FONT><BR></P></DIV>
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE>#define BUFSIZE 100</PRE></FONT></BLOCKQUOTE>
+
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia"><B>BUFSIZE</B> is a name that only exists
+during preprocessing, therefore it doesn&#8217;t occupy storage and can be
+placed in a header file to provide a single value for all translation units that
+use it. It&#8217;s very important for code maintenance to use value substitution
+instead of so-called &#8220;magic numbers<A NAME="Index1452"></A>.&#8221; If you
+use magic numbers in your code, not only does the reader have no idea where the
+numbers come from or what they represent, but if you decide to change a value,
+you must perform hand editing, and you have no trail to follow to ensure you
+don&#8217;t miss one of your values (or accidentally change one you
+shouldn&#8217;t).</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Most of the time, <B>BUFSIZE</B> will
+behave like an ordinary variable, but not all the time. In addition,
+there&#8217;s no type information. This can hide bugs that are very difficult to
+find. C++ uses <B>const</B> to eliminate these problems by bringing value
+substitution into the domain of the compiler. Now you can say</FONT><BR></P></DIV>
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE><font color=#0000ff>const</font> <font color=#0000ff>int</font> bufsize = 100;</PRE></FONT></BLOCKQUOTE>
+
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">You can use <B>bufsize </B>anyplace where
+the compiler must know the value at compile time. The compiler can use
+<B>bufsize</B> <A NAME="Index1453"></A><A NAME="Index1454"></A>to perform
+<I>constant folding<A NAME="Index1455"></A></I>, which means the compiler will
+reduce a complicated constant expression to a simple one by performing the
+necessary calculations at compile time. This is especially important in array
+definitions:</FONT><BR></P></DIV>
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE><font color=#0000ff>char</font> buf[bufsize];</PRE></FONT></BLOCKQUOTE>
+
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">You can use <B>const</B> for all the
+built-in types (<B>char</B>, <B>int</B>, <B>float</B>, and <B>double</B>) and
+their variants (as well as class objects, as you&#8217;ll see later in this
+chapter). Because of subtle bugs that the preprocessor might introduce, you
+should always use <B>const</B> instead of <B>#define<A NAME="Index1456"></A></B>
+value
+substitution.</FONT><A NAME="_Toc312373904"></A><A NAME="_Toc472654878"></A><BR></P></DIV>
+<A NAME="Heading249"></A><FONT FACE = "Verdana"><H3 ALIGN="LEFT">
+const in header files</H3></FONT>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">To use <B>const</B> instead of
+<A NAME="Index1457"></A><B>#define</B>, you must be able to place <B>const</B>
+definitions inside header files <A NAME="Index1458"></A>
+<A NAME="Index1459"></A>as you can with <B>#define</B>. This way, you can place
+the definition for a <B>const</B> in a single place and distribute it to
+translation units by including the header file. A <B>const</B> in C++ defaults
+to <I>internal linkage<A NAME="Index1460"></A><A NAME="Index1461"></A></I>; that
+is, it is visible only within the file where it is defined and cannot be seen at
+link time by other translation units. You must always assign a value to a
+<B>const</B> when you define it, <I>except</I> when you make an explicit
+declaration using
+<A NAME="Index1462"></A><B>extern<A NAME="Index1463"></A></B>:</FONT><BR></P></DIV>
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE><font color=#0000ff>extern</font> <font color=#0000ff>const</font> <font color=#0000ff>int</font> bufsize;</PRE></FONT></BLOCKQUOTE>
+
+<DIV ALIGN="LEFT"><P><A NAME="Index1464"></A><FONT FACE="Georgia">Normally, the C++
+compiler avoids creating storage for a <B>const</B>, but instead holds the
+definition in its symbol table. When you use <B>extern</B> with <B>const</B>,
+however, you<B> </B>force storage to be allocated (this is also true for certain
+other cases, such as taking the address of a <B>const</B>). Storage must be
+allocated because <B>extern</B> says &#8220;use external linkage,&#8221; which
+means that several translation units must be able to refer to the item, which
+requires it to have storage. </FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">In the ordinary case, when <B>extern</B>
+is not part of the definition, no <A NAME="Index1465"></A>storage is allocated.
+When the <B>const</B> is used, it is simply folded in at compile
+time.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">The goal of never allocating storage for
+a <B>const</B> also fails with complicated structures. Whenever the compiler
+must allocate storage, constant folding is prevented (since there&#8217;s no way
+for the compiler to know for sure what the value of that storage is &#8211; if
+it could know that, it wouldn&#8217;t need to allocate the
+storage).</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Because the compiler cannot always avoid
+allocating storage for a <B>const</B>, <B>const</B> definitions <I>must</I>
+default to internal linkage, that is, linkage only <I>within</I> that particular
+translation unit. Otherwise, linker errors would occur with complicated
+<B>const</B>s because they cause storage to be allocated in multiple <B>cpp</B>
+files. The linker would then see the same definition in multiple object files,
+and complain. Because a <B>const</B> defaults to internal linkage, the linker
+doesn&#8217;t try to link those definitions across translation units, and there
+are no collisions. With built-in types, which are used in the majority of cases
+involving constant expressions, the compiler can always perform constant
+folding.</FONT><A NAME="_Toc312373905"></A><A NAME="_Toc472654879"></A><BR></P></DIV>
+<A NAME="Heading250"></A><FONT FACE = "Verdana"><H3 ALIGN="LEFT">
+Safety consts</H3></FONT>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">The use of
+<A NAME="Index1466"></A><B>const</B> is not limited to replacing <B>#define</B>s
+in constant expressions. If you initialize a variable with a value that is
+produced at runtime and you know it will not change for the lifetime of that
+variable, it is good programming practice to make it a <B>const</B> so the
+compiler will give you an error message if you accidentally try to change it.
+Here&#8217;s an example:</FONT><BR></P></DIV>
+
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE><font color=#009900>//: C08:Safecons.cpp</font>
+<font color=#009900>// Using const for safety</font>
+#include &lt;iostream&gt;
+<font color=#0000ff>using</font> <font color=#0000ff>namespace</font> std;
+
+<font color=#0000ff>const</font> <font color=#0000ff>int</font> i = 100;  <font color=#009900>// Typical constant</font>
+<font color=#0000ff>const</font> <font color=#0000ff>int</font> j = i + 10; <font color=#009900>// Value from const expr</font>
+<font color=#0000ff>long</font> address = (<font color=#0000ff>long</font>)&amp;j; <font color=#009900>// Forces storage</font>
+<font color=#0000ff>char</font> buf[j + 10]; <font color=#009900>// Still a const expression</font>
+
+<font color=#0000ff>int</font> main() {
+  cout &lt;&lt; <font color=#004488>"type a character &amp; CR:"</font>;
+  <font color=#0000ff>const</font> <font color=#0000ff>char</font> c = cin.get(); <font color=#009900>// Can't change</font>
+  <font color=#0000ff>const</font> <font color=#0000ff>char</font> c2 = c + 'a';
+  cout &lt;&lt; c2;
+  <font color=#009900>// ...</font>
+} <font color=#009900>///:~</font></PRE></FONT></BLOCKQUOTE>
+
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">You can see that <B>i</B> is a
+compile-time <B>const</B>, but <B>j</B> is calculated from <B>i</B>. However,
+because <B>i</B> is a <A NAME="Index1467"></A><B>const</B>, the calculated value
+for <B>j</B> still comes from a constant expression and is itself a compile-time
+constant. The very next line requires the address of <B>j</B> and therefore
+forces the compiler to allocate storage for <B>j</B>. Yet this doesn&#8217;t
+prevent the use of <B>j</B> in the determination of the size of <B>buf</B>
+because the compiler knows <B>j</B> is <B>const</B> and that the value is valid
+even if storage was allocated to hold that value at some point in the
+program.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">In <B>main(&#160;)</B>, you see a
+different kind of <B>const</B> in the identifier <B>c</B> because the value
+cannot be known at compile time. This means storage is required, and the
+compiler doesn&#8217;t attempt to keep anything in its symbol table (the same
+behavior as in C). The initialization must still happen at the point of
+definition, and once the initialization occurs, the value cannot be changed. You
+can see that <B>c2</B> is calculated from <B>c</B> and also that scoping works
+for <B>const</B>s<A NAME="Index1468"></A> as it does for any other type &#8211;
+yet another improvement over the use of <B>#define</B>.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">As a matter of practice, if you think a
+value shouldn&#8217;t change, you should make it a <B>const</B>. This not only
+provides insurance against inadvertent changes, it also allows the compiler to
+generate more efficient code by eliminating storage and memory reads.
+</FONT><A NAME="_Toc312373906"></A><A NAME="_Toc472654880"></A><BR></P></DIV>
+<A NAME="Heading251"></A><FONT FACE = "Verdana"><H3 ALIGN="LEFT">
+Aggregates</H3></FONT>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">It&#8217;s possible to use <B>const</B>
+for aggregates, <A NAME="Index1469"></A><A NAME="Index1470"></A>but you&#8217;re
+virtually assured that the compiler will not be sophisticated enough to keep an
+aggregate in its symbol table, so storage will be allocated. In these
+situations, <B>const</B> means &#8220;a piece of storage that cannot be
+changed.&#8221; However, the value cannot be used at compile time because the
+compiler is not required to know the contents of the storage at compile time. In
+the following code, you can see the statements that are
+illegal:</FONT><BR></P></DIV>
+
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE><font color=#009900>//: C08:Constag.cpp</font>
+<font color=#009900>// Constants and aggregates</font>
+<font color=#0000ff>const</font> <font color=#0000ff>int</font> i[] = { 1, 2, 3, 4 };
+<font color=#009900>//! float f[i[3]]; // Illegal</font>
+<font color=#0000ff>struct</font> S { <font color=#0000ff>int</font> i, j; };
+<font color=#0000ff>const</font> S s[] = { { 1, 2 }, { 3, 4 } };
+<font color=#009900>//! double d[s[1].j]; // Illegal</font>
+<font color=#0000ff>int</font> main() {} <font color=#009900>///:~</font></PRE></FONT></BLOCKQUOTE>
+
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">In an
+<A NAME="Index1471"></A><A NAME="Index1472"></A>array definition, the compiler
+must be able to generate code that moves the stack pointer to accommodate the
+array. In both of the illegal definitions above, the compiler complains because
+it cannot find a constant expression in the array
+definition.</FONT><A NAME="_Toc312373907"></A><A NAME="_Toc472654881"></A><BR></P></DIV>
+<A NAME="Heading252"></A><FONT FACE = "Verdana"><H3 ALIGN="LEFT">
+Differences with C</H3></FONT>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Constants were introduced in early
+versions of C++ while the Standard C specification was still being finished.
+Although the C committee then decided to include <B>const</B> in C, somehow
+it<B> <A NAME="Index1473"></A><A NAME="Index1474"></A></B>came to mean for them
+&#8220;an ordinary variable that cannot be changed.&#8221; In C, a <B>const</B>
+always occupies storage and its name is global. The C compiler cannot treat a
+<B>const </B>as a compile-time constant. In C, if you say</FONT><BR></P></DIV>
+
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE><font color=#0000ff>const</font> <font color=#0000ff>int</font> bufsize = 100;
+<font color=#0000ff>char</font> buf[bufsize];</PRE></FONT></BLOCKQUOTE>
+
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">you will get an error, even though it
+seems like a rational thing to do. Because <B>bufsize</B> occupies storage
+somewhere, the C compiler cannot know the value at compile time. You can
+optionally say</FONT><BR></P></DIV>
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE><font color=#0000ff>const</font> <font color=#0000ff>int</font> bufsize;</PRE></FONT></BLOCKQUOTE>
+
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">in C, but not in C++, and the C compiler
+accepts it as a declaration indicating there is storage allocated elsewhere.
+Because <A NAME="Index1475"></A>C defaults to external linkage
+<A NAME="Index1476"></A><A NAME="Index1477"></A>for <B>const</B>s, this makes
+sense. C++ defaults to internal linkage
+<A NAME="Index1478"></A><A NAME="Index1479"></A>for <B>const</B>s so if you want
+to accomplish the same thing in C++, you must explicitly change the linkage to
+external using <B>extern</B>:</FONT><BR></P></DIV>
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE><font color=#0000ff>extern</font> <font color=#0000ff>const</font> <font color=#0000ff>int</font> bufsize; <font color=#009900>// Declaration only</font></PRE></FONT></BLOCKQUOTE>
+
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">This line also works in
+C.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">In C++, a <B>const</B> doesn&#8217;t
+necessarily create storage. In C a <B>const</B> always creates
+<A NAME="Index1480"></A>storage. Whether or not storage is reserved for a
+<B>const</B> in C++ depends on how it is used. In general, if a <B>const</B> is
+used simply to replace a name with a value (just as you would use a
+<B>#define</B>), then storage doesn&#8217;t have to be created for the
+<B>const</B>. If no storage is created (this depends on the complexity of the
+data type and the sophistication of the compiler), the values may be folded into
+the code for greater efficiency after type checking, not before, as with
+<B>#define</B>. If, however, you take an address of a
+<A NAME="Index1481"></A><B>const<A NAME="Index1482"></A></B> (even unknowingly,
+by passing it to a function that takes a reference argument) or you define it as
+<B>extern</B>, then storage is created for the <B>const</B>.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">In C++, a <B>const</B> that is outside
+all functions has file scope<A NAME="Index1483"></A><A NAME="Index1484"></A>
+(i.e., it is invisible outside the file). That is, it defaults to internal
+linkage. This is very different from all other identifiers in C++ (and from
+<B>const</B> in C!) that default to external linkage. Thus, if you declare a
+<B>const</B> of the same name in two different files and you don&#8217;t take
+the address or define that name as <B>extern</B>, the ideal C++ compiler
+won&#8217;t allocate storage for the <B>const</B>, but simply fold it into the
+code<A NAME="Index1485"></A>. Because <B>const</B> has implied file scope, you
+can put it in C++ header files with no conflicts at link time.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Since a <B>const</B> in C++ defaults to
+internal linkage<A NAME="Index1486"></A><A NAME="Index1487"></A>, you
+can&#8217;t just define a <B>const</B> in one file and reference it as an
+<B>extern</B> in another file. To give a <B>const</B> external
+linkage<A NAME="Index1488"></A><A NAME="Index1489"></A> so it can be referenced
+from another file, you must explicitly define it as
+<A NAME="Index1490"></A><B>extern<A NAME="Index1491"></A><A NAME="Index1492"></A></B>,
+like this:</FONT><BR></P></DIV>
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE><font color=#0000ff>extern</font> <font color=#0000ff>const</font> <font color=#0000ff>int</font> x = 1;</PRE></FONT></BLOCKQUOTE>
+
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Notice that by giving it an initializer
+and saying it is <B>extern</B>, you force storage to be created for the
+<B>const</B> (although the compiler still has the option of doing constant
+folding here). The initialization establishes this as a definition, not a
+declaration. The declaration:</FONT><BR></P></DIV>
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE><font color=#0000ff>extern</font> <font color=#0000ff>const</font> <font color=#0000ff>int</font> x;</PRE></FONT></BLOCKQUOTE>
+
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">in C++ means that the definition exists
+elsewhere (again, this is not necessarily true in C). You can now see why C++
+requires a <B>const</B> definition to have an initializer: the initializer
+distinguishes a <A NAME="Index1493"></A>declaration from a
+<A NAME="Index1494"></A>definition (in C it&#8217;s always a definition, so no
+initializer is necessary). With an <A NAME="Index1495"></A><B>extern</B>
+<B>const</B> declaration, the compiler cannot do constant folding because it
+doesn&#8217;t know the value.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">The C approach to <B>const</B> is not
+very useful, and if you want to use a named value inside a constant expression
+(one that must be evaluated at compile time), <A NAME="Index1496"></A>C almost
+<I>forces </I>you to use <B>#define</B> in the
+preprocessor.</FONT><A NAME="_Toc305628676"></A><A NAME="_Toc312373908"></A><A NAME="_Toc472654882"></A><BR></P></DIV>
+<A NAME="Heading253"></A><FONT FACE = "Verdana"><H2 ALIGN="LEFT">
+Pointers</H2></FONT>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Pointers can be made <B>const</B>. The
+compiler will still endeavor to prevent storage allocation and do constant
+folding when dealing with <B>const</B>
+pointers<A NAME="Index1497"></A><A NAME="Index1498"></A>, but these features
+seem less useful in this case. More importantly, the compiler will tell you if
+you attempt to change a <B>const </B>pointer, which adds a great deal of
+safety.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">When using <B>const</B> with pointers,
+you have two options: <B>const</B> can be applied to what the pointer is
+pointing to, or the <B>const</B> can be applied to the address stored in the
+pointer itself. The syntax for these is a little confusing at first but becomes
+comfortable with
+practice.</FONT><A NAME="_Toc312373909"></A><A NAME="_Toc472654883"></A><BR></P></DIV>
+<A NAME="Heading254"></A><FONT FACE = "Verdana"><H3 ALIGN="LEFT">
+Pointer to const</H3></FONT>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">The trick with a pointer definition, as
+with any complicated definition, is to read it starting at the identifier and
+work your way out. The <B>const</B> specifier binds to the thing it is
+&#8220;closest to.&#8221; So if you want to prevent any changes to the element
+you are pointing to, you write a definition like this:</FONT><BR></P></DIV>
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE><font color=#0000ff>const</font> <font color=#0000ff>int</font>* u;</PRE></FONT></BLOCKQUOTE>
+
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Starting from the identifier, we read
+&#8220;<B>u</B> is a pointer, which points to a <B>const</B> <B>int</B>.&#8221;
+Here, no initialization is required because you&#8217;re saying that <B>u</B>
+can point to anything (that is, it is not <B>const</B>), but the thing it points
+to cannot be changed.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Here&#8217;s the mildly confusing part.
+You might think that to make the pointer itself unchangeable, that is, to
+prevent any change to the address contained inside <B>u</B>, you would simply
+move the <B>const</B> to the other side of the <B>int</B> like
+this:</FONT><BR></P></DIV>
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE><font color=#0000ff>int</font> <font color=#0000ff>const</font>* v;</PRE></FONT></BLOCKQUOTE>
+
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">It&#8217;s not all that crazy to think
+that this should read &#8220;<B>v</B> is a <B>const</B> pointer to an
+<B>int</B>.&#8221; However, the way it <I>actually</I> reads is &#8220;<B>v</B>
+is an ordinary pointer to an <B>int</B> that happens to be <B>const</B>.&#8221;
+That is, the <B>const</B> has bound itself to the <B>int</B> again, and the
+effect is the same as the previous definition. The fact that these two
+definitions are the same is the confusing point; to prevent this confusion on
+the part of your reader, you should probably stick to the first
+form.</FONT><A NAME="_Toc312373910"></A><A NAME="_Toc472654884"></A><BR></P></DIV>
+<A NAME="Heading255"></A><FONT FACE = "Verdana"><H3 ALIGN="LEFT">
+const pointer</H3></FONT>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">To make the pointer itself a
+<B>const</B>, you must place the <B>const</B> specifier to the right of the
+<B>*</B>, like this:</FONT><BR></P></DIV>
+
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE><font color=#0000ff>int</font> d = 1;
+<font color=#0000ff>int</font>* <font color=#0000ff>const</font> w = &amp;d;</PRE></FONT></BLOCKQUOTE>
+
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia"><I>Now</I> it reads: &#8220;<B>w</B> is a
+pointer, which is <B>const</B>, that points to an <B>int</B>.&#8221; Because the
+pointer itself is now the <B>const</B>, the compiler requires that it be given
+an initial value that will be unchanged for the life of that pointer. It&#8217;s
+OK, however, to change what that value points to by saying </FONT><BR></P></DIV>
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE>*w = 2;</PRE></FONT></BLOCKQUOTE>
+
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">You can also make a <B>const</B> pointer
+to a <B>const</B> object using either of two legal forms:</FONT><BR></P></DIV>
+
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE><font color=#0000ff>int</font> d = 1;
+<font color=#0000ff>const</font> <font color=#0000ff>int</font>* <font color=#0000ff>const</font> x = &amp;d;  <font color=#009900>// (1)</font>
+<font color=#0000ff>int</font> <font color=#0000ff>const</font>* <font color=#0000ff>const</font> x2 = &amp;d; <font color=#009900>// (2)</font></PRE></FONT></BLOCKQUOTE>
+
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Now neither the pointer nor the object
+can be changed.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Some people argue that the second form is
+more consistent because the <B>const</B> is always placed to the right of what
+it modifies. You&#8217;ll have to decide which is clearer for your particular
+coding style.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Here are the above lines in a compileable
+file:</FONT><BR></P></DIV>
+
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE><font color=#009900>//: C08:ConstPointers.cpp</font>
+<font color=#0000ff>const</font> <font color=#0000ff>int</font>* u;
+<font color=#0000ff>int</font> <font color=#0000ff>const</font>* v;
+<font color=#0000ff>int</font> d = 1;
+<font color=#0000ff>int</font>* <font color=#0000ff>const</font> w = &amp;d;
+<font color=#0000ff>const</font> <font color=#0000ff>int</font>* <font color=#0000ff>const</font> x = &amp;d;  <font color=#009900>// (1)</font>
+<font color=#0000ff>int</font> <font color=#0000ff>const</font>* <font color=#0000ff>const</font> x2 = &amp;d; <font color=#009900>// (2)</font>
+<font color=#0000ff>int</font> main() {} <font color=#009900>///:~</font></PRE></FONT></BLOCKQUOTE>
+
+<A NAME="Heading256"></A><FONT FACE = "Verdana"><H4 ALIGN="LEFT">
+Formatting<BR><A NAME="Index1499"></A><A NAME="Index1500"></A><A NAME="Index1501"></A></H4></FONT>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">This book makes a point of only putting
+one pointer definition on a line, and initializing each pointer at the point of
+definition whenever possible. Because of this, the formatting style of
+&#8220;attaching&#8221; the &#8216;<B>*</B>&#8217; to the data type is
+possible:</FONT><BR></P></DIV>
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE><font color=#0000ff>int</font>* u = &amp;i;</PRE></FONT></BLOCKQUOTE>
+
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia"><I>as if</I> <B>int*</B> were a discrete
+type unto itself. This makes the code easier to understand, but unfortunately
+that&#8217;s not actually the way things work. The &#8216;<B>*</B>&#8217; in
+fact binds to the identifier, not the type. It can be placed anywhere between
+the type name and the identifier. So you could do this:</FONT><BR></P></DIV>
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE><font color=#0000ff>int</font> *u = &amp;i, v = 0;</PRE></FONT></BLOCKQUOTE>
+
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">which creates an <B>int* u</B>, as
+before, and a non-pointer <B>int v</B>. Because readers often find this
+confusing, it is best to follow the form shown in this
+book.</FONT><A NAME="_Toc312373911"></A><A NAME="_Toc472654885"></A><BR></P></DIV>
+<A NAME="Heading257"></A><FONT FACE = "Verdana"><H3 ALIGN="LEFT">
+Assignment and type checking</H3></FONT>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">C++ is very particular about type
+checking, and this extends to
+<A NAME="Index1502"></A><A NAME="Index1503"></A>pointer assignments. You can
+assign the address of a non-<B>const</B> object to a <B>const</B> pointer
+because you&#8217;re simply promising not to change something that is OK to
+change. However, you can&#8217;t assign the address of a <B>const</B> object to
+a non-<B>const</B> pointer because then you&#8217;re saying you might change the
+object via the pointer. Of course, you can always use a
+<A NAME="Index1504"></A>cast to force such an assignment, but this is bad
+programming practice because you are then breaking the <B>const</B>ness of the
+object, along with any safety promised by the <B>const</B>. For
+example:</FONT><BR></P></DIV>
+
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE><font color=#009900>//: C08:PointerAssignment.cpp</font>
+<font color=#0000ff>int</font> d = 1;
+<font color=#0000ff>const</font> <font color=#0000ff>int</font> e = 2;
+<font color=#0000ff>int</font>* u = &amp;d; <font color=#009900>// OK -- d not const</font>
+<font color=#009900>//! int* v = &amp;e; // Illegal -- e const</font>
+<font color=#0000ff>int</font>* w = (<font color=#0000ff>int</font>*)&amp;e; <font color=#009900>// Legal but bad practice</font>
+<font color=#0000ff>int</font> main() {} <font color=#009900>///:~</font></PRE></FONT></BLOCKQUOTE>
+
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Although C++ helps prevent errors it does
+not protect you from yourself if you want to break the safety
+mechanisms.</FONT><BR></P></DIV>
+<A NAME="Heading258"></A><FONT FACE = "Verdana"><H4 ALIGN="LEFT">
+Character array literals</H4></FONT>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">The place where strict <B>const</B>ness
+is not enforced is with character array
+literals<A NAME="Index1505"></A><A NAME="Index1506"></A>. You can
+say</FONT><BR></P></DIV>
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE><font color=#0000ff>char</font>* cp = <font color=#004488>"howdy"</font>;</PRE></FONT></BLOCKQUOTE>
+
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">and the compiler will accept it without
+complaint. This is technically an error because a character array literal
+(<B>&#8220;howdy&#8221;</B> in this case) is created by the compiler as a
+constant character array, and the result of the quoted character array is its
+starting address in memory. Modifying any of the characters in the array is a
+runtime error, although not all compilers enforce this
+correctly.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">So character array literals are actually
+constant character arrays. Of course, the compiler lets you get away with
+treating them as non-<B>const</B> because there&#8217;s so much existing C code
+that relies on this. However, if you try to change the values in a character
+array literal, the behavior is undefined, although it will probably work on many
+machines.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">If you want to be able to modify the
+string, put it in an array:</FONT><BR></P></DIV>
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE><font color=#0000ff>char</font> cp[] = <font color=#004488>"howdy"</font>;</PRE></FONT></BLOCKQUOTE>
+
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Since compilers often don&#8217;t enforce
+the difference you won&#8217;t be reminded to use this latter form and so the
+point becomes rather
+subtle.</FONT><A NAME="_Toc305628677"></A><A NAME="_Toc312373912"></A><A NAME="_Toc472654886"></A><BR></P></DIV>
+<A NAME="Heading259"></A><FONT FACE = "Verdana"><H2 ALIGN="LEFT">
+Function arguments <BR>&amp; return values</H2></FONT>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">The use of <B>const</B> to specify
+function arguments <A NAME="Index1507"></A><A NAME="Index1508"></A>and return
+values<A NAME="Index1509"></A> is another place where the concept of constants
+can be confusing. If you are passing objects <I>by
+value<A NAME="Index1510"></A></I>, specifying <B>const</B> has no meaning to the
+client (it means that the passed argument cannot be modified inside the
+function). If you are returning an object of a user-defined type by value as a
+<B>const</B>, it means the returned value cannot be modified. If you are passing
+and returning <I>addresses<A NAME="Index1511"></A></I>, <B>const</B> is a
+promise that the destination of the address will not be
+changed.</FONT><A NAME="_Toc312373913"></A><A NAME="_Toc472654887"></A><BR></P></DIV>
+<A NAME="Heading260"></A><FONT FACE = "Verdana"><H3 ALIGN="LEFT">
+Passing by const value</H3></FONT>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">You can specify that function arguments
+are <B>const</B> when passing them by value, such as</FONT><BR></P></DIV>
+
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE><font color=#0000ff>void</font> f1(<font color=#0000ff>const</font> <font color=#0000ff>int</font> i) {
+  i++; <font color=#009900>// Illegal -- compile-time error</font>
+} </PRE></FONT></BLOCKQUOTE>
+
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">but what does this mean? You&#8217;re
+making a promise that the original value of the variable will not be changed by
+the function <B>f1(&#160;)</B>. However, because the argument is passed by
+value, you immediately make a copy of the original variable, so the promise to
+the client is implicitly kept.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Inside the function, the <B>const</B>
+takes on meaning: the argument cannot be changed. So it&#8217;s really a tool
+for the creator of the function, and not the caller.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">To avoid confusion to the caller, you can
+make the argument a <A NAME="Index1512"></A><B>const</B> <I>inside</I> the
+function, rather than in the argument list. You could do this with a pointer,
+but a nicer syntax is achieved with the
+<A NAME="Index1513"></A><I>reference</I>, a subject that will be fully developed
+in Chapter 11. Briefly, a reference is like a constant pointer that is
+automatically dereferenced, so it has the effect of being an alias to an object.
+To create a reference, you use the <B>&amp;</B> in the definition. So the
+non-confusing function definition looks like this:</FONT><BR></P></DIV>
+
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE><font color=#0000ff>void</font> f2(<font color=#0000ff>int</font> ic) {
+  <font color=#0000ff>const</font> <font color=#0000ff>int</font>&amp; i = ic;
+  i++;  <font color=#009900>// Illegal -- compile-time error</font>
+} </PRE></FONT></BLOCKQUOTE>
+
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Again, you&#8217;ll get an error message,
+but this time the <B>const</B>ness of the local object is not part of the
+function signature; it only has meaning to the implementation of the function
+and therefore it&#8217;s hidden from the
+client.</FONT><A NAME="_Toc312373914"></A><A NAME="_Toc472654888"></A><BR></P></DIV>
+<A NAME="Heading261"></A><FONT FACE = "Verdana"><H3 ALIGN="LEFT">
+Returning by const
+value<BR><A NAME="Index1514"></A><A NAME="Index1515"></A></H3></FONT>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">A similar truth holds for the return
+value. If you say that a function&#8217;s return value is
+<B>const</B>:</FONT><BR></P></DIV>
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE><font color=#0000ff>const</font> <font color=#0000ff>int</font> g();</PRE></FONT></BLOCKQUOTE>
+
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">you are promising that the original
+variable (inside the function frame) will not be modified. And again, because
+you&#8217;re returning it by value, it&#8217;s copied so the original value
+could never be modified via the return value.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">At first, this can make the specification
+of <B>const</B> seem meaningless. You can see the apparent lack of effect of
+returning <B>const</B>s by value in this example: </FONT><BR></P></DIV>
+
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE><font color=#009900>//: C08:Constval.cpp</font>
+<font color=#009900>// Returning consts by value</font>
+<font color=#009900>// has no meaning for built-in types</font>
+
+<font color=#0000ff>int</font> f3() { <font color=#0000ff>return</font> 1; }
+<font color=#0000ff>const</font> <font color=#0000ff>int</font> f4() { <font color=#0000ff>return</font> 1; }
+
+<font color=#0000ff>int</font> main() {
+  <font color=#0000ff>const</font> <font color=#0000ff>int</font> j = f3(); <font color=#009900>// Works fine</font>
+  <font color=#0000ff>int</font> k = f4(); <font color=#009900>// But this works fine too!</font>
+} <font color=#009900>///:~</font></PRE></FONT></BLOCKQUOTE>
+
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">For built-in types, it doesn&#8217;t
+matter whether you return by value as a <B>const</B>, so you should avoid
+confusing the client programmer and leave off the <B>const</B> when returning a
+built-in type by value.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Returning by value as a <B>const</B>
+becomes important when you&#8217;re dealing with user-defined types. If a
+function returns a class object by value as a <B>const</B>, the return value of
+that function cannot be an lvalue <A NAME="Index1516"></A>(that is, it cannot be
+assigned to or otherwise modified). For example:</FONT><BR></P></DIV>
+
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE><font color=#009900>//: C08:ConstReturnValues.cpp</font>
+<font color=#009900>// Constant return by value</font>
+<font color=#009900>// Result cannot be used as an lvalue</font>
+
+<font color=#0000ff>class</font> X {
+  <font color=#0000ff>int</font> i;
+<font color=#0000ff>public</font>:
+  X(<font color=#0000ff>int</font> ii = 0);
+  <font color=#0000ff>void</font> modify();
+};
+
+X::X(<font color=#0000ff>int</font> ii) { i = ii; }
+
+<font color=#0000ff>void</font> X::modify() { i++; }
+
+X f5() {
+  <font color=#0000ff>return</font> X();
+}
+
+<font color=#0000ff>const</font> X f6() {
+  <font color=#0000ff>return</font> X();
+}
+
+<font color=#0000ff>void</font> f7(X&amp; x) { <font color=#009900>// Pass by non-const reference</font>
+  x.modify();
+}
+
+<font color=#0000ff>int</font> main() {
+  f5() = X(1); <font color=#009900>// OK -- non-const return value</font>
+  f5().modify(); <font color=#009900>// OK</font>
+<font color=#009900>//!  f7(f5()); // Causes warning or error</font>
+<font color=#009900>// Causes compile-time errors:</font>
+<font color=#009900>//!  f7(f5());</font>
+<font color=#009900>//!  f6() = X(1);</font>
+<font color=#009900>//!  f6().modify();</font>
+<font color=#009900>//!  f7(f6());</font>
+} <font color=#009900>///:~</font></PRE></FONT></BLOCKQUOTE>
+
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia"><B>f5(&#160;)</B> returns a
+non-<B>const</B> <B>X</B> object, while <B>f6(&#160;)</B> returns a <B>const
+X</B> object. Only the non-<B>const</B> return value can be used as an lvalue.
+Thus, it&#8217;s important to use <B>const </B>when returning an object by value
+if you want to prevent its use as an lvalue.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">The reason <B>const</B> has no meaning
+when you&#8217;re returning a built-in type by value is that the compiler
+already prevents it from being an lvalue (because it&#8217;s always a value, and
+not a variable). Only when you&#8217;re returning objects of user-defined types
+by value does it become an issue.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">The function <B>f7(&#160;)</B> takes its
+argument as a non-<B>const</B> <I>reference</I> (an additional way of handling
+addresses in C++ and the subject of Chapter 11). This is effectively the same as
+taking a non-<B>const</B> pointer; it&#8217;s just that the syntax is different.
+The reason this won&#8217;t compile in C++ is because of the creation of a
+temporary.</FONT><BR></P></DIV>
+<A NAME="Heading262"></A><FONT FACE = "Verdana"><H4 ALIGN="LEFT">
+Temporaries</H4></FONT>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Sometimes, during the evaluation of an
+expression, the compiler must create <I>temporary
+objects<A NAME="Index1517"></A><A NAME="Index1518"></A></I>. These are objects
+like any other: they require storage and they must be constructed and destroyed.
+The difference is that you never see them &#8211; the compiler is responsible
+for deciding that they&#8217;re needed and the details of their existence. But
+there is one thing about temporaries: they&#8217;re automatically
+<A NAME="Index1519"></A><B>const</B>. Because you usually won&#8217;t be able to
+get your hands on a temporary object, telling it to do something that will
+change that temporary is almost certainly a mistake because you won&#8217;t be
+able to use that information. By making all temporaries automatically
+<B>const</B>, the compiler informs you when you make that
+mistake.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">In the above example, <B>f5(&#160;)</B>
+returns a non-<B>const</B> <B>X</B> object. But in the
+expression:</FONT><BR></P></DIV>
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE>f7(f5());</PRE></FONT></BLOCKQUOTE>
+
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">the compiler must manufacture a temporary
+object to hold the return value of <B>f5(&#160;)</B> so it can be passed to
+<B>f7(&#160;)</B>. This would be fine if <B>f7(&#160;)</B> took its argument by
+value; then the temporary would be copied into <B>f7(&#160;)</B> and it
+wouldn&#8217;t matter what happened to the temporary <B>X</B>. However,
+<B>f7(&#160;)</B> takes its argument <I>by reference</I>, which means in this
+example takes the address of the temporary <B>X</B>. Since <B>f7(&#160;)</B>
+doesn&#8217;t take its argument by <B>const</B> reference, it has permission to
+modify the temporary object. But the compiler knows that the temporary will
+vanish as soon as the expression evaluation is complete, and thus any
+modifications you make to the temporary <B>X</B> will be lost. By making all
+temporary objects automatically <B>const</B>, this situation causes a
+compile-time <STRIKE>error </STRIKE><U>message </U>so you don&#8217;t get caught
+by what would be a very difficult bug to find.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">However, notice the expressions that are
+legal:</FONT><BR></P></DIV>
+
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE>  f5() = X(1);
+  f5().modify();</PRE></FONT></BLOCKQUOTE>
+
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Although these pass muster for the
+compiler, they are actually problematic. <B>f5(&#160;)</B> returns an <B>X</B>
+object, and for the compiler to satisfy the above expressions it must create a
+temporary to hold that return value. So in both expressions the temporary object
+is being modified, and as soon as the expression is over the temporary is
+cleaned up. As a result, the modifications are lost so this code is probably a
+<A NAME="Index1520"></A><A NAME="Index1521"></A>bug &#8211; but the compiler
+doesn&#8217;t tell you anything about it. Expressions like these are simple
+enough for you to detect the problem, but when things get more complex
+it&#8217;s possible for a bug to slip through these cracks.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">The way the <B>const</B>ness of class
+objects is preserved is shown later in the
+chapter.</FONT><A NAME="_Toc312373915"></A><A NAME="_Toc472654889"></A><BR></P></DIV>
+<A NAME="Heading263"></A><FONT FACE = "Verdana"><H3 ALIGN="LEFT">
+Passing and returning
+addresses<BR><A NAME="Index1522"></A><A NAME="Index1523"></A></H3></FONT>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">If you pass or return an address (either
+a pointer or a reference), it&#8217;s possible for the client programmer to take
+it and modify the original value. If you make the pointer or reference a
+<B>const</B>, you prevent this from happening, which may save you some grief. In
+fact, whenever you&#8217;re passing an address into a function, you should make
+it a <B>const</B> if at all possible. If you don&#8217;t, you&#8217;re excluding
+the possibility of using that function with anything that is a
+<B>const</B>.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">The choice of whether to return a pointer
+or reference to a <B>const</B> depends on what you want to allow your client
+programmer to do with it. Here&#8217;s an example that demonstrates the use of
+<B>const</B> pointers as function arguments and return values:</FONT><BR></P></DIV>
+
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE><font color=#009900>//: C08:ConstPointer.cpp</font>
+<font color=#009900>// Constant pointer arg/return</font>
+
+<font color=#0000ff>void</font> t(<font color=#0000ff>int</font>*) {}
+
+<font color=#0000ff>void</font> u(<font color=#0000ff>const</font> <font color=#0000ff>int</font>* cip) {
+<font color=#009900>//!  *cip = 2; // Illegal -- modifies value</font>
+  <font color=#0000ff>int</font> i = *cip; <font color=#009900>// OK -- copies value</font>
+<font color=#009900>//!  int* ip2 = cip; // Illegal: non-const</font>
+}
+
+<font color=#0000ff>const</font> <font color=#0000ff>char</font>* v() {
+  <font color=#009900>// Returns address of static character array:</font>
+  <font color=#0000ff>return</font> <font color=#004488>"result of function v()"</font>;
+}
+
+<font color=#0000ff>const</font> <font color=#0000ff>int</font>* <font color=#0000ff>const</font> w() {
+  <font color=#0000ff>static</font> <font color=#0000ff>int</font> i;
+  <font color=#0000ff>return</font> &amp;i;
+}
+
+<font color=#0000ff>int</font> main() {
+  <font color=#0000ff>int</font> x = 0;
+  <font color=#0000ff>int</font>* ip = &amp;x;
+  <font color=#0000ff>const</font> <font color=#0000ff>int</font>* cip = &amp;x;
+  t(ip);  <font color=#009900>// OK</font>
+<font color=#009900>//!  t(cip); // Not OK</font>
+  u(ip);  <font color=#009900>// OK</font>
+  u(cip); <font color=#009900>// Also OK</font>
+<font color=#009900>//!  char* cp = v(); // Not OK</font>
+  <font color=#0000ff>const</font> <font color=#0000ff>char</font>* ccp = v(); <font color=#009900>// OK</font>
+<font color=#009900>//!  int* ip2 = w(); // Not OK</font>
+  <font color=#0000ff>const</font> <font color=#0000ff>int</font>* <font color=#0000ff>const</font> ccip = w(); <font color=#009900>// OK</font>
+  <font color=#0000ff>const</font> <font color=#0000ff>int</font>* cip2 = w(); <font color=#009900>// OK</font>
+<font color=#009900>//!  *w() = 1; // Not OK</font>
+} <font color=#009900>///:~</font></PRE></FONT></BLOCKQUOTE>
+
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">The function <B>t(&#160;)</B> takes an
+ordinary non-<B>const</B> pointer as an argument, and <B>u(&#160;)</B> takes a
+<B>const</B> pointer. Inside <B>u(&#160;)</B> you can see that attempting to
+modify the destination of the <B>const</B> pointer is illegal, but you can of
+course copy the information out into a non-<B>const</B> variable. The compiler
+also prevents you from creating a non-<B>const</B> pointer using the address
+stored inside a <B>const</B> pointer.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">The functions <B>v(&#160;)</B> and
+<B>w(&#160;)</B> test return value
+semantics<A NAME="Index1524"></A><A NAME="Index1525"></A>. <B>v(&#160;)</B>
+returns a <B>const</B> <B>char*</B> that is created from a character array
+literal. This statement actually produces the address of the character array
+literal, after the compiler creates it and stores it in the static storage area.
+As mentioned earlier, this character array is technically a constant, which is
+properly expressed by the return value of <B>v(&#160;)</B>.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">The return value of <B>w(&#160;)</B>
+requires that both the pointer and what it points to must be <B>const</B>. As
+with <B>v(&#160;)</B>, the value returned by <B>w(&#160;)</B> is valid after the
+function returns only because it is
+<A NAME="Index1526"></A><A NAME="Index1527"></A><B>static</B>. You never want to
+return pointers to local stack variables because they will be invalid after the
+function returns and the stack is cleaned up. (Another common pointer you might
+return is the address of storage allocated on the heap, which is still valid
+after the function returns.)</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">In <B>main(&#160;)</B>, the functions are
+tested with various arguments. You can see that <B>t(&#160;)</B> will accept a
+non-<B>const</B> pointer argument, but if you try to pass it a pointer to a
+<B>const</B>, there&#8217;s no promise that <B>t(&#160;)</B> will leave the
+pointer&#8217;s destination alone, so the compiler gives you an error message.
+<B>u(&#160;)</B> takes a <B>const</B> pointer, so it will accept both types of
+arguments. Thus, a function that takes a <B>const</B> pointer is more general
+than one that does not.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">As expected, the return value of
+<B>v(&#160;)</B> can be assigned only to a pointer to a <B>const</B>. You would
+also expect that the compiler refuses to assign the return value of
+<B>w(&#160;)</B> to a non-<B>const</B> pointer, and accepts a <B>const int*
+const</B>, but it might be a bit surprising to see that it also accepts a
+<B>const int*</B>, which is not an exact match to the return type. Once again,
+because the value (which is the address contained in the pointer) is being
+copied, the promise that the original variable is untouched is automatically
+kept. Thus, the second <B>const</B> in <B>const</B> <B>int* const</B> is only
+meaningful when you try to use it as an lvalue, in which case the compiler
+prevents you.</FONT><BR></P></DIV>
+<A NAME="Heading264"></A><FONT FACE = "Verdana"><H4 ALIGN="LEFT">
+Standard argument passing<BR><A NAME="Index1528"></A></H4></FONT>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">In C it&#8217;s very common to pass by
+value, and when you want to pass an address your only choice is to use a
+pointer</FONT><A NAME="fnB43" HREF="#fn43">[43]</A><FONT FACE="Georgia">.
+However, neither of these approaches is preferred in C++. Instead, your first
+choice when passing an argument is to pass by reference, and by <B>const</B>
+<A NAME="Index1529"></A>reference at that. To the client programmer, the syntax
+is identical to that of passing by value, so there&#8217;s no confusion about
+pointers &#8211; they don&#8217;t even have to think about
+<A NAME="Index1530"></A>pointers. For the creator of the function, passing an
+address is virtually always more efficient than passing an entire class object,
+and if you pass by <B>const</B> reference it means your function will not change
+the destination of that address, so the effect from the client
+programmer&#8217;s point of view is exactly the same as pass-by-value (only more
+efficient).</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Because of the syntax of references (it
+looks like pass-by-value to the caller) it&#8217;s possible to pass a
+temporary<A NAME="Index1531"></A><A NAME="Index1532"></A> object to a function
+that takes a <B>const </B>reference, whereas you can never pass a temporary
+object to a function that takes a pointer &#8211; with a pointer, the address
+must be explicitly taken. So passing by reference produces a new situation that
+never occurs in C: a temporary, which is always <B>const</B>, can have its
+<I>address</I> passed to a function. This is why, to allow temporaries to be
+passed to functions by reference, the argument must be a <B>const</B>
+reference<A NAME="Index1533"></A><A NAME="Index1534"></A>. The following example
+demonstrates this:</FONT><BR></P></DIV>
+
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE><font color=#009900>//: C08:ConstTemporary.cpp</font>
+<font color=#009900>// Temporaries are const</font>
+
+<font color=#0000ff>class</font> X {};
+
+X f() { <font color=#0000ff>return</font> X(); } <font color=#009900>// Return by value</font>
+
+<font color=#0000ff>void</font> g1(X&amp;) {} <font color=#009900>// Pass by non-const reference</font>
+<font color=#0000ff>void</font> g2(<font color=#0000ff>const</font> X&amp;) {} <font color=#009900>// Pass by const reference</font>
+
+<font color=#0000ff>int</font> main() {
+  <font color=#009900>// Error: const temporary created by f():</font>
+<font color=#009900>//!  g1(f());</font>
+  <font color=#009900>// OK: g2 takes a const reference:</font>
+  g2(f());
+} <font color=#009900>///:~</font></PRE></FONT></BLOCKQUOTE>
+<DIV ALIGN="LEFT"><P><A NAME="_Toc305628678"></A><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia"><B>f(&#160;)</B> returns an object of
+<B>class X</B> <A NAME="Index1535"></A><I>by value</I>. That means when you
+immediately take the return value of <B>f(&#160;)</B> and pass it to another
+function as in the calls to <B>g1(&#160;)</B> and <B>g2(&#160;)</B>, a temporary
+is created and that temporary is <B>const</B>. Thus, the call in
+<B>g1(&#160;)</B> is an error because <B>g1(&#160;)</B> doesn&#8217;t take a
+<B>const</B> reference, but the call to <B>g2(&#160;)</B> is
+OK.</FONT><A NAME="_Toc312373916"></A><A NAME="_Toc472654890"></A><BR></P></DIV>
+<A NAME="Heading265"></A><FONT FACE = "Verdana"><H2 ALIGN="LEFT">
+Classes</H2></FONT>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">This section shows the ways you can use
+<B>const</B> with <A NAME="Index1536"></A>classes. You may want to create a
+local <B>const</B> in a class to use inside constant expressions that will be
+evaluated at compile time. However, the meaning of <B>const</B> is different
+inside classes, so you must understand the options in order to create
+<B>const</B> data members of a class.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">You can also make an entire object
+<B>const</B> (and as you&#8217;ve just seen, the compiler always makes temporary
+objects <B>const</B>). But preserving the <B>const</B>ness of an object is more
+complex. The compiler can ensure the <B>const</B>ness of a built-in type but it
+cannot monitor the intricacies of a class. To guarantee the <B>const</B>ness of
+a class object, the <B>const</B> member function is introduced: only a
+<B>const</B> member function
+<A NAME="Index1537"></A><A NAME="Index1538"></A><A NAME="Index1539"></A>may be
+called for a <B>const</B> object.
+</FONT><A NAME="_Toc312373917"></A><A NAME="_Toc472654891"></A><BR></P></DIV>
+<A NAME="Heading266"></A><FONT FACE = "Verdana"><H3 ALIGN="LEFT">
+const in
+classes<BR><A NAME="Index1540"></A><A NAME="Index1541"></A><A NAME="Index1542"></A><A NAME="Index1543"></A></H3></FONT>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">One of the places you&#8217;d like to use
+a <B>const</B> for constant expressions is inside classes. The typical example
+is when you&#8217;re creating an <A NAME="Index1544"></A>array inside a class
+and you want to use a <B>const</B> instead of a
+<A NAME="Index1545"></A><B>#define</B> to establish the array size and to use in
+calculations involving the array. The array size is something you&#8217;d like
+to keep hidden inside the class, so if you used a name like <B>size</B>, for
+example, you could use that name in another class without a clash. The
+preprocessor treats all <B>#define</B>s as global from the point they are
+defined, so this will not achieve the desired effect. </FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">You might assume that the logical choice
+is to place a <B>const</B> inside the class. This doesn&#8217;t produce the
+desired result. Inside a class, <B>const</B> partially reverts to its meaning in
+C. It allocates storage within each object and represents a value that is
+initialized once and then cannot change. The use of <B>const</B> inside a class
+means &#8220;This is constant for the lifetime of the object.&#8221; However,
+each different object may contain a different value for that
+constant.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Thus, when you create an ordinary
+(non-<B>static</B>) <B>const</B> inside a class, you cannot give it an initial
+value. This initialization must occur in the constructor, of course, but in a
+special place in the constructor. Because a <B>const</B> must be initialized at
+the point it is created, inside the main body of the constructor the
+<B>const</B> must <I>already </I>be initialized. Otherwise you&#8217;re left
+with the choice of waiting until some point later in the constructor body, which
+means the <B>const</B> would be un-initialized for a while. Also, there would be
+nothing to keep you from changing the value of the <B>const</B> at various
+places in the constructor body.</FONT><BR></P></DIV>
+<A NAME="Heading267"></A><FONT FACE = "Verdana"><H4 ALIGN="LEFT">
+The constructor initializer list</H4></FONT>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">The special initialization point is
+called the <I>constructor initializer
+list<A NAME="Index1546"></A><A NAME="Index1547"></A><A NAME="Index1548"></A><A NAME="Index1549"></A></I>,
+and it was originally developed for use in inheritance (covered in Chapter 14).
+The constructor initializer list &#8211; which, as the name implies, occurs only
+in the definition of the constructor &#8211; is a list of &#8220;constructor
+calls&#8221; that occur after the function argument list and a colon, but before
+the opening brace of the constructor body. This is to remind you that the
+initialization in the list occurs before any of the main constructor code is
+executed. This is the place to put all <B>const</B> initializations. The proper
+form for <B>const</B> inside a class is shown here:</FONT><BR></P></DIV>
+
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE><font color=#009900>//: C08:ConstInitialization.cpp</font>
+<font color=#009900>// Initializing const in classes</font>
+#include &lt;iostream&gt;
+<font color=#0000ff>using</font> <font color=#0000ff>namespace</font> std;
+
+<font color=#0000ff>class</font> Fred {
+  <font color=#0000ff>const</font> <font color=#0000ff>int</font> size;
+<font color=#0000ff>public</font>:
+  Fred(<font color=#0000ff>int</font> sz);
+  <font color=#0000ff>void</font> print();
+};
+
+Fred::Fred(<font color=#0000ff>int</font> sz) : size(sz) {}
+<font color=#0000ff>void</font> Fred::print() { cout &lt;&lt; size &lt;&lt; endl; }
+
+<font color=#0000ff>int</font> main() {
+  Fred a(1), b(2), c(3);
+  a.print(), b.print(), c.print();
+} <font color=#009900>///:~</font></PRE></FONT></BLOCKQUOTE>
+
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">The form of the constructor initializer
+list shown above is confusing at first because you&#8217;re not used to seeing a
+built-in type treated as if it has a constructor.</FONT><BR></P></DIV>
+<A NAME="Heading268"></A><FONT FACE = "Verdana"><H4 ALIGN="LEFT">
+&#8220;Constructors&#8221; for built-in types</H4></FONT>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">As the language developed and more effort
+was put into making user-defined types look like
+<A NAME="Index1550"></A>built-in types, it became apparent that there were times
+when it was helpful to make built-in types look like user-defined types. In the
+constructor initializer list, you can treat a built-in type as if it has a
+constructor, like this:</FONT><BR></P></DIV>
+
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE><font color=#009900>//: C08:BuiltInTypeConstructors.cpp</font>
+#include &lt;iostream&gt;
+<font color=#0000ff>using</font> <font color=#0000ff>namespace</font> std;
+
+<font color=#0000ff>class</font> B {
+  <font color=#0000ff>int</font> i;
+<font color=#0000ff>public</font>:
+  B(<font color=#0000ff>int</font> ii);
+  <font color=#0000ff>void</font> print();
+};
+
+B::B(<font color=#0000ff>int</font> ii) : i(ii) {}
+<font color=#0000ff>void</font> B::print() { cout &lt;&lt; i &lt;&lt; endl; }
+
+<font color=#0000ff>int</font> main() {
+  B a(1), b(2);
+  <font color=#0000ff>float</font> pi(3.14159);
+  a.print(); b.print();
+  cout &lt;&lt; pi &lt;&lt; endl;
+} <font color=#009900>///:~</font></PRE></FONT></BLOCKQUOTE>
+
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">This is especially critical when
+initializing <B>const</B> data members
+<A NAME="Index1551"></A><A NAME="Index1552"></A><A NAME="Index1553"></A><A NAME="Index1554"></A>because
+they must be initialized before the function body is entered.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">It made sense to extend this
+&#8220;constructor&#8221; for built-in types (which simply means assignment) to
+the general case, which is why the <B>float pi(3.14159)</B> definition works in
+the above code.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">It&#8217;s often useful to encapsulate a
+built-in type inside a class to guarantee initialization with the constructor.
+For example, here&#8217;s an <B>Integer</B> class:</FONT><BR></P></DIV>
+
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE><font color=#009900>//: C08:EncapsulatingTypes.cpp</font>
+#include &lt;iostream&gt;
+<font color=#0000ff>using</font> <font color=#0000ff>namespace</font> std;
+
+<font color=#0000ff>class</font> Integer {
+  <font color=#0000ff>int</font> i;
+<font color=#0000ff>public</font>:
+  Integer(<font color=#0000ff>int</font> ii = 0);
+  <font color=#0000ff>void</font> print();
+};
+
+Integer::Integer(<font color=#0000ff>int</font> ii) : i(ii) {}
+<font color=#0000ff>void</font> Integer::print() { cout &lt;&lt; i &lt;&lt; ' '; }
+
+<font color=#0000ff>int</font> main() {
+  Integer i[100];
+  <font color=#0000ff>for</font>(<font color=#0000ff>int</font> j = 0; j &lt; 100; j++)
+    i[j].print();
+} <font color=#009900>///:~</font></PRE></FONT></BLOCKQUOTE>
+
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">The array of <B>Integer</B>s in
+<B>main(&#160;)</B> are all automatically initialized to zero. This
+initialization <A NAME="Index1555"></A>isn&#8217;t necessarily more costly than
+a <B>for</B> loop or <B>memset(&#160;)<A NAME="Index1556"></A></B>. Many
+compilers easily optimize this to a very fast
+process.</FONT><A NAME="_Toc312373918"></A><A NAME="_Toc472654892"></A><BR></P></DIV>
+<A NAME="Heading269"></A><FONT FACE = "Verdana"><H3 ALIGN="LEFT">
+Compile-time constants in
+classes<BR><A NAME="Index1557"></A><A NAME="Index1558"></A></H3></FONT>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">The above use of <B>const</B> is
+interesting and probably useful in cases, but it does not solve the original
+problem which is: &#8220;how do you make a compile-time constant inside a
+class?&#8221; The answer requires the use of an additional keyword which will
+not be fully introduced until Chapter 10: <B>static</B>. The <B>static</B>
+keyword, in this situation, means &#8220;there&#8217;s only one instance,
+regardless of how many objects of the class are created,&#8221; which is
+precisely what we need here: a member of a class which is constant, and which
+cannot change from one object of the class to another. Thus, a
+<A NAME="Index1559"></A><B>static const </B>of a built-in type can be treated as
+a compile-time constant.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">There is one feature of <B>static
+const</B> when used inside classes which is a bit unusual: you must provide the
+<A NAME="Index1560"></A>initializer at the point of definition of the <B>static
+const</B>. This is something that only occurs with the <B>static const</B>; as
+much as you might like to use it in other situations it won&#8217;t work because
+all other data members must be initialized in the constructor or in other member
+functions.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Here&#8217;s an example that shows the
+creation and use of a <B>static const</B> called <B>size</B> inside a class that
+represents a stack of string
+pointers</FONT><A NAME="fnB44" HREF="#fn44">[44]</A><FONT FACE="Georgia">:
+</FONT><BR></P></DIV>
+
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE><font color=#009900>//: C08:StringStack.cpp</font>
+<font color=#009900>// Using static const to create a </font>
+<font color=#009900>// compile-time constant inside a class</font>
+#include &lt;string&gt;
+#include &lt;iostream&gt;
+<font color=#0000ff>using</font> <font color=#0000ff>namespace</font> std;
+
+<font color=#0000ff>class</font> StringStack {
+  <font color=#0000ff>static</font> <font color=#0000ff>const</font> <font color=#0000ff>int</font> size = 100;
+  <font color=#0000ff>const</font> string* stack[size];
+  <font color=#0000ff>int</font> index;
+<font color=#0000ff>public</font>:
+  StringStack();
+  <font color=#0000ff>void</font> push(<font color=#0000ff>const</font> string* s);
+  <font color=#0000ff>const</font> string* pop();
+};
+
+StringStack::StringStack() : index(0) {
+  memset(stack, 0, size * <font color=#0000ff>sizeof</font>(string*));
+}
+
+<font color=#0000ff>void</font> StringStack::push(<font color=#0000ff>const</font> string* s) {
+  <font color=#0000ff>if</font>(index &lt; size)
+    stack[index++] = s;
+}
+
+<font color=#0000ff>const</font> string* StringStack::pop() {
+  <font color=#0000ff>if</font>(index &gt; 0) {
+    <font color=#0000ff>const</font> string* rv = stack[--index];
+    stack[index] = 0;
+    <font color=#0000ff>return</font> rv;
+  }
+  <font color=#0000ff>return</font> 0;
+}
+
+string iceCream[] = {
+  <font color=#004488>"pralines &amp; cream"</font>,
+  <font color=#004488>"fudge ripple"</font>,
+  <font color=#004488>"jamocha almond fudge"</font>,
+  <font color=#004488>"wild mountain blackberry"</font>,
+  <font color=#004488>"raspberry sorbet"</font>,
+  <font color=#004488>"lemon swirl"</font>,
+  <font color=#004488>"rocky road"</font>,
+  <font color=#004488>"deep chocolate fudge"</font>
+};
+
+<font color=#0000ff>const</font> <font color=#0000ff>int</font> iCsz = 
+  <font color=#0000ff>sizeof</font> iceCream / <font color=#0000ff>sizeof</font> *iceCream;
+
+<font color=#0000ff>int</font> main() {
+  StringStack ss;
+  <font color=#0000ff>for</font>(<font color=#0000ff>int</font> i = 0; i &lt; iCsz; i++)
+    ss.push(&amp;iceCream[i]);
+  <font color=#0000ff>const</font> string* cp;
+  <font color=#0000ff>while</font>((cp = ss.pop()) != 0)
+    cout &lt;&lt; *cp &lt;&lt; endl;
+} <font color=#009900>///:~</font></PRE></FONT></BLOCKQUOTE>
+
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Since <B>size</B> is used to determine
+the size of the array <B>stack</B>, it is indeed a compile-time constant, but
+one that is hidden inside the class.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Notice that <B>push(&#160;)</B> takes a
+<B>const</B> <B>string*</B> as an argument, <B>pop(&#160;)</B> returns a
+<B>const</B> <B>string*</B>, and <B>StringStack</B> holds <B>const string*</B>.
+If this were not true, you couldn&#8217;t use a <B>StringStack</B> to hold the
+pointers in <B>iceCream</B>. However, it also prevents you from doing anything
+that will change the objects contained by <B>StringStack</B>. Of course, not all
+containers are designed with this restriction.</FONT><BR></P></DIV>
+<A NAME="Heading270"></A><FONT FACE = "Verdana"><H4 ALIGN="LEFT">
+The &#8220;enum hack&#8221; in old
+code<BR><A NAME="Index1561"></A><A NAME="Index1562"></A></H4></FONT>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">In older versions of C++, <B>static</B>
+<B>const</B> was not supported inside
+classes<A NAME="Index1563"></A><A NAME="Index1564"></A>. This meant that
+<B>const</B> was useless for constant expressions inside classes. However,
+people still wanted to do this so a typical solution (usually referred to as the
+&#8220;enum hack&#8221;) was to use an untagged
+<A NAME="Index1565"></A><B>enum</B>
+<A NAME="Index1566"></A><A NAME="Index1567"></A>with no instances. An
+enumeration must have all its values established at compile time, it&#8217;s
+local to the class, and its values are available for constant expressions. Thus,
+you will commonly see:</FONT><BR></P></DIV>
+
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE><font color=#009900>//: C08:EnumHack.cpp</font>
+#include &lt;iostream&gt;
+<font color=#0000ff>using</font> <font color=#0000ff>namespace</font> std;
+
+<font color=#0000ff>class</font> Bunch {
+  <font color=#0000ff>enum</font> { size = 1000 };
+  <font color=#0000ff>int</font> i[size];
+};
+
+<font color=#0000ff>int</font> main() {
+  cout &lt;&lt; <font color=#004488>"sizeof(Bunch) = "</font> &lt;&lt; <font color=#0000ff>sizeof</font>(Bunch) 
+       &lt;&lt; <font color=#004488>", sizeof(i[1000]) = "</font> 
+       &lt;&lt; <font color=#0000ff>sizeof</font>(<font color=#0000ff>int</font>[1000]) &lt;&lt; endl;
+} <font color=#009900>///:~</font></PRE></FONT></BLOCKQUOTE>
+
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">The use of <B>enum</B> here is guaranteed
+to occupy no storage in the object, and the enumerators are all evaluated at
+compile time. You can also explicitly establish the values of the
+enumerators:</FONT><BR></P></DIV>
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE><font color=#0000ff>enum</font> { one = 1, two = 2, three };</PRE></FONT></BLOCKQUOTE>
+
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">With integral <B>enum</B> types, the
+compiler will continue counting from the last value, so the enumerator
+<B>three</B> will get the value 3.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">In the <B>StringStack.cpp</B> example
+above, the line:</FONT><BR></P></DIV>
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE><font color=#0000ff>static</font> <font color=#0000ff>const</font> <font color=#0000ff>int</font> size = 100;</PRE></FONT></BLOCKQUOTE>
+
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">would be instead:</FONT><BR></P></DIV>
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE><font color=#0000ff>enum</font> { size = 100 };</PRE></FONT></BLOCKQUOTE>
+
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Although you&#8217;ll often see the
+<B>enum</B> technique in legacy code, the <B>static const</B> feature was added
+to the language to solve just this problem. However, there is no overwhelming
+reason that you <I>must</I> choose <B>static const</B> over the <B>enum</B>
+hack, and in this book the <B>enum</B> hack is used because it is supported by
+more compilers at the time this book was
+written.</FONT><A NAME="_Toc312373919"></A><A NAME="_Toc472654893"></A><BR></P></DIV>
+<A NAME="Heading271"></A><FONT FACE = "Verdana"><H3 ALIGN="LEFT">
+const objects &amp; member
+functions<BR><A NAME="Index1568"></A><A NAME="Index1569"></A><A NAME="Index1570"></A><A NAME="Index1571"></A></H3></FONT>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Class member functions can be made
+<B>const</B>. What does this mean? To understand, you must first grasp the
+concept of <B>const</B> objects.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">A <B>const</B> object is defined the same
+for a user-defined type as a built-in type. For example:</FONT><BR></P></DIV>
+
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE><font color=#0000ff>const</font> <font color=#0000ff>int</font> i = 1;
+<font color=#0000ff>const</font> blob b(2);</PRE></FONT></BLOCKQUOTE>
+
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Here, <B>b</B> is a <B>const</B> object
+of type <B>blob</B>. Its constructor is called with an argument of two. For the
+compiler to enforce <B>const</B>ness, it must ensure that no data members of the
+object are changed during the object&#8217;s lifetime. It can easily ensure that
+no public data is modified, but how is it to know which member functions will
+change the data and which ones are &#8220;safe&#8221; for a <B>const</B>
+object?</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">If you declare a member function
+<B>const</B>, you tell the compiler the function can be called for a
+<B>const</B> object. A member function that is not specifically declared
+<B>const</B> is treated as one that will modify data members in an object, and
+the compiler will not allow you to call it for a <B>const</B>
+object.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">It doesn&#8217;t stop there, however.
+Just <I>claiming</I> a member function is <B>const</B> doesn&#8217;t guarantee
+it will act that way, so the compiler forces you to reiterate the <B>const</B>
+specification when defining the function. (The <B>const</B> becomes part of the
+function signature, so both the compiler and linker check for <B>const</B>ness.)
+Then it enforces <B>const</B>ness during the function definition by issuing an
+error message if you try to change any members of the object <I>or</I> call a
+non-<B>const</B> member function. Thus, any member function you declare
+<B>const</B> is guaranteed to behave that way in the
+definition.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">To understand the syntax for declaring
+<B>const </B>member functions, first notice that preceding the function
+declaration with <B>const</B> means the return value is <B>const</B>, so that
+doesn&#8217;t produce the desired results. Instead, you must place the
+<B>const</B> specifier <I>after</I> the argument list. For
+example,</FONT><BR></P></DIV>
+
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE><font color=#009900>//: C08:ConstMember.cpp</font>
+<font color=#0000ff>class</font> X {
+  <font color=#0000ff>int</font> i;
+<font color=#0000ff>public</font>:
+  X(<font color=#0000ff>int</font> ii);
+  <font color=#0000ff>int</font> f() <font color=#0000ff>const</font>;
+};
+
+X::X(<font color=#0000ff>int</font> ii) : i(ii) {}
+<font color=#0000ff>int</font> X::f() <font color=#0000ff>const</font> { <font color=#0000ff>return</font> i; }
+
+<font color=#0000ff>int</font> main() {
+  X x1(10);
+  <font color=#0000ff>const</font> X x2(20);
+  x1.f();
+  x2.f();
+} <font color=#009900>///:~</font></PRE></FONT></BLOCKQUOTE>
+
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Note that the <B>const</B> keyword must
+be repeated in the definition or the compiler sees it as a different function.
+Since <B>f(&#160;)</B> is a <B>const</B> member function, if it attempts to
+change <B>i</B> in any way <I>or</I> to call another member function that is not
+<B>const</B>, the compiler flags it as an error.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">You can see that a <B>const</B> member
+function is safe to call with both <B>const</B> and non-<B>const</B> objects.
+Thus, you could think of it as the most general form of a member function (and
+because of this, it is unfortunate that member functions do not automatically
+default to <B>const</B>). Any function that doesn&#8217;t modify member data
+should be declared as <B>const</B>, so it can be used with <B>const</B>
+objects.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Here&#8217;s an example that contrasts a
+<B>const</B> and non-<B>const</B> member function:</FONT><BR></P></DIV>
+
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE><font color=#009900>//: C08:Quoter.cpp</font>
+<font color=#009900>// Random quote selection</font>
+#include &lt;iostream&gt;
+#include &lt;cstdlib&gt; <font color=#009900>// Random number generator</font>
+#include &lt;ctime&gt; <font color=#009900>// To seed random generator</font>
+<font color=#0000ff>using</font> <font color=#0000ff>namespace</font> std;
+
+<font color=#0000ff>class</font> Quoter {
+  <font color=#0000ff>int</font> lastquote;
+<font color=#0000ff>public</font>:
+  Quoter();
+  <font color=#0000ff>int</font> lastQuote() <font color=#0000ff>const</font>;
+  <font color=#0000ff>const</font> <font color=#0000ff>char</font>* quote();
+};
+
+Quoter::Quoter(){
+  lastquote = -1;
+  srand(time(0)); <font color=#009900>// Seed random number generator</font>
+}
+
+<font color=#0000ff>int</font> Quoter::lastQuote() <font color=#0000ff>const</font> {
+  <font color=#0000ff>return</font> lastquote;
+}
+
+<font color=#0000ff>const</font> <font color=#0000ff>char</font>* Quoter::quote() {
+  <font color=#0000ff>static</font> <font color=#0000ff>const</font> <font color=#0000ff>char</font>* quotes[] = {
+    <font color=#004488>"Are we having fun yet?"</font>,
+    <font color=#004488>"Doctors always know best"</font>,
+    <font color=#004488>"Is it ... Atomic?"</font>,
+    <font color=#004488>"Fear is obscene"</font>,
+    <font color=#004488>"There is no scientific evidence "</font>
+    <font color=#004488>"to support the idea "</font>
+    <font color=#004488>"that life is serious"</font>,
+    <font color=#004488>"Things that make us happy, make us wise"</font>,
+  };
+  <font color=#0000ff>const</font> <font color=#0000ff>int</font> qsize = <font color=#0000ff>sizeof</font> quotes/<font color=#0000ff>sizeof</font> *quotes;
+  <font color=#0000ff>int</font> qnum = rand() % qsize;
+  <font color=#0000ff>while</font>(lastquote &gt;= 0 &amp;&amp; qnum == lastquote)
+    qnum = rand() % qsize;
+  <font color=#0000ff>return</font> quotes[lastquote = qnum];
+}
+
+<font color=#0000ff>int</font> main() {
+  Quoter q;
+  <font color=#0000ff>const</font> Quoter cq;
+  cq.lastQuote(); <font color=#009900>// OK</font>
+<font color=#009900>//!  cq.quote(); // Not OK; non const function</font>
+  <font color=#0000ff>for</font>(<font color=#0000ff>int</font> i = 0; i &lt; 20; i++)
+    cout &lt;&lt; q.quote() &lt;&lt; endl;
+} <font color=#009900>///:~</font></PRE></FONT></BLOCKQUOTE>
+
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Neither constructors nor destructors can
+be <B>const</B> member functions because they virtually always perform some
+modification on the object during initialization and cleanup. The
+<B>quote(&#160;)</B> member function also cannot be <B>const</B> because it
+modifies the data member <B>lastquote</B> (see the <B>return</B> statement).
+However, <B>lastQuote(&#160;)</B> makes no modifications, and so it can be
+<B>const</B> and can be safely called for the <B>const</B> object
+<B>cq</B>.</FONT><BR></P></DIV>
+<A NAME="Heading272"></A><FONT FACE = "Verdana"><H4 ALIGN="LEFT">
+mutable: bitwise vs. logical
+const<BR><A NAME="Index1572"></A><A NAME="Index1573"></A><A NAME="Index1574"></A></H4></FONT>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">What if you want to create a <B>const</B>
+member function, but you&#8217;d still like to change some of the data in the
+object? This is sometimes referred to as the difference between <I>bitwise
+</I><B>const</B><I> <A NAME="Index1575"></A></I>and <I>logical </I><B>const</B>
+(also sometimes called <I>memberwise
+</I><B>const</B>)<A NAME="Index1576"></A><A NAME="Index1577"></A><I>.
+</I>Bitwise <B>const</B> means that every bit in the object is permanent, so a
+bit image of the object will never change. Logical <B>const</B> means that,
+although the entire object is conceptually constant, there may be changes on a
+member-by-member basis. However, if the compiler is told that an object is
+<B>const</B>, it will jealously guard that object to ensure bitwise
+<B>const</B>ness. To effect logical <B>const</B>ness, there are two ways to
+change a data member from within a <B>const</B> member
+function.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">The first approach is the historical one
+and is called <I>casting away
+constness<A NAME="Index1578"></A><A NAME="Index1579"></A></I>. It is performed
+in a rather odd fashion. You take
+<A NAME="Index1580"></A><B>this<A NAME="Index1581"></A></B> (the keyword that
+produces the address of the current object) and cast it to a pointer to an
+object of the current type. It would seem that <B>this</B> is <I>already</I>
+such a pointer. However, inside a <B>const </B>member function it&#8217;s
+actually a <B>const</B> pointer, so by casting it to an ordinary pointer, you
+remove the <B>const</B>ness for that operation. Here&#8217;s an
+example:</FONT><BR></P></DIV>
+
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE><font color=#009900>//: C08:Castaway.cpp</font>
+<font color=#009900>// "Casting away" constness</font>
+
+<font color=#0000ff>class</font> Y {
+  <font color=#0000ff>int</font> i;
+<font color=#0000ff>public</font>:
+  Y();
+  <font color=#0000ff>void</font> f() <font color=#0000ff>const</font>;
+};
+
+Y::Y() { i = 0; }
+
+<font color=#0000ff>void</font> Y::f() <font color=#0000ff>const</font> {
+<font color=#009900>//!  i++; // Error -- const member function</font>
+  ((Y*)<font color=#0000ff>this</font>)-&gt;i++; <font color=#009900>// OK: cast away const-ness</font>
+  <font color=#009900>// Better: use C++ explicit cast syntax:</font>
+  (<font color=#0000ff>const_cast</font>&lt;Y*&gt;(<font color=#0000ff>this</font>))-&gt;i++;
+}
+
+<font color=#0000ff>int</font> main() {
+  <font color=#0000ff>const</font> Y yy;
+  yy.f(); <font color=#009900>// Actually changes it!</font>
+} <font color=#009900>///:~</font></PRE></FONT></BLOCKQUOTE>
+
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">This approach works and you&#8217;ll see
+it used in legacy code, but it is not the preferred technique. The problem is
+that this lack of <B>const</B>ness is hidden away in a member function
+definition, and you have no clue from the class interface that the data of the
+object is actually being modified unless you have access to the source code (and
+you must suspect that <B>const</B>ness is being cast away, and look for the
+cast). To put everything out in the open, you should use the
+<A NAME="Index1582"></A><A NAME="Index1583"></A><B>mutable</B> keyword in the
+class declaration to specify that a particular data member may be changed inside
+a <B>const</B> object:</FONT><BR></P></DIV>
+
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE><font color=#009900>//: C08:Mutable.cpp</font>
+<font color=#009900>// The "mutable" keyword</font>
+
+<font color=#0000ff>class</font> Z {
+  <font color=#0000ff>int</font> i;
+  <font color=#0000ff>mutable</font> <font color=#0000ff>int</font> j;
+<font color=#0000ff>public</font>:
+  Z();
+  <font color=#0000ff>void</font> f() <font color=#0000ff>const</font>;
+};
+
+Z::Z() : i(0), j(0) {}
+
+<font color=#0000ff>void</font> Z::f() <font color=#0000ff>const</font> {
+<font color=#009900>//! i++; // Error -- const member function</font>
+    j++; <font color=#009900>// OK: mutable</font>
+}
+
+<font color=#0000ff>int</font> main() {
+  <font color=#0000ff>const</font> Z zz;
+  zz.f(); <font color=#009900>// Actually changes it!</font>
+} <font color=#009900>///:~</font></PRE></FONT></BLOCKQUOTE>
+
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">This way, the user of the class can see
+from the declaration which members are likely to be modified in a <B>const</B>
+member function.</FONT><A NAME="_Toc312373920"></A><BR></P></DIV>
+<A NAME="Heading273"></A><FONT FACE = "Verdana"><H4 ALIGN="LEFT">
+ROMability</H4></FONT>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">If an object is defined as <B>const</B>,
+it is a candidate to be placed in read-only memory
+(ROM)<A NAME="Index1584"></A><A NAME="Index1585"></A><A NAME="Index1586"></A>,
+which is often an important consideration in embedded systems programming.
+Simply making an object <B>const</B>, however, is not enough &#8211; the
+requirements for ROMability are much stricter. Of course, the object must be
+bitwise-<B>const</B>, rather than logical-<B>const</B>. This is easy to see if
+logical <B>const</B>ness is implemented only through the <B>mutable</B> keyword,
+but probably not detectable by the compiler if <B>const</B>ness is cast away
+inside a <B>const</B> member function. In addition,</FONT><BR></P></DIV>
+<OL>
+<LI><FONT FACE="Verdana">	</FONT><FONT FACE="Georgia">The <B>class</B> or
+<B>struct</B> must have no user-defined constructors or
+destructor.</FONT><LI><FONT FACE="Verdana">	</FONT><FONT FACE="Georgia">There
+can be no base classes (covered in Chapter 14) or member objects with
+user-defined constructors or
+destructors.</FONT></OL><DIV ALIGN="LEFT"><P><FONT FACE="Georgia">The effect of a
+write operation on any part of a <B>const</B> object of a ROMable type is
+undefined. Although a suitably formed object may be placed in ROM, no objects
+are ever <I>required</I> to be placed in
+ROM.</FONT><A NAME="_Toc305628679"></A><A NAME="_Toc312373921"></A><A NAME="_Toc472654894"></A><BR></P></DIV>
+<A NAME="Heading274"></A><FONT FACE = "Verdana"><H2 ALIGN="LEFT">
+volatile</H2></FONT>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">The syntax of <B>volatile</B>
+<A NAME="Index1587"></A>is identical to that for <B>const</B>, but
+<B>volatile</B> means &#8220;This data may change outside the knowledge of the
+compiler.&#8221; Somehow, the environment is changing the data (possibly through
+multitasking, multithreading or interrupts), and <B>volatile</B> tells the
+compiler not to make any assumptions about that data, especially during
+optimization.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">If the compiler says, &#8220;I read this
+data into a register earlier, and I haven&#8217;t touched that register,&#8221;
+normally it wouldn&#8217;t need to read the data again. But if the data is
+<B>volatile</B>, the compiler cannot make such an assumption because the data
+may have been changed by another process,
+<A NAME="Index1588"></A><A NAME="Index1589"></A>and it must reread that data
+rather than optimizing the code to remove what would normally be a redundant
+read.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">You create <B>volatile</B> objects using
+the same syntax that you use to create <B>const</B> objects. You can also create
+<B>const</B> <B>volatile</B> objects, which can&#8217;t be changed by the client
+programmer but instead change through some outside agency. Here is an example
+that might represent a class associated with some piece of communication
+hardware:</FONT><BR></P></DIV>
+
+<BLOCKQUOTE><FONT SIZE = "+1"><PRE><font color=#009900>//: C08:Volatile.cpp</font>
+<font color=#009900>// The volatile keyword</font>
+
+<font color=#0000ff>class</font> Comm {
+  <font color=#0000ff>const</font> <font color=#0000ff>volatile</font> <font color=#0000ff>unsigned</font> <font color=#0000ff>char</font> byte;
+  <font color=#0000ff>volatile</font> <font color=#0000ff>unsigned</font> <font color=#0000ff>char</font> flag;
+  <font color=#0000ff>enum</font> { bufsize = 100 };
+  <font color=#0000ff>unsigned</font> <font color=#0000ff>char</font> buf[bufsize];
+  <font color=#0000ff>int</font> index;
+<font color=#0000ff>public</font>:
+  Comm();
+  <font color=#0000ff>void</font> isr() <font color=#0000ff>volatile</font>;
+  <font color=#0000ff>char</font> read(<font color=#0000ff>int</font> index) <font color=#0000ff>const</font>;
+};
+
+Comm::Comm() : index(0), byte(0), flag(0) {}
+
+<font color=#009900>// Only a demo; won't actually work</font>
+<font color=#009900>// as an interrupt service routine:</font>
+<font color=#0000ff>void</font> Comm::isr() <font color=#0000ff>volatile</font> {
+  flag = 0;
+  buf[index++] = byte;
+  <font color=#009900>// Wrap to beginning of buffer:</font>
+  <font color=#0000ff>if</font>(index &gt;= bufsize) index = 0;
+}
+
+<font color=#0000ff>char</font> Comm::read(<font color=#0000ff>int</font> index) <font color=#0000ff>const</font> {
+  <font color=#0000ff>if</font>(index &lt; 0 || index &gt;= bufsize)
+    <font color=#0000ff>return</font> 0;
+  <font color=#0000ff>return</font> buf[index];
+}
+
+<font color=#0000ff>int</font> main() {
+  <font color=#0000ff>volatile</font> Comm Port;
+  Port.isr(); <font color=#009900>// OK</font>
+<font color=#009900>//!  Port.read(0); // Error, read() not volatile</font>
+} <font color=#009900>///:~</font></PRE></FONT></BLOCKQUOTE>
+
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">As with <B>const</B>, you can use
+<B>volatile</B> for data members, member functions, and objects themselves. You
+can only call <B>volatile</B> member functions for <B>volatile</B>
+objects.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">The reason that <B>isr(&#160;)</B>
+can&#8217;t actually be used as an interrupt service routine
+<A NAME="Index1590"></A>is that in a member function, the address of the current
+object (<B>this</B>) must be secretly passed, and an ISR generally wants no
+arguments at all. To solve this problem, you can make <B>isr(&#160;)</B> a
+<B>static</B> member
+function<A NAME="Index1591"></A><A NAME="Index1592"></A><A NAME="Index1593"></A>,
+a subject covered in Chapter 10.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">The syntax of <B>volatile</B> is
+identical to <B>const</B>, so discussions of the two are often treated together.
+The two are referred to in combination as the <I>c-v
+qualifier<A NAME="Index1594"></A><A NAME="Index1595"></A></I>.</FONT><A NAME="_Toc305628680"></A><A NAME="_Toc312373922"></A><A NAME="_Toc472654895"></A><BR></P></DIV>
+<A NAME="Heading275"></A><FONT FACE = "Verdana"><H2 ALIGN="LEFT">
+Summary</H2></FONT>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">The <B>const</B> keyword gives you the
+ability to define objects, function arguments, return values and member
+functions as constants, and to eliminate the preprocessor for value substitution
+without losing any preprocessor benefits. All this provides a significant
+additional form of type checking and safety in your programming. The use of
+so-called <I>const correctness</I>
+<A NAME="Index1596"></A><A NAME="Index1597"></A>(the use of <B>const</B>
+anywhere you possibly can) can be a lifesaver for projects.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia">Although you can ignore <B>const</B> and
+continue to use old C coding practices, it&#8217;s there to help you. Chapters
+11 and on begin using references heavily, and there you&#8217;ll see even more
+about how critical it is to use <B>const</B> with function
+arguments.</FONT><A NAME="_Toc312373923"></A><A NAME="_Toc472654896"></A><BR></P></DIV>
+<A NAME="Heading276"></A><FONT FACE = "Verdana"><H2 ALIGN="LEFT">
+Exercises</H2></FONT>
+<DIV ALIGN="LEFT"><P><FONT FACE="Georgia" SIZE=2>Solutions to selected exercises
+can be found in the electronic document <I>The Thinking in C++ Annotated
+Solution Guide</I>, available for a small fee from www.BruceEckel.com.
+</FONT><BR></P></DIV>
+<OL>
+<LI><FONT FACE="Verdana">	</FONT><FONT FACE="Georgia">Create three <B>const</B>
+<B>int </B>values, then add them together to produce a value that determines the
+size of an array in an array definition. Try to compile the same code in C and
+see what happens (you can generally force your C++ compiler to run as a C
+compiler by using a command-line
+flag).</FONT><LI><FONT FACE="Verdana">	</FONT><FONT FACE="Georgia">Prove to
+yourself that the C and C++ compilers really do treat constants differently.
+Create a global <B>const</B> and use it in a global constant expression; then
+compile it under both C and
+C++.</FONT><LI><FONT FACE="Verdana">	</FONT><FONT FACE="Georgia">Create example
+<B>const</B> definitions for all the built-in types and their variants. Use
+these in expressions with other <B>const</B>s to make new <B>const
+</B>definitions. Make sure they compile
+successfully.</FONT><LI><FONT FACE="Verdana">	</FONT><FONT FACE="Georgia">Create
+a <B>const</B> definition in a header file, include that header file in two
+<B>.cpp</B> files, then compile those files and link them. You should not get
+any errors. Now try the same experiment with
+C.</FONT><LI><FONT FACE="Verdana">	</FONT><FONT FACE="Georgia">Create a
+<B>const</B> whose value is determined at runtime by reading the time when the
+program starts (you&#8217;ll have to use the <B>&lt;ctime&gt;</B> standard
+header). Later in the program, try to read a second value of the time into your
+<B>const</B> and see what
+happens.</FONT><LI><FONT FACE="Verdana">	</FONT><FONT FACE="Georgia">Create a
+<B>const</B> array of <B>char</B>, then try to change one of the
+<B>char</B>s.</FONT><LI><FONT FACE="Verdana">	</FONT><FONT FACE="Georgia">Create
+an <B>extern const</B> declaration in one file, and put a <B>main(&#160;)</B> in
+that file that prints the value of the <B>extern const</B>. Provide an <B>extern
+const</B> definition in a second file, then compile and link the two files
+together.</FONT><LI><FONT FACE="Verdana">	</FONT><FONT FACE="Georgia">Write two
+pointers to <B>const</B> <B>long </B>using both forms of the declaration. Point
+one of them to an array of <B>long</B>. Demonstrate that you can increment or
+decrement the pointer, but you can&#8217;t change what it points
+to.</FONT><LI><FONT FACE="Verdana">	</FONT><FONT FACE="Georgia">Write a
+<B>const</B> pointer to a <B>double</B>, and point it at an array of
+<B>double</B>. Show that you can change what the pointer points to, but you
+can&#8217;t increment or decrement the
+pointer.</FONT><LI><FONT FACE="Verdana">	</FONT><FONT FACE="Georgia">Write a
+<B>const</B> pointer to a <B>const</B> object. Show that you can only read the
+value that the pointer points to, but you can&#8217;t change the pointer or what
+it points to.</FONT><LI><FONT FACE="Verdana">	</FONT><FONT FACE="Georgia">Remove
+the comment on the error-generating line of code in <B>PointerAssignment.cpp</B>
+to see the error that your compiler
+generates.</FONT><LI><FONT FACE="Verdana">	</FONT><FONT FACE="Georgia">Create a
+character array literal with a pointer that points to the beginning of the
+array. Now use the pointer to modify elements in the array. Does your compiler
+report this as an error? Should it? If it doesn&#8217;t, why do you think that
+is?</FONT><LI><FONT FACE="Verdana">	</FONT><FONT FACE="Georgia">Create a
+function that takes an argument by value as a <B>const</B>; then try to change
+that argument in the function
+body.</FONT><LI><FONT FACE="Verdana">	</FONT><FONT FACE="Georgia">Create a
+function that takes a <B>float</B> by value. Inside the function, bind a
+<B>const float&amp;</B> to the argument, and only use the reference from then on
+to ensure that the argument is not
+changed.</FONT><LI><FONT FACE="Verdana">	</FONT><FONT FACE="Georgia">Modify
+<B>ConstReturnValues.cpp</B> removing comments on the error-causing lines one at
+a time, to see what error messages your compiler
+generates.</FONT><LI><FONT FACE="Verdana">	</FONT><FONT FACE="Georgia">Modify
+<B>ConstPointer.cpp</B> removing comments on the error-causing lines one at a
+time, to see what error messages your compiler
+generates.</FONT><LI><FONT FACE="Verdana">	</FONT><FONT FACE="Georgia">Make a
+new version of <B>ConstPointer.cpp</B> called <B>ConstReference.cpp</B> which
+demonstrates references instead of pointers (you may need to look forward to
+Chapter 11).</FONT><LI><FONT FACE="Verdana">	</FONT><FONT FACE="Georgia">Modify
+<B>ConstTemporary.cpp</B> removing the comment on the error-causing line to see
+what error messages your compiler
+generates.</FONT><LI><FONT FACE="Verdana">	</FONT><FONT FACE="Georgia">Create a
+class containing both a <B>const</B> and a non-<B>const</B> <B>float</B>.
+Initialize these using the constructor initializer
+list.</FONT><LI><FONT FACE="Verdana">	</FONT><FONT FACE="Georgia">Create a class
+called <B>MyString</B> which contains a <B>string</B> and has a constructor that
+initializes the <B>string</B>, and a<B> print(&#160;)</B> function. Modify
+<B>StringStack.cpp</B> so that the container holds <B>MyString</B> objects, and
+<B>main(&#160;)</B> so it prints
+them.</FONT><LI><FONT FACE="Verdana">	</FONT><FONT FACE="Georgia">Create a class
+containing a <B>const</B> member that you initialize in the constructor
+initializer list and an untagged enumeration that you use to determine an array
+size.</FONT><LI><FONT FACE="Verdana">	</FONT><FONT FACE="Georgia">In
+<B>ConstMember.cpp</B>, remove the <B>const</B> specifier on the member function
+definition, but leave it on the declaration, to see what kind of compiler error
+message you
+get.</FONT><LI><FONT FACE="Verdana">	</FONT><FONT FACE="Georgia">Create a class
+with both <B>const</B> and non-<B>const</B> member functions. Create
+<B>const</B> and non-<B>const</B> objects of this class, and try calling the
+different types of member functions for the different types of
+objects.</FONT><LI><FONT FACE="Verdana">	</FONT><FONT FACE="Georgia">Create a
+class with both <B>const</B> and non-<B>const</B> member functions. Try to call
+a non-<B>const</B> member function from a <B>const</B> member function to see
+what kind of compiler error message you
+get.</FONT><LI><FONT FACE="Verdana">	</FONT><FONT FACE="Georgia">In
+<B>Mutable.cpp</B>, remove the comment on the error-causing line to see what
+sort of error message your compiler
+produces.</FONT><LI><FONT FACE="Verdana">	</FONT><FONT FACE="Georgia">Modify
+<B>Quoter.cpp</B> by making <B>quote(&#160;)</B> a <B>const</B> member function
+and <B>lastquote</B>
+<B>mutable</B>.</FONT><LI><FONT FACE="Verdana">	</FONT><FONT FACE="Georgia">Create
+a class with a <B>volatile</B> data member. Create both <B>volatile</B> and
+non-<B>volatile</B> member functions that modify the <B>volatile</B> data
+member, and see what the compiler says. Create both <B>volatile</B> and
+non-<B>volatile</B> objects of your class and try calling both the
+<B>volatile</B> and non-<B>volatile</B> member functions to see what is
+successful and what kind of error messages the compiler
+produces.</FONT><LI><FONT FACE="Verdana">	</FONT><FONT FACE="Georgia">Create a
+class called <B>bird</B> that can <B>fly(&#160;)</B> and a class <B>rock</B>
+that can&#8217;t. Create a <B>rock</B> object, take its address, and assign that
+to a <B>void*</B>. Now take the <B>void*</B>, assign it to a <B>bird*</B>
+(you&#8217;ll have to use a cast), and call <B>fly(&#160;)</B> through that
+pointer. Is it clear why C&#8217;s permission to openly assign via a
+<B>void*</B> (without a cast) is a &#8220;hole&#8221; in the language, which
+couldn&#8217;t be propagated into
+C++?</FONT><A NAME="_Toc305593210"></A><A NAME="_Toc305628682"></A><A NAME="_Toc312373924"></A></OL><FONT FACE = "Verdana"><H1 ALIGN="LEFT">
+</H1></FONT>
+
+
+<HR><DIV ALIGN="LEFT"><P><A NAME="fn43" HREF="#fnB43">[43]</A><FONT FACE="Georgia" SIZE=2>
+Some folks go as far as saying that <I>everything</I> in C is pass by value,
+since when you pass a pointer a copy is made (so you&#8217;re passing the
+pointer by value). However precise this might be, I think it actually confuses
+the issue.</FONT><BR></P></DIV>
+<DIV ALIGN="LEFT"><P><A NAME="fn44" HREF="#fnB44">[44]</A><FONT FACE="Georgia" SIZE=2>
+At the time of this writing, not all compilers supported this
+feature.</FONT><BR></P></DIV>
+
+<DIV ALIGN="CENTER">
+    <FONT FACE="Verdana" size = "-1">
+     [ <a href="Chapter07.html">Previous Chapter</a> ] 
+    [ <a href="Contents.html">Table of Contents</a> ] 
+    [ <a href="DocIndex.html">Index</a> ]
+     [ <a href="Chapter09.html">Next Chapter</a> ] 
+    </FONT>
+    <BR>
+ Last Update:09/27/2001</P></DIV>
+
+</BODY>
+
+</HTML>
