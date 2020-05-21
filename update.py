@@ -1,3 +1,6 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+
 import os
 
 EXCLUDE_DIRS = ['.git', 'docs', '.vscode', '.circleci']
@@ -12,6 +15,7 @@ def list_files(course: str):
     filelist_texts = '## 文件列表\n\n'
     readme_path = ''
     for root, dirs, files in os.walk(course):
+        files.sort()
         level = root.replace(course, '').count(os.sep)
         indent = ' ' * 4 * level
         filelist_texts += '{}- {}\n'.format(indent, os.path.basename(root))
@@ -20,10 +24,10 @@ def list_files(course: str):
             if f not in README_MD:
                 if f.split('.')[-1] in TXT_EXTS:
                     filelist_texts += '{}- [{}]({})\n'.format(subindent,
-                                                              f, '{}{}/{}'.format(TXT_URL_PREFIX, root,  f))
+                                                              f, '{}{}/{}'.format(TXT_URL_PREFIX, root, f))
                 else:
                     filelist_texts += '{}- [{}]({})\n'.format(subindent,
-                                                              f, '{}{}/{}'.format(BIN_URL_PREFIX, root,  f))
+                                                              f, '{}{}/{}'.format(BIN_URL_PREFIX, root, f))
             else:
                 readme_path = '{}/{}'.format(root, f)
     return filelist_texts, readme_path
@@ -45,3 +49,9 @@ if __name__ == '__main__':
     for course in courses:
         filelist_texts, readme_path = list_files(course)
         generate_md(course, filelist_texts, readme_path)
+
+    with open('README.md', 'r') as file:
+        mainreadme_lines = file.readlines()
+
+    with open('docs/index.md', 'w') as file:
+        file.writelines(mainreadme_lines)
