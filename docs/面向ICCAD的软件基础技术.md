@@ -1,0 +1,52 @@
+
+
+## 文件列表
+
+- 面向ICCAD的软件基础技术
+    - hw2
+        - [demo_inout.c](https://github.com/QSCTech/zju-icicles/raw/master/面向ICCAD的软件基础技术/hw2/demo_inout.c)
+        - [homework_4.2_2.md](https://github.com/QSCTech/zju-icicles/blob/master/面向ICCAD的软件基础技术/hw2/homework_4.2_2.md)
+        - [pingsort](https://github.com/QSCTech/zju-icicles/raw/master/面向ICCAD的软件基础技术/hw2/pingsort)
+        - [prb1.sh](https://github.com/QSCTech/zju-icicles/raw/master/面向ICCAD的软件基础技术/hw2/prb1.sh)
+        - [prb4.sh](https://github.com/QSCTech/zju-icicles/raw/master/面向ICCAD的软件基础技术/hw2/prb4.sh)
+    - hw1
+        - [homework_4.2_1.txt](https://github.com/QSCTech/zju-icicles/blob/master/面向ICCAD的软件基础技术/hw1/homework_4.2_1.txt)
+    - hw3
+        - [homework_4.2_3.txt](https://github.com/QSCTech/zju-icicles/blob/master/面向ICCAD的软件基础技术/hw3/homework_4.2_3.txt)
+        - cube_wrong
+            - [cast.c](https://github.com/QSCTech/zju-icicles/raw/master/面向ICCAD的软件基础技术/hw3/cube_wrong/cast.c)
+            - [cube.line](https://github.com/QSCTech/zju-icicles/raw/master/面向ICCAD的软件基础技术/hw3/cube_wrong/cube.line)
+            - [draw](https://github.com/QSCTech/zju-icicles/raw/master/面向ICCAD的软件基础技术/hw3/cube_wrong/draw)
+            - [draw_guide.c](https://github.com/QSCTech/zju-icicles/raw/master/面向ICCAD的软件基础技术/hw3/cube_wrong/draw_guide.c)
+            - [drawline.c](https://github.com/QSCTech/zju-icicles/raw/master/面向ICCAD的软件基础技术/hw3/cube_wrong/drawline.c)
+            - [init.c](https://github.com/QSCTech/zju-icicles/raw/master/面向ICCAD的软件基础技术/hw3/cube_wrong/init.c)
+            - [main.c](https://github.com/QSCTech/zju-icicles/raw/master/面向ICCAD的软件基础技术/hw3/cube_wrong/main.c)
+            - [makefile](https://github.com/QSCTech/zju-icicles/raw/master/面向ICCAD的软件基础技术/hw3/cube_wrong/makefile)
+            - [readline.c](https://github.com/QSCTech/zju-icicles/raw/master/面向ICCAD的软件基础技术/hw3/cube_wrong/readline.c)
+            - [toview.c](https://github.com/QSCTech/zju-icicles/raw/master/面向ICCAD的软件基础技术/hw3/cube_wrong/toview.c)
+            - [translate.c](https://github.com/QSCTech/zju-icicles/raw/master/面向ICCAD的软件基础技术/hw3/cube_wrong/translate.c)
+            - include
+                - [all.h](https://github.com/QSCTech/zju-icicles/raw/master/面向ICCAD的软件基础技术/hw3/cube_wrong/include/all.h)
+                - [draw.h](https://github.com/QSCTech/zju-icicles/raw/master/面向ICCAD的软件基础技术/hw3/cube_wrong/include/draw.h)
+                - [global.h](https://github.com/QSCTech/zju-icicles/raw/master/面向ICCAD的软件基础技术/hw3/cube_wrong/include/global.h)
+        - demo_bit
+            - [demo_bit.c](https://github.com/QSCTech/zju-icicles/raw/master/面向ICCAD的软件基础技术/hw3/demo_bit/demo_bit.c)
+            - [demo_bit_count.s](https://github.com/QSCTech/zju-icicles/raw/master/面向ICCAD的软件基础技术/hw3/demo_bit/demo_bit_count.s)
+            - [makefile](https://github.com/QSCTech/zju-icicles/raw/master/面向ICCAD的软件基础技术/hw3/demo_bit/makefile)
+        - demo_x
+            - [demo_x.c](https://github.com/QSCTech/zju-icicles/raw/master/面向ICCAD的软件基础技术/hw3/demo_x/demo_x.c)
+    - hw4
+        - [2.pl](https://github.com/QSCTech/zju-icicles/raw/master/面向ICCAD的软件基础技术/hw4/2.pl)
+        - [2.py](https://github.com/QSCTech/zju-icicles/raw/master/面向ICCAD的软件基础技术/hw4/2.py)
+        - [3_1.py](https://github.com/QSCTech/zju-icicles/raw/master/面向ICCAD的软件基础技术/hw4/3_1.py)
+        - [3_2.py](https://github.com/QSCTech/zju-icicles/raw/master/面向ICCAD的软件基础技术/hw4/3_2.py)
+        - [3_3.py](https://github.com/QSCTech/zju-icicles/raw/master/面向ICCAD的软件基础技术/hw4/3_3.py)
+        - [3_4.pl](https://github.com/QSCTech/zju-icicles/raw/master/面向ICCAD的软件基础技术/hw4/3_4.pl)
+        - [3_5.py](https://github.com/QSCTech/zju-icicles/raw/master/面向ICCAD的软件基础技术/hw4/3_5.py)
+        - [3_6.pl](https://github.com/QSCTech/zju-icicles/raw/master/面向ICCAD的软件基础技术/hw4/3_6.pl)
+        - [browse.tcl](https://github.com/QSCTech/zju-icicles/raw/master/面向ICCAD的软件基础技术/hw4/browse.tcl)
+        - [demo_8queen.py](https://github.com/QSCTech/zju-icicles/raw/master/面向ICCAD的软件基础技术/hw4/demo_8queen.py)
+        - [demo_fork.c](https://github.com/QSCTech/zju-icicles/raw/master/面向ICCAD的软件基础技术/hw4/demo_fork.c)
+        - [demo_showqueen.py](https://github.com/QSCTech/zju-icicles/raw/master/面向ICCAD的软件基础技术/hw4/demo_showqueen.py)
+        - [homework_4.2_4.txt](https://github.com/QSCTech/zju-icicles/blob/master/面向ICCAD的软件基础技术/hw4/homework_4.2_4.txt)
+        - [words](https://github.com/QSCTech/zju-icicles/raw/master/面向ICCAD的软件基础技术/hw4/words)
