@@ -1,3 +1,6 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+
 import os
 
 EXCLUDE_DIRS = ['.git', 'docs', '.vscode', '.circleci']
@@ -12,6 +15,7 @@ def list_files(course: str):
     filelist_texts = '## 文件列表\n\n'
     readme_path = ''
     for root, dirs, files in os.walk(course):
+        files.sort()
         level = root.replace(course, '').count(os.sep)
         indent = ' ' * 4 * level
         filelist_texts += '{}- {}\n'.format(indent, os.path.basename(root))
