@@ -3,7 +3,7 @@
 
 import os
 
-EXCLUDE_DIRS = ['.git', 'docs', '.vscode', '.circleci']
+EXCLUDE_DIRS = ['.git', 'docs', '.vscode', '.circleci', 'site']
 README_MD = ['README.md', 'readme.md', 'index.md']
 
 TXT_EXTS = ['md', 'txt']
