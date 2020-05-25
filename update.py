@@ -2,6 +2,7 @@
 # -*- coding: utf-8 -*-
 
 import os
+from urllib.parse import quote
 
 EXCLUDE_DIRS = ['.git', 'docs', '.vscode', '.circleci', 'site']
 README_MD = ['README.md', 'readme.md', 'index.md']
@@ -24,11 +25,11 @@ def list_files(course: str):
             if f not in README_MD:
                 if f.split('.')[-1] in TXT_EXTS:
                     filelist_texts += '{}- [{}]({})\n'.format(subindent,
-                                                              f, '{}{}/{}'.format(TXT_URL_PREFIX, root, f))
+                                                              f, quote('{}{}/{}'.format(TXT_URL_PREFIX, root, f)))
                 else:
                     filelist_texts += '{}- [{}]({})\n'.format(subindent,
-                                                              f, '{}{}/{}'.format(BIN_URL_PREFIX, root, f))
-            else:
+                                                              f, quote('{}{}/{}'.format(BIN_URL_PREFIX, root, f)))
+            elif root == course and readme_path == '':
                 readme_path = '{}/{}'.format(root, f)
     return filelist_texts, readme_path
 
