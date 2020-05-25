@@ -38,5 +38,5 @@ slides质量也不敢恭维，很多内容都是书本/论文的照片，难以�
 
 - 人工智能-CS
     - 试卷
-        - [AI_2016-2017Spring - answer.pdf](https://github.com/QSCTech/zju-icicles/raw/master/人工智能-CS/试卷/AI_2016-2017Spring - answer.pdf)
-        - [AI_2016-2017Spring.pdf](https://github.com/QSCTech/zju-icicles/raw/master/人工智能-CS/试卷/AI_2016-2017Spring.pdf)
+        - [AI_2016-2017Spring - answer.pdf](https%3A//github.com/QSCTech/zju-icicles/raw/master/%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD-CS/%E8%AF%95%E5%8D%B7/AI_2016-2017Spring%20-%20answer.pdf)
+        - [AI_2016-2017Spring.pdf](https%3A//github.com/QSCTech/zju-icicles/raw/master/%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD-CS/%E8%AF%95%E5%8D%B7/AI_2016-2017Spring.pdf)
