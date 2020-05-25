@@ -25,10 +25,10 @@ def list_files(course: str):
             if f not in README_MD:
                 if f.split('.')[-1] in TXT_EXTS:
                     filelist_texts += '{}- [{}]({})\n'.format(subindent,
-                                                              f, quote('{}{}/{}'.format(TXT_URL_PREFIX, root, f)))
+                                                              f, TXT_URL_PREFIX + quote('{}/{}'.format(root, f)))
                 else:
                     filelist_texts += '{}- [{}]({})\n'.format(subindent,
-                                                              f, quote('{}{}/{}'.format(BIN_URL_PREFIX, root, f)))
+                                                              f, BIN_URL_PREFIX + quote('{}/{}'.format(root, f)))
             elif root == course and readme_path == '':
                 readme_path = '{}/{}'.format(root, f)
     return filelist_texts, readme_path
