@@ -44,6 +44,9 @@ def generate_md(course: str, filelist_texts: str, readme_path: str):
 
 
 if __name__ == '__main__':
+    if not os.path.isdir('docs'):
+        os.mkdir('docs')
+
     courses = list(filter(lambda x: os.path.isdir(x) and (
         x not in EXCLUDE_DIRS), os.listdir('.')))  # list courses
 
