@@ -36,6 +36,6 @@ jobs:
         run: ./update.py
       
       - name: Deploy docs
-        run: mhausenblas/mkdocs-deploy-gh-pages@nomaterial
+        uses: mhausenblas/mkdocs-deploy-gh-pages@nomaterial
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
