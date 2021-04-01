@@ -1,0 +1,130 @@
+ 
+The first priority*** - to finish all homework by yourself, including small tasks maybe not in written, such as saying meta-characters in English, running demonstration programs and etc.
+
+作业文档在最晚在(01/29)交到学在浙大，但建议在考试前要完成所有作业中的实验，这样对考试内容更有把握。
+
+教师作业检查和答疑时间：现暂定01/25下午，老生仪楼606室，看是否和同学课程时间冲突。看情况决定是否另外再安排一次。答疑只解答同学复习时遇到的具体问题哦，考试的内容不涉及。但考试的英文题目必须要和作业题目一样读懂，精确理解后再回答。
+
+ICCAD Overview
+IC thread: Shockley Lab -> Fairchild -> Intel
+PC/OS thread: Apple -> IBM -> Microsoft -> Linux
+Big-3 of EDA: Synopsys/Cadence/Mentor Graphics
+ICCAD vs. EDA, subtle difference?
+
+A difficult question in previous years as an example.
+Link each person's name to the obviously relevant item(s) on the right. 
+Paul Allen		Apple
+Larry Ellison		C Language
+Steve Wozniak		Free Software Foundation / GNU
+Bill Joy		Intel
+Dennis Ritchie		Linux
+Richard Stallman	Microsoft 
+Ken Thompson		Oracle
+Linus Torvalds		Unix
+Gordon Moore		Fairchild
+Steve Jobs		Macintosh/NeXT
+Robert Noyce		gcc
+Bill Gates		vi
+
+Unix Overview
+Is Linux a kind of Unix? Why say GNU/Linux? GNU? GPL? GUI?
+unix_command -options arguments
+case sensitive
+Ubuntu, what is it?
+
+Getting Started
+uname -a; passwd; date
+alias rm='rm -i'
+who; who am i/whoami
+man/xman/info, conventional manual organization, reading manual
+more - space bar, b, q
+
+File System
+meanings of standard directories' names  /bin /dev /tmp /lib /etc /src
+A disk: superblock, inode, data block
+File tree: full path name/relative path name
+. and ..
+pwd/cd/mkdir/rmdir
+ls with its useful options: -altdR
+meaning of every field of 'ls -l' output
+pemissions/mode: rwx for user/group/other
+chmod/chown/chgrp, numerical(777) chmod 
+umask 022?
+cat/head/tail/more
+cp/mv/rm with options -f -i
+other commands on the slides: ln/unlink, find, gzip, wc, diff, grep
+other utilities such as file, which, sort, whatis/apropos
+saying source code line (with many meta characters) in English
+
+vi
+insert mode / command mode: command line mode
+h, j, k, l
+^F^B^D^U
+a, A, i, I, o, O
+/, ?, n, N
+dd, yy, p, 4dd10jp, u
+:wq, :q!
+:set all, :set number, :set nonumber
+:[]s/old_exp/new_exp/[g]
+:1,$-3s/Oct\./Nov./g 
+Regular Expression** - the basics and examples (meta-characters in REP)
+
+Shell
+echo $SHELL, sh<=>csh<=>bash
+meta-characters => the usages as wild cards on shell command line
+stdin, stdout, stderr (the mechanism of one-in, two-outputs)
+basic redirection operators < > >> | 2>, &> or >&, 
+tee
+export PATH=$PATH:.
+ps -l -ef
+kill -9 pid
+^Z / bg / fg / top / pstree / jobs
+#!Magic Symbol? how to use it?
+commands in samples, e.g.,
+(if -d) (if !-w)  if [`tty` != "console" ]
+diff $SYNOPSYS/admin/setup/$f $LIBX11 >& /dev/null
+
+Network
+TCP/IP, HTTP, FTP, LAN, DNS
+4 Layers: Application/Transport/Internetwork/Link&Physical
+real example for each layer? how a network basically works on such a layer?
+ping, hostname, cat /etc/hosts, ssh
+text-mode ftp commands: ls, !ls, pwd, cd, lcd, put, get, ascii, binary, mput, mget
+
+System Admin.
+su/sudo
+file = an inode + data blocks <= what happens when ls a file, cat a file?
+df -k vs. du -ks <=> superblock vs. inode; which is faster?
+mount/umount
+tar cvf/xvf/tvf
+NFS
+
+Purpose of X. X Window <=> M$ Windows? 
+X11R6, xterm, export DISPLAY=192.168.0.1:0.0
+Client/Server model <= Request/Reply
+X Events: examples?
+gcc demo_x.c -lX11
+
+Software development tools
+gcc -c -g -o tri.o triangle.c (-I?, -D?)
+gcc -g tri.o -lm (-L?)
+gdb
+touch
+a makefile rule
+target: dependencies
+	commands 
+make -n -f makefile.bit
+draw dependency graph for any makefile
+understand 2 makefiles in homework, and another in github
+understand every line of makefile in cube_wrong.tar, try to touch some files, and predict the result of running "make".
+git, source code version control concept
+
+C programming in Unix
+homework <= demo_x, cube_wrong, demo_bit, demo_fork, etc.
+
+TCL, Perl, Python => ??? languages
+TCL? TK?
+/usr/bin/wish: trying hello.tcl, trying browse.tcl
+
+Perl variable types: $, @, %
+running Perl demos, encourage to try Perl for homework
