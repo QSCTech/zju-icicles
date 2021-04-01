@@ -1,0 +1,47 @@
+Please CAREFULLY read the questions and follow instructions to answer.
+
+Problem 1.
+Write a shell script (must use vi) that displays the following menu and prompts for one-character input (i.e., '1' - '7' or 'q') to invoke a menu option, as shown.
+
+1. List all (including hidden) files in /usr and its sub-directories in long format
+2. List only hidden files in /usr and its sub-directories in long format
+3. Input a name, report whether it is a file, a user, a device, a command, or nobody  
+4. Input a file name, if the file is "un-writeable", try to change it to "writeable" and report whether succeed
+5. Read in a file name, show it in hexadecimal format if you have executable permission
+6. Let '/usr/bin/ftp' automatically download "1KB.zip" from ftp://speedtest.tele2.net   用网页打开可以打开, open speedtest.tele2.net 不要加ftp,不然登录不上去
+7. *Display the process running on this computer who is the deepest-low in ‘pstree’
+q. Quit
+
+The program should allow the user to try any option any number of times and show the above menu every time after an operation, and it would quit until user gives option q as input. Option (3), (4) and (5) prompt the user to input first. Option (7) is not mandatory.
+
+
+Problem 2.
+Find "demo_inout.c" from our demo bundle, try to build by "gcc -o demo_inout demo_inout.c", run the resulted executable "demo_inout", read input from a file, and in the same time, send two outputs to two separate files. Figure out the mechanism for stdin, stdout and stderr redirection.
+
+
+Problem 3.
+Write a shell script 'pingsort' (must use vi) that takes a whole list of host names as command line arguments. T
+he script pings each host 5 times and reports the average responding time of each host in the order of the delays
+ (unreachable addresses are sorted by their IP addresses).
+
+The following is a running sample,
+
+$./pingsort.sh wikipedia.org www.sina.com.cn www.zju.edu.cn www.cnn.com www.google.com
+
+www.zju.edu.cn @ 10.203.4.199 @ 6.674 ms
+www.sina.com.cn @ 67.172.201.194 @ 11.642 ms
+www.cnn.com @ 151.101.16.73 @ 192.652 ms
+
+www.google.com @ 93.46.8.89 is unreachable
+wikipedia.org @ 198.34.26.96 is unreachable
+
+The program should be able to take unlimited number of arguments (not only 5 sites as in the sample above).
+
+
+Problem 4. (OPTIONAL)
+Visit http://www.bing.com, and download a cool background image from this site.
+ (yes, manually) Then, read manuals for command "wget", 
+command "sed" or "awk" and command "cron". 
+With the help of these commands and other utilities we have learned,
+ try to write some shell programs which can be used to automatically 
+visit www.bing.com every noon to download a background image.
