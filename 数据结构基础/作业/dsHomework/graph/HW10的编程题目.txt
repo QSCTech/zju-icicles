@@ -1,0 +1,111 @@
+是流量，是容量
+在Ford-Fulkerrson方法的每次迭代中，寻找某条增广路径p，
+然后使用p来对流f进行修改（增加）。我们不断地在图中寻找增广路径，并依据来增大f的值，直到图中不含增广路径。
+
+在第一次找到增广路之后，在把路上每一段的容量减少delta的同时，也把每一段上的反方向的容量增加delta
+https://blog.csdn.net/u014679804/article/details/47016513
+
+增广路径p为残留网络Gf中从s到t的一条简单路径。根据残留网络的定义，在不违反容量限制的条件下，G中所对应的增广路径上的每条边(u,v)可以容纳从u到v的某额外正网络流。
+而能够在这条路径上的网络流的最大值一定是p中边的残留容量的最小值。
+二、最小割问题
+
+定义：找到一个最小capacity的 cut。
+  a.在给定的流网络G=(V,E)中，设f为G中的一个流，并考察一对顶点u，v∈V，在不超过容量c(u,v)的条件下，
+从u到v之间可以压入的额外网络流量，就是(u,v)的残留容量，
+就好像某一个管道的水还没有超过管道的上限，那么就这条管道而言，就一定还可以注入更多的水。
+残留容量的定义为：cf(u,v)=c(u,v)-f(u,v)。而由所有属于G的边的残留容量所构成的带权有向图就是G的残留网络。
+
+  残留网络中的边既可以是E中边，也可以是它们的反向边。只有当两条边(u,v)和(v,u)中，至少有一条边出现在初始网络中时，边(u,v)才会出现在残留网络中。
+struct Edge{//边类
+    int from,to,cap,flow;
+    Edge(int f,int t,int c,int fl):from(f),to(t),cap(c),flow(fl) {}  // 构造方法
+};
+
+
+
+本题是PAT上顶级1003，考察的知识点其实只有一个，最大流问题。
+用基于广度优先搜索的Edmonds-Karp算法求解。题目意思就是说求解最多能从地球站发送出去的最大人数，
+在到达目的星球（MAR）上途径每一个行星（不包括MAR）上都没有收留多余游客的能力，到达的游客必须运送出去。
+那么可以将EAR视为源点s，MAR视为汇点，是一个单源点单汇点的最大流问题。代码如下：
+https://blog.csdn.net/richenyunqi/article/details/86756528
+#include<iostream>
+#include<map>
+#include<vector>
+#include<string.h>
+#include<queue>
+#define INT_MAX 99999
+using namespace std;
+struct Edge{//边类
+    int from,to,cap,flow;
+    Edge(int f,int t,int c,int fl):from(f),to(t),cap(c),flow(fl) {}  // 构造方法 
+};
+map<string,int>trans;//将字符串转换为数字，由0开始编号
+vector<Edge>edges;//储存边
+vector<int>graph[1005];//整个图，其中graph[i][j]表示结点i的第j条边在edges数组中的序号
+int a[1005],p[1005];//a数组表示源点到结点a[i]的残量,p数组表示最短路树上到达结点p[i]的边在edges数组中的序号
+void insertEdge(string&from,string&to,int cap){//插入边，起点为from，终点是to，容量为cap
+    if(trans.find(from)==trans.end())//将起点转换为数字编号
+        trans.insert({from,trans.size()});   // 把字符串转化为数字, 编号为trans.size()
+    if(trans.find(to)==trans.end())//将终点转换为数字编号
+        trans.insert({to,trans.size()});
+    int f=trans[from],t=trans[to];//获取起点、终点的数字编号
+    graph[f].push_back(edges.size());//在图中插入该边 ,edges.size() 就是在edges vector中的序号.
+    edges.push_back(Edge(f,t,cap,0));
+    graph[t].push_back(edges.size());//在图中插入该边的反向边 graph[t][j]表示结点t的第j条边在edges数组中的序号
+    edges.push_back(Edge(t,f,0,0));
+}
+
+int MaxFlow(int s,int t){//最大流算法,s为源点,t为汇点
+    int flow=0;//最大流量
+    while(true){
+        memset(a,0,sizeof(a));//将源点到达每个结点的残量初始化为0
+        //广度优先遍历查找从源点到达汇点的增广路
+        queue<int>q;
+        q.push(s);
+        a[s]=INT_MAX;//起点的残量置为无穷大
+        while(!q.empty()){
+            int x=q.front();//front() 返回第一个元素(队顶元素)
+			q.pop();//pop() 弹出队列的第一个元素(队顶元素)，注意此函数并不返回任何值
+            for(int i:graph[x]){//遍历x节点的所有边 for (int j:i) { //这里i 是数组，j不是下标了，j是来接受每一个数组i遍历出来的值的。
+                Edge&e=edges[i];
+                if(a[e.to]==0&&e.cap>e.flow){//当前边的终点的残量为0且容量大于流量
+                    p[e.to]=i;//更新到达该终点的边的编号
+                    a[e.to]=min(a[x],e.cap-e.flow);//更新源点到该终点的残量
+                    q.push(e.to);//压入队列push(x) 将x压入队列的末端
+                }
+            }
+            if(a[t]!=0)//终点的残量不为零，跳出循环
+                break;
+        }
+        if(a[t]==0)//终点的残量为零，表示不存在增广路了，跳出外层死循环
+            break;
+        for(int u=t;u!=s;u=edges[p[u]].from){//从汇点向前遍历增广路经，更新每条增广路augmenting path的流量
+            edges[p[u]].flow+=a[t];
+            edges[p[u]^1].flow-=a[t];
+        }
+        flow+=a[t];//增加最大流量
+    }
+    return flow;
+}
+
+int main(){
+    string from,to;
+    int n,cap;
+    cin>>from>>to>>n;
+    trans[from]=0;
+    trans[to]=1;
+    while(n--){
+        cin>>from>>to>>cap;
+        insertEdge(from,to,cap);
+    }
+    printf("%d",MaxFlow(0,1));
+    return 0;
+}
+
+PAT顶级 1016 Uniqueness of MST (35分)（最小生成树唯一性判断）
+思路：
+
+1.用并查集实现kruskalkruskal算法，
+最后查询一共有几个集合即可完成判断图是否联通以及计算不连通状况下有几块连通分量的工作；
+
+2.根据kruskalkruskal算法的贪心思想，我们每次考虑未使用过的边里权值最小的那一条边，如果这条边两边的端点不属于同一集合，就合并它们。那这种思想里什么时候会出现不唯一性呢？即你当前遍历的这条边可以联通两个集合，我在未遍历的边里有权值相等的边也联通这两个集合，当且仅当此时会产生不唯一性；

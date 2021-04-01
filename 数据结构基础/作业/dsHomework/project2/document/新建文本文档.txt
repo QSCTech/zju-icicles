@@ -1,0 +1,54 @@
+#include<iostream>
+using namespace std;
+const int INF = 0x3fffffff;
+int Vertexnum, G[1001][1001], d[1001], query[1001];
+bool Dijkstra(int root){
+    fill(d, d+1001, INF);
+    bool vis[1001] = {false};
+    d[root] = 0;
+    for (int i = 0; i < Vertexnum; i++){// 
+        int u, min = INF;
+        for (int j = 1; j < Vertexnum + 1; j++)
+            if (d[j] < min && !vis[j])
+                min = d[j]; 		//若符合，则以 query 当前点为中介 更新邻接点距原点的距离
+        if (d[query[i]] == min)   //如果查询的这个是最近的. 
+			u = query[i];
+        else 
+			return false;//若不符合，说明此时不应当以 query 当前点为中介继续 Dijkstra，即此 query 非所要求的 Dijkstra sequence，返回 false
+        vis[u] = true;  //这个点已经查过了. 可以用 0 和1来标记, 1 表示记过了 static vis[1001] 
+        for (int j = 1; j < Vertexnum + 1; j++)
+            if (G[u][j] && !vis[j] && d[j] > d[u] + G[u][j])
+                d[j] = d[u] + G[u][j]; //遍历一遍和他相连的节点 
+ //利用for循环更新节点. 时间复杂度V^2 
+    }
+    return true;
+}
+int main()
+{
+    int m, u, v, distance, k;
+    //scanf("%d%d", &Vertexnum, &m);
+    Vertexnum = 5, m = 7;
+G[1][2] = G[2][1] = 2;
+G[1][5] = G[5][1] = 1;
+G[2][3] = G[3][2] = 1;
+G[2][4] = G[4][2] = 1;
+G[2][5] = G[5][2] = 2;
+G[3][5] = G[5][3] = 1;
+G[3][4] = G[4][3] = 1;
+//    for (int i = 0; i < m; i++){
+//        scanf("%d%d%d", &u, &v, &distance);
+//        G[u][v] = G[v][u] = distance;
+//    }
+    //scanf("%d",&k);
+    k = 1;
+	for (int i = 0; i < k; i++){
+        for (int j = 0; j < Vertexnum; j++) scanf("%d", &query[j]);//每次循环检查 query 的一位
+        bool isD = Dijkstra(query[0]);//查 当前距离原点最近 的 未访问点 与原点的距离
+        printf("%s\n", isD ? "Yes" : "No");
+    }
+    return 0;
+}
+
+
+
+https://blog.csdn.net/allisonshing/article/details/100643092
