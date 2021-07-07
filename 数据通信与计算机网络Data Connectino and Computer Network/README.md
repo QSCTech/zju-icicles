@@ -6,6 +6,8 @@
 
 不过很多工信同学作为个性.
 
+欧翌昕笔记：https://github.com/OE-Heart/Notes-for-Computer-Network
+
 考试名词解释, 判断, 选择, 填空
 
 考试要带铅笔橡皮尺子,  画拥塞窗口.
