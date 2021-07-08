@@ -2,6 +2,10 @@
 
 https://www.cnblogs.com/masbay/p/11627727.html
 
+卸载ubuntu出现故障 - 水dong方块的文章 - 知乎 https://zhuanlan.zhihu.com/p/350698814
+
+配置docker - 水dong方块的文章 - 知乎 https://zhuanlan.zhihu.com/p/350744158
+
 安装它的重要因素是分割磁盘。
 
 首先，您应该为Ubuntu分配空间。 您需要在Windows中执行此操作。在磁盘管理中，应压缩磁盘。

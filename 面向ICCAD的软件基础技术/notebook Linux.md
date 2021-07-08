@@ -113,7 +113,7 @@ alias rm='rm -i' 取一个别名 默认删除的时候提示.
 
 find -name 'XErr*' 
 
-find  -iname se.java  -iname不区分大小写.
+find  -iname se.java  (-iname不区分大小写.
 
 示例：① 列出当前目录及子目录下所有文件和文件夹: `find .`；
 
@@ -141,7 +141,7 @@ gvim可以有可视化的软件.
 
   3. 欲退出 Vim 编辑器，请输入 <ESC>   :q!   <回车> 放弃所有改动。
                       或者输入 <ESC>   :wq   <回车> 保存改动。
-小提示  输入 q: 可以显示历史记录.
+                    小提示  输入 q: 可以显示历史记录.
 
   4. 在正常模式下删除光标所在位置的字符，请按： x
 
@@ -705,7 +705,6 @@ scp -P 1234 -r test user@192.168.0.101:/home/data
 4. 将 文件/文件夹 从远程 Ubuntu 机拷至本地(scp)
    `$scp -r username@192.168.0.1:/home/username/remotefile.txt`
 
-   
    
 
 ### 系统管理
