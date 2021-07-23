@@ -1,3 +1,4 @@
+- https://github.com/yujincheng08/ZJU-UGCourse
 - https://github.com/YingChengJun/CourseMaterialOfSE
 - https://github.com/Zhang-Each/CourseNoteOfZJUSE
 - https://github.com/IMMORTAL23/ZJU-Course_info
