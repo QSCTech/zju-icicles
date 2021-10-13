@@ -60,7 +60,7 @@ https://github.com/riscv/riscv-tools/issues/287
 
 https://docs.boom-core.org/en/latest/sections/parameterization.html
 
-hzp 乘法器用scala编译了,
+乘法器用scala编译了,
 
 estbench里面有mul是因为riscv32 tool的架构选的是rv32imc,
 
@@ -73,8 +73,6 @@ estbench里面有mul是因为riscv32 tool的架构选的是rv32imc,
 我需要  看project1 ,这里有
 
 最好能弄出这个4-Designing-a-custom-RISC-V-core-using-Chisel-Alex-Badicioiu-NXP
-
-
 
 # 一些QA
 
@@ -90,3 +88,4 @@ estbench里面有mul是因为riscv32 tool的架构选的是rv32imc,
 
 1. 怎么精简指令集:    有一个生成riscv核心, 应该可以配置一下让他只生成需要的指令.  我们是打算精简数据通路, 然后
 2. 怎么make
+
