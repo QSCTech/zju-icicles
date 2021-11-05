@@ -492,22 +492,14 @@ int()方法将字符转换成ASCII码
 
 #### 报错
 
-【python报错】Non-ASCII character '\xe5' 
+【python报错】`Non-ASCII character '\xe5' `
 
 解决方法：
 在Python源文件的最开始一行，加入一句：
 
 coding=UTF-8 或者 -*- coding:UTF-8 -*-
 
-[python报错]"IndentationError: unexpected indent"的两三解决方法
-
-这个是缩进错误，我们可以通过下面几步解决他：
-首先检查代码是不是有错误的索引
-如果没有，全都正确，可以看看是不是使用'''进行了整段的注释，如果是，一定要保证其与上下相邻代码缩进一致，而#就无所谓
-如果还有错，使用notepad++打开文件，选择视图->显示符号->显示空格和制表符，然后查看是不是有空格与制表符混用的情况
 vim可以用: set list 显示空格和制表符.
-unexpected indent 就是说“n”是一个“意外的”缩进。也就是说，这里的问题就是指“n”是一个意外的缩进。通过查看源代码可知这里的确是缩进了一个字符位。
-据此推断，我们把这句话的缩进取消，也就是顶格写，
 
 [python报错]出现了AttributeError: object 'L2Cache' has no attribute 'connectCPUSideBus'
 
@@ -520,10 +512,6 @@ class FooChild(FooParent):
     def __init__(self):
          super(FooChild,self)
  #首先找到 FooChild 的父类（就是类 FooParent），然后把类 FooChild 的对象转换为类 FooParent 的对象
-
-TypeError: 'type' object is not subscriptable
-
-该对象是不可进行下标操作的.NameError: name 'List' is not defined
 
 #### Sccons
 
