@@ -1,4 +1,0 @@
-ToolSet: 15.0 (local)@C:\Program Files (x86)\Microsoft Visual Studio\2017\Professional
-Options: 
-
-Options:
