@@ -96,3 +96,46 @@ foreach
  names zip scores res1: Array[(String, Int)] = Array((zhangsan,60), (lisi,70), (wangmazi,90))
 
 我们调用poke来驱动输入，调用expect来检查输出。如果不使用expect来比较期望值的话（没有断言的话），也可以使用peek来读出输出值。
+
+## chisel
+
+Chisel开发的“Demo”级RISC-V开源项目
+
+Rocket-core是一个标准的五级流水处理器，它支持开源RV64GC RISC-V指令集，并使用Chisel硬件构造语言编写。对于浮点运算，Rocket利用Berkeley的Chisel浮点运算单元实现。Rocket-core其实就是berkeley写的chisel的cpu代码。
+
+rocket chip看样子不太一样？
+
+开源处理器Rocket的源代码文件作用说明: https://www.cnblogs.com/god_like_donkey/p/7876070.html
+
+Chisel教程：https://blog.csdn.net/qq_34291505/article/details/86744581
+
+Chisel教程包括Scala的语法和例子，以及Chisel的语法。
+
+模块化描述，can be converted to Verilog using ChiselStage
+
+学习chisel, 下面是总仓库
+
+[chipsalliance/chisel3](https://github.com/chipsalliance/chisel3#getting-started)
+
+### **Bootcamp Interactive Tutorial**
+
+The **[online Chisel Bootcamp](https://mybinder.org/v2/gh/freechipsproject/chisel-bootcamp/master)** is the recommended way to get started with and learn Chisel. **No setup is required** (it runs in the browser), nor does it assume any prior knowledge of Scala.
+
+The **[classic Chisel tutorial](https://github.com/ucb-bar/chisel-tutorial)** contains small exercises and runs on your computer.
+
+If you like a textbook to learn Chisel and also a bit of digital design in general, you may be interested in reading [Digital Design with Chisel.](http://www.imm.dtu.dk/~masca/chisel-book.html) It is available in English, Chinese, Japanese, and Vietnamese.
+
+数据类型
+
+![https://raw.githubusercontent.com/chipsalliance/chisel3/master/docs/src/images/type_hierarchy.svg?sanitize=true](https://raw.githubusercontent.com/chipsalliance/chisel3/master/docs/src/images/type_hierarchy.svg?sanitize=true)
+
+:=　表示“定义为”
+
+In Chisel provides two constructs to group related signals
+
+- A Bundle to group signals of different type.
+- A Vec represents the collection of signal of same type.
+
+[chisel3 3.4.3 - chisel3](https://www.chisel-lang.org/api/latest/chisel3/index.html)
+
+https://www.cnblogs.com/tonglin0325/p/8884470.html这个可以用来下载sbt修改sbt的源用华为云可以成功安装https://repo.huaweicloud.com/java/jdk/8u181-b13/

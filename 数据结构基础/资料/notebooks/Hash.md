@@ -1,7 +1,5 @@
 # Hash
 
-
-
 符号表 symbol table = 字典, 编译器看看字典里类型. 比如int a.
 
 不用把所有关键字都作为key,而是 存关键字的hash值作为key.
@@ -13,8 +11,6 @@ collision:  两个hash到一个key了.
 loading density factor λ = 10/(26*2)   26 是 bucket.  2 是slot个数.
 
 hash 应该是 unbiased ,uniform, 最好每个概率相等. 
-
-
 
 ### 处理哈希碰撞（hash collision）的方法
 
