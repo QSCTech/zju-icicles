@@ -69,5 +69,31 @@ make run 做了什么:
 
 
 
+sodor内部代码
 
+All processors talk to a simple scratchpad memory (asynchronous, single-cycle), with no backing outer memory (the 3-stage is the exception - its scratchpad is synchronous). Programs are loaded in via a Host-target Interface (HTIF) port (while the core is kept in reset), effectively making the scratchpads 3-port memories (instruction, data, HTIF).
+
+https://github.com/ucb-bar/riscv-sodor/blob/master/doc/lab1.pdf 这个很详细
+
+chipyard里没有sodor源码, 我clone了仓库, 但是不知道怎么编译. 也不知道怎么用.  看了看makefile 和 readme2 就有点懂了, 但是还是不太一样, 不知道为啥ucb的没有 emulator , 另一个仓库  passlab的有emulator
+
+make的问题:
+
+没有 32位工具链. make sodor还是要32位工具链?
+
+不过我好像有toolchain,应该可以编译一个工具链.
+
+https://github.com/passlab/riscv-sodor 有emulator，个文档比较详细
+
+https://github.com/riscvarchive/riscv-fesvr 废弃了, it has been absorbed into the Spike repository
+
+可以和https://github.com/ucb-bar/chisel.git  Build together with Chisel sources,可以If you are a developer of Chisel and are using sodor cores to test your changes to the Chisel repository
+
+https://github.com/chipsalliance/chisel3  这个是chisel 的仓库
+
+rocker chip里面有chisel3, chipyard/tools里也有  ,
+
+https://github.com/riscv/riscv-tests/issues 讲怎么测试
+
+https://github.com/riscvarchive/riscv-fesvr  This repository is deprecated; it has been absorbed into the Spike repository
 
