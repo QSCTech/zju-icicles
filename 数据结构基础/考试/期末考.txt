@@ -1,0 +1,19 @@
+期末考 40%, 
+quiz 10%, 扣3.3分
+期中考,15% .会加上去看看, 下去看看.
+平时成绩 扣1到两分
+lab  25%
+期末考,一个编程(函数)题,仔细看看考试须知.
+
+ left ← 2i
+ right ← 2i + 1
+ largest ← i
+ if left ≤ heap_length[A] and A[left] > A[largest] then:
+ largest ← left
+ if right ≤ heap_length[A] and A[right] > A[largest] then:
+ largest ← right
+ if largest ≠ i then:
+ swap A[i] ↔ A[largest]
+ Max-Heapify(A, largest)
+
+ 
