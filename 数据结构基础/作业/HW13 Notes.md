@@ -1,4 +1,4 @@
-<img src="/Users/naoyuki/Library/Application%20Support/typora-user-images/image-20211219235340718.png" alt="image-20211219235340718" style="zoom:50%;" />
+<img src="https://s2.loli.net/2021/12/27/Vx16iBSNXIslfT8.png" alt="image-20211219235340718" style="zoom:50%;" />
 
 Quicksort is a recursive sorting method.
 
@@ -32,7 +32,7 @@ No. Array with less inversions are great for insertion sort.
 
 
 
-### 2.1 Solved: The key is after each run, it’s guaranteed to be at its final place, but its relative comparison depends on implementation<img src="/Users/naoyuki/Library/Application%20Support/typora-user-images/image-20211220002245029.png" alt="image-20211220002245029" style="zoom:50%;" />
+### 2.1 Solved: The key is after each run, it’s guaranteed to be at its final place, but its relative comparison depends on implementation<img src="https://s2.loli.net/2021/12/27/8nb9fJahEI1Oplv.png" alt="image-20211220002245029" style="zoom:50%;" />
 
 A run menas “Every Element not yet at its final position”. After the first run, there will be one element sorted in its final place. The second run, there will be 1～2 elements at its final place. One in left to the original pivot and one in right to the original pivot.
 
