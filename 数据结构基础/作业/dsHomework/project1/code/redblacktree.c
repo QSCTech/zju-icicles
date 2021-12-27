@@ -1,0 +1,117 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <math.h>
+#define MAX(a,b) (a>b)?a:b
+
+typedef int ElementType;
+typedef enum{false,true} bool;
+
+typedef struct Tree *Tree;
+struct Tree {
+    ElementType Element;
+    Tree  Left;
+    Tree  Right;
+}BiTNode;
+
+Tree BuildTree(Tree root,int x); 
+
+	/*build a Tree from x */
+Tree BuildTree(Tree root,int x){
+	if(root == NULL){
+		root = (Tree)malloc(sizeof(BiTNode));
+		root->Element = x;
+		root->Left  = NULL;
+		root->Right = NULL;
+	}
+	else if (abs(x)< abs(root->Element)){
+		root->Left = BuildTree(root->Left,x);  //recursive build root.left 
+	}
+	else{
+		root->Right = BuildTree(root->Right, x);//recursive build root.right 
+	}
+	return root;
+}
+
+	/* property 4, There can be no two consecutive red nodes on all paths from each leaf to the root) */
+		
+	
+bool Pro4(Tree root){
+	//printf("judge property 4  begin\n");
+	if(root == NULL){
+	//	printf("root == NULL");
+		return true;
+	}
+	if(root->Element < 0){       //if this node is red
+	//		printf("root->Element < 0 red node\n");
+		if(root->Left != NULL){
+	//		printf("root.left.val = %d\n",root->Left->Element);
+			if(root->Left->Element < 0) return false;
+		}
+		if(root->Right != NULL){
+	//		printf("root.right.val = %d\n",root->Right->Element);
+			if(root->Right->Element < 0) return false;
+		}
+	//		printf("red node is checked \n");
+	}
+	return Pro4(root->Left) && Pro4(root->Right); //red node we judge left and right, Recursive judge root.right and root.left property 4 
+} // don't have right or left node is red
+
+
+	/* get  from the node to leaf node will go through how many black node  */
+int getHeight(Tree root ) {
+		if(root == NULL) 	 	
+			return 0 ;
+		int leftHeight = getHeight(root->Left);  //recursive get root.left height  
+		int rightHeight = getHeight(root->Right);//recursive get root.right height  
+		if(root->Element > 0 )  //if root is black node
+			return MAX(leftHeight,rightHeight) +1;
+		else 
+			return MAX(leftHeight,rightHeight);
+}
+
+	/* judge property 5, whether or not any node go to leaf node through same number black node */
+	
+bool Pro5(Tree root ) {
+		if(root == NULL) 	
+			return true;
+		if( getHeight(root->Left) == getHeight(root->Right) ) {
+			return Pro5(root->Left) && Pro5(root->Right);  //recursive judge root.left's Property5 and  root.right's property 5 
+		}
+		return false;
+	}
+	
+		/*  judge print a Yes or no*/
+ void judge(Tree root ) {
+		if(root == NULL) {
+			printf("No\n");
+		}
+		if(root->Element < 0 ) {
+			printf("No\n");	// property 2 ,root is black,value >0
+		}
+		else {
+			//property 4 and 5 
+			if(Pro4(root) && Pro5(root)) {
+				printf("Yes\n");
+			}
+			else {
+				printf("No\n");
+			}
+		}
+	}
+	
+
+void main(){
+   	int n = 0, i = 0,j = 0, k = 0,tmp = 0;
+	scanf("%d", &n );
+	Tree root1 = NULL; 
+	    for(i = 0;i < n;i++) {  // judge n trees
+	    	root1 = NULL;  
+	    	scanf("%d", &k );  // k is number of the  tree's node
+	    	for(j = 0;j < k;j++) {
+	    		scanf("%d", &tmp ); 
+	    		root1 = BuildTree(root1,tmp);
+			}
+	    	judge(root1);
+		}
+}
+
