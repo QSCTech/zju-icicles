@@ -1,4 +1,4 @@
-### 2-1![image-20211124214000660](/Users/naoyuki/Library/Application%20Support/typora-user-images/image-20211124214000660.png)
+### 2-1![image-20211124214000660](https://s2.loli.net/2021/12/27/xitOPyJ3fmYR4BI.png)
 
 (2,3)->(3,5)->(3,4)->(5,6)->(1,2)
 
