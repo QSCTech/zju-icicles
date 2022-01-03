@@ -1,0 +1,89 @@
+//Start from 0, no overlapping part. 
+4 3
+aaaaaaa 00:00:00
+aaaaaaa 00:00:05
+bbbbbbb 00:00:10
+bbbbbbb 00:00:15
+00:00:03
+00:00:06
+00:00:15
+5
+6
+0
+0
+
+//Start from 0, with overlapping part.
+8 7
+aaaaaaa 00:00:00
+aaaaaaa 00:00:08
+bbbbbbb 00:00:08
+bbbbbbb 00:00:16
+ccccccc 00:00:16
+ccccccc 00:00:46
+ddddddd 00:00:50
+ddddddd 00:00:51
+00:00:08
+00:00:09
+00:00:01
+00:00:02
+00:00:15
+00:00:30
+23:59:59
+30
+25
+22
+47
+43
+16
+1
+0
+
+//Start from 0, and 23:59:59 is included.
+4 7
+aaaaaa 00:00:00
+aaaaaa 00:00:20
+bbbbbbb 23:59:50
+bbbbbbb 23:59:59
+00:00:19
+00:00:20
+00:00:21
+00:00:09
+00:00:10
+00:00:11
+00:00:12
+20
+2
+1
+0
+13
+11
+10
+9
+
+//Overlapping, and all the time is included.
+10 7
+aaaaaa 00:00:00
+aaaaaa 00:00:20
+bbbbbbb 23:59:50
+bbbbbbb 23:59:59
+ccccccc 00:00:10
+ccccccc 18:00:30
+ccccccc 20:31:31
+ccccccc 23:59:55
+ddddddd 17:00:01
+ddddddd 21:40:40
+01:00:00
+02:00:00
+06:00:00
+12:00:00
+18:00:00
+23:00:00
+23:59:59
+86399
+82800
+79200
+64800
+43200
+21600
+3600
+1

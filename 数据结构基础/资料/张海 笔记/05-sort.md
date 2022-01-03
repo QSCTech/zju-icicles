@@ -6,9 +6,24 @@
 
 为避免重复比较，一般分组元素个数取素数，如 2^k - 1。
 
+```cpp
+	for (int gap = 9 / 2; gap > 0; gap /= 2)//希尔排序
+		for (int i = gap; i < 9; ++i)
+			for (int j = i - gap; j >= 0 && arr[j] > arr[j + gap]; j -= gap)
+				swap(arr[j], arr[j + gap]);
+```
+
+
+
+
+
+
+
 ## 堆排序（Heap Sort）
 
 使用最大堆，将 DeleteMin 返回最小元素放置在数组末尾。
+
+
 
 ## 快速排序
 
