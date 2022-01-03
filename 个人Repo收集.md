@@ -1,0 +1,15 @@
+- https://github.com/yujincheng08/ZJU-UGCourse
+- https://github.com/YingChengJun/CourseMaterialOfSE
+- https://github.com/Zhang-Each/CourseNoteOfZJUSE
+- https://github.com/IMMORTAL23/ZJU-Course_info
+- https://github.com/yangyueren/course_materials_of_cs
+- https://github.com/jiangshibiao/Course-Review
+- https://github.com/haochengxia/ZJU-CS-3_1
+- https://github.com/PumpkinDemo/ZJU-courses
+- https://github.com/LBruyne/ZJU-SE-CourseMaterial
+- https://github.com/yunwei37/ZJU-CS-GIS-ClassNotes
+- https://github.com/toooooodo/ZJU-SE-Notes
+- https://github.com/yorktownting/ZJUGIS_SurvivalGuide
+- https://github.com/tianyilt/ecust-CourseShare
+- https://github.com/tianyilt/ecnu-PGCourseShare
+- https://github.com/beiyuouo/hainanu-course-comments(有部分利用GitHub Actions关于该项目的优化内容，例如增加评论，自动release，打包下载，CDN加速，建立镜像等)
