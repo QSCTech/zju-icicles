@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper
+
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="cardMapper">
+
+    <select id="findcard" resultType="org.lab5.Card">
+        select *   from Records where cid = #{cid}
+    </select>
+    <select id="showRecord" resultType="org.lab5.Record">
+        select *
+        from Records
+        where  Records.cid  = #{cid}
+    </select>
+    <insert id="insertOne" parameterType="org.lab5.Card">
+        INSERT INTO LibCard (cid, `name`, `unit`, `category`)
+        VALUES (#{cid},
+                #{name},
+                #{unit},
+                #{category})
+    </insert>
+    <!--删除-->
+    <delete id="deleteOne" >
+        delete from LibCard where cid=#{cid}
+    </delete>
+
+</mapper>

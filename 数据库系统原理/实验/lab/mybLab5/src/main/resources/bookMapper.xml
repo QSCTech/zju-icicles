@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper
+
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="bookMapper">
+
+    <select id="findBooks" resultType="org.lab5.entity.Book">
+        select *
+        from Book
+        <where>
+            1=1
+            <if test="ISBN!=null">
+                and ISBN like #{ISBN}
+            </if>
+            <if test="Category!=null">
+                and Category like #{Category}
+            </if>
+            <if test="Title!=null">
+                and Title like #{Title}
+            </if>
+            <if test="Publisher!=null">
+                and Publisher like #{Publisher}
+            </if>
+            <if test="Author!=null">
+                and Author like #{Author}
+            </if>
+            <if test="Year> 0 ">
+                and pubyear &gt; #{Year}
+            </if>
+            <if test="Year2 > 0">
+                and pubyear &lt; #{Year2}
+            </if>
+            <if test="Price > 0">
+                and Price &gt; #{Price}
+            </if>
+            <if test="Price2 > 0">
+                and Price &lt; #{Price2}
+            </if>
+        </where>
+    </select>
+    <select id="showBooks" resultType="org.lab5.entity.Book">
+        select *
+        from Book
+        where ISBN = #{ISBN}
+    </select>
+    <update id="borrowbook">
+        update book
+        set Inventory = Inventory - 1
+        where ISBN = #{ISBN}
+    </update>
+    <update id="returnbook">
+        update book
+        set Inventory = Inventory + 1
+        where ISBN = #{ISBN}
+    </update>
+    <insert id="insertBook" parameterType="org.lab5.entity.Book">
+        INSERT INTO Book(`ISBN`, `Category`, `Title`, `Publisher`, pubyear, `Author`, Price, Total, Inventory)
+        VALUES (#{ISBN},
+                #{Category},
+                #{Title},
+                #{Publisher},
+                #{Year},
+                #{Author},
+                #{Price},
+                #{Total},
+                #{Inventory})
+    </insert>
+
+</mapper>
