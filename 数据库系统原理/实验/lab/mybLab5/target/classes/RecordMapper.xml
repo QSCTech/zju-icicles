@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper
+
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="recordMapper">
+
+    <select id="showRecords" resultType="org.lab5.Record">
+        select *
+        from Records
+        where Records.cid = #{cid}
+    </select>
+    <insert id="insertOne" parameterType="org.lab5.Record">
+        INSERT INTO Records (`ISBN`, cid, BorrowTime, Due, AID)
+        VALUES (#{ISBN},
+                #{cid},
+                #{BorrowTime},
+                #{Due},
+                #{AID})
+    </insert>
+    <delete id="deleteOne" parameterType="org.lab5.Record">
+        delete
+        from Records
+        where ISBN = #{ISBN}
+          and cid = #{cid}
+          and BorrowTime = #{BorrowTime}
+          and Due = #{Due}
+          and AID = #{AID}
+    </delete>
+
+    <select id="findNearestDue" resultType="org.lab5.Record">
+        select *
+        from Records
+        where Due = ( (select min(Due) from Records where ISBN = #{ISBN}))
+    </select>
+
+</mapper>
