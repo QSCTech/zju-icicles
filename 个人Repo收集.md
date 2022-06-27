@@ -10,6 +10,7 @@
 - https://github.com/yunwei37/ZJU-CS-GIS-ClassNotes
 - https://github.com/toooooodo/ZJU-SE-Notes
 - https://github.com/yorktownting/ZJUGIS_SurvivalGuide
+- https://github.com/palemoons/ZJU-GIS-Raid-Guide
 - https://github.com/tianyilt/ecust-CourseShare
 - https://github.com/tianyilt/ecnu-PGCourseShare
 - https://github.com/beiyuouo/hainanu-course-comments
