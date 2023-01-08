@@ -1,0 +1,166 @@
+BODY {
+	SCROLLBAR-ARROW-COLOR: #c2ed9c; PADDING-BOTTOM: 0px; MARGIN: 0px; PADDING-LEFT: 0px; PADDING-RIGHT: 0px; SCROLLBAR-BASE-COLOR: #ffffff; FONT-FAMILY: 宋体; SCROLLBAR-HIGHLIGHT-COLOR: #c2ed9c; SCROLLBAR-SHADOW-COLOR: #ffffff; FONT-SIZE: 13px; SCROLLBAR-TRACK-COLOR: #e9fedc; SCROLLBAR-3DLIGHT-COLOR: #ffffff; PADDING-TOP: 0px; scrollbar-dark-shadow-color: #ffffff
+}
+SELECT {
+	BORDER-BOTTOM: medium none; BORDER-LEFT: medium none; PADDING-BOTTOM: 1px; BACKGROUND-COLOR: #d4f5ff; MARGIN: 0px; PADDING-LEFT: 1px; PADDING-RIGHT: 1px; FONT-FAMILY: 宋体; FONT-SIZE: 12px; BORDER-TOP: medium none; BORDER-RIGHT: medium none; PADDING-TOP: 1px
+}
+TABLE {
+	BORDER-BOTTOM: medium none; BORDER-LEFT: medium none; FONT-FAMILY: 宋体; FONT-SIZE: 13px; BORDER-TOP: medium none; BORDER-RIGHT: medium none
+}
+TR {
+	BORDER-RIGHT-WIDTH: 20px; FONT-FAMILY: 宋体; BORDER-TOP-WIDTH: 20px; BORDER-BOTTOM-WIDTH: 20px; BORDER-LEFT-WIDTH: 20px
+}
+TD {
+	FONT-FAMILY: 宋体
+    FONT-SIZE: 13px
+}
+.tr2 {
+	BACKGROUND-COLOR: #d4f5ff; FONT-FAMILY: 宋体; HEIGHT: 19px; FONT-SIZE: 13px
+}
+A:active {
+	COLOR: #000000; TEXT-DECORATION: none
+}
+A:link {
+	TEXT-DECORATION: none
+}
+A:visited {
+	COLOR: black; TEXT-DECORATION: none
+}
+TEXTAREA {
+	BORDER-BOTTOM: #235e9f 1px solid; BORDER-LEFT: #558eb7 2px solid; SCROLLBAR-BASE-COLOR: #ffffff; FONT-SIZE: 12px; BORDER-TOP: #558eb7 3px solid; BORDER-RIGHT: #235e9f 1px solid; scrollbar-dark-shadow-color: #ffffff
+}
+TEXTAREA INPUT {
+	BACKGROUND-COLOR: #d4f5ff; FONT-FAMILY: @宋体; FONT-SIZE: 12px
+}
+P {
+	FONT-SIZE: 13px
+}
+.tr13p {
+	BACKGROUND-COLOR: #e6f606; FONT-FAMILY: 宋体; FONT-SIZE: 13px
+}
+DIV {
+	FONT-SIZE: 13px
+}
+.tr1 {
+	TEXT-ALIGN: center; BACKGROUND-COLOR: #e6f606; FONT-FAMILY: 宋体; HEIGHT: 19px; FONT-SIZE: 13px; FONT-WEIGHT: 700
+}
+.tr12px {
+	FONT-SIZE: 12px
+}
+.tr13px {
+	FONT-SIZE: 13px
+}
+.clotd {
+	COLOR: #313ac7; FONT-SIZE: 13px
+}
+.htr {
+	HEIGHT: 20px
+}
+.gp {
+	FONT-FAMILY: 华文行楷; FONT-SIZE: 17px
+}
+.txt {
+	BORDER-BOTTOM: #235e9f 1px solid; BORDER-LEFT: #558eb7 2px solid; BACKGROUND-COLOR: #d4f5ff; FONT-SIZE: 12px; BORDER-TOP: #558eb7 2px solid; BORDER-RIGHT: #235e9f 1px solid
+}
+TT {
+	BACKGROUND-COLOR: #d4f5ff
+}
+TEXT {
+	BACKGROUND-COLOR: green
+}
+PLAINTEXT {
+	BACKGROUND-COLOR: blue
+}
+.tim {
+	BACKGROUND-COLOR: #d4f5ff; FONT-SIZE: 12px
+}
+.tr16px {
+	FONT-FAMILY: 宋体; FONT-SIZE: 14px
+}
+.trbg {
+	BACKGROUND-IMAGE: url(file:images/tab.jpg); HEIGHT: 18px
+}
+.ItemFont {
+	FONT-FAMILY: "华文新魏"; FONT-SIZE: 24px
+}
+.tr3 {
+	BACKGROUND-COLOR: #e6f606; FONT-FAMILY: 宋体; HEIGHT: 20px
+}
+.tr4 {
+	BACKGROUND-COLOR: #d4f5ff; HEIGHT: 19px
+}
+.btn1 {
+	BACKGROUND-IMAGE: url(../define/images1/addtype.gif); BORDER-BOTTOM: 0px; BORDER-LEFT: 0px; BACKGROUND-COLOR: transparent; WIDTH: 73px; BACKGROUND-REPEAT: no-repeat; HEIGHT: 22px; BORDER-TOP: 0px; CURSOR: hand; BORDER-RIGHT: 0px; PADDING-TOP: 4px
+}
+.btn2 {
+	BACKGROUND-IMAGE: url(../define/images1/addtype100.gif); BORDER-BOTTOM: 0px; BORDER-LEFT: 0px; BACKGROUND-COLOR: transparent; WIDTH: 100px; BACKGROUND-REPEAT: no-repeat; HEIGHT: 22px; BORDER-TOP: 0px; CURSOR: hand; BORDER-RIGHT: 0px; PADDING-TOP: 4px
+}
+.btn1Select {
+	BACKGROUND-IMAGE: url(../define/images1/btnchange.gif); BORDER-BOTTOM: 0px; BORDER-LEFT: 0px; BACKGROUND-COLOR: transparent; WIDTH: 73px; BACKGROUND-REPEAT: no-repeat; HEIGHT: 22px; BORDER-TOP: 0px; CURSOR: hand; BORDER-RIGHT: 0px; PADDING-TOP: 4px
+}
+.btnAct {
+	BACKGROUND-IMAGE: url(../define/images1/Actbtn0.gif); BORDER-BOTTOM: 0px; BORDER-LEFT: 0px; BACKGROUND-COLOR: transparent; WIDTH: 70px; BACKGROUND-REPEAT: no-repeat; HEIGHT: 23px; BORDER-TOP: 0px; CURSOR: hand; BORDER-RIGHT: 0px; PADDING-TOP: 4px
+}
+.btnAct1 {
+	BACKGROUND-IMAGE: url(../define/images1/Actbtn1.gif); BORDER-BOTTOM: 0px; BORDER-LEFT: 0px; BACKGROUND-COLOR: transparent; WIDTH: 70px; BACKGROUND-REPEAT: no-repeat; HEIGHT: 23px; BORDER-TOP: 0px; CURSOR: hand; BORDER-RIGHT: 0px; PADDING-TOP: 4px
+}
+.btnStandard {
+	BACKGROUND-IMAGE: url(../docuflow/images/button.jpg); BORDER-BOTTOM-STYLE: none; BACKGROUND-COLOR: transparent; BORDER-LEFT-STYLE: none; WIDTH: 63px; BACKGROUND-REPEAT: no-repeat; BORDER-TOP-STYLE: none; HEIGHT: 21px; BORDER-RIGHT-STYLE: none; FONT-SIZE: 13px; CURSOR: hand; PADDING-TOP: 3px
+}
+.btnLittle {
+	BACKGROUND-IMAGE: url(../docuflow/images/button2.gif); BORDER-BOTTOM-STYLE: none; BACKGROUND-COLOR: transparent; BORDER-LEFT-STYLE: none; WIDTH: 28px; BACKGROUND-REPEAT: no-repeat; BORDER-TOP-STYLE: none; HEIGHT: 19px; BORDER-RIGHT-STYLE: none; FONT-SIZE: 13px; CURSOR: hand; PADDING-TOP: 3px
+}
+.btnStandardDis {
+	BACKGROUND-IMAGE: url(../docuflow/images/button.jpg); BORDER-BOTTOM-STYLE: none; BACKGROUND-COLOR: transparent; BORDER-LEFT-STYLE: none; WIDTH: 63px; BACKGROUND-REPEAT: no-repeat; BORDER-TOP-STYLE: none; HEIGHT: 21px; BORDER-RIGHT-STYLE: none; FONT-SIZE: 13px; PADDING-TOP: 3px
+}
+.treetr {
+	FONT-FAMILY: 宋体; FONT-SIZE: 13px
+}
+.f14 {
+	FONT-SIZE: 14px
+}
+.fontA {
+	FONT-SIZE: 9pt
+}
+.aE {
+	COLOR: red; TEXT-DECORATION: none
+}
+.aE:hover {
+	COLOR: red; TEXT-DECORATION: none
+}
+.aE:visited {
+	COLOR: #518dc9
+}
+.aC {
+	COLOR: #000000; TEXT-DECORATION: none
+}
+.aC:hover {
+	COLOR: #000000; TEXT-DECORATION: none
+}
+.aC:visited {
+	COLOR: #518dc9
+}
+.boxUp {
+	BORDER-BOTTOM: buttonshadow 2px solid; BORDER-LEFT: buttonhighlight 2px solid; PADDING-LEFT: 2px; PADDING-RIGHT: 2px; BORDER-TOP: buttonhighlight 2px solid; CURSOR: default; PADDING-TOP: 2px
+}
+.boxDown {
+	BORDER-BOTTOM: buttonhighlight 2px solid; BORDER-LEFT: buttonshadow 2px solid; PADDING-LEFT: 2px; PADDING-RIGHT: 2px; BORDER-TOP: buttonshadow 2px solid; CURSOR: default; PADDING-TOP: 2px
+}
+.boxOnlyBottom {
+	BORDER-BOTTOM: buttonshadow 2px solid; PADDING-BOTTOM: 2px
+}
+.box {
+	BORDER-BOTTOM: buttonshadow 2px solid; BORDER-LEFT: buttonhighlight 2px solid; PADDING-BOTTOM: 2px; PADDING-LEFT: 2px; PADDING-RIGHT: 2px; BORDER-TOP: buttonhighlight 2px solid; CURSOR: default; BORDER-RIGHT: buttonshadow 2px solid; PADDING-TOP: 2px
+}
+.boxNoBottom {
+	BORDER-BOTTOM: buttonshadow 0px solid; BORDER-LEFT: buttonhighlight 2px solid; PADDING-BOTTOM: 0px; PADDING-LEFT: 2px; PADDING-RIGHT: 2px; BORDER-TOP: buttonhighlight 2px solid; CURSOR: default; BORDER-RIGHT: buttonshadow 2px solid; PADDING-TOP: 2px
+}
+.boxNoTop {
+	BORDER-BOTTOM: buttonshadow 2px solid; BORDER-LEFT: buttonhighlight 2px solid; PADDING-BOTTOM: 2px; PADDING-LEFT: 2px; PADDING-RIGHT: 2px; BORDER-TOP: buttonhighlight 0px solid; CURSOR: default; BORDER-RIGHT: buttonshadow 2px solid; PADDING-TOP: 0px
+}
+.boxNoLeft {
+	BORDER-BOTTOM: buttonshadow 2px solid; BORDER-LEFT: buttonhighlight 0px solid; PADDING-BOTTOM: 2px; PADDING-LEFT: 0px; PADDING-RIGHT: 2px; BORDER-TOP: buttonhighlight 2px solid; CURSOR: default; BORDER-RIGHT: buttonshadow 2px solid; PADDING-TOP: 2px
+}
+.boxNoRight {
+	BORDER-BOTTOM: buttonshadow 2px solid; BORDER-LEFT: buttonhighlight 2px solid; PADDING-BOTTOM: 2px; PADDING-LEFT: 2px; PADDING-RIGHT: 0px; BORDER-TOP: buttonhighlight 2px solid; CURSOR: default; BORDER-RIGHT: buttonshadow 0px solid; PADDING-TOP: 2px
+}

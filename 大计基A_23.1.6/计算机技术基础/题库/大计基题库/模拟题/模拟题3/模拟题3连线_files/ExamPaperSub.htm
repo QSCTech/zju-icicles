@@ -1,0 +1,737 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<!-- saved from url=(0139)http://10.77.30.163/djsim/onlinetest/ExamPaperSub.aspx -->
+<HTML xmlns:o xmlns:st1><HEAD><TITLE>答题主页面</TITLE>
+<META content="text/html; charset=gb2312" http-equiv=Content-Type>
+<META name=GENERATOR content="MSHTML 9.00.8112.16599">
+<META name=CODE_LANGUAGE content=C#>
+<META name=vs_defaultClientScript content=JavaScript>
+<META name=vs_targetSchema 
+content=http://schemas.microsoft.com/intellisense/ie5><LINK rel=stylesheet 
+type=text/css href="ExamPaperSub_files/fwstyle.css"><LINK rel=stylesheet 
+type=text/css href="ExamPaperSub_files/GisqLSSStyle.css"></HEAD>
+<BODY onbeforecopy="return false" ondragstart="return false" 
+oncontextmenu="return false" oncopy=document.selection.empty() 
+onselectstart="return false" onselect=document.selection.empty() 
+MS_POSITIONING="GridLayout"><INPUT id=HidIsSave name=HidIsSave value=0 
+type=hidden> <INPUT id=HidCanSubmit name=HidCanSubmit value=0 type=hidden> 
+<TABLE style="Z-INDEX: 101; WIDTH: 100%; HEIGHT: 100%" id=Table1 border=0 
+cellSpacing=0 cellPadding=0>
+  <FORM id=Form1 method=post name=Form1 
+  action=ExamPaperSub.aspx?examinsid=258&amp;examdefid=48&amp;paperlibid=188&amp;paperdefid=20&amp;subtypeid=5&amp;subxh=4&amp;action=0><INPUT 
+  id=__EVENTTARGET name=__EVENTTARGET type=hidden> <INPUT id=__EVENTARGUMENT 
+  name=__EVENTARGUMENT type=hidden> <INPUT id=__VIEWSTATE name=__VIEWSTATE 
+  value=/wEPDwUJNDE0MjM5NzYyD2QWAgIBD2QWBAIBD2QWAgIBD2QWAgIDDw8WAh4EVGV4dAUM6YCA5Ye657uD5LmgZGQCBQ9kFgJmD2QWAgIBDw8WAh8ABWPkupTjgIHmkK3phY3ov57nur/popgu5YWxMemimCzmgLvliIYxMOWIhizlhbHmnIkxMOWkhOimgei/m+ihjOaQremFjei/nue6vyzmr4/lpITmraPnoa4s5YiZ5b6XMeWIhi5kZGSQYCFsJ69jFNCNPhzBmgfzr8DJtQ== 
+  type=hidden>
+  <SCRIPT type=text/javascript>
+<!--
+var theForm = document.forms['Form1'];
+if (!theForm) {
+    theForm = document.Form1;
+}
+function __doPostBack(eventTarget, eventArgument) {
+    if (!theForm.onsubmit || (theForm.onsubmit() != false)) {
+        theForm.__EVENTTARGET.value = eventTarget;
+        theForm.__EVENTARGUMENT.value = eventArgument;
+        theForm.submit();
+    }
+}
+// -->
+</SCRIPT>
+
+  <SCRIPT language=javascript>var IsSavedObj=document.getElementById("HidCanSubmit");IsSavedObj.value="0";</SCRIPT>
+
+  <SCRIPT language=javascript>var IsSavedObj=document.getElementById("HidIsSave");IsSavedObj.value="0";</SCRIPT>
+
+  <SCRIPT language=javascript>
+			    function FindObj(OID) {
+			        var i; var obj;
+			        var tagNs = "";
+			        //alert (OID);
+			        //alert(document.all.length);
+			        for (i = 0; i < document.all.length; i++) {
+			            obj = document.all(i);
+			            //alert(obj.id);
+			            //if (obj.id == "btnSubmitSave") alert(obj.id);        
+
+			            tagNs = obj.id;
+
+			            if (tagNs.indexOf(OID) >= 0) {
+			                //if (OID == "btnSubmitSave") alert(obj.id);
+			                return (obj);
+			            }
+			        }
+
+			    }
+			
+			</SCRIPT>
+   
+  <TBODY>
+  <TR>
+    <TD style="WIDTH: 64px; HEIGHT: 96.08%" vAlign=top><FONT face=宋体>
+      <DIV style="BACKGROUND-COLOR: #e2ffd1; WIDTH: 64px; HEIGHT: 100%" 
+      id=Panel2>
+      <SCRIPT language=javascript for=window event=onload>
+<!--
+
+return window_onload()
+//-->
+</SCRIPT>
+
+      <SCRIPT id=clientEventHandlersJS language=javascript>
+<!--
+    
+    function FindObj(OID) {
+        var i; var obj;
+        var tagNs = "";
+        //alert (OID);
+        //alert(document.all.length);
+        for (i = 0; i < document.all.length; i++) {
+            obj = document.all(i);
+            //alert(obj.id);
+            //if (obj.id == "btnSubmitSave") alert(obj.id);        
+
+            tagNs = obj.id;
+
+            if (tagNs.indexOf(OID) >= 0) {
+
+                return (obj);
+            }
+        }
+    }
+    
+    
+//本题交卷
+function btnHandIn_onclick() {
+
+    if (window.confirm("请确认已成功“保存答题结果”,\n否则你的解答结果不会被保存。\n\n“交卷”后将不能再进行答题,\n\n确认要“全部交卷”吗？") == true)
+	     return (__doPostBack('WucSwitchBar1$btnHandIn',''));
+		
+}
+
+//全部交卷
+function btnHandInAll_onclick() {
+
+	if(window.confirm("确认全部交卷，交卷后就不能修改？")==true)
+	     return (__doPostBack('WucSwitchBar1$btnHandInAll1',''));
+		
+}
+
+//重做本题
+function btnRedoThis_onclick() {
+
+	if(window.confirm("确认重做本大题，你可以再次进行答题或修改答案？")==true)
+	     return (__doPostBack('WucSwitchBar1$btnRedo',''));
+		
+}
+
+
+
+//查看成绩
+function btnScore_onclick() {
+	var m=Math.random()*1000 ;
+	//"ViewScore.aspx?examinsid=" + examinsid.ToString()+ "&rnd=" + rnd.Next(1000).ToString(),features
+	var features;
+	var h,w;
+	h=screen.availHeight;
+	w=screen.availWidth;
+	
+	features="dialogHeight: 330px; dialogWidth:310px; dialogTop: " + (h-330)/2  + "px; dialogLeft: " + (w-310)/2 + "px; edge: Raised; center: Yes; help: Yes; resizable: Yes; status: Yes;";
+	
+	window.showModalDialog("ViewScore.aspx?examinsid=" + Form1.WucSwitchBar1_txtExaminsid.value + "&rnd=" + m,"aaa",features);
+		
+}
+
+
+
+
+function SetValue(eventTarget, eventArgument)
+{
+	var ttt;
+	ttt=document.all[eventTarget];
+	ttt.value=eventArgument;
+	
+}
+
+function window_onload() {
+
+    var hs = FindObj("ID_HandStatus");
+    var btnHdin1 = FindObj("btnHandIn1");
+    //var btnRedo = FindObj("btnRedoThis");
+    if (hs.value == "") hs.value = "0"; 
+    //alert(hs.value);
+    
+    if (hs.value == "0") {
+
+        btnHdin1.disabled = false;
+        
+       //btnRedo.disabled = true;
+	}
+	else {
+	    btnHdin1.disabled =true;
+
+	    //btnRedo.disabled = false;
+//		Form1.btnHandIn1.disabled=false;
+//		Form1.btnRedoThis.disabled=false;
+	}
+
+
+}
+
+
+function SetVisable(f) {
+   // alert("asdf");
+    
+    //var btnRedo = FindObj("btnRedoThis");
+     
+	//if(f==0) {
+	    //btnRedo.style.display = "none";		
+	//}
+	//else
+	//{
+	  //  btnRedo.style.display = "";
+
+    //}
+    return (0);
+}
+
+//-->
+</SCRIPT>
+
+      <TABLE style="WIDTH: 82px; HEIGHT: 168px" id=Table1 border=0 cellSpacing=0 
+      cellPadding=0>
+        <TBODY>
+        <TR>
+          <TD style="WIDTH: 74px"><FONT face=宋体></FONT></TD></TR>
+        <TR>
+          <TD style="WIDTH: 74px"><INPUT style="BORDER-BOTTOM: lightsteelblue 1pt solid; BORDER-LEFT: lightsteelblue 1pt solid; BACKGROUND-COLOR: whitesmoke; WIDTH: 80px; HEIGHT: 32px; BORDER-TOP: lightsteelblue 1pt solid; CURSOR: hand; BORDER-RIGHT: lightsteelblue 1pt solid" id=WucSwitchBar1_btnPaperHome name=WucSwitchBar1:btnPaperHome value=试卷首页 type=submit></FONT></TD></TR>
+        <TR>
+          <TD style="WIDTH: 74px"><INPUT style="BORDER-BOTTOM: lightsteelblue 1px solid; BORDER-LEFT: lightsteelblue 1px solid; BACKGROUND-COLOR: whitesmoke; WIDTH: 80px; HEIGHT: 32px; BORDER-TOP: lightsteelblue 1px solid; CURSOR: hand; BORDER-RIGHT: lightsteelblue 1px solid" id=btnHandIn1 title=请确认已成功“保存答题结果”,否则你的解答结果不会被保存。“交卷”后将不能再进行答题,确认要“全部交卷”吗？ onclick="return btnHandIn_onclick()" value=全部交卷 type=button></TD></TR>
+        <TR>
+          <TD style="WIDTH: 74px"><FONT face=宋体><INPUT style="BORDER-BOTTOM: lightsteelblue 1px solid; BORDER-LEFT: lightsteelblue 1px solid; BACKGROUND-COLOR: whitesmoke; WIDTH: 0px; DISPLAY: none; HEIGHT: 0px; BORDER-TOP: lightsteelblue 1px solid; CURSOR: hand; BORDER-RIGHT: lightsteelblue 1px solid" id=btnRedoThis disabled onclick="return btnRedoThis_onclick()" name=btnRedoThis value=重做处理 type=button> 
+            </FONT></TD></TR>
+        <TR>
+          <TD style="WIDTH: 74px"><INPUT style="BORDER-BOTTOM: lightsteelblue 1px solid; BORDER-LEFT: lightsteelblue 1px solid; BACKGROUND-COLOR: whitesmoke; WIDTH: 80px; DISPLAY: none; HEIGHT: 32px; BORDER-TOP: lightsteelblue 1px solid; CURSOR: hand; BORDER-RIGHT: lightsteelblue 1px solid" id=btnScore onclick="return btnScore_onclick()" name=btnScore value=查看成绩 type=button> 
+          </TD></TR>
+        <TR>
+          <TD style="WIDTH: 74px">
+            <P><INPUT style="BORDER-BOTTOM: lightsteelblue 1pt solid; BORDER-LEFT: lightsteelblue 1pt solid; BACKGROUND-COLOR: whitesmoke; WIDTH: 80px; HEIGHT: 32px; BORDER-TOP: lightsteelblue 1pt solid; CURSOR: hand; BORDER-RIGHT: lightsteelblue 1pt solid" id=WucSwitchBar1_btnExitExam name=WucSwitchBar1:btnExitExam value=退出练习 type=submit></P></TD></TR>
+        <TR>
+          <TD style="WIDTH: 74px"><BR>
+            <P><FONT color=#ff0000 size=3 face=宋体><B>注意：</B></FONT></P>
+            <P><FONT color=#ff0000 size=3 
+            face=宋体><B>完成解答后，进行“全部交卷”。“交卷”之前，确认已成功“保存答题结果”，否则，解答因没保存而丢失。</B></FONT></P></TD></TR></TBODY></TABLE>
+      <P><INPUT style="DISPLAY: none" id=WucSwitchBar1_btnHandIn onclick="__doPostBack('WucSwitchBar1$btnHandIn','')" name=WucSwitchBar1:btnHandIn value=本题交卷 type=button></P>
+      <P><FONT face=宋体></FONT></P>
+      <P><INPUT style="DISPLAY: none" id=WucSwitchBar1_btnRedo onclick="__doPostBack('WucSwitchBar1$btnRedo','')" name=WucSwitchBar1:btnRedo value=重做 type=button></P>
+      <P><INPUT id=WucSwitchBar1_ID_HandStatus name=WucSwitchBar1:ID_HandStatus 
+      value=0 size=1 type=hidden><INPUT 
+      style="WIDTH: 32px; DISPLAY: none; HEIGHT: 22px" 
+      id=WucSwitchBar1_txtExaminsid name=WucSwitchBar1:txtExaminsid value=258 
+      size=1></P>
+      <P>&nbsp;</P><FONT face=宋体></FONT><FONT face=宋体></FONT><FONT 
+      face=宋体></FONT><FONT face=宋体></FONT><FONT face=宋体></FONT><FONT 
+      face=宋体></FONT><FONT face=宋体></FONT><FONT face=宋体></FONT><FONT 
+      face=宋体></FONT><FONT face=宋体></FONT><FONT face=宋体></FONT><FONT 
+      face=宋体></FONT><FONT face=宋体></FONT><FONT face=宋体></FONT><FONT 
+      face=宋体></FONT><FONT face=宋体></FONT><FONT face=宋体></FONT><FONT 
+      face=宋体></FONT><FONT face=宋体></FONT><FONT face=宋体></FONT><FONT 
+      face=宋体></FONT><FONT face=宋体></FONT><FONT face=宋体></FONT></DIV></FONT></TD>
+    <TD style="WIDTH: 100%; HEIGHT: 96.08%" vAlign=top align=left><FONT 
+      face=宋体>
+      <TABLE style="WIDTH: 100%; HEIGHT: 100%" border=0 cellSpacing=0 
+      cellPadding=0>
+        <TBODY>
+        <TR>
+          <TD class=HeadToolBack1 height=20 vAlign=top align=left>
+            <P><FONT face=宋体>
+            <TABLE 
+            style="BORDER-BOTTOM: 1px solid; BORDER-LEFT: 1px solid; BORDER-TOP: 1px solid; BORDER-RIGHT: 1px solid" 
+            id=WucListSubType1_Table1 border=0>
+              <TBODY>
+              <TR>
+                <TD 
+                style="BORDER-BOTTOM-STYLE: solid; BORDER-LEFT-STYLE: solid; BORDER-TOP-STYLE: solid; BORDER-RIGHT-STYLE: solid" 
+                align=left><STRONG>选择题型</STRONG>==&gt;</TD>
+                <TD><IMG src="ExamPaperSub_files/sun.gif"></IMG></TD>
+                <TD><A 
+                  href="http://10.77.30.163/djsim/onlinetest/ExamPaperSub.aspx?examinsid=258&amp;examdefid=48&amp;paperlibid=188&amp;paperdefid=20&amp;subtypeid=1&amp;subxh=0&amp;action=0">&nbsp;判断题&nbsp;</A></TD>
+                <TD><IMG src="ExamPaperSub_files/sun.gif"></IMG></TD>
+                <TD><A 
+                  href="http://10.77.30.163/djsim/onlinetest/ExamPaperSub.aspx?examinsid=258&amp;examdefid=48&amp;paperlibid=188&amp;paperdefid=20&amp;subtypeid=2&amp;subxh=1&amp;action=0">&nbsp;单选题&nbsp;</A></TD>
+                <TD><IMG src="ExamPaperSub_files/sun.gif"></IMG></TD>
+                <TD><A 
+                  href="http://10.77.30.163/djsim/onlinetest/ExamPaperSub.aspx?examinsid=258&amp;examdefid=48&amp;paperlibid=188&amp;paperdefid=20&amp;subtypeid=4&amp;subxh=2&amp;action=0">&nbsp;填空题&nbsp;</A></TD>
+                <TD><IMG src="ExamPaperSub_files/sun.gif"></IMG></TD>
+                <TD><A 
+                  href="http://10.77.30.163/djsim/onlinetest/ExamPaperSub.aspx?examinsid=258&amp;examdefid=48&amp;paperlibid=188&amp;paperdefid=20&amp;subtypeid=3&amp;subxh=3&amp;action=0">&nbsp;选择性填空题&nbsp;</A></TD>
+                <TD><IMG src="ExamPaperSub_files/sun.gif"></IMG></TD>
+                <TD style="BACKGROUND-COLOR: #ffff00"><A 
+                  href="http://10.77.30.163/djsim/onlinetest/ExamPaperSub.aspx?examinsid=258&amp;examdefid=48&amp;paperlibid=188&amp;paperdefid=20&amp;subtypeid=5&amp;subxh=4&amp;action=0">&nbsp;连线题&nbsp;</A></TD>
+                <TD></TD></TR></TBODY></TABLE></FONT></P></TD></TR>
+        <TR>
+          <TD vAlign=top align=left><FONT face=宋体>
+            <SCRIPT id=clientEventHandlersJS language=javascript>
+ 
+<!--
+
+function btnSubmitSave_onclick() {
+	//获取所有答案
+	var e1=document.all("ID_wucJoinLine.ascx_txtArr1");//subext的条数
+	var e2=document.all("ID_wucJoinLine.ascx_txtArr2");//subid
+	var e3=document.all("ID_wucJoinLine.ascx_txtAnswer");//subid
+	var s1=e1.value;
+	var s2=e2.value;
+	
+	var arr1=s1.split(";");
+	var arr2=s2.split(";");
+	
+	for(var i=0;i<arr1.length-1;i++)
+	{
+		var kk=arr1[i];
+		var k=parseInt(kk);
+		var sid=arr2[i];
+		var s="";
+		for(var j=1;j<=k;j++)
+		{
+			var e=document.all("ID_wucJoinLine.ascx:ID_JOIN_"+sid+"_"+j.toString(10));
+			if(e.value!="")
+				s+=e.value;
+			else
+				s+="#";
+		}
+		s+=";";
+	}
+	
+	e3.value=s;
+	//return;
+		
+	//if(window.confirm("确认提交保存？")==true)
+	     return (__doPostBack('ID_wucJoinLine.ascx$Button4',''));
+		
+}
+
+function SetValue(eventTarget, eventArgument)
+{
+	var ttt;
+	ttt=document.all[eventTarget];
+	ttt.value=eventArgument;
+	
+}
+
+
+
+function CheckInputValid(TargetObjectID)
+{
+	var e;
+	var s="ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+	//alert (TargetObjectID);
+	
+	e=document.all(TargetObjectID);
+	var v=e.value;
+	//alert(v);
+		
+	if(s.indexOf(v)==-1)
+	{
+		alert("输入的只能是A~Z中的字符!");
+		e.value	="";
+	}
+}
+
+function SetSpanNull(n,p,sid)
+{
+    //alert("aaa");
+    //return;
+    
+	var i=1;
+	for(i=1;i<=n;i++)
+	{
+		var e=document.all("ID_SPAN_" + i.toString(10));
+		e.innerHTML="";
+		
+		var ee=document.all("ID_EXT_" + i.toString(10));
+		ee.style.color="#000000";
+		
+	}
+	
+	var ep=document.all("ID_SPAN_"+p.toString(10));
+	ep.innerHTML="<font color='#ff0000'>=></font>";
+	
+	Form1.ID_ANS.value=p;
+	
+	//var eep=  document.all("ID_EXT_"+p.toString(10));
+	//eep.style.color="#ff0000";
+
+    //alert ("ID_JOIN_" + sid + "_" + p.toString(10));
+	var epp = FindObj("ID_JOIN_" + sid + "_" + p.toString(10));
+	
+	//var epp = document.all("ID_wucJoinLine.ascx:ID_JOIN_" + sid + "_" + p.toString(10));
+	
+	var ans=epp.value;
+	//alert(ans);
+	
+	for(i=1;i<=n;i++)
+	{
+		var eee=document.all("ID_T_" + i.toString(10));
+		//alert(eee.value);
+		if(eee.value==ans)
+		{
+			//alert(eee.value);
+			//eee.style.color="#ff0000";
+			var ee=document.all("ID_EXT_" + i.toString(10));
+			ee.style.color="ff0000";
+			break;
+		}
+		
+	}
+	
+	
+}
+
+
+
+function SetSpan(subins,v)
+{
+	var p=Form1.ID_ANS.value;
+	var e=document.all("ID_wucJoinLine.ascx_ID_JOIN_" + subins.toString(10) + "_" + p.toString(10));
+	e.value=v;
+}
+
+function SetColor(c,eid)
+{
+	var e=document.all[eid];
+	//e.style="CURSOR: hand; COLOR: crimson;"
+	e.style.color=c; 
+	e.style.cursor="hand";
+
+}
+
+
+//-->
+</SCRIPT>
+            <INPUT style="DISPLAY: none" id=ID_ANS> 
+            <TABLE id=Table2 border=0 cellSpacing=0 cellPadding=0 
+              width="100%"><TBODY>
+              <TR>
+                <TD><FONT color=#ff3333 
+                  size=3><B>特别提示：答题时，先点击选中题目左边的需要填写答案的文本框，然后从右边的选择项中点击文字选取相应的答案。</B></FONT> 
+
+                  <H3><SPAN 
+                  id=ID_wucJoinLine.ascx_lblPOTitle>五、搭配连线题.共1题,总分10分,共有10处要进行搭配连线,每处正确,则得1分.</SPAN></H3></TD></TR>
+              <TR>
+                <TD style="HEIGHT: 43px">
+                  <TABLE style="WIDTH: 750px; HEIGHT: 100%" 
+                  id=ID_wucJoinLine.ascx_Table1 border=0>
+                    <TBODY>
+                    <TR>
+                      <TD vAlign=top>1、</TD>
+                      <TD style="WIDTH: 700px">搭配连线</TD></TR>
+                    <TR>
+                      <TD style="WIDTH: 20px"></TD>
+                      <TD>
+                        <TABLE style="WIDTH: 500px" border=0>
+                          <TBODY>
+                          <TR>
+                            <TD><SPAN id=ID_SPAN_1>&nbsp;&nbsp;</SPAN></TD>
+                            <TD style="WIDTH: 60px"><INPUT style="WIDTH: 60px" 
+                              id=ID_wucJoinLine.ascx_ID_JOIN_1_1 
+                              onchange="return CheckInputValid('ID_wucJoinLine.ascx_ID_JOIN_1_1');" 
+                              onclick="return SetSpanNull(10,1,1);" 
+                              name=ID_wucJoinLine.ascx:ID_JOIN_1_1 
+                            maxLength=1></TD>
+                            <TD style="WIDTH: 60px">1 </TD>
+                            <TD noWrap>进程控制块</TD>
+                            <TD style="WIDTH: 150px"><INPUT 
+                              style="DISPLAY: none" id=ID_T_1 value=A 
+                              type=hiden> </TD>
+                            <TD noWrap><SPAN style="CURSOR: hand" id=ID_EXT_1 
+                              onmousemove="SetColor('#ff0000','ID_EXT_1');" 
+                              onmouseout="SetColor('#000000','ID_EXT_1');" 
+                              onclick="return SetSpan(1,'A');">A.MIPS</SPAN></TD></TR>
+                          <TR>
+                            <TD><SPAN id=ID_SPAN_2>&nbsp;&nbsp;</SPAN></TD>
+                            <TD style="WIDTH: 60px"><INPUT style="WIDTH: 60px" 
+                              id=ID_wucJoinLine.ascx_ID_JOIN_1_2 
+                              onchange="return CheckInputValid('ID_wucJoinLine.ascx_ID_JOIN_1_2');" 
+                              onclick="return SetSpanNull(10,2,1);" 
+                              name=ID_wucJoinLine.ascx:ID_JOIN_1_2 
+                            maxLength=1></TD>
+                            <TD style="WIDTH: 60px">2 </TD>
+                            <TD noWrap>Windows媒体播放器</TD>
+                            <TD style="WIDTH: 150px"><INPUT 
+                              style="DISPLAY: none" id=ID_T_2 value=B 
+                              type=hiden> </TD>
+                            <TD noWrap><SPAN style="CURSOR: hand" id=ID_EXT_2 
+                              onmousemove="SetColor('#ff0000','ID_EXT_2');" 
+                              onmouseout="SetColor('#000000','ID_EXT_2');" 
+                              onclick="return SetSpan(1,'B');">B.WAN</SPAN></TD></TR>
+                          <TR>
+                            <TD><SPAN id=ID_SPAN_3>&nbsp;&nbsp;</SPAN></TD>
+                            <TD style="WIDTH: 60px"><INPUT style="WIDTH: 60px" 
+                              id=ID_wucJoinLine.ascx_ID_JOIN_1_3 
+                              onchange="return CheckInputValid('ID_wucJoinLine.ascx_ID_JOIN_1_3');" 
+                              onclick="return SetSpanNull(10,3,1);" 
+                              name=ID_wucJoinLine.ascx:ID_JOIN_1_3 
+                            maxLength=1></TD>
+                            <TD style="WIDTH: 60px">3 </TD>
+                            <TD noWrap>数据库管理系统</TD>
+                            <TD style="WIDTH: 150px"><INPUT 
+                              style="DISPLAY: none" id=ID_T_3 value=C 
+                              type=hiden> </TD>
+                            <TD noWrap><SPAN style="CURSOR: hand" id=ID_EXT_3 
+                              onmousemove="SetColor('#ff0000','ID_EXT_3');" 
+                              onmouseout="SetColor('#000000','ID_EXT_3');" 
+                              onclick="return SetSpan(1,'C');">C.CISC</SPAN></TD></TR>
+                          <TR>
+                            <TD><SPAN id=ID_SPAN_4>&nbsp;&nbsp;</SPAN></TD>
+                            <TD style="WIDTH: 60px"><INPUT style="WIDTH: 60px" 
+                              id=ID_wucJoinLine.ascx_ID_JOIN_1_4 
+                              onchange="return CheckInputValid('ID_wucJoinLine.ascx_ID_JOIN_1_4');" 
+                              onclick="return SetSpanNull(10,4,1);" 
+                              name=ID_wucJoinLine.ascx:ID_JOIN_1_4 
+                            maxLength=1></TD>
+                            <TD style="WIDTH: 60px">4 </TD>
+                            <TD noWrap>广域网</TD>
+                            <TD style="WIDTH: 150px"><INPUT 
+                              style="DISPLAY: none" id=ID_T_4 value=D 
+                              type=hiden> </TD>
+                            <TD noWrap><SPAN style="CURSOR: hand" id=ID_EXT_4 
+                              onmousemove="SetColor('#ff0000','ID_EXT_4');" 
+                              onmouseout="SetColor('#000000','ID_EXT_4');" 
+                              onclick="return SetSpan(1,'D');">D.TCP</SPAN></TD></TR>
+                          <TR>
+                            <TD><SPAN id=ID_SPAN_5>&nbsp;&nbsp;</SPAN></TD>
+                            <TD style="WIDTH: 60px"><INPUT style="WIDTH: 60px" 
+                              id=ID_wucJoinLine.ascx_ID_JOIN_1_5 
+                              onchange="return CheckInputValid('ID_wucJoinLine.ascx_ID_JOIN_1_5');" 
+                              onclick="return SetSpanNull(10,5,1);" 
+                              name=ID_wucJoinLine.ascx:ID_JOIN_1_5 
+                            maxLength=1></TD>
+                            <TD style="WIDTH: 60px">5 </TD>
+                            <TD noWrap>直接存储访问</TD>
+                            <TD style="WIDTH: 150px"><INPUT 
+                              style="DISPLAY: none" id=ID_T_5 value=E 
+                              type=hiden> </TD>
+                            <TD noWrap><SPAN style="CURSOR: hand" id=ID_EXT_5 
+                              onmousemove="SetColor('#ff0000','ID_EXT_5');" 
+                              onmouseout="SetColor('#000000','ID_EXT_5');" 
+                              onclick="return SetSpan(1,'E');">E.PCB</SPAN></TD></TR>
+                          <TR>
+                            <TD><SPAN id=ID_SPAN_6>&nbsp;&nbsp;</SPAN></TD>
+                            <TD style="WIDTH: 60px"><INPUT style="WIDTH: 60px" 
+                              id=ID_wucJoinLine.ascx_ID_JOIN_1_6 
+                              onchange="return CheckInputValid('ID_wucJoinLine.ascx_ID_JOIN_1_6');" 
+                              onclick="return SetSpanNull(10,6,1);" 
+                              name=ID_wucJoinLine.ascx:ID_JOIN_1_6 
+                            maxLength=1></TD>
+                            <TD style="WIDTH: 60px">6 </TD>
+                            <TD noWrap>复杂指令集计算机</TD>
+                            <TD style="WIDTH: 150px"><INPUT 
+                              style="DISPLAY: none" id=ID_T_6 value=F 
+                              type=hiden> </TD>
+                            <TD noWrap><SPAN style="CURSOR: hand" id=ID_EXT_6 
+                              onmousemove="SetColor('#ff0000','ID_EXT_6');" 
+                              onmouseout="SetColor('#000000','ID_EXT_6');" 
+                              onclick="return SetSpan(1,'F');">F.FCFS</SPAN></TD></TR>
+                          <TR>
+                            <TD><SPAN id=ID_SPAN_7>&nbsp;&nbsp;</SPAN></TD>
+                            <TD style="WIDTH: 60px"><INPUT style="WIDTH: 60px" 
+                              id=ID_wucJoinLine.ascx_ID_JOIN_1_7 
+                              onchange="return CheckInputValid('ID_wucJoinLine.ascx_ID_JOIN_1_7');" 
+                              onclick="return SetSpanNull(10,7,1);" 
+                              name=ID_wucJoinLine.ascx:ID_JOIN_1_7 
+                            maxLength=1></TD>
+                            <TD style="WIDTH: 60px">7 </TD>
+                            <TD noWrap>传输控制协议</TD>
+                            <TD style="WIDTH: 150px"><INPUT 
+                              style="DISPLAY: none" id=ID_T_7 value=G 
+                              type=hiden> </TD>
+                            <TD noWrap><SPAN style="CURSOR: hand" id=ID_EXT_7 
+                              onmousemove="SetColor('#ff0000','ID_EXT_7');" 
+                              onmouseout="SetColor('#000000','ID_EXT_7');" 
+                              onclick="return SetSpan(1,'G');">G.VLSI</SPAN></TD></TR>
+                          <TR>
+                            <TD><SPAN id=ID_SPAN_8>&nbsp;&nbsp;</SPAN></TD>
+                            <TD style="WIDTH: 60px"><INPUT style="WIDTH: 60px" 
+                              id=ID_wucJoinLine.ascx_ID_JOIN_1_8 
+                              onchange="return CheckInputValid('ID_wucJoinLine.ascx_ID_JOIN_1_8');" 
+                              onclick="return SetSpanNull(10,8,1);" 
+                              name=ID_wucJoinLine.ascx:ID_JOIN_1_8 
+                            maxLength=1></TD>
+                            <TD style="WIDTH: 60px">8 </TD>
+                            <TD noWrap>每秒钟执行的百万指令数</TD>
+                            <TD style="WIDTH: 150px"><INPUT 
+                              style="DISPLAY: none" id=ID_T_8 value=H 
+                              type=hiden> </TD>
+                            <TD noWrap><SPAN style="CURSOR: hand" id=ID_EXT_8 
+                              onmousemove="SetColor('#ff0000','ID_EXT_8');" 
+                              onmouseout="SetColor('#000000','ID_EXT_8');" 
+                              onclick="return SetSpan(1,'H');">H.WMP</SPAN></TD></TR>
+                          <TR>
+                            <TD><SPAN id=ID_SPAN_9>&nbsp;&nbsp;</SPAN></TD>
+                            <TD style="WIDTH: 60px"><INPUT style="WIDTH: 60px" 
+                              id=ID_wucJoinLine.ascx_ID_JOIN_1_9 
+                              onchange="return CheckInputValid('ID_wucJoinLine.ascx_ID_JOIN_1_9');" 
+                              onclick="return SetSpanNull(10,9,1);" 
+                              name=ID_wucJoinLine.ascx:ID_JOIN_1_9 
+                            maxLength=1></TD>
+                            <TD style="WIDTH: 60px">9 </TD>
+                            <TD noWrap>超大规模集成电路</TD>
+                            <TD style="WIDTH: 150px"><INPUT 
+                              style="DISPLAY: none" id=ID_T_9 value=I 
+                              type=hiden> </TD>
+                            <TD noWrap><SPAN style="CURSOR: hand" id=ID_EXT_9 
+                              onmousemove="SetColor('#ff0000','ID_EXT_9');" 
+                              onmouseout="SetColor('#000000','ID_EXT_9');" 
+                              onclick="return SetSpan(1,'I');">I.DBMS</SPAN></TD></TR>
+                          <TR>
+                            <TD><SPAN id=ID_SPAN_10>&nbsp;&nbsp;</SPAN></TD>
+                            <TD style="WIDTH: 60px"><INPUT style="WIDTH: 60px" 
+                              id=ID_wucJoinLine.ascx_ID_JOIN_1_10 
+                              onchange="return CheckInputValid('ID_wucJoinLine.ascx_ID_JOIN_1_10');" 
+                              onclick="return SetSpanNull(10,10,1);" 
+                              name=ID_wucJoinLine.ascx:ID_JOIN_1_10 
+                            maxLength=1></TD>
+                            <TD style="WIDTH: 60px">10 </TD>
+                            <TD noWrap>先来先服务算法</TD>
+                            <TD style="WIDTH: 150px"><INPUT 
+                              style="DISPLAY: none" id=ID_T_10 value=J 
+                              type=hiden> </TD>
+                            <TD noWrap><SPAN style="CURSOR: hand" id=ID_EXT_10 
+                              onmousemove="SetColor('#ff0000','ID_EXT_10');" 
+                              onmouseout="SetColor('#000000','ID_EXT_10');" 
+                              onclick="return SetSpan(1,'J');">J.DMA</SPAN></TD></TR></TBODY></TABLE></TD></TR></TBODY></TABLE></TD></TR>
+              <TR>
+                <TD bgColor=#ffffcc height=20></TD></TR>
+              <TR>
+                <TD><FONT face=宋体>
+                  <P 
+                  align=left>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+<INPUT style="DISPLAY: none" id=ID_wucJoinLine.ascx_Button5 name=ID_wucJoinLine.ascx:Button5 value=Button type=button> 
+                  <INPUT style="WIDTH: 61px; DISPLAY: none; HEIGHT: 22px" 
+                  id=ID_wucJoinLine.ascx_txtAnswer 
+                  name=ID_wucJoinLine.ascx:txtAnswer size=4> <INPUT 
+                  style="WIDTH: 56px; DISPLAY: none; HEIGHT: 22px" 
+                  id=ID_wucJoinLine.ascx_txtArr1 
+                  name=ID_wucJoinLine.ascx:txtArr1 value=10; size=4> <INPUT 
+                  style="WIDTH: 61px; DISPLAY: none; HEIGHT: 22px" 
+                  id=ID_wucJoinLine.ascx_txtArr2 
+                  name=ID_wucJoinLine.ascx:txtArr2 value=1; size=4> </P>
+                  <P align=left>&nbsp;</P></FONT></TD></TR></TBODY></TABLE><!--实现保存按钮的滚动显示-->
+            <DIV 
+            style="Z-INDEX: 20; BORDER-BOTTOM: #336699 0px solid; POSITION: absolute; TEXT-ALIGN: left; BORDER-LEFT: #336699 0px solid; PADDING-BOTTOM: 5px; BACKGROUND-COLOR: #ffffee; PADDING-LEFT: 5px; WIDTH: 150px; PADDING-RIGHT: 5px; BACKGROUND-REPEAT: repeat; HEIGHT: 60px; VISIBILITY: hidden; BORDER-TOP: #336699 0px solid; BORDER-RIGHT: #336699 0px solid; PADDING-TOP: 5px; TOP: 103px; LEFT: 10px" 
+            id=AdLayer1><FONT size=4>
+            <DIV style="TEXT-ALIGN: center; BACKGROUND-COLOR: #ccff99"><INPUT style="BORDER-RIGHT-WIDTH: 1px; BACKGROUND-COLOR: #caffa4; WIDTH: 150px; BORDER-TOP-WIDTH: 1px; BORDER-BOTTOM-WIDTH: 1px; HEIGHT: 32px; BORDER-LEFT-WIDTH: 1px; CURSOR: hand" id=btnSubmitSave language=javascript onclick="return btnSubmitSave_onclick()" name=Button4 value=保存答题结果 type=button> 
+            </DIV></DIV>　　
+            <SCRIPT language=JScript for=window event=onload>
+　　   initAd1();//载入页面后，调用函数initAd()
+　　 </SCRIPT>
+             　　 　　 　　 　　 　　
+            <SCRIPT language=JScript>
+　
+　　     function MoveLayer1(layerName) {
+　　         var x = window.document.documentElement.scrollWidth - AdLayer1.style.posWidth - 90; //  800;//浮动广告层固定于浏览器的x方向位置
+　　         //alert(x);
+　　         var h = window.parent.frames[1].document.documentElement.scrollHeight - 200; //+ window.parent.frames[0].document.documentElement.scrollHeight;
+　　         var y = h; //浮动广告层固定于浏览器的y方向位置
+　　         var diff = (document.body.scrollTop + y - document.all.AdLayer1.style.posTop) * .40;
+　　         var y = document.body.scrollTop + y - diff;
+　　         eval("document.all." + layerName + ".style.posTop = y");
+　　         eval("document.all." + layerName + ".style.posLeft = x"); //移动广告层
+　　         setTimeout("MoveLayer1('AdLayer1');", 20); //设置20毫秒后再调用函数MoveLayer()
+　　     }
+　　     function initAd1() {
+　　         //alert("sdfsdf");
+　　         var h = window.parent.frames[1].document.documentElement.scrollHeight + window.parent.frames[0].document.documentElement.scrollHeight;
+　　         //alert(h);
+　　         //alert(window.parent.frames[1].document.all.AdLayer1.style.posTop);
+　　         window.parent.frames[1].document.all.AdLayer1.style.posTop = h;
+　　         // -200; //设置onLoad事件激发以后，广告层相对于固定后的y方向位置
+　　         //alert(document.all.AdLayer1.style.visibility);
+　　         document.all.AdLayer1.style.visibility = 'visible'; //设置层为可见
+　　         MoveLayer1('AdLayer1'); //调用函数MoveLayer()
+　　         //alert("s1");
+　　     }
+　　    
+
+</SCRIPT>
+             </FONT></FONT></TD></TR></TBODY></TABLE></FONT></TD></TR>
+  <TR>
+    <TD bgColor=#99cc66 height=20 colSpan=2>
+      <TABLE border=0 cellSpacing=0 cellPadding=0 width="100%" bgColor=#000000 
+      align=center height=20>
+        <TBODY>
+        <TR>
+          <TD style="BACKGROUND-COLOR: #ccff99">
+            <MARQUEE style="WIDTH: 100%; HEIGHT: 0px" scrollDelay=300><SPAN 
+            style="BORDER-BOTTOM-COLOR: aliceblue; BORDER-TOP-COLOR: aliceblue; WIDTH: 100%; BORDER-RIGHT-COLOR: aliceblue; FONT-SIZE: 14px; BORDER-LEFT-COLOR: aliceblue" 
+            id=WucFooter1_lblOnline></SPAN></MARQUEE></TD></TR>
+        <TR>
+          <TD bgColor=#c2ed9c align=center>∷&nbsp;浙江大学计算机学院&nbsp;&nbsp;∷ 
+            &nbsp;OTS V1.00 &nbsp;2007 &nbsp;Copyright<SUP>&copy;</SUP>&nbsp;All 
+            Rights Reserved.<BR>College of Computer Science, Zhejiang 
+            University! </TD></TR></TBODY></TABLE></TD></TR></TBODY></TABLE></FORM>
+<SCRIPT language=javascript>
+
+    
+    
+    function FindObj1(OID) {
+        var i; var obj;
+        var tagNs = "";
+        //alert (OID);
+        //alert(document.all.length);
+        for (i = 0; i < document.all.length; i++) {
+            obj = document.all(i);
+            //alert(obj.id);
+            //if (obj.id == "btnSubmitSave") alert(obj.id);        
+
+            tagNs = obj.id;
+
+            if (tagNs.indexOf(OID) >= 0) {
+                //if (OID == "btnSubmitSave") alert(obj.id);
+                return (obj);
+            }
+        }
+  
+    }
+    function CheckSaved() {
+        var IsSaved = 0;
+        var IsSaveObj = document.getElementById("HidIsSave");
+        IsSaved = IsSaveObj.value;
+        //window.alert(IsSaved);
+        if (IsSaved == 0) return 0;
+        if (IsSaved == 1) {
+            window.alert("保存成功！");
+        }
+        else if (IsSaved == -1) {
+            window.alert("保存失败！");
+        }
+        else if (IsSaved == -2) {
+            window.alert("本题已经交卷,不能保存！");
+        }
+        return IsSaved;
+    }
+
+    function CheckCanSubmit() {
+        var IsSaved = 0;
+        
+        var IsSaveObj1 = document.getElementById("HidCanSubmit");
+        IsSaved = IsSaveObj1.value;
+        
+        //window.alert(IsSaved);
+
+        var submitobj = FindObj1("btnSubmitSave");  //document.getElementById("btnSubmitSave");
+        //window.alert(submitobj.value);
+        if (IsSaved == 0)
+            submitobj.disabled = false;
+        else {
+            submitobj.disabled = true;
+        }
+        //alert(IsSaved);
+        return IsSaved;
+    }
+
+    CheckSaved();
+    CheckCanSubmit();
+		    
+    </SCRIPT>
+</BODY></HTML>

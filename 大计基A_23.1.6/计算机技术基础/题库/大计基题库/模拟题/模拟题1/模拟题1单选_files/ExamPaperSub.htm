@@ -1,0 +1,1375 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<!-- saved from url=(0139)http://10.77.30.163/djsim/onlinetest/ExamPaperSub.aspx -->
+<HTML xmlns:o xmlns:st1><HEAD><TITLE>答题主页面</TITLE>
+<META content="text/html; charset=gb2312" http-equiv=Content-Type>
+<META name=GENERATOR content="MSHTML 9.00.8112.16599">
+<META name=CODE_LANGUAGE content=C#>
+<META name=vs_defaultClientScript content=JavaScript>
+<META name=vs_targetSchema 
+content=http://schemas.microsoft.com/intellisense/ie5><LINK rel=stylesheet 
+type=text/css href="ExamPaperSub_files/fwstyle.css"><LINK rel=stylesheet 
+type=text/css href="ExamPaperSub_files/GisqLSSStyle.css"></HEAD>
+<BODY onbeforecopy="return false" ondragstart="return false" 
+oncontextmenu="return false" oncopy=document.selection.empty() 
+onselectstart="return false" onselect=document.selection.empty() 
+MS_POSITIONING="GridLayout"><INPUT id=HidIsSave name=HidIsSave value=0 
+type=hidden> <INPUT id=HidCanSubmit name=HidCanSubmit value=0 type=hidden> 
+<TABLE style="Z-INDEX: 101; WIDTH: 100%; HEIGHT: 100%" id=Table1 border=0 
+cellSpacing=0 cellPadding=0>
+  <FORM id=Form1 method=post name=Form1 
+  action=ExamPaperSub.aspx?examinsid=253&amp;examdefid=46&amp;paperlibid=190&amp;paperdefid=24&amp;subtypeid=2&amp;subxh=1&amp;action=0><INPUT 
+  id=__EVENTTARGET name=__EVENTTARGET type=hidden> <INPUT id=__EVENTARGUMENT 
+  name=__EVENTARGUMENT type=hidden> <INPUT id=__VIEWSTATE name=__VIEWSTATE 
+  value=/wEPDwUJNDE0MjM5NzYyD2QWAgIBD2QWBAIBD2QWAgIBD2QWAgIDDw8WAh4EVGV4dAUM6YCA5Ye657uD5LmgZGQCBQ9kFgJmD2QWAgIBDw8WAh8ABV3kuozjgIHljZXpgInpopjjgILor7flnKjnu5nlrprnmoTpgInpobnkuK3pgInlh7rkuIDkuKrmraPnoa7nrZTmoYjjgILmr4/popgx5YiG77yM5YWxMjDliIbjgIJkZGT0eosrGkuZS/gzcYohsx01fj9L7Q== 
+  type=hidden>
+  <SCRIPT type=text/javascript>
+<!--
+var theForm = document.forms['Form1'];
+if (!theForm) {
+    theForm = document.Form1;
+}
+function __doPostBack(eventTarget, eventArgument) {
+    if (!theForm.onsubmit || (theForm.onsubmit() != false)) {
+        theForm.__EVENTTARGET.value = eventTarget;
+        theForm.__EVENTARGUMENT.value = eventArgument;
+        theForm.submit();
+    }
+}
+// -->
+</SCRIPT>
+
+  <SCRIPT language=javascript>var IsSavedObj=document.getElementById("HidCanSubmit");IsSavedObj.value="0";</SCRIPT>
+
+  <SCRIPT language=javascript>var IsSavedObj=document.getElementById("HidIsSave");IsSavedObj.value="0";</SCRIPT>
+
+  <SCRIPT language=javascript>
+			    function FindObj(OID) {
+			        var i; var obj;
+			        var tagNs = "";
+			        //alert (OID);
+			        //alert(document.all.length);
+			        for (i = 0; i < document.all.length; i++) {
+			            obj = document.all(i);
+			            //alert(obj.id);
+			            //if (obj.id == "btnSubmitSave") alert(obj.id);        
+
+			            tagNs = obj.id;
+
+			            if (tagNs.indexOf(OID) >= 0) {
+			                //if (OID == "btnSubmitSave") alert(obj.id);
+			                return (obj);
+			            }
+			        }
+
+			    }
+			
+			</SCRIPT>
+   
+  <TBODY>
+  <TR>
+    <TD style="WIDTH: 64px; HEIGHT: 96.08%" vAlign=top><FONT face=宋体>
+      <DIV style="BACKGROUND-COLOR: #e2ffd1; WIDTH: 64px; HEIGHT: 100%" 
+      id=Panel2>
+      <SCRIPT language=javascript for=window event=onload>
+<!--
+
+return window_onload()
+//-->
+</SCRIPT>
+
+      <SCRIPT id=clientEventHandlersJS language=javascript>
+<!--
+    
+    function FindObj(OID) {
+        var i; var obj;
+        var tagNs = "";
+        //alert (OID);
+        //alert(document.all.length);
+        for (i = 0; i < document.all.length; i++) {
+            obj = document.all(i);
+            //alert(obj.id);
+            //if (obj.id == "btnSubmitSave") alert(obj.id);        
+
+            tagNs = obj.id;
+
+            if (tagNs.indexOf(OID) >= 0) {
+
+                return (obj);
+            }
+        }
+    }
+    
+    
+//本题交卷
+function btnHandIn_onclick() {
+
+    if (window.confirm("请确认已成功“保存答题结果”,\n否则你的解答结果不会被保存。\n\n“交卷”后将不能再进行答题,\n\n确认要“全部交卷”吗？") == true)
+	     return (__doPostBack('WucSwitchBar1$btnHandIn',''));
+		
+}
+
+//全部交卷
+function btnHandInAll_onclick() {
+
+	if(window.confirm("确认全部交卷，交卷后就不能修改？")==true)
+	     return (__doPostBack('WucSwitchBar1$btnHandInAll1',''));
+		
+}
+
+//重做本题
+function btnRedoThis_onclick() {
+
+	if(window.confirm("确认重做本大题，你可以再次进行答题或修改答案？")==true)
+	     return (__doPostBack('WucSwitchBar1$btnRedo',''));
+		
+}
+
+
+
+//查看成绩
+function btnScore_onclick() {
+	var m=Math.random()*1000 ;
+	//"ViewScore.aspx?examinsid=" + examinsid.ToString()+ "&rnd=" + rnd.Next(1000).ToString(),features
+	var features;
+	var h,w;
+	h=screen.availHeight;
+	w=screen.availWidth;
+	
+	features="dialogHeight: 330px; dialogWidth:310px; dialogTop: " + (h-330)/2  + "px; dialogLeft: " + (w-310)/2 + "px; edge: Raised; center: Yes; help: Yes; resizable: Yes; status: Yes;";
+	
+	window.showModalDialog("ViewScore.aspx?examinsid=" + Form1.WucSwitchBar1_txtExaminsid.value + "&rnd=" + m,"aaa",features);
+		
+}
+
+
+
+
+function SetValue(eventTarget, eventArgument)
+{
+	var ttt;
+	ttt=document.all[eventTarget];
+	ttt.value=eventArgument;
+	
+}
+
+function window_onload() {
+
+    var hs = FindObj("ID_HandStatus");
+    var btnHdin1 = FindObj("btnHandIn1");
+    //var btnRedo = FindObj("btnRedoThis");
+    if (hs.value == "") hs.value = "0"; 
+    //alert(hs.value);
+    
+    if (hs.value == "0") {
+
+        btnHdin1.disabled = false;
+        
+       //btnRedo.disabled = true;
+	}
+	else {
+	    btnHdin1.disabled =true;
+
+	    //btnRedo.disabled = false;
+//		Form1.btnHandIn1.disabled=false;
+//		Form1.btnRedoThis.disabled=false;
+	}
+
+
+}
+
+
+function SetVisable(f) {
+   // alert("asdf");
+    
+    //var btnRedo = FindObj("btnRedoThis");
+     
+	//if(f==0) {
+	    //btnRedo.style.display = "none";		
+	//}
+	//else
+	//{
+	  //  btnRedo.style.display = "";
+
+    //}
+    return (0);
+}
+
+//-->
+</SCRIPT>
+
+      <TABLE style="WIDTH: 82px; HEIGHT: 168px" id=Table1 border=0 cellSpacing=0 
+      cellPadding=0>
+        <TBODY>
+        <TR>
+          <TD style="WIDTH: 74px"><FONT face=宋体></FONT></TD></TR>
+        <TR>
+          <TD style="WIDTH: 74px"><INPUT style="BORDER-BOTTOM: lightsteelblue 1pt solid; BORDER-LEFT: lightsteelblue 1pt solid; BACKGROUND-COLOR: whitesmoke; WIDTH: 80px; HEIGHT: 32px; BORDER-TOP: lightsteelblue 1pt solid; CURSOR: hand; BORDER-RIGHT: lightsteelblue 1pt solid" id=WucSwitchBar1_btnPaperHome name=WucSwitchBar1:btnPaperHome value=试卷首页 type=submit></FONT></TD></TR>
+        <TR>
+          <TD style="WIDTH: 74px"><INPUT style="BORDER-BOTTOM: lightsteelblue 1px solid; BORDER-LEFT: lightsteelblue 1px solid; BACKGROUND-COLOR: whitesmoke; WIDTH: 80px; HEIGHT: 32px; BORDER-TOP: lightsteelblue 1px solid; CURSOR: hand; BORDER-RIGHT: lightsteelblue 1px solid" id=btnHandIn1 title=请确认已成功“保存答题结果”,否则你的解答结果不会被保存。“交卷”后将不能再进行答题,确认要“全部交卷”吗？ onclick="return btnHandIn_onclick()" value=全部交卷 type=button></TD></TR>
+        <TR>
+          <TD style="WIDTH: 74px"><FONT face=宋体><INPUT style="BORDER-BOTTOM: lightsteelblue 1px solid; BORDER-LEFT: lightsteelblue 1px solid; BACKGROUND-COLOR: whitesmoke; WIDTH: 0px; DISPLAY: none; HEIGHT: 0px; BORDER-TOP: lightsteelblue 1px solid; CURSOR: hand; BORDER-RIGHT: lightsteelblue 1px solid" id=btnRedoThis disabled onclick="return btnRedoThis_onclick()" name=btnRedoThis value=重做处理 type=button> 
+            </FONT></TD></TR>
+        <TR>
+          <TD style="WIDTH: 74px"><INPUT style="BORDER-BOTTOM: lightsteelblue 1px solid; BORDER-LEFT: lightsteelblue 1px solid; BACKGROUND-COLOR: whitesmoke; WIDTH: 80px; DISPLAY: none; HEIGHT: 32px; BORDER-TOP: lightsteelblue 1px solid; CURSOR: hand; BORDER-RIGHT: lightsteelblue 1px solid" id=btnScore onclick="return btnScore_onclick()" name=btnScore value=查看成绩 type=button> 
+          </TD></TR>
+        <TR>
+          <TD style="WIDTH: 74px">
+            <P><INPUT style="BORDER-BOTTOM: lightsteelblue 1pt solid; BORDER-LEFT: lightsteelblue 1pt solid; BACKGROUND-COLOR: whitesmoke; WIDTH: 80px; HEIGHT: 32px; BORDER-TOP: lightsteelblue 1pt solid; CURSOR: hand; BORDER-RIGHT: lightsteelblue 1pt solid" id=WucSwitchBar1_btnExitExam name=WucSwitchBar1:btnExitExam value=退出练习 type=submit></P></TD></TR>
+        <TR>
+          <TD style="WIDTH: 74px"><BR>
+            <P><FONT color=#ff0000 size=3 face=宋体><B>注意：</B></FONT></P>
+            <P><FONT color=#ff0000 size=3 
+            face=宋体><B>完成解答后，进行“全部交卷”。“交卷”之前，确认已成功“保存答题结果”，否则，解答因没保存而丢失。</B></FONT></P></TD></TR></TBODY></TABLE>
+      <P><INPUT style="DISPLAY: none" id=WucSwitchBar1_btnHandIn onclick="__doPostBack('WucSwitchBar1$btnHandIn','')" name=WucSwitchBar1:btnHandIn value=本题交卷 type=button></P>
+      <P><FONT face=宋体></FONT></P>
+      <P><INPUT style="DISPLAY: none" id=WucSwitchBar1_btnRedo onclick="__doPostBack('WucSwitchBar1$btnRedo','')" name=WucSwitchBar1:btnRedo value=重做 type=button></P>
+      <P><INPUT id=WucSwitchBar1_ID_HandStatus name=WucSwitchBar1:ID_HandStatus 
+      value=0 size=1 type=hidden><INPUT 
+      style="WIDTH: 32px; DISPLAY: none; HEIGHT: 22px" 
+      id=WucSwitchBar1_txtExaminsid name=WucSwitchBar1:txtExaminsid value=253 
+      size=1></P>
+      <P>&nbsp;</P><FONT face=宋体></FONT><FONT face=宋体></FONT><FONT 
+      face=宋体></FONT><FONT face=宋体></FONT><FONT face=宋体></FONT><FONT 
+      face=宋体></FONT><FONT face=宋体></FONT><FONT face=宋体></FONT><FONT 
+      face=宋体></FONT><FONT face=宋体></FONT><FONT face=宋体></FONT><FONT 
+      face=宋体></FONT><FONT face=宋体></FONT><FONT face=宋体></FONT><FONT 
+      face=宋体></FONT><FONT face=宋体></FONT><FONT face=宋体></FONT><FONT 
+      face=宋体></FONT><FONT face=宋体></FONT><FONT face=宋体></FONT><FONT 
+      face=宋体></FONT><FONT face=宋体></FONT><FONT face=宋体></FONT></DIV></FONT></TD>
+    <TD style="WIDTH: 100%; HEIGHT: 96.08%" vAlign=top align=left><FONT 
+      face=宋体>
+      <TABLE style="WIDTH: 100%; HEIGHT: 100%" border=0 cellSpacing=0 
+      cellPadding=0>
+        <TBODY>
+        <TR>
+          <TD class=HeadToolBack1 height=20 vAlign=top align=left>
+            <P><FONT face=宋体>
+            <TABLE 
+            style="BORDER-BOTTOM: 1px solid; BORDER-LEFT: 1px solid; BORDER-TOP: 1px solid; BORDER-RIGHT: 1px solid" 
+            id=WucListSubType1_Table1 border=0>
+              <TBODY>
+              <TR>
+                <TD 
+                style="BORDER-BOTTOM-STYLE: solid; BORDER-LEFT-STYLE: solid; BORDER-TOP-STYLE: solid; BORDER-RIGHT-STYLE: solid" 
+                align=left><STRONG>选择题型</STRONG>==&gt;</TD>
+                <TD><IMG src="ExamPaperSub_files/sun.gif"></IMG></TD>
+                <TD><A 
+                  href="http://10.77.30.163/djsim/onlinetest/ExamPaperSub.aspx?examinsid=253&amp;examdefid=46&amp;paperlibid=190&amp;paperdefid=24&amp;subtypeid=1&amp;subxh=0&amp;action=0">&nbsp;判断题&nbsp;</A></TD>
+                <TD><IMG src="ExamPaperSub_files/sun.gif"></IMG></TD>
+                <TD style="BACKGROUND-COLOR: #ffff00"><A 
+                  href="http://10.77.30.163/djsim/onlinetest/ExamPaperSub.aspx?examinsid=253&amp;examdefid=46&amp;paperlibid=190&amp;paperdefid=24&amp;subtypeid=2&amp;subxh=1&amp;action=0">&nbsp;单选题&nbsp;</A></TD>
+                <TD><IMG src="ExamPaperSub_files/sun.gif"></IMG></TD>
+                <TD><A 
+                  href="http://10.77.30.163/djsim/onlinetest/ExamPaperSub.aspx?examinsid=253&amp;examdefid=46&amp;paperlibid=190&amp;paperdefid=24&amp;subtypeid=4&amp;subxh=2&amp;action=0">&nbsp;填空题&nbsp;</A></TD>
+                <TD><IMG src="ExamPaperSub_files/sun.gif"></IMG></TD>
+                <TD><A 
+                  href="http://10.77.30.163/djsim/onlinetest/ExamPaperSub.aspx?examinsid=253&amp;examdefid=46&amp;paperlibid=190&amp;paperdefid=24&amp;subtypeid=3&amp;subxh=3&amp;action=0">&nbsp;选择性填空题&nbsp;</A></TD>
+                <TD><IMG src="ExamPaperSub_files/sun.gif"></IMG></TD>
+                <TD><A 
+                  href="http://10.77.30.163/djsim/onlinetest/ExamPaperSub.aspx?examinsid=253&amp;examdefid=46&amp;paperlibid=190&amp;paperdefid=24&amp;subtypeid=5&amp;subxh=4&amp;action=0">&nbsp;连线题&nbsp;</A></TD>
+                <TD></TD></TR></TBODY></TABLE></FONT></P></TD></TR>
+        <TR>
+          <TD vAlign=top align=left><FONT face=宋体>
+            <SCRIPT id=clientEventHandlersJS language=javascript>
+
+    function btnSubmitSave_onclick() {
+
+        //if (window.confirm("确认提交保存？") == true) {
+            //alert("asdfd");
+            Form1.btnSubmitSave.disabled = true; //变灰
+            return (__doPostBack('ID_wucSingleSelect.ascx$btnSave', ''));
+        //}
+
+    }
+
+    function SetValue(eventTarget, eventArgument) {
+        var ttt;
+        ttt = document.all[eventTarget];
+        ttt.value = eventArgument;
+
+    }
+
+    function CheckSubmit() {
+        var result=false;
+        
+        if (window.confirm("确认提交保存？") == true) {
+            //alert("asdfd");
+
+            var submobj = FindObj("btnSubmitSave");
+            submobj.disabled = true;
+           
+           
+           
+            return (__doPostBack('ID_wucSingleSelect.ascx$btnSave', ''));
+            
+            
+            //Form1.btnSubmitSave.disabled = true; //变灰
+            result = true;
+            
+            }
+
+        return result;
+    }
+
+
+</SCRIPT>
+
+            <TABLE id=Table2 border=0 cellSpacing=0 cellPadding=0 
+              width="100%"><TBODY>
+              <TR>
+                <TD>
+                  <H3>
+                  <TABLE id=Table3 border=0 cellSpacing=0 cellPadding=0 
+                  width="100%">
+                    <TBODY>
+                    <TR>
+                      <TD>
+                        <P><FONT color=#ff0000 size=3 
+                        face=宋体><B>特别提示：答题选择答案时，不要点击“单选钮”，请点击“选择项的文字”，否则答案不会真被选中。只有答案的选择项字母出现在“解答文本框”，才表示你已经成功选取了答案。</B></FONT> 
+                        </P></TD></TR></TBODY></TABLE><SPAN 
+                  id=ID_wucSingleSelect.ascx_lblPOTitle>二、单选题。请在给定的选项中选出一个正确答案。每题1分，共20分。</SPAN> 
+                  <FONT face=宋体>&nbsp;</FONT></H3></TD></TR>
+              <TR>
+                <TD><FONT face=宋体>
+                  <TABLE id=ID_wucSingleSelect.ascx_Table1 width=750 
+                  height="100%">
+                    <TBODY>
+                    <TR vAlign=top>
+                      <TD>1、</TD>
+                      <TD width=700 
+                        align=left>网络互联实现在更大的范围内传输数据和共享资源，要解决两个问题：一是网络之间要有通信链路，二是提供____。</TD></TR>
+                    <TR>
+                      <TD width=20></TD>
+                      <TD>
+                        <TABLE id=ID_wucSingleSelect.ascx_ID_15234 border=0>
+                          <TBODY>
+                          <TR>
+                            <TD><INPUT id=ID_wucSingleSelect.ascx_ID_15234_0 
+                              name=ID_wucSingleSelect.ascx:ID_15234 value=A 
+                              type=radio><LABEL 
+                              for=ID_wucSingleSelect.ascx_ID_15234_0><SPAN 
+                              style="CURSOR: hand" 
+                              onclick="SetValue('ID_ANSWER_15234','A')">A. 
+                              协议转换功能</SPAN></LABEL></TD></TR>
+                          <TR>
+                            <TD><INPUT id=ID_wucSingleSelect.ascx_ID_15234_1 
+                              name=ID_wucSingleSelect.ascx:ID_15234 value=B 
+                              type=radio><LABEL 
+                              for=ID_wucSingleSelect.ascx_ID_15234_1><SPAN 
+                              style="CURSOR: hand" 
+                              onclick="SetValue('ID_ANSWER_15234','B')">B. 
+                              数据库管理功能</SPAN></LABEL></TD></TR>
+                          <TR>
+                            <TD><INPUT id=ID_wucSingleSelect.ascx_ID_15234_2 
+                              name=ID_wucSingleSelect.ascx:ID_15234 value=C 
+                              type=radio><LABEL 
+                              for=ID_wucSingleSelect.ascx_ID_15234_2><SPAN 
+                              style="CURSOR: hand" 
+                              onclick="SetValue('ID_ANSWER_15234','C')">C. 
+                              安全保密功能</SPAN></LABEL></TD></TR>
+                          <TR>
+                            <TD><INPUT id=ID_wucSingleSelect.ascx_ID_15234_3 
+                              name=ID_wucSingleSelect.ascx:ID_15234 value=D 
+                              type=radio><LABEL 
+                              for=ID_wucSingleSelect.ascx_ID_15234_3><SPAN 
+                              style="CURSOR: hand" 
+                              onclick="SetValue('ID_ANSWER_15234','D')">D. 
+                              信息传输功能</SPAN></LABEL></TD></TR></TBODY></TABLE></TD></TR>
+                    <TR>
+                      <TD width=20></TD>
+                      <TD align=center><FONT color=#0000ff>解答：</FONT><INPUT 
+                        style="Z-INDEX: 104; BORDER-BOTTOM: green 1px solid; BORDER-LEFT: green 1px solid; WIDTH: 48px; BORDER-TOP: green 1px solid; BORDER-RIGHT: green 1px solid; LEFT: 88px" 
+                        id=ID_ANSWER_15234 value=未答></TD></TR>
+                    <TR vAlign=top>
+                      <TD>2、</TD>
+                      <TD width=700 align=left>8个字节含二进制位______________。</TD></TR>
+                    <TR>
+                      <TD width=20></TD>
+                      <TD>
+                        <TABLE id=ID_wucSingleSelect.ascx_ID_15235 border=0>
+                          <TBODY>
+                          <TR>
+                            <TD><INPUT id=ID_wucSingleSelect.ascx_ID_15235_0 
+                              name=ID_wucSingleSelect.ascx:ID_15235 value=A 
+                              type=radio><LABEL 
+                              for=ID_wucSingleSelect.ascx_ID_15235_0><SPAN 
+                              style="CURSOR: hand" 
+                              onclick="SetValue('ID_ANSWER_15235','A')">A. 
+                              8个</SPAN></LABEL></TD></TR>
+                          <TR>
+                            <TD><INPUT id=ID_wucSingleSelect.ascx_ID_15235_1 
+                              name=ID_wucSingleSelect.ascx:ID_15235 value=B 
+                              type=radio><LABEL 
+                              for=ID_wucSingleSelect.ascx_ID_15235_1><SPAN 
+                              style="CURSOR: hand" 
+                              onclick="SetValue('ID_ANSWER_15235','B')">B. 
+                              16个</SPAN></LABEL></TD></TR>
+                          <TR>
+                            <TD><INPUT id=ID_wucSingleSelect.ascx_ID_15235_2 
+                              name=ID_wucSingleSelect.ascx:ID_15235 value=C 
+                              type=radio><LABEL 
+                              for=ID_wucSingleSelect.ascx_ID_15235_2><SPAN 
+                              style="CURSOR: hand" 
+                              onclick="SetValue('ID_ANSWER_15235','C')">C. 
+                              32个</SPAN></LABEL></TD></TR>
+                          <TR>
+                            <TD><INPUT id=ID_wucSingleSelect.ascx_ID_15235_3 
+                              name=ID_wucSingleSelect.ascx:ID_15235 value=D 
+                              type=radio><LABEL 
+                              for=ID_wucSingleSelect.ascx_ID_15235_3><SPAN 
+                              style="CURSOR: hand" 
+                              onclick="SetValue('ID_ANSWER_15235','D')">D. 
+                              64个</SPAN></LABEL></TD></TR></TBODY></TABLE></TD></TR>
+                    <TR>
+                      <TD width=20></TD>
+                      <TD align=center><FONT color=#0000ff>解答：</FONT><INPUT 
+                        style="Z-INDEX: 104; BORDER-BOTTOM: green 1px solid; BORDER-LEFT: green 1px solid; WIDTH: 48px; BORDER-TOP: green 1px solid; BORDER-RIGHT: green 1px solid; LEFT: 88px" 
+                        id=ID_ANSWER_15235 value=未答></TD></TR>
+                    <TR vAlign=top>
+                      <TD>3、</TD>
+                      <TD width=700 align=left>Word文档文件的扩展名是______。</TD></TR>
+                    <TR>
+                      <TD width=20></TD>
+                      <TD>
+                        <TABLE id=ID_wucSingleSelect.ascx_ID_15236 border=0>
+                          <TBODY>
+                          <TR>
+                            <TD><INPUT id=ID_wucSingleSelect.ascx_ID_15236_0 
+                              name=ID_wucSingleSelect.ascx:ID_15236 value=A 
+                              type=radio><LABEL 
+                              for=ID_wucSingleSelect.ascx_ID_15236_0><SPAN 
+                              style="CURSOR: hand" 
+                              onclick="SetValue('ID_ANSWER_15236','A')">A. 
+                              .txt</SPAN></LABEL></TD></TR>
+                          <TR>
+                            <TD><INPUT id=ID_wucSingleSelect.ascx_ID_15236_1 
+                              name=ID_wucSingleSelect.ascx:ID_15236 value=B 
+                              type=radio><LABEL 
+                              for=ID_wucSingleSelect.ascx_ID_15236_1><SPAN 
+                              style="CURSOR: hand" 
+                              onclick="SetValue('ID_ANSWER_15236','B')">B. 
+                              .wps</SPAN></LABEL></TD></TR>
+                          <TR>
+                            <TD><INPUT id=ID_wucSingleSelect.ascx_ID_15236_2 
+                              name=ID_wucSingleSelect.ascx:ID_15236 value=C 
+                              type=radio><LABEL 
+                              for=ID_wucSingleSelect.ascx_ID_15236_2><SPAN 
+                              style="CURSOR: hand" 
+                              onclick="SetValue('ID_ANSWER_15236','C')">C. 
+                              .dotx</SPAN></LABEL></TD></TR>
+                          <TR>
+                            <TD><INPUT id=ID_wucSingleSelect.ascx_ID_15236_3 
+                              name=ID_wucSingleSelect.ascx:ID_15236 value=D 
+                              type=radio><LABEL 
+                              for=ID_wucSingleSelect.ascx_ID_15236_3><SPAN 
+                              style="CURSOR: hand" 
+                              onclick="SetValue('ID_ANSWER_15236','D')">D. 
+                              .docx</SPAN></LABEL></TD></TR></TBODY></TABLE></TD></TR>
+                    <TR>
+                      <TD width=20></TD>
+                      <TD align=center><FONT color=#0000ff>解答：</FONT><INPUT 
+                        style="Z-INDEX: 104; BORDER-BOTTOM: green 1px solid; BORDER-LEFT: green 1px solid; WIDTH: 48px; BORDER-TOP: green 1px solid; BORDER-RIGHT: green 1px solid; LEFT: 88px" 
+                        id=ID_ANSWER_15236 value=未答></TD></TR>
+                    <TR vAlign=top>
+                      <TD>4、</TD>
+                      <TD width=700 
+                    align=left>SQL中，_____子句可以实现查询结果排序。<BR></TD></TR>
+                    <TR>
+                      <TD width=20></TD>
+                      <TD>
+                        <TABLE id=ID_wucSingleSelect.ascx_ID_15237 border=0>
+                          <TBODY>
+                          <TR>
+                            <TD><INPUT id=ID_wucSingleSelect.ascx_ID_15237_0 
+                              name=ID_wucSingleSelect.ascx:ID_15237 value=A 
+                              type=radio><LABEL 
+                              for=ID_wucSingleSelect.ascx_ID_15237_0><SPAN 
+                              style="CURSOR: hand" 
+                              onclick="SetValue('ID_ANSWER_15237','A')">A. 
+                              DISTINCT&nbsp;&nbsp;&nbsp;BY</SPAN></LABEL></TD></TR>
+                          <TR>
+                            <TD><INPUT id=ID_wucSingleSelect.ascx_ID_15237_1 
+                              name=ID_wucSingleSelect.ascx:ID_15237 value=B 
+                              type=radio><LABEL 
+                              for=ID_wucSingleSelect.ascx_ID_15237_1><SPAN 
+                              style="CURSOR: hand" 
+                              onclick="SetValue('ID_ANSWER_15237','B')">B. 
+                              ORDER&nbsp;BY</SPAN></LABEL></TD></TR>
+                          <TR>
+                            <TD><INPUT id=ID_wucSingleSelect.ascx_ID_15237_2 
+                              name=ID_wucSingleSelect.ascx:ID_15237 value=C 
+                              type=radio><LABEL 
+                              for=ID_wucSingleSelect.ascx_ID_15237_2><SPAN 
+                              style="CURSOR: hand" 
+                              onclick="SetValue('ID_ANSWER_15237','C')">C. 
+                              SEQUENCE&nbsp;BY</SPAN></LABEL></TD></TR>
+                          <TR>
+                            <TD><INPUT id=ID_wucSingleSelect.ascx_ID_15237_3 
+                              name=ID_wucSingleSelect.ascx:ID_15237 value=D 
+                              type=radio><LABEL 
+                              for=ID_wucSingleSelect.ascx_ID_15237_3><SPAN 
+                              style="CURSOR: hand" 
+                              onclick="SetValue('ID_ANSWER_15237','D')">D. 
+                              ARRANGE&nbsp;BY</SPAN></LABEL></TD></TR></TBODY></TABLE></TD></TR>
+                    <TR>
+                      <TD width=20></TD>
+                      <TD align=center><FONT color=#0000ff>解答：</FONT><INPUT 
+                        style="Z-INDEX: 104; BORDER-BOTTOM: green 1px solid; BORDER-LEFT: green 1px solid; WIDTH: 48px; BORDER-TOP: green 1px solid; BORDER-RIGHT: green 1px solid; LEFT: 88px" 
+                        id=ID_ANSWER_15237 value=未答></TD></TR>
+                    <TR vAlign=top>
+                      <TD>5、</TD>
+                      <TD width=700 align=left>下列叙述中，正确的是&nbsp;______。 </TD></TR>
+                    <TR>
+                      <TD width=20></TD>
+                      <TD>
+                        <TABLE id=ID_wucSingleSelect.ascx_ID_15238 border=0>
+                          <TBODY>
+                          <TR>
+                            <TD><INPUT id=ID_wucSingleSelect.ascx_ID_15238_0 
+                              name=ID_wucSingleSelect.ascx:ID_15238 value=A 
+                              type=radio><LABEL 
+                              for=ID_wucSingleSelect.ascx_ID_15238_0><SPAN 
+                              style="CURSOR: hand" 
+                              onclick="SetValue('ID_ANSWER_15238','A')">A. 
+                              CPU能直接存取硬盘上的数据</SPAN></LABEL></TD></TR>
+                          <TR>
+                            <TD><INPUT id=ID_wucSingleSelect.ascx_ID_15238_1 
+                              name=ID_wucSingleSelect.ascx:ID_15238 value=B 
+                              type=radio><LABEL 
+                              for=ID_wucSingleSelect.ascx_ID_15238_1><SPAN 
+                              style="CURSOR: hand" 
+                              onclick="SetValue('ID_ANSWER_15238','B')">B. 
+                              CPU能直接存取内存储器中的数据</SPAN></LABEL></TD></TR>
+                          <TR>
+                            <TD><INPUT id=ID_wucSingleSelect.ascx_ID_15238_2 
+                              name=ID_wucSingleSelect.ascx:ID_15238 value=C 
+                              type=radio><LABEL 
+                              for=ID_wucSingleSelect.ascx_ID_15238_2><SPAN 
+                              style="CURSOR: hand" 
+                              onclick="SetValue('ID_ANSWER_15238','C')">C. 
+                              CPU能直接存取优盘上的数据</SPAN></LABEL></TD></TR>
+                          <TR>
+                            <TD><INPUT id=ID_wucSingleSelect.ascx_ID_15238_3 
+                              name=ID_wucSingleSelect.ascx:ID_15238 value=D 
+                              type=radio><LABEL 
+                              for=ID_wucSingleSelect.ascx_ID_15238_3><SPAN 
+                              style="CURSOR: hand" 
+                              onclick="SetValue('ID_ANSWER_15238','D')">D. 
+                              CPU能直接存取所有存储设备上的数据</SPAN></LABEL></TD></TR></TBODY></TABLE></TD></TR>
+                    <TR>
+                      <TD width=20></TD>
+                      <TD align=center><FONT color=#0000ff>解答：</FONT><INPUT 
+                        style="Z-INDEX: 104; BORDER-BOTTOM: green 1px solid; BORDER-LEFT: green 1px solid; WIDTH: 48px; BORDER-TOP: green 1px solid; BORDER-RIGHT: green 1px solid; LEFT: 88px" 
+                        id=ID_ANSWER_15238 value=未答></TD></TR>
+                    <TR vAlign=top>
+                      <TD>6、</TD>
+                      <TD width=700 align=left>算法可以分成______两大类。</TD></TR>
+                    <TR>
+                      <TD width=20></TD>
+                      <TD>
+                        <TABLE id=ID_wucSingleSelect.ascx_ID_15239 border=0>
+                          <TBODY>
+                          <TR>
+                            <TD><INPUT id=ID_wucSingleSelect.ascx_ID_15239_0 
+                              name=ID_wucSingleSelect.ascx:ID_15239 value=A 
+                              type=radio><LABEL 
+                              for=ID_wucSingleSelect.ascx_ID_15239_0><SPAN 
+                              style="CURSOR: hand" 
+                              onclick="SetValue('ID_ANSWER_15239','A')">A. 
+                              数值算法和非数值算法</SPAN></LABEL></TD></TR>
+                          <TR>
+                            <TD><INPUT id=ID_wucSingleSelect.ascx_ID_15239_1 
+                              name=ID_wucSingleSelect.ascx:ID_15239 value=B 
+                              type=radio><LABEL 
+                              for=ID_wucSingleSelect.ascx_ID_15239_1><SPAN 
+                              style="CURSOR: hand" 
+                              onclick="SetValue('ID_ANSWER_15239','B')">B. 
+                              排序算法和检索算法</SPAN></LABEL></TD></TR>
+                          <TR>
+                            <TD><INPUT id=ID_wucSingleSelect.ascx_ID_15239_2 
+                              name=ID_wucSingleSelect.ascx:ID_15239 value=C 
+                              type=radio><LABEL 
+                              for=ID_wucSingleSelect.ascx_ID_15239_2><SPAN 
+                              style="CURSOR: hand" 
+                              onclick="SetValue('ID_ANSWER_15239','C')">C. 
+                              贪心算法和穷举算法</SPAN></LABEL></TD></TR>
+                          <TR>
+                            <TD><INPUT id=ID_wucSingleSelect.ascx_ID_15239_3 
+                              name=ID_wucSingleSelect.ascx:ID_15239 value=D 
+                              type=radio><LABEL 
+                              for=ID_wucSingleSelect.ascx_ID_15239_3><SPAN 
+                              style="CURSOR: hand" 
+                              onclick="SetValue('ID_ANSWER_15239','D')">D. 
+                              逻辑算法和非逻辑算法</SPAN></LABEL></TD></TR></TBODY></TABLE></TD></TR>
+                    <TR>
+                      <TD width=20></TD>
+                      <TD align=center><FONT color=#0000ff>解答：</FONT><INPUT 
+                        style="Z-INDEX: 104; BORDER-BOTTOM: green 1px solid; BORDER-LEFT: green 1px solid; WIDTH: 48px; BORDER-TOP: green 1px solid; BORDER-RIGHT: green 1px solid; LEFT: 88px" 
+                        id=ID_ANSWER_15239 value=未答></TD></TR>
+                    <TR vAlign=top>
+                      <TD>7、</TD>
+                      <TD width=700 
+                        align=left>数据库应用系统可看作由两个简单的部分组成，一个是服务器（Server），也叫做______；另一个是客户（Client）。</TD></TR>
+                    <TR>
+                      <TD width=20></TD>
+                      <TD>
+                        <TABLE id=ID_wucSingleSelect.ascx_ID_15240 border=0>
+                          <TBODY>
+                          <TR>
+                            <TD><INPUT id=ID_wucSingleSelect.ascx_ID_15240_0 
+                              name=ID_wucSingleSelect.ascx:ID_15240 value=A 
+                              type=radio><LABEL 
+                              for=ID_wucSingleSelect.ascx_ID_15240_0><SPAN 
+                              style="CURSOR: hand" 
+                              onclick="SetValue('ID_ANSWER_15240','A')">A. 
+                              应用端</SPAN></LABEL></TD></TR>
+                          <TR>
+                            <TD><INPUT id=ID_wucSingleSelect.ascx_ID_15240_1 
+                              name=ID_wucSingleSelect.ascx:ID_15240 value=B 
+                              type=radio><LABEL 
+                              for=ID_wucSingleSelect.ascx_ID_15240_1><SPAN 
+                              style="CURSOR: hand" 
+                              onclick="SetValue('ID_ANSWER_15240','B')">B. 
+                              系统端</SPAN></LABEL></TD></TR>
+                          <TR>
+                            <TD><INPUT id=ID_wucSingleSelect.ascx_ID_15240_2 
+                              name=ID_wucSingleSelect.ascx:ID_15240 value=C 
+                              type=radio><LABEL 
+                              for=ID_wucSingleSelect.ascx_ID_15240_2><SPAN 
+                              style="CURSOR: hand" 
+                              onclick="SetValue('ID_ANSWER_15240','C')">C. 
+                              前端</SPAN></LABEL></TD></TR>
+                          <TR>
+                            <TD><INPUT id=ID_wucSingleSelect.ascx_ID_15240_3 
+                              name=ID_wucSingleSelect.ascx:ID_15240 value=D 
+                              type=radio><LABEL 
+                              for=ID_wucSingleSelect.ascx_ID_15240_3><SPAN 
+                              style="CURSOR: hand" 
+                              onclick="SetValue('ID_ANSWER_15240','D')">D. 
+                              后端</SPAN></LABEL></TD></TR></TBODY></TABLE></TD></TR>
+                    <TR>
+                      <TD width=20></TD>
+                      <TD align=center><FONT color=#0000ff>解答：</FONT><INPUT 
+                        style="Z-INDEX: 104; BORDER-BOTTOM: green 1px solid; BORDER-LEFT: green 1px solid; WIDTH: 48px; BORDER-TOP: green 1px solid; BORDER-RIGHT: green 1px solid; LEFT: 88px" 
+                        id=ID_ANSWER_15240 value=未答></TD></TR>
+                    <TR vAlign=top>
+                      <TD>8、</TD>
+                      <TD width=700 
+                        align=left>Internet网是目前世界上第一大互联网，它起源于美国，其雏形是____。</TD></TR>
+                    <TR>
+                      <TD width=20></TD>
+                      <TD>
+                        <TABLE id=ID_wucSingleSelect.ascx_ID_15241 border=0>
+                          <TBODY>
+                          <TR>
+                            <TD><INPUT id=ID_wucSingleSelect.ascx_ID_15241_0 
+                              name=ID_wucSingleSelect.ascx:ID_15241 value=A 
+                              type=radio><LABEL 
+                              for=ID_wucSingleSelect.ascx_ID_15241_0><SPAN 
+                              style="CURSOR: hand" 
+                              onclick="SetValue('ID_ANSWER_15241','A')">A. 
+                              NCFC网</SPAN></LABEL></TD></TR>
+                          <TR>
+                            <TD><INPUT id=ID_wucSingleSelect.ascx_ID_15241_1 
+                              name=ID_wucSingleSelect.ascx:ID_15241 value=B 
+                              type=radio><LABEL 
+                              for=ID_wucSingleSelect.ascx_ID_15241_1><SPAN 
+                              style="CURSOR: hand" 
+                              onclick="SetValue('ID_ANSWER_15241','B')">B. 
+                              CERNET网</SPAN></LABEL></TD></TR>
+                          <TR>
+                            <TD><INPUT id=ID_wucSingleSelect.ascx_ID_15241_2 
+                              name=ID_wucSingleSelect.ascx:ID_15241 value=C 
+                              type=radio><LABEL 
+                              for=ID_wucSingleSelect.ascx_ID_15241_2><SPAN 
+                              style="CURSOR: hand" 
+                              onclick="SetValue('ID_ANSWER_15241','C')">C. 
+                              GBNET网</SPAN></LABEL></TD></TR>
+                          <TR>
+                            <TD><INPUT id=ID_wucSingleSelect.ascx_ID_15241_3 
+                              name=ID_wucSingleSelect.ascx:ID_15241 value=D 
+                              type=radio><LABEL 
+                              for=ID_wucSingleSelect.ascx_ID_15241_3><SPAN 
+                              style="CURSOR: hand" 
+                              onclick="SetValue('ID_ANSWER_15241','D')">D. 
+                              ARPANET网</SPAN></LABEL></TD></TR></TBODY></TABLE></TD></TR>
+                    <TR>
+                      <TD width=20></TD>
+                      <TD align=center><FONT color=#0000ff>解答：</FONT><INPUT 
+                        style="Z-INDEX: 104; BORDER-BOTTOM: green 1px solid; BORDER-LEFT: green 1px solid; WIDTH: 48px; BORDER-TOP: green 1px solid; BORDER-RIGHT: green 1px solid; LEFT: 88px" 
+                        id=ID_ANSWER_15241 value=未答></TD></TR>
+                    <TR vAlign=top>
+                      <TD>9、</TD>
+                      <TD width=700 
+                        align=left>下列（&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;）不是操作系统软件。</TD></TR>
+                    <TR>
+                      <TD width=20></TD>
+                      <TD>
+                        <TABLE id=ID_wucSingleSelect.ascx_ID_15242 border=0>
+                          <TBODY>
+                          <TR>
+                            <TD><INPUT id=ID_wucSingleSelect.ascx_ID_15242_0 
+                              name=ID_wucSingleSelect.ascx:ID_15242 value=A 
+                              type=radio><LABEL 
+                              for=ID_wucSingleSelect.ascx_ID_15242_0><SPAN 
+                              style="CURSOR: hand" 
+                              onclick="SetValue('ID_ANSWER_15242','A')">A. 
+                              Linux</SPAN></LABEL></TD></TR>
+                          <TR>
+                            <TD><INPUT id=ID_wucSingleSelect.ascx_ID_15242_1 
+                              name=ID_wucSingleSelect.ascx:ID_15242 value=B 
+                              type=radio><LABEL 
+                              for=ID_wucSingleSelect.ascx_ID_15242_1><SPAN 
+                              style="CURSOR: hand" 
+                              onclick="SetValue('ID_ANSWER_15242','B')">B. 
+                              Windows2000</SPAN></LABEL></TD></TR>
+                          <TR>
+                            <TD><INPUT id=ID_wucSingleSelect.ascx_ID_15242_2 
+                              name=ID_wucSingleSelect.ascx:ID_15242 value=C 
+                              type=radio><LABEL 
+                              for=ID_wucSingleSelect.ascx_ID_15242_2><SPAN 
+                              style="CURSOR: hand" 
+                              onclick="SetValue('ID_ANSWER_15242','C')">C. 
+                              MSOffice</SPAN></LABEL></TD></TR>
+                          <TR>
+                            <TD><INPUT id=ID_wucSingleSelect.ascx_ID_15242_3 
+                              name=ID_wucSingleSelect.ascx:ID_15242 value=D 
+                              type=radio><LABEL 
+                              for=ID_wucSingleSelect.ascx_ID_15242_3><SPAN 
+                              style="CURSOR: hand" 
+                              onclick="SetValue('ID_ANSWER_15242','D')">D. 
+                              Unix</SPAN></LABEL></TD></TR></TBODY></TABLE></TD></TR>
+                    <TR>
+                      <TD width=20></TD>
+                      <TD align=center><FONT color=#0000ff>解答：</FONT><INPUT 
+                        style="Z-INDEX: 104; BORDER-BOTTOM: green 1px solid; BORDER-LEFT: green 1px solid; WIDTH: 48px; BORDER-TOP: green 1px solid; BORDER-RIGHT: green 1px solid; LEFT: 88px" 
+                        id=ID_ANSWER_15242 value=未答></TD></TR>
+                    <TR vAlign=top>
+                      <TD>10、</TD>
+                      <TD width=700 
+                    align=left>IP地址211.151.68.70属于______类地址。</TD></TR>
+                    <TR>
+                      <TD width=20></TD>
+                      <TD>
+                        <TABLE id=ID_wucSingleSelect.ascx_ID_15243 border=0>
+                          <TBODY>
+                          <TR>
+                            <TD><INPUT id=ID_wucSingleSelect.ascx_ID_15243_0 
+                              name=ID_wucSingleSelect.ascx:ID_15243 value=A 
+                              type=radio><LABEL 
+                              for=ID_wucSingleSelect.ascx_ID_15243_0><SPAN 
+                              style="CURSOR: hand" 
+                              onclick="SetValue('ID_ANSWER_15243','A')">A. 
+                              A</SPAN></LABEL></TD></TR>
+                          <TR>
+                            <TD><INPUT id=ID_wucSingleSelect.ascx_ID_15243_1 
+                              name=ID_wucSingleSelect.ascx:ID_15243 value=B 
+                              type=radio><LABEL 
+                              for=ID_wucSingleSelect.ascx_ID_15243_1><SPAN 
+                              style="CURSOR: hand" 
+                              onclick="SetValue('ID_ANSWER_15243','B')">B. 
+                              B</SPAN></LABEL></TD></TR>
+                          <TR>
+                            <TD><INPUT id=ID_wucSingleSelect.ascx_ID_15243_2 
+                              name=ID_wucSingleSelect.ascx:ID_15243 value=C 
+                              type=radio><LABEL 
+                              for=ID_wucSingleSelect.ascx_ID_15243_2><SPAN 
+                              style="CURSOR: hand" 
+                              onclick="SetValue('ID_ANSWER_15243','C')">C. 
+                              C</SPAN></LABEL></TD></TR>
+                          <TR>
+                            <TD><INPUT id=ID_wucSingleSelect.ascx_ID_15243_3 
+                              name=ID_wucSingleSelect.ascx:ID_15243 value=D 
+                              type=radio><LABEL 
+                              for=ID_wucSingleSelect.ascx_ID_15243_3><SPAN 
+                              style="CURSOR: hand" 
+                              onclick="SetValue('ID_ANSWER_15243','D')">D. 
+                              D</SPAN></LABEL></TD></TR></TBODY></TABLE></TD></TR>
+                    <TR>
+                      <TD width=20></TD>
+                      <TD align=center><FONT color=#0000ff>解答：</FONT><INPUT 
+                        style="Z-INDEX: 104; BORDER-BOTTOM: green 1px solid; BORDER-LEFT: green 1px solid; WIDTH: 48px; BORDER-TOP: green 1px solid; BORDER-RIGHT: green 1px solid; LEFT: 88px" 
+                        id=ID_ANSWER_15243 value=未答></TD></TR>
+                    <TR vAlign=top>
+                      <TD>11、</TD>
+                      <TD width=700 
+                        align=left>BIOS提供的功能之一是系统参数设置，其参数是存放在______中的。<BR></TD></TR>
+                    <TR>
+                      <TD width=20></TD>
+                      <TD>
+                        <TABLE id=ID_wucSingleSelect.ascx_ID_15244 border=0>
+                          <TBODY>
+                          <TR>
+                            <TD><INPUT id=ID_wucSingleSelect.ascx_ID_15244_0 
+                              name=ID_wucSingleSelect.ascx:ID_15244 value=A 
+                              type=radio><LABEL 
+                              for=ID_wucSingleSelect.ascx_ID_15244_0><SPAN 
+                              style="CURSOR: hand" 
+                              onclick="SetValue('ID_ANSWER_15244','A')">A. 
+                              CMOS&nbsp;RAM</SPAN></LABEL></TD></TR>
+                          <TR>
+                            <TD><INPUT id=ID_wucSingleSelect.ascx_ID_15244_1 
+                              name=ID_wucSingleSelect.ascx:ID_15244 value=B 
+                              type=radio><LABEL 
+                              for=ID_wucSingleSelect.ascx_ID_15244_1><SPAN 
+                              style="CURSOR: hand" 
+                              onclick="SetValue('ID_ANSWER_15244','B')">B. 
+                              CMOS&nbsp;ROM</SPAN></LABEL></TD></TR>
+                          <TR>
+                            <TD><INPUT id=ID_wucSingleSelect.ascx_ID_15244_2 
+                              name=ID_wucSingleSelect.ascx:ID_15244 value=C 
+                              type=radio><LABEL 
+                              for=ID_wucSingleSelect.ascx_ID_15244_2><SPAN 
+                              style="CURSOR: hand" 
+                              onclick="SetValue('ID_ANSWER_15244','C')">C. 
+                              Cache</SPAN></LABEL></TD></TR>
+                          <TR>
+                            <TD><INPUT id=ID_wucSingleSelect.ascx_ID_15244_3 
+                              name=ID_wucSingleSelect.ascx:ID_15244 value=D 
+                              type=radio><LABEL 
+                              for=ID_wucSingleSelect.ascx_ID_15244_3><SPAN 
+                              style="CURSOR: hand" 
+                              onclick="SetValue('ID_ANSWER_15244','D')">D. 
+                              寄存器</SPAN></LABEL></TD></TR></TBODY></TABLE></TD></TR>
+                    <TR>
+                      <TD width=20></TD>
+                      <TD align=center><FONT color=#0000ff>解答：</FONT><INPUT 
+                        style="Z-INDEX: 104; BORDER-BOTTOM: green 1px solid; BORDER-LEFT: green 1px solid; WIDTH: 48px; BORDER-TOP: green 1px solid; BORDER-RIGHT: green 1px solid; LEFT: 88px" 
+                        id=ID_ANSWER_15244 value=未答></TD></TR>
+                    <TR vAlign=top>
+                      <TD>12、</TD>
+                      <TD width=700 
+                    align=left>能把汇编语言源程序翻译成目标程序的程序是________。</TD></TR>
+                    <TR>
+                      <TD width=20></TD>
+                      <TD>
+                        <TABLE id=ID_wucSingleSelect.ascx_ID_15245 border=0>
+                          <TBODY>
+                          <TR>
+                            <TD><INPUT id=ID_wucSingleSelect.ascx_ID_15245_0 
+                              name=ID_wucSingleSelect.ascx:ID_15245 value=A 
+                              type=radio><LABEL 
+                              for=ID_wucSingleSelect.ascx_ID_15245_0><SPAN 
+                              style="CURSOR: hand" 
+                              onclick="SetValue('ID_ANSWER_15245','A')">A. 
+                              汇编程序</SPAN></LABEL></TD></TR>
+                          <TR>
+                            <TD><INPUT id=ID_wucSingleSelect.ascx_ID_15245_1 
+                              name=ID_wucSingleSelect.ascx:ID_15245 value=B 
+                              type=radio><LABEL 
+                              for=ID_wucSingleSelect.ascx_ID_15245_1><SPAN 
+                              style="CURSOR: hand" 
+                              onclick="SetValue('ID_ANSWER_15245','B')">B. 
+                              编译程序</SPAN></LABEL></TD></TR>
+                          <TR>
+                            <TD><INPUT id=ID_wucSingleSelect.ascx_ID_15245_2 
+                              name=ID_wucSingleSelect.ascx:ID_15245 value=C 
+                              type=radio><LABEL 
+                              for=ID_wucSingleSelect.ascx_ID_15245_2><SPAN 
+                              style="CURSOR: hand" 
+                              onclick="SetValue('ID_ANSWER_15245','C')">C. 
+                              解释程序</SPAN></LABEL></TD></TR>
+                          <TR>
+                            <TD><INPUT id=ID_wucSingleSelect.ascx_ID_15245_3 
+                              name=ID_wucSingleSelect.ascx:ID_15245 value=D 
+                              type=radio><LABEL 
+                              for=ID_wucSingleSelect.ascx_ID_15245_3><SPAN 
+                              style="CURSOR: hand" 
+                              onclick="SetValue('ID_ANSWER_15245','D')">D. 
+                              翻译程序</SPAN></LABEL></TD></TR></TBODY></TABLE></TD></TR>
+                    <TR>
+                      <TD width=20></TD>
+                      <TD align=center><FONT color=#0000ff>解答：</FONT><INPUT 
+                        style="Z-INDEX: 104; BORDER-BOTTOM: green 1px solid; BORDER-LEFT: green 1px solid; WIDTH: 48px; BORDER-TOP: green 1px solid; BORDER-RIGHT: green 1px solid; LEFT: 88px" 
+                        id=ID_ANSWER_15245 value=未答></TD></TR>
+                    <TR vAlign=top>
+                      <TD>13、</TD>
+                      <TD width=700 align=left>下列应用软件中，可用于网页制作的是______。</TD></TR>
+                    <TR>
+                      <TD width=20></TD>
+                      <TD>
+                        <TABLE id=ID_wucSingleSelect.ascx_ID_15246 border=0>
+                          <TBODY>
+                          <TR>
+                            <TD><INPUT id=ID_wucSingleSelect.ascx_ID_15246_0 
+                              name=ID_wucSingleSelect.ascx:ID_15246 value=A 
+                              type=radio><LABEL 
+                              for=ID_wucSingleSelect.ascx_ID_15246_0><SPAN 
+                              style="CURSOR: hand" 
+                              onclick="SetValue('ID_ANSWER_15246','A')">A. 
+                              WinRAR</SPAN></LABEL></TD></TR>
+                          <TR>
+                            <TD><INPUT id=ID_wucSingleSelect.ascx_ID_15246_1 
+                              name=ID_wucSingleSelect.ascx:ID_15246 value=B 
+                              type=radio><LABEL 
+                              for=ID_wucSingleSelect.ascx_ID_15246_1><SPAN 
+                              style="CURSOR: hand" 
+                              onclick="SetValue('ID_ANSWER_15246','B')">B. 
+                              Matlab</SPAN></LABEL></TD></TR>
+                          <TR>
+                            <TD><INPUT id=ID_wucSingleSelect.ascx_ID_15246_2 
+                              name=ID_wucSingleSelect.ascx:ID_15246 value=C 
+                              type=radio><LABEL 
+                              for=ID_wucSingleSelect.ascx_ID_15246_2><SPAN 
+                              style="CURSOR: hand" 
+                              onclick="SetValue('ID_ANSWER_15246','C')">C. 
+                              Raptor</SPAN></LABEL></TD></TR>
+                          <TR>
+                            <TD><INPUT id=ID_wucSingleSelect.ascx_ID_15246_3 
+                              name=ID_wucSingleSelect.ascx:ID_15246 value=D 
+                              type=radio><LABEL 
+                              for=ID_wucSingleSelect.ascx_ID_15246_3><SPAN 
+                              style="CURSOR: hand" 
+                              onclick="SetValue('ID_ANSWER_15246','D')">D. 
+                              Dreamweaver</SPAN></LABEL></TD></TR></TBODY></TABLE></TD></TR>
+                    <TR>
+                      <TD width=20></TD>
+                      <TD align=center><FONT color=#0000ff>解答：</FONT><INPUT 
+                        style="Z-INDEX: 104; BORDER-BOTTOM: green 1px solid; BORDER-LEFT: green 1px solid; WIDTH: 48px; BORDER-TOP: green 1px solid; BORDER-RIGHT: green 1px solid; LEFT: 88px" 
+                        id=ID_ANSWER_15246 value=未答></TD></TR>
+                    <TR vAlign=top>
+                      <TD>14、</TD>
+                      <TD width=700 align=left>操作系统是______的接口。</TD></TR>
+                    <TR>
+                      <TD width=20></TD>
+                      <TD>
+                        <TABLE id=ID_wucSingleSelect.ascx_ID_15247 border=0>
+                          <TBODY>
+                          <TR>
+                            <TD><INPUT id=ID_wucSingleSelect.ascx_ID_15247_0 
+                              name=ID_wucSingleSelect.ascx:ID_15247 value=A 
+                              type=radio><LABEL 
+                              for=ID_wucSingleSelect.ascx_ID_15247_0><SPAN 
+                              style="CURSOR: hand" 
+                              onclick="SetValue('ID_ANSWER_15247','A')">A. 
+                              用户和网络</SPAN></LABEL></TD></TR>
+                          <TR>
+                            <TD><INPUT id=ID_wucSingleSelect.ascx_ID_15247_1 
+                              name=ID_wucSingleSelect.ascx:ID_15247 value=B 
+                              type=radio><LABEL 
+                              for=ID_wucSingleSelect.ascx_ID_15247_1><SPAN 
+                              style="CURSOR: hand" 
+                              onclick="SetValue('ID_ANSWER_15247','B')">B. 
+                              用户和软件</SPAN></LABEL></TD></TR>
+                          <TR>
+                            <TD><INPUT id=ID_wucSingleSelect.ascx_ID_15247_2 
+                              name=ID_wucSingleSelect.ascx:ID_15247 value=C 
+                              type=radio><LABEL 
+                              for=ID_wucSingleSelect.ascx_ID_15247_2><SPAN 
+                              style="CURSOR: hand" 
+                              onclick="SetValue('ID_ANSWER_15247','C')">C. 
+                              用户和硬件</SPAN></LABEL></TD></TR>
+                          <TR>
+                            <TD><INPUT id=ID_wucSingleSelect.ascx_ID_15247_3 
+                              name=ID_wucSingleSelect.ascx:ID_15247 value=D 
+                              type=radio><LABEL 
+                              for=ID_wucSingleSelect.ascx_ID_15247_3><SPAN 
+                              style="CURSOR: hand" 
+                              onclick="SetValue('ID_ANSWER_15247','D')">D. 
+                              计算机和网络</SPAN></LABEL></TD></TR></TBODY></TABLE></TD></TR>
+                    <TR>
+                      <TD width=20></TD>
+                      <TD align=center><FONT color=#0000ff>解答：</FONT><INPUT 
+                        style="Z-INDEX: 104; BORDER-BOTTOM: green 1px solid; BORDER-LEFT: green 1px solid; WIDTH: 48px; BORDER-TOP: green 1px solid; BORDER-RIGHT: green 1px solid; LEFT: 88px" 
+                        id=ID_ANSWER_15247 value=未答></TD></TR>
+                    <TR vAlign=top>
+                      <TD>15、</TD>
+                      <TD width=700 align=left>下列关于病毒的说法不正确的是______。</TD></TR>
+                    <TR>
+                      <TD width=20></TD>
+                      <TD>
+                        <TABLE id=ID_wucSingleSelect.ascx_ID_15248 border=0>
+                          <TBODY>
+                          <TR>
+                            <TD><INPUT id=ID_wucSingleSelect.ascx_ID_15248_0 
+                              name=ID_wucSingleSelect.ascx:ID_15248 value=A 
+                              type=radio><LABEL 
+                              for=ID_wucSingleSelect.ascx_ID_15248_0><SPAN 
+                              style="CURSOR: hand" 
+                              onclick="SetValue('ID_ANSWER_15248','A')">A. 
+                              计算机病毒是人为制造出来的、干扰计算机正常运行的程序</SPAN></LABEL></TD></TR>
+                          <TR>
+                            <TD><INPUT id=ID_wucSingleSelect.ascx_ID_15248_1 
+                              name=ID_wucSingleSelect.ascx:ID_15248 value=B 
+                              type=radio><LABEL 
+                              for=ID_wucSingleSelect.ascx_ID_15248_1><SPAN 
+                              style="CURSOR: hand" 
+                              onclick="SetValue('ID_ANSWER_15248','B')">B. 
+                              病毒侵入计算机一般并不立即发作，等到满足某种条件的时候才被激活</SPAN></LABEL></TD></TR>
+                          <TR>
+                            <TD><INPUT id=ID_wucSingleSelect.ascx_ID_15248_2 
+                              name=ID_wucSingleSelect.ascx:ID_15248 value=C 
+                              type=radio><LABEL 
+                              for=ID_wucSingleSelect.ascx_ID_15248_2><SPAN 
+                              style="CURSOR: hand" 
+                              onclick="SetValue('ID_ANSWER_15248','C')">C. 
+                              计算机病毒是有故障的计算机自己产生的、可以影响计算机正常运行的程序</SPAN></LABEL></TD></TR>
+                          <TR>
+                            <TD><INPUT id=ID_wucSingleSelect.ascx_ID_15248_3 
+                              name=ID_wucSingleSelect.ascx:ID_15248 value=D 
+                              type=radio><LABEL 
+                              for=ID_wucSingleSelect.ascx_ID_15248_3><SPAN 
+                              style="CURSOR: hand" 
+                              onclick="SetValue('ID_ANSWER_15248','D')">D. 
+                              计算机病毒的特征是可执行性、寄生性、隐蔽性、潜伏性、传播性和破坏性等</SPAN></LABEL></TD></TR></TBODY></TABLE></TD></TR>
+                    <TR>
+                      <TD width=20></TD>
+                      <TD align=center><FONT color=#0000ff>解答：</FONT><INPUT 
+                        style="Z-INDEX: 104; BORDER-BOTTOM: green 1px solid; BORDER-LEFT: green 1px solid; WIDTH: 48px; BORDER-TOP: green 1px solid; BORDER-RIGHT: green 1px solid; LEFT: 88px" 
+                        id=ID_ANSWER_15248 value=未答></TD></TR>
+                    <TR vAlign=top>
+                      <TD>16、</TD>
+                      <TD width=700 
+                        align=left>将模拟信号转换为计算机能够接收和存储的数据格式，需要经过______。</TD></TR>
+                    <TR>
+                      <TD width=20></TD>
+                      <TD>
+                        <TABLE id=ID_wucSingleSelect.ascx_ID_15249 border=0>
+                          <TBODY>
+                          <TR>
+                            <TD><INPUT id=ID_wucSingleSelect.ascx_ID_15249_0 
+                              name=ID_wucSingleSelect.ascx:ID_15249 value=A 
+                              type=radio><LABEL 
+                              for=ID_wucSingleSelect.ascx_ID_15249_0><SPAN 
+                              style="CURSOR: hand" 
+                              onclick="SetValue('ID_ANSWER_15249','A')">A. 
+                              采样</SPAN></LABEL></TD></TR>
+                          <TR>
+                            <TD><INPUT id=ID_wucSingleSelect.ascx_ID_15249_1 
+                              name=ID_wucSingleSelect.ascx:ID_15249 value=B 
+                              type=radio><LABEL 
+                              for=ID_wucSingleSelect.ascx_ID_15249_1><SPAN 
+                              style="CURSOR: hand" 
+                              onclick="SetValue('ID_ANSWER_15249','B')">B. 
+                              量化</SPAN></LABEL></TD></TR>
+                          <TR>
+                            <TD><INPUT id=ID_wucSingleSelect.ascx_ID_15249_2 
+                              name=ID_wucSingleSelect.ascx:ID_15249 value=C 
+                              type=radio><LABEL 
+                              for=ID_wucSingleSelect.ascx_ID_15249_2><SPAN 
+                              style="CURSOR: hand" 
+                              onclick="SetValue('ID_ANSWER_15249','C')">C. 
+                              A/D</SPAN></LABEL></TD></TR>
+                          <TR>
+                            <TD><INPUT id=ID_wucSingleSelect.ascx_ID_15249_3 
+                              name=ID_wucSingleSelect.ascx:ID_15249 value=D 
+                              type=radio><LABEL 
+                              for=ID_wucSingleSelect.ascx_ID_15249_3><SPAN 
+                              style="CURSOR: hand" 
+                              onclick="SetValue('ID_ANSWER_15249','D')">D. 
+                              D/A</SPAN></LABEL></TD></TR></TBODY></TABLE></TD></TR>
+                    <TR>
+                      <TD width=20></TD>
+                      <TD align=center><FONT color=#0000ff>解答：</FONT><INPUT 
+                        style="Z-INDEX: 104; BORDER-BOTTOM: green 1px solid; BORDER-LEFT: green 1px solid; WIDTH: 48px; BORDER-TOP: green 1px solid; BORDER-RIGHT: green 1px solid; LEFT: 88px" 
+                        id=ID_ANSWER_15249 value=未答></TD></TR>
+                    <TR vAlign=top>
+                      <TD>17、</TD>
+                      <TD width=700 
+                        align=left>计算机是一种现代化的信息处理工具，它对信息进行处理并提供结果，其结果（输出）取决于所接收的信息（输入）及相应的______。</TD></TR>
+                    <TR>
+                      <TD width=20></TD>
+                      <TD>
+                        <TABLE id=ID_wucSingleSelect.ascx_ID_15250 border=0>
+                          <TBODY>
+                          <TR>
+                            <TD><INPUT id=ID_wucSingleSelect.ascx_ID_15250_0 
+                              name=ID_wucSingleSelect.ascx:ID_15250 value=A 
+                              type=radio><LABEL 
+                              for=ID_wucSingleSelect.ascx_ID_15250_0><SPAN 
+                              style="CURSOR: hand" 
+                              onclick="SetValue('ID_ANSWER_15250','A')">A. 
+                              控制器</SPAN></LABEL></TD></TR>
+                          <TR>
+                            <TD><INPUT id=ID_wucSingleSelect.ascx_ID_15250_1 
+                              name=ID_wucSingleSelect.ascx:ID_15250 value=B 
+                              type=radio><LABEL 
+                              for=ID_wucSingleSelect.ascx_ID_15250_1><SPAN 
+                              style="CURSOR: hand" 
+                              onclick="SetValue('ID_ANSWER_15250','B')">B. 
+                              处理算法</SPAN></LABEL></TD></TR>
+                          <TR>
+                            <TD><INPUT id=ID_wucSingleSelect.ascx_ID_15250_2 
+                              name=ID_wucSingleSelect.ascx:ID_15250 value=C 
+                              type=radio><LABEL 
+                              for=ID_wucSingleSelect.ascx_ID_15250_2><SPAN 
+                              style="CURSOR: hand" 
+                              onclick="SetValue('ID_ANSWER_15250','C')">C. 
+                              运算器</SPAN></LABEL></TD></TR>
+                          <TR>
+                            <TD><INPUT id=ID_wucSingleSelect.ascx_ID_15250_3 
+                              name=ID_wucSingleSelect.ascx:ID_15250 value=D 
+                              type=radio><LABEL 
+                              for=ID_wucSingleSelect.ascx_ID_15250_3><SPAN 
+                              style="CURSOR: hand" 
+                              onclick="SetValue('ID_ANSWER_15250','D')">D. 
+                              OS</SPAN></LABEL></TD></TR></TBODY></TABLE></TD></TR>
+                    <TR>
+                      <TD width=20></TD>
+                      <TD align=center><FONT color=#0000ff>解答：</FONT><INPUT 
+                        style="Z-INDEX: 104; BORDER-BOTTOM: green 1px solid; BORDER-LEFT: green 1px solid; WIDTH: 48px; BORDER-TOP: green 1px solid; BORDER-RIGHT: green 1px solid; LEFT: 88px" 
+                        id=ID_ANSWER_15250 value=未答></TD></TR>
+                    <TR vAlign=top>
+                      <TD>18、</TD>
+                      <TD width=700 
+                      align=left>计算机的RS-232口被称为串行口，它和外设的数据通信是按:</TD></TR>
+                    <TR>
+                      <TD width=20></TD>
+                      <TD>
+                        <TABLE id=ID_wucSingleSelect.ascx_ID_15251 border=0>
+                          <TBODY>
+                          <TR>
+                            <TD><INPUT id=ID_wucSingleSelect.ascx_ID_15251_0 
+                              name=ID_wucSingleSelect.ascx:ID_15251 value=A 
+                              type=radio><LABEL 
+                              for=ID_wucSingleSelect.ascx_ID_15251_0><SPAN 
+                              style="CURSOR: hand" 
+                              onclick="SetValue('ID_ANSWER_15251','A')">A. 
+                              字节传送</SPAN></LABEL></TD></TR>
+                          <TR>
+                            <TD><INPUT id=ID_wucSingleSelect.ascx_ID_15251_1 
+                              name=ID_wucSingleSelect.ascx:ID_15251 value=B 
+                              type=radio><LABEL 
+                              for=ID_wucSingleSelect.ascx_ID_15251_1><SPAN 
+                              style="CURSOR: hand" 
+                              onclick="SetValue('ID_ANSWER_15251','B')">B. 
+                              字传送</SPAN></LABEL></TD></TR>
+                          <TR>
+                            <TD><INPUT id=ID_wucSingleSelect.ascx_ID_15251_2 
+                              name=ID_wucSingleSelect.ascx:ID_15251 value=C 
+                              type=radio><LABEL 
+                              for=ID_wucSingleSelect.ascx_ID_15251_2><SPAN 
+                              style="CURSOR: hand" 
+                              onclick="SetValue('ID_ANSWER_15251','C')">C. 
+                              位传送</SPAN></LABEL></TD></TR>
+                          <TR>
+                            <TD><INPUT id=ID_wucSingleSelect.ascx_ID_15251_3 
+                              name=ID_wucSingleSelect.ascx:ID_15251 value=D 
+                              type=radio><LABEL 
+                              for=ID_wucSingleSelect.ascx_ID_15251_3><SPAN 
+                              style="CURSOR: hand" 
+                              onclick="SetValue('ID_ANSWER_15251','D')">D. 
+                              十进制数据传送</SPAN></LABEL></TD></TR></TBODY></TABLE></TD></TR>
+                    <TR>
+                      <TD width=20></TD>
+                      <TD align=center><FONT color=#0000ff>解答：</FONT><INPUT 
+                        style="Z-INDEX: 104; BORDER-BOTTOM: green 1px solid; BORDER-LEFT: green 1px solid; WIDTH: 48px; BORDER-TOP: green 1px solid; BORDER-RIGHT: green 1px solid; LEFT: 88px" 
+                        id=ID_ANSWER_15251 value=未答></TD></TR>
+                    <TR vAlign=top>
+                      <TD>19、</TD>
+                      <TD width=700 align=left>以太网是_______的主要结构形式。</TD></TR>
+                    <TR>
+                      <TD width=20></TD>
+                      <TD>
+                        <TABLE id=ID_wucSingleSelect.ascx_ID_15252 border=0>
+                          <TBODY>
+                          <TR>
+                            <TD><INPUT id=ID_wucSingleSelect.ascx_ID_15252_0 
+                              name=ID_wucSingleSelect.ascx:ID_15252 value=A 
+                              type=radio><LABEL 
+                              for=ID_wucSingleSelect.ascx_ID_15252_0><SPAN 
+                              style="CURSOR: hand" 
+                              onclick="SetValue('ID_ANSWER_15252','A')">A. 
+                              局域网</SPAN></LABEL></TD></TR>
+                          <TR>
+                            <TD><INPUT id=ID_wucSingleSelect.ascx_ID_15252_1 
+                              name=ID_wucSingleSelect.ascx:ID_15252 value=B 
+                              type=radio><LABEL 
+                              for=ID_wucSingleSelect.ascx_ID_15252_1><SPAN 
+                              style="CURSOR: hand" 
+                              onclick="SetValue('ID_ANSWER_15252','B')">B. 
+                              城域网</SPAN></LABEL></TD></TR>
+                          <TR>
+                            <TD><INPUT id=ID_wucSingleSelect.ascx_ID_15252_2 
+                              name=ID_wucSingleSelect.ascx:ID_15252 value=C 
+                              type=radio><LABEL 
+                              for=ID_wucSingleSelect.ascx_ID_15252_2><SPAN 
+                              style="CURSOR: hand" 
+                              onclick="SetValue('ID_ANSWER_15252','C')">C. 
+                              广域网</SPAN></LABEL></TD></TR>
+                          <TR>
+                            <TD><INPUT id=ID_wucSingleSelect.ascx_ID_15252_3 
+                              name=ID_wucSingleSelect.ascx:ID_15252 value=D 
+                              type=radio><LABEL 
+                              for=ID_wucSingleSelect.ascx_ID_15252_3><SPAN 
+                              style="CURSOR: hand" 
+                              onclick="SetValue('ID_ANSWER_15252','D')">D. 
+                              因特网</SPAN></LABEL></TD></TR></TBODY></TABLE></TD></TR>
+                    <TR>
+                      <TD width=20></TD>
+                      <TD align=center><FONT color=#0000ff>解答：</FONT><INPUT 
+                        style="Z-INDEX: 104; BORDER-BOTTOM: green 1px solid; BORDER-LEFT: green 1px solid; WIDTH: 48px; BORDER-TOP: green 1px solid; BORDER-RIGHT: green 1px solid; LEFT: 88px" 
+                        id=ID_ANSWER_15252 value=未答></TD></TR>
+                    <TR vAlign=top>
+                      <TD>20、</TD>
+                      <TD width=700 
+                        align=left>在编辑演示文稿时，要在幻灯片中插入表格、剪贴画或照片等图形，应在______&nbsp;中进行。</TD></TR>
+                    <TR>
+                      <TD width=20></TD>
+                      <TD>
+                        <TABLE id=ID_wucSingleSelect.ascx_ID_15253 border=0>
+                          <TBODY>
+                          <TR>
+                            <TD><INPUT id=ID_wucSingleSelect.ascx_ID_15253_0 
+                              name=ID_wucSingleSelect.ascx:ID_15253 value=A 
+                              type=radio><LABEL 
+                              for=ID_wucSingleSelect.ascx_ID_15253_0><SPAN 
+                              style="CURSOR: hand" 
+                              onclick="SetValue('ID_ANSWER_15253','A')">A. 
+                              备注页视图</SPAN></LABEL></TD></TR>
+                          <TR>
+                            <TD><INPUT id=ID_wucSingleSelect.ascx_ID_15253_1 
+                              name=ID_wucSingleSelect.ascx:ID_15253 value=B 
+                              type=radio><LABEL 
+                              for=ID_wucSingleSelect.ascx_ID_15253_1><SPAN 
+                              style="CURSOR: hand" 
+                              onclick="SetValue('ID_ANSWER_15253','B')">B. 
+                              幻灯片浏览视图</SPAN></LABEL></TD></TR>
+                          <TR>
+                            <TD><INPUT id=ID_wucSingleSelect.ascx_ID_15253_2 
+                              name=ID_wucSingleSelect.ascx:ID_15253 value=C 
+                              type=radio><LABEL 
+                              for=ID_wucSingleSelect.ascx_ID_15253_2><SPAN 
+                              style="CURSOR: hand" 
+                              onclick="SetValue('ID_ANSWER_15253','C')">C. 
+                              幻灯片窗格</SPAN></LABEL></TD></TR>
+                          <TR>
+                            <TD><INPUT id=ID_wucSingleSelect.ascx_ID_15253_3 
+                              name=ID_wucSingleSelect.ascx:ID_15253 value=D 
+                              type=radio><LABEL 
+                              for=ID_wucSingleSelect.ascx_ID_15253_3><SPAN 
+                              style="CURSOR: hand" 
+                              onclick="SetValue('ID_ANSWER_15253','D')">D. 
+                              大纲窗格</SPAN></LABEL></TD></TR></TBODY></TABLE></TD></TR>
+                    <TR>
+                      <TD width=20></TD>
+                      <TD align=center><FONT color=#0000ff>解答：</FONT><INPUT 
+                        style="Z-INDEX: 104; BORDER-BOTTOM: green 1px solid; BORDER-LEFT: green 1px solid; WIDTH: 48px; BORDER-TOP: green 1px solid; BORDER-RIGHT: green 1px solid; LEFT: 88px" 
+                        id=ID_ANSWER_15253 
+                  value=未答></TD></TR></TBODY></TABLE></FONT><BR></TD></TR>
+              <TR>
+                <TD bgColor=#ffffcc 
+                  height=60>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+                  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+                  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+                  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+                  &nbsp;&nbsp;&nbsp;&nbsp;<FONT face=宋体> </FONT><INPUT style="WIDTH: 1px; HEIGHT: 1px" id=ID_wucSingleSelect.ascx_btnSave name=ID_wucSingleSelect.ascx:btnSave type=submit> 
+                  <BR></TD></TR></TBODY></TABLE><!--实现保存按钮的滚动显示-->
+            <DIV 
+            style="Z-INDEX: 20; BORDER-BOTTOM: #336699 0px solid; POSITION: absolute; TEXT-ALIGN: left; BORDER-LEFT: #336699 0px solid; PADDING-BOTTOM: 5px; BACKGROUND-COLOR: #ffffee; PADDING-LEFT: 5px; WIDTH: 150px; PADDING-RIGHT: 5px; BACKGROUND-REPEAT: repeat; HEIGHT: 60px; VISIBILITY: hidden; BORDER-TOP: #336699 0px solid; BORDER-RIGHT: #336699 0px solid; PADDING-TOP: 5px; TOP: 103px; LEFT: 10px" 
+            id=AdLayer1><FONT size=4>
+            <DIV style="TEXT-ALIGN: center; BACKGROUND-COLOR: #ccff99"><INPUT style="BORDER-RIGHT-WIDTH: 1px; BACKGROUND-COLOR: #caffa4; WIDTH: 150px; BORDER-TOP-WIDTH: 1px; BORDER-BOTTOM-WIDTH: 1px; HEIGHT: 32px; BORDER-LEFT-WIDTH: 1px; CURSOR: hand" id=ID_wucSingleSelect.ascx_btnSubmitSave name=ID_wucSingleSelect.ascx:btnSubmitSave value=保存答题结果 type=submit> 
+            </DIV></DIV>　　
+            <SCRIPT language=JScript for=window event=onload>
+　　   initAd1();//载入页面后，调用函数initAd()
+　　 </SCRIPT>
+             　　 　　 　　 　　 　　
+            <SCRIPT language=JScript>
+　
+　　     function MoveLayer1(layerName) {
+　　         var x = window.document.documentElement.scrollWidth - AdLayer1.style.posWidth - 90; //  800;//浮动广告层固定于浏览器的x方向位置
+　　         //alert(x);
+　　         var h = window.parent.frames[1].document.documentElement.scrollHeight - 200; //+ window.parent.frames[0].document.documentElement.scrollHeight;
+　　         var y = h; //浮动广告层固定于浏览器的y方向位置
+　　         var diff = (document.body.scrollTop + y - document.all.AdLayer1.style.posTop) * .40;
+　　         var y = document.body.scrollTop + y - diff;
+　　         eval("document.all." + layerName + ".style.posTop = y");
+　　         eval("document.all." + layerName + ".style.posLeft = x"); //移动广告层
+　　         setTimeout("MoveLayer1('AdLayer1');", 20); //设置20毫秒后再调用函数MoveLayer()
+　　     }
+　　     function initAd1() {
+　　         //alert("sdfsdf");
+　　         var h = window.parent.frames[1].document.documentElement.scrollHeight + window.parent.frames[0].document.documentElement.scrollHeight;
+　　         //alert(h);
+　　         //alert(window.parent.frames[1].document.all.AdLayer1.style.posTop);
+　　         window.parent.frames[1].document.all.AdLayer1.style.posTop = h;
+　　         // -200; //设置onLoad事件激发以后，广告层相对于固定后的y方向位置
+　　         //alert(document.all.AdLayer1.style.visibility);
+　　         document.all.AdLayer1.style.visibility = 'visible'; //设置层为可见
+　　         MoveLayer1('AdLayer1'); //调用函数MoveLayer()
+　　         //alert("s1");
+　　     }
+　　    
+
+</SCRIPT>
+             </FONT></FONT></TD></TR></TBODY></TABLE></FONT></TD></TR>
+  <TR>
+    <TD bgColor=#99cc66 height=20 colSpan=2>
+      <TABLE border=0 cellSpacing=0 cellPadding=0 width="100%" bgColor=#000000 
+      align=center height=20>
+        <TBODY>
+        <TR>
+          <TD style="BACKGROUND-COLOR: #ccff99">
+            <MARQUEE style="WIDTH: 100%; HEIGHT: 0px" scrollDelay=300><SPAN 
+            style="BORDER-BOTTOM-COLOR: aliceblue; BORDER-TOP-COLOR: aliceblue; WIDTH: 100%; BORDER-RIGHT-COLOR: aliceblue; FONT-SIZE: 14px; BORDER-LEFT-COLOR: aliceblue" 
+            id=WucFooter1_lblOnline></SPAN></MARQUEE></TD></TR>
+        <TR>
+          <TD bgColor=#c2ed9c align=center>∷&nbsp;浙江大学计算机学院&nbsp;&nbsp;∷ 
+            &nbsp;OTS V1.00 &nbsp;2007 &nbsp;Copyright<SUP>&copy;</SUP>&nbsp;All 
+            Rights Reserved.<BR>College of Computer Science, Zhejiang 
+            University! </TD></TR></TBODY></TABLE></TD></TR></TBODY></TABLE></FORM>
+<SCRIPT language=javascript>
+
+    
+    
+    function FindObj1(OID) {
+        var i; var obj;
+        var tagNs = "";
+        //alert (OID);
+        //alert(document.all.length);
+        for (i = 0; i < document.all.length; i++) {
+            obj = document.all(i);
+            //alert(obj.id);
+            //if (obj.id == "btnSubmitSave") alert(obj.id);        
+
+            tagNs = obj.id;
+
+            if (tagNs.indexOf(OID) >= 0) {
+                //if (OID == "btnSubmitSave") alert(obj.id);
+                return (obj);
+            }
+        }
+  
+    }
+    function CheckSaved() {
+        var IsSaved = 0;
+        var IsSaveObj = document.getElementById("HidIsSave");
+        IsSaved = IsSaveObj.value;
+        //window.alert(IsSaved);
+        if (IsSaved == 0) return 0;
+        if (IsSaved == 1) {
+            window.alert("保存成功！");
+        }
+        else if (IsSaved == -1) {
+            window.alert("保存失败！");
+        }
+        else if (IsSaved == -2) {
+            window.alert("本题已经交卷,不能保存！");
+        }
+        return IsSaved;
+    }
+
+    function CheckCanSubmit() {
+        var IsSaved = 0;
+        
+        var IsSaveObj1 = document.getElementById("HidCanSubmit");
+        IsSaved = IsSaveObj1.value;
+        
+        //window.alert(IsSaved);
+
+        var submitobj = FindObj1("btnSubmitSave");  //document.getElementById("btnSubmitSave");
+        //window.alert(submitobj.value);
+        if (IsSaved == 0)
+            submitobj.disabled = false;
+        else {
+            submitobj.disabled = true;
+        }
+        //alert(IsSaved);
+        return IsSaved;
+    }
+
+    CheckSaved();
+    CheckCanSubmit();
+		    
+    </SCRIPT>
+</BODY></HTML>

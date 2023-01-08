@@ -1,0 +1,847 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<!-- saved from url=(0130)http://10.77.30.163/djsim/onlinetest/ExamPaperSub.aspx -->
+<HTML xmlns:o xmlns:st1><HEAD><TITLE>答题主页面</TITLE>
+<META content="text/html; charset=gb2312" http-equiv=Content-Type>
+<META name=GENERATOR content="MSHTML 9.00.8112.16599">
+<META name=CODE_LANGUAGE content=C#>
+<META name=vs_defaultClientScript content=JavaScript>
+<META name=vs_targetSchema 
+content=http://schemas.microsoft.com/intellisense/ie5><LINK rel=stylesheet 
+type=text/css href="ExamPaperSub_files/fwstyle.css"><LINK rel=stylesheet 
+type=text/css href="ExamPaperSub_files/GisqLSSStyle.css"></HEAD>
+<BODY onbeforecopy="return false" ondragstart="return false" 
+oncontextmenu="return false" oncopy=document.selection.empty() 
+onselectstart="return false" onselect=document.selection.empty() 
+MS_POSITIONING="GridLayout"><INPUT id=HidIsSave name=HidIsSave value=0 
+type=hidden> <INPUT id=HidCanSubmit name=HidCanSubmit value=0 type=hidden> 
+<TABLE style="Z-INDEX: 101; WIDTH: 100%; HEIGHT: 100%" id=Table1 border=0 
+cellSpacing=0 cellPadding=0>
+  <FORM id=Form1 method=post name=Form1 
+  action=ExamPaperSub.aspx?examinsid=253&amp;subtypeid=1&amp;examdefid=46&amp;paperlibid=190&amp;paperdefid=24&amp;subxh=0><INPUT 
+  id=__EVENTTARGET name=__EVENTTARGET type=hidden> <INPUT id=__EVENTARGUMENT 
+  name=__EVENTARGUMENT type=hidden> <INPUT id=__VIEWSTATE name=__VIEWSTATE 
+  value=/wEPDwUJNDE0MjM5NzYyD2QWAgIBD2QWBAIBD2QWAgIBD2QWAgIDDw8WAh4EVGV4dAUM6YCA5Ye657uD5LmgZGQCBQ9kFgJmD2QWBAIBDw8WAh8ABVLkuIDjgIHliKTmlq3popjjgILmraPnoa7nmoTor7fpgInmi6lBLOmUmeivr+eahOivt+mAieaLqULjgILmr4/popgx5YiGLOWFsTE15YiG44CCZGQCAw9kFh4CAQ9kFgICAQ9kFgJmDxBkZBYAZAIED2QWAgIBD2QWAmYPEGRkFgBkAgcPZBYCAgEPZBYCZg8QZGQWAGQCCg9kFgICAQ9kFgJmDxBkZBYAZAIND2QWAgIBD2QWAmYPEGRkFgBkAhAPZBYCAgEPZBYCZg8QZGQWAGQCEw9kFgICAQ9kFgJmDxBkZBYAZAIWD2QWAgIBD2QWAmYPEGRkFgBkAhkPZBYCAgEPZBYCZg8QZGQWAGQCHA9kFgICAQ9kFgJmDxBkZBYAZAIfD2QWAgIBD2QWAmYPEGRkFgBkAiIPZBYCAgEPZBYCZg8QZGQWAGQCJQ9kFgICAQ9kFgJmDxBkZBYAZAIoD2QWAgIBD2QWAmYPEGRkFgBkAisPZBYCAgEPZBYCZg8QZGQWAGRksFjatPQs2hCniXNLWBrvoBBu0vY= 
+  type=hidden>
+  <SCRIPT type=text/javascript>
+<!--
+var theForm = document.forms['Form1'];
+if (!theForm) {
+    theForm = document.Form1;
+}
+function __doPostBack(eventTarget, eventArgument) {
+    if (!theForm.onsubmit || (theForm.onsubmit() != false)) {
+        theForm.__EVENTTARGET.value = eventTarget;
+        theForm.__EVENTARGUMENT.value = eventArgument;
+        theForm.submit();
+    }
+}
+// -->
+</SCRIPT>
+
+  <SCRIPT language=javascript>var IsSavedObj=document.getElementById("HidCanSubmit");IsSavedObj.value="0";</SCRIPT>
+
+  <SCRIPT language=javascript>var IsSavedObj=document.getElementById("HidIsSave");IsSavedObj.value="0";</SCRIPT>
+
+  <SCRIPT language=javascript>
+			    function FindObj(OID) {
+			        var i; var obj;
+			        var tagNs = "";
+			        //alert (OID);
+			        //alert(document.all.length);
+			        for (i = 0; i < document.all.length; i++) {
+			            obj = document.all(i);
+			            //alert(obj.id);
+			            //if (obj.id == "btnSubmitSave") alert(obj.id);        
+
+			            tagNs = obj.id;
+
+			            if (tagNs.indexOf(OID) >= 0) {
+			                //if (OID == "btnSubmitSave") alert(obj.id);
+			                return (obj);
+			            }
+			        }
+
+			    }
+			
+			</SCRIPT>
+   
+  <TBODY>
+  <TR>
+    <TD style="WIDTH: 64px; HEIGHT: 96.08%" vAlign=top><FONT face=宋体>
+      <DIV style="BACKGROUND-COLOR: #e2ffd1; WIDTH: 64px; HEIGHT: 100%" 
+      id=Panel2>
+      <SCRIPT language=javascript for=window event=onload>
+<!--
+
+return window_onload()
+//-->
+</SCRIPT>
+
+      <SCRIPT id=clientEventHandlersJS language=javascript>
+<!--
+    
+    function FindObj(OID) {
+        var i; var obj;
+        var tagNs = "";
+        //alert (OID);
+        //alert(document.all.length);
+        for (i = 0; i < document.all.length; i++) {
+            obj = document.all(i);
+            //alert(obj.id);
+            //if (obj.id == "btnSubmitSave") alert(obj.id);        
+
+            tagNs = obj.id;
+
+            if (tagNs.indexOf(OID) >= 0) {
+
+                return (obj);
+            }
+        }
+    }
+    
+    
+//本题交卷
+function btnHandIn_onclick() {
+
+    if (window.confirm("请确认已成功“保存答题结果”,\n否则你的解答结果不会被保存。\n\n“交卷”后将不能再进行答题,\n\n确认要“全部交卷”吗？") == true)
+	     return (__doPostBack('WucSwitchBar1$btnHandIn',''));
+		
+}
+
+//全部交卷
+function btnHandInAll_onclick() {
+
+	if(window.confirm("确认全部交卷，交卷后就不能修改？")==true)
+	     return (__doPostBack('WucSwitchBar1$btnHandInAll1',''));
+		
+}
+
+//重做本题
+function btnRedoThis_onclick() {
+
+	if(window.confirm("确认重做本大题，你可以再次进行答题或修改答案？")==true)
+	     return (__doPostBack('WucSwitchBar1$btnRedo',''));
+		
+}
+
+
+
+//查看成绩
+function btnScore_onclick() {
+	var m=Math.random()*1000 ;
+	//"ViewScore.aspx?examinsid=" + examinsid.ToString()+ "&rnd=" + rnd.Next(1000).ToString(),features
+	var features;
+	var h,w;
+	h=screen.availHeight;
+	w=screen.availWidth;
+	
+	features="dialogHeight: 330px; dialogWidth:310px; dialogTop: " + (h-330)/2  + "px; dialogLeft: " + (w-310)/2 + "px; edge: Raised; center: Yes; help: Yes; resizable: Yes; status: Yes;";
+	
+	window.showModalDialog("ViewScore.aspx?examinsid=" + Form1.WucSwitchBar1_txtExaminsid.value + "&rnd=" + m,"aaa",features);
+		
+}
+
+
+
+
+function SetValue(eventTarget, eventArgument)
+{
+	var ttt;
+	ttt=document.all[eventTarget];
+	ttt.value=eventArgument;
+	
+}
+
+function window_onload() {
+
+    var hs = FindObj("ID_HandStatus");
+    var btnHdin1 = FindObj("btnHandIn1");
+    //var btnRedo = FindObj("btnRedoThis");
+    if (hs.value == "") hs.value = "0"; 
+    //alert(hs.value);
+    
+    if (hs.value == "0") {
+
+        btnHdin1.disabled = false;
+        
+       //btnRedo.disabled = true;
+	}
+	else {
+	    btnHdin1.disabled =true;
+
+	    //btnRedo.disabled = false;
+//		Form1.btnHandIn1.disabled=false;
+//		Form1.btnRedoThis.disabled=false;
+	}
+
+
+}
+
+
+function SetVisable(f) {
+   // alert("asdf");
+    
+    //var btnRedo = FindObj("btnRedoThis");
+     
+	//if(f==0) {
+	    //btnRedo.style.display = "none";		
+	//}
+	//else
+	//{
+	  //  btnRedo.style.display = "";
+
+    //}
+    return (0);
+}
+
+//-->
+</SCRIPT>
+
+      <TABLE style="WIDTH: 82px; HEIGHT: 168px" id=Table1 border=0 cellSpacing=0 
+      cellPadding=0>
+        <TBODY>
+        <TR>
+          <TD style="WIDTH: 74px"><FONT face=宋体></FONT></TD></TR>
+        <TR>
+          <TD style="WIDTH: 74px"><INPUT style="BORDER-BOTTOM: lightsteelblue 1pt solid; BORDER-LEFT: lightsteelblue 1pt solid; BACKGROUND-COLOR: whitesmoke; WIDTH: 80px; HEIGHT: 32px; BORDER-TOP: lightsteelblue 1pt solid; CURSOR: hand; BORDER-RIGHT: lightsteelblue 1pt solid" id=WucSwitchBar1_btnPaperHome name=WucSwitchBar1:btnPaperHome value=试卷首页 type=submit></FONT></TD></TR>
+        <TR>
+          <TD style="WIDTH: 74px"><INPUT style="BORDER-BOTTOM: lightsteelblue 1px solid; BORDER-LEFT: lightsteelblue 1px solid; BACKGROUND-COLOR: whitesmoke; WIDTH: 80px; HEIGHT: 32px; BORDER-TOP: lightsteelblue 1px solid; CURSOR: hand; BORDER-RIGHT: lightsteelblue 1px solid" id=btnHandIn1 title=请确认已成功“保存答题结果”,否则你的解答结果不会被保存。“交卷”后将不能再进行答题,确认要“全部交卷”吗？ onclick="return btnHandIn_onclick()" value=全部交卷 type=button></TD></TR>
+        <TR>
+          <TD style="WIDTH: 74px"><FONT face=宋体><INPUT style="BORDER-BOTTOM: lightsteelblue 1px solid; BORDER-LEFT: lightsteelblue 1px solid; BACKGROUND-COLOR: whitesmoke; WIDTH: 0px; DISPLAY: none; HEIGHT: 0px; BORDER-TOP: lightsteelblue 1px solid; CURSOR: hand; BORDER-RIGHT: lightsteelblue 1px solid" id=btnRedoThis disabled onclick="return btnRedoThis_onclick()" name=btnRedoThis value=重做处理 type=button> 
+            </FONT></TD></TR>
+        <TR>
+          <TD style="WIDTH: 74px"><INPUT style="BORDER-BOTTOM: lightsteelblue 1px solid; BORDER-LEFT: lightsteelblue 1px solid; BACKGROUND-COLOR: whitesmoke; WIDTH: 80px; DISPLAY: none; HEIGHT: 32px; BORDER-TOP: lightsteelblue 1px solid; CURSOR: hand; BORDER-RIGHT: lightsteelblue 1px solid" id=btnScore onclick="return btnScore_onclick()" name=btnScore value=查看成绩 type=button> 
+          </TD></TR>
+        <TR>
+          <TD style="WIDTH: 74px">
+            <P><INPUT style="BORDER-BOTTOM: lightsteelblue 1pt solid; BORDER-LEFT: lightsteelblue 1pt solid; BACKGROUND-COLOR: whitesmoke; WIDTH: 80px; HEIGHT: 32px; BORDER-TOP: lightsteelblue 1pt solid; CURSOR: hand; BORDER-RIGHT: lightsteelblue 1pt solid" id=WucSwitchBar1_btnExitExam name=WucSwitchBar1:btnExitExam value=退出练习 type=submit></P></TD></TR>
+        <TR>
+          <TD style="WIDTH: 74px"><BR>
+            <P><FONT color=#ff0000 size=3 face=宋体><B>注意：</B></FONT></P>
+            <P><FONT color=#ff0000 size=3 
+            face=宋体><B>完成解答后，进行“全部交卷”。“交卷”之前，确认已成功“保存答题结果”，否则，解答因没保存而丢失。</B></FONT></P></TD></TR></TBODY></TABLE>
+      <P><INPUT style="DISPLAY: none" id=WucSwitchBar1_btnHandIn onclick="__doPostBack('WucSwitchBar1$btnHandIn','')" name=WucSwitchBar1:btnHandIn value=本题交卷 type=button></P>
+      <P><FONT face=宋体></FONT></P>
+      <P><INPUT style="DISPLAY: none" id=WucSwitchBar1_btnRedo onclick="__doPostBack('WucSwitchBar1$btnRedo','')" name=WucSwitchBar1:btnRedo value=重做 type=button></P>
+      <P><INPUT id=WucSwitchBar1_ID_HandStatus name=WucSwitchBar1:ID_HandStatus 
+      value=0 size=1 type=hidden><INPUT 
+      style="WIDTH: 32px; DISPLAY: none; HEIGHT: 22px" 
+      id=WucSwitchBar1_txtExaminsid name=WucSwitchBar1:txtExaminsid value=253 
+      size=1></P>
+      <P>&nbsp;</P><FONT face=宋体></FONT><FONT face=宋体></FONT><FONT 
+      face=宋体></FONT><FONT face=宋体></FONT><FONT face=宋体></FONT><FONT 
+      face=宋体></FONT><FONT face=宋体></FONT><FONT face=宋体></FONT><FONT 
+      face=宋体></FONT><FONT face=宋体></FONT><FONT face=宋体></FONT><FONT 
+      face=宋体></FONT><FONT face=宋体></FONT><FONT face=宋体></FONT><FONT 
+      face=宋体></FONT><FONT face=宋体></FONT><FONT face=宋体></FONT><FONT 
+      face=宋体></FONT><FONT face=宋体></FONT><FONT face=宋体></FONT><FONT 
+      face=宋体></FONT><FONT face=宋体></FONT><FONT face=宋体></FONT></DIV></FONT></TD>
+    <TD style="WIDTH: 100%; HEIGHT: 96.08%" vAlign=top align=left><FONT 
+      face=宋体>
+      <TABLE style="WIDTH: 100%; HEIGHT: 100%" border=0 cellSpacing=0 
+      cellPadding=0>
+        <TBODY>
+        <TR>
+          <TD class=HeadToolBack1 height=20 vAlign=top align=left>
+            <P><FONT face=宋体>
+            <TABLE 
+            style="BORDER-BOTTOM: 1px solid; BORDER-LEFT: 1px solid; BORDER-TOP: 1px solid; BORDER-RIGHT: 1px solid" 
+            id=WucListSubType1_Table1 border=0>
+              <TBODY>
+              <TR>
+                <TD 
+                style="BORDER-BOTTOM-STYLE: solid; BORDER-LEFT-STYLE: solid; BORDER-TOP-STYLE: solid; BORDER-RIGHT-STYLE: solid" 
+                align=left><STRONG>选择题型</STRONG>==&gt;</TD>
+                <TD><IMG src="ExamPaperSub_files/sun.gif"></IMG></TD>
+                <TD style="BACKGROUND-COLOR: #ffff00"><A 
+                  href="http://10.77.30.163/djsim/onlinetest/ExamPaperSub.aspx?examinsid=253&amp;examdefid=46&amp;paperlibid=190&amp;paperdefid=24&amp;subtypeid=1&amp;subxh=0&amp;action=0">&nbsp;判断题&nbsp;</A></TD>
+                <TD><IMG src="ExamPaperSub_files/sun.gif"></IMG></TD>
+                <TD><A 
+                  href="http://10.77.30.163/djsim/onlinetest/ExamPaperSub.aspx?examinsid=253&amp;examdefid=46&amp;paperlibid=190&amp;paperdefid=24&amp;subtypeid=2&amp;subxh=1&amp;action=0">&nbsp;单选题&nbsp;</A></TD>
+                <TD><IMG src="ExamPaperSub_files/sun.gif"></IMG></TD>
+                <TD><A 
+                  href="http://10.77.30.163/djsim/onlinetest/ExamPaperSub.aspx?examinsid=253&amp;examdefid=46&amp;paperlibid=190&amp;paperdefid=24&amp;subtypeid=4&amp;subxh=2&amp;action=0">&nbsp;填空题&nbsp;</A></TD>
+                <TD><IMG src="ExamPaperSub_files/sun.gif"></IMG></TD>
+                <TD><A 
+                  href="http://10.77.30.163/djsim/onlinetest/ExamPaperSub.aspx?examinsid=253&amp;examdefid=46&amp;paperlibid=190&amp;paperdefid=24&amp;subtypeid=3&amp;subxh=3&amp;action=0">&nbsp;选择性填空题&nbsp;</A></TD>
+                <TD><IMG src="ExamPaperSub_files/sun.gif"></IMG></TD>
+                <TD><A 
+                  href="http://10.77.30.163/djsim/onlinetest/ExamPaperSub.aspx?examinsid=253&amp;examdefid=46&amp;paperlibid=190&amp;paperdefid=24&amp;subtypeid=5&amp;subxh=4&amp;action=0">&nbsp;连线题&nbsp;</A></TD>
+                <TD></TD></TR></TBODY></TABLE></FONT></P></TD></TR>
+        <TR>
+          <TD vAlign=top align=left><FONT face=宋体>
+            <SCRIPT id=clientEventHandlersJS language=javascript>
+<!--
+
+function btnSubmitSave_onclick() {
+
+	//if(window.confirm("确认提交保存？")==true)
+	     return (__doPostBack('ID_wucJudge.ascx$Button4',''));
+		
+}
+
+function SetValue(eventTarget, eventArgument)
+{
+	var ttt;
+	ttt=document.all[eventTarget];
+	ttt.value=eventArgument;
+	
+}
+
+//-->
+</SCRIPT>
+
+            <TABLE id=Table2 border=0 cellSpacing=0 cellPadding=0 
+              width="100%"><TBODY>
+              <TR>
+                <TD>
+                  <P><FONT face=宋体><FONT color=#ff0000 
+                  size=3><B>特别提示：选择答案时，请不要点击单选钮，点击选择项的文字即可，否则答案不会真被选中。</B></FONT></FONT></P>
+                  <H3><SPAN 
+                  id=ID_wucJudge.ascx_lblPOTitle>一、判断题。正确的请选择A,错误的请选择B。每题1分,共15分。</SPAN></H3></TD></TR>
+              <TR>
+                <TD>
+                  <TABLE id=ID_wucJudge.ascx_Table1 width=740 height="100%">
+                    <TBODY>
+                    <TR vAlign=top>
+                      <TD>1、</TD>
+                      <TD 
+                        width=700>查询是数据库管理系统最常用的功能之一，数据库管理系统都使用统一的查询语言，叫做SQL语言即结构化查询语言，它是过程化语言。</TD></TR>
+                    <TR>
+                      <TD width=20></TD>
+                      <TD>
+                        <TABLE id=ID_wucJudge.ascx_ID_15219 border=0>
+                          <TBODY>
+                          <TR>
+                            <TD><INPUT id=ID_wucJudge.ascx_ID_15219_0 
+                              name=ID_wucJudge.ascx:ID_15219 value=A 
+                              type=radio><LABEL 
+                              for=ID_wucJudge.ascx_ID_15219_0><SPAN 
+                              style="CURSOR: hand" 
+                              onclick="SetValue('ID_ANSWER_15219','A')">A、正确</SPAN></LABEL></TD>
+                            <TD><INPUT id=ID_wucJudge.ascx_ID_15219_1 
+                              name=ID_wucJudge.ascx:ID_15219 value=B 
+                              type=radio><LABEL 
+                              for=ID_wucJudge.ascx_ID_15219_1><SPAN 
+                              style="CURSOR: hand" 
+                              onclick="SetValue('ID_ANSWER_15219','B')">B、错误</SPAN></LABEL></TD></TR></TBODY></TABLE></TD></TR>
+                    <TR>
+                      <TD width=20></TD>
+                      <TD align=center><FONT color=#0000ff>解答：</FONT><INPUT 
+                        style="Z-INDEX: 104; BORDER-BOTTOM: green 1px solid; BORDER-LEFT: green 1px solid; WIDTH: 48px; BORDER-TOP: green 1px solid; BORDER-RIGHT: green 1px solid; LEFT: 88px" 
+                        id=ID_ANSWER_15219 value=未答></TD></TR>
+                    <TR vAlign=top>
+                      <TD>2、</TD>
+                      <TD 
+                    width=700>在浏览器IE中可以访问FTP服务器，但输入的URL必须以http://开头。</TD></TR>
+                    <TR>
+                      <TD width=20></TD>
+                      <TD>
+                        <TABLE id=ID_wucJudge.ascx_ID_15220 border=0>
+                          <TBODY>
+                          <TR>
+                            <TD><INPUT id=ID_wucJudge.ascx_ID_15220_0 
+                              name=ID_wucJudge.ascx:ID_15220 value=A 
+                              type=radio><LABEL 
+                              for=ID_wucJudge.ascx_ID_15220_0><SPAN 
+                              style="CURSOR: hand" 
+                              onclick="SetValue('ID_ANSWER_15220','A')">A、正确</SPAN></LABEL></TD>
+                            <TD><INPUT id=ID_wucJudge.ascx_ID_15220_1 
+                              name=ID_wucJudge.ascx:ID_15220 value=B 
+                              type=radio><LABEL 
+                              for=ID_wucJudge.ascx_ID_15220_1><SPAN 
+                              style="CURSOR: hand" 
+                              onclick="SetValue('ID_ANSWER_15220','B')">B、错误</SPAN></LABEL></TD></TR></TBODY></TABLE></TD></TR>
+                    <TR>
+                      <TD width=20></TD>
+                      <TD align=center><FONT color=#0000ff>解答：</FONT><INPUT 
+                        style="Z-INDEX: 104; BORDER-BOTTOM: green 1px solid; BORDER-LEFT: green 1px solid; WIDTH: 48px; BORDER-TOP: green 1px solid; BORDER-RIGHT: green 1px solid; LEFT: 88px" 
+                        id=ID_ANSWER_15220 value=未答></TD></TR>
+                    <TR vAlign=top>
+                      <TD>3、</TD>
+                      <TD width=700>CPU的其中一个重要指标为字长，字长是指1个字节的长度。</TD></TR>
+                    <TR>
+                      <TD width=20></TD>
+                      <TD>
+                        <TABLE id=ID_wucJudge.ascx_ID_15221 border=0>
+                          <TBODY>
+                          <TR>
+                            <TD><INPUT id=ID_wucJudge.ascx_ID_15221_0 
+                              name=ID_wucJudge.ascx:ID_15221 value=A 
+                              type=radio><LABEL 
+                              for=ID_wucJudge.ascx_ID_15221_0><SPAN 
+                              style="CURSOR: hand" 
+                              onclick="SetValue('ID_ANSWER_15221','A')">A、正确</SPAN></LABEL></TD>
+                            <TD><INPUT id=ID_wucJudge.ascx_ID_15221_1 
+                              name=ID_wucJudge.ascx:ID_15221 value=B 
+                              type=radio><LABEL 
+                              for=ID_wucJudge.ascx_ID_15221_1><SPAN 
+                              style="CURSOR: hand" 
+                              onclick="SetValue('ID_ANSWER_15221','B')">B、错误</SPAN></LABEL></TD></TR></TBODY></TABLE></TD></TR>
+                    <TR>
+                      <TD width=20></TD>
+                      <TD align=center><FONT color=#0000ff>解答：</FONT><INPUT 
+                        style="Z-INDEX: 104; BORDER-BOTTOM: green 1px solid; BORDER-LEFT: green 1px solid; WIDTH: 48px; BORDER-TOP: green 1px solid; BORDER-RIGHT: green 1px solid; LEFT: 88px" 
+                        id=ID_ANSWER_15221 value=未答></TD></TR>
+                    <TR vAlign=top>
+                      <TD>4、</TD>
+                      <TD 
+                        width=700>Microsoft&nbsp;IE浏览器能够访问Web网络资源，但不支持FTP、电子邮件以及BBS等其他服务，因为它们使用不同的通信协议。</TD></TR>
+                    <TR>
+                      <TD width=20></TD>
+                      <TD>
+                        <TABLE id=ID_wucJudge.ascx_ID_15222 border=0>
+                          <TBODY>
+                          <TR>
+                            <TD><INPUT id=ID_wucJudge.ascx_ID_15222_0 
+                              name=ID_wucJudge.ascx:ID_15222 value=A 
+                              type=radio><LABEL 
+                              for=ID_wucJudge.ascx_ID_15222_0><SPAN 
+                              style="CURSOR: hand" 
+                              onclick="SetValue('ID_ANSWER_15222','A')">A、正确</SPAN></LABEL></TD>
+                            <TD><INPUT id=ID_wucJudge.ascx_ID_15222_1 
+                              name=ID_wucJudge.ascx:ID_15222 value=B 
+                              type=radio><LABEL 
+                              for=ID_wucJudge.ascx_ID_15222_1><SPAN 
+                              style="CURSOR: hand" 
+                              onclick="SetValue('ID_ANSWER_15222','B')">B、错误</SPAN></LABEL></TD></TR></TBODY></TABLE></TD></TR>
+                    <TR>
+                      <TD width=20></TD>
+                      <TD align=center><FONT color=#0000ff>解答：</FONT><INPUT 
+                        style="Z-INDEX: 104; BORDER-BOTTOM: green 1px solid; BORDER-LEFT: green 1px solid; WIDTH: 48px; BORDER-TOP: green 1px solid; BORDER-RIGHT: green 1px solid; LEFT: 88px" 
+                        id=ID_ANSWER_15222 value=未答></TD></TR>
+                    <TR vAlign=top>
+                      <TD>5、</TD>
+                      <TD width=700>在Internet中，IP地址由网络号和主机号两部分组成。</TD></TR>
+                    <TR>
+                      <TD width=20></TD>
+                      <TD>
+                        <TABLE id=ID_wucJudge.ascx_ID_15223 border=0>
+                          <TBODY>
+                          <TR>
+                            <TD><INPUT id=ID_wucJudge.ascx_ID_15223_0 
+                              name=ID_wucJudge.ascx:ID_15223 value=A 
+                              type=radio><LABEL 
+                              for=ID_wucJudge.ascx_ID_15223_0><SPAN 
+                              style="CURSOR: hand" 
+                              onclick="SetValue('ID_ANSWER_15223','A')">A、正确</SPAN></LABEL></TD>
+                            <TD><INPUT id=ID_wucJudge.ascx_ID_15223_1 
+                              name=ID_wucJudge.ascx:ID_15223 value=B 
+                              type=radio><LABEL 
+                              for=ID_wucJudge.ascx_ID_15223_1><SPAN 
+                              style="CURSOR: hand" 
+                              onclick="SetValue('ID_ANSWER_15223','B')">B、错误</SPAN></LABEL></TD></TR></TBODY></TABLE></TD></TR>
+                    <TR>
+                      <TD width=20></TD>
+                      <TD align=center><FONT color=#0000ff>解答：</FONT><INPUT 
+                        style="Z-INDEX: 104; BORDER-BOTTOM: green 1px solid; BORDER-LEFT: green 1px solid; WIDTH: 48px; BORDER-TOP: green 1px solid; BORDER-RIGHT: green 1px solid; LEFT: 88px" 
+                        id=ID_ANSWER_15223 value=未答></TD></TR>
+                    <TR vAlign=top>
+                      <TD>6、</TD>
+                      <TD 
+                        width=700>虽然用户在计算机上操作的时候，有时编辑文本，有时运行程序，但是在计算机内部为用户运行服务的时候，处理的都是0和1。</TD></TR>
+                    <TR>
+                      <TD width=20></TD>
+                      <TD>
+                        <TABLE id=ID_wucJudge.ascx_ID_15224 border=0>
+                          <TBODY>
+                          <TR>
+                            <TD><INPUT id=ID_wucJudge.ascx_ID_15224_0 
+                              name=ID_wucJudge.ascx:ID_15224 value=A 
+                              type=radio><LABEL 
+                              for=ID_wucJudge.ascx_ID_15224_0><SPAN 
+                              style="CURSOR: hand" 
+                              onclick="SetValue('ID_ANSWER_15224','A')">A、正确</SPAN></LABEL></TD>
+                            <TD><INPUT id=ID_wucJudge.ascx_ID_15224_1 
+                              name=ID_wucJudge.ascx:ID_15224 value=B 
+                              type=radio><LABEL 
+                              for=ID_wucJudge.ascx_ID_15224_1><SPAN 
+                              style="CURSOR: hand" 
+                              onclick="SetValue('ID_ANSWER_15224','B')">B、错误</SPAN></LABEL></TD></TR></TBODY></TABLE></TD></TR>
+                    <TR>
+                      <TD width=20></TD>
+                      <TD align=center><FONT color=#0000ff>解答：</FONT><INPUT 
+                        style="Z-INDEX: 104; BORDER-BOTTOM: green 1px solid; BORDER-LEFT: green 1px solid; WIDTH: 48px; BORDER-TOP: green 1px solid; BORDER-RIGHT: green 1px solid; LEFT: 88px" 
+                        id=ID_ANSWER_15224 value=未答></TD></TR>
+                    <TR vAlign=top>
+                      <TD>7、</TD>
+                      <TD width=700>可以用Word来编辑、并以默认方式保存程序源代码。</TD></TR>
+                    <TR>
+                      <TD width=20></TD>
+                      <TD>
+                        <TABLE id=ID_wucJudge.ascx_ID_15225 border=0>
+                          <TBODY>
+                          <TR>
+                            <TD><INPUT id=ID_wucJudge.ascx_ID_15225_0 
+                              name=ID_wucJudge.ascx:ID_15225 value=A 
+                              type=radio><LABEL 
+                              for=ID_wucJudge.ascx_ID_15225_0><SPAN 
+                              style="CURSOR: hand" 
+                              onclick="SetValue('ID_ANSWER_15225','A')">A、正确</SPAN></LABEL></TD>
+                            <TD><INPUT id=ID_wucJudge.ascx_ID_15225_1 
+                              name=ID_wucJudge.ascx:ID_15225 value=B 
+                              type=radio><LABEL 
+                              for=ID_wucJudge.ascx_ID_15225_1><SPAN 
+                              style="CURSOR: hand" 
+                              onclick="SetValue('ID_ANSWER_15225','B')">B、错误</SPAN></LABEL></TD></TR></TBODY></TABLE></TD></TR>
+                    <TR>
+                      <TD width=20></TD>
+                      <TD align=center><FONT color=#0000ff>解答：</FONT><INPUT 
+                        style="Z-INDEX: 104; BORDER-BOTTOM: green 1px solid; BORDER-LEFT: green 1px solid; WIDTH: 48px; BORDER-TOP: green 1px solid; BORDER-RIGHT: green 1px solid; LEFT: 88px" 
+                        id=ID_ANSWER_15225 value=未答></TD></TR>
+                    <TR vAlign=top>
+                      <TD>8、</TD>
+                      <TD width=700>操作系统的主要作用是控制和管理系统资源。</TD></TR>
+                    <TR>
+                      <TD width=20></TD>
+                      <TD>
+                        <TABLE id=ID_wucJudge.ascx_ID_15226 border=0>
+                          <TBODY>
+                          <TR>
+                            <TD><INPUT id=ID_wucJudge.ascx_ID_15226_0 
+                              name=ID_wucJudge.ascx:ID_15226 value=A 
+                              type=radio><LABEL 
+                              for=ID_wucJudge.ascx_ID_15226_0><SPAN 
+                              style="CURSOR: hand" 
+                              onclick="SetValue('ID_ANSWER_15226','A')">A、正确</SPAN></LABEL></TD>
+                            <TD><INPUT id=ID_wucJudge.ascx_ID_15226_1 
+                              name=ID_wucJudge.ascx:ID_15226 value=B 
+                              type=radio><LABEL 
+                              for=ID_wucJudge.ascx_ID_15226_1><SPAN 
+                              style="CURSOR: hand" 
+                              onclick="SetValue('ID_ANSWER_15226','B')">B、错误</SPAN></LABEL></TD></TR></TBODY></TABLE></TD></TR>
+                    <TR>
+                      <TD width=20></TD>
+                      <TD align=center><FONT color=#0000ff>解答：</FONT><INPUT 
+                        style="Z-INDEX: 104; BORDER-BOTTOM: green 1px solid; BORDER-LEFT: green 1px solid; WIDTH: 48px; BORDER-TOP: green 1px solid; BORDER-RIGHT: green 1px solid; LEFT: 88px" 
+                        id=ID_ANSWER_15226 value=未答></TD></TR>
+                    <TR vAlign=top>
+                      <TD>9、</TD>
+                      <TD 
+                    width=700>Word&nbsp;中，利用图文框和文本框都可以实现对象的随意定位、移动和缩放。</TD></TR>
+                    <TR>
+                      <TD width=20></TD>
+                      <TD>
+                        <TABLE id=ID_wucJudge.ascx_ID_15227 border=0>
+                          <TBODY>
+                          <TR>
+                            <TD><INPUT id=ID_wucJudge.ascx_ID_15227_0 
+                              name=ID_wucJudge.ascx:ID_15227 value=A 
+                              type=radio><LABEL 
+                              for=ID_wucJudge.ascx_ID_15227_0><SPAN 
+                              style="CURSOR: hand" 
+                              onclick="SetValue('ID_ANSWER_15227','A')">A、正确</SPAN></LABEL></TD>
+                            <TD><INPUT id=ID_wucJudge.ascx_ID_15227_1 
+                              name=ID_wucJudge.ascx:ID_15227 value=B 
+                              type=radio><LABEL 
+                              for=ID_wucJudge.ascx_ID_15227_1><SPAN 
+                              style="CURSOR: hand" 
+                              onclick="SetValue('ID_ANSWER_15227','B')">B、错误</SPAN></LABEL></TD></TR></TBODY></TABLE></TD></TR>
+                    <TR>
+                      <TD width=20></TD>
+                      <TD align=center><FONT color=#0000ff>解答：</FONT><INPUT 
+                        style="Z-INDEX: 104; BORDER-BOTTOM: green 1px solid; BORDER-LEFT: green 1px solid; WIDTH: 48px; BORDER-TOP: green 1px solid; BORDER-RIGHT: green 1px solid; LEFT: 88px" 
+                        id=ID_ANSWER_15227 value=未答></TD></TR>
+                    <TR vAlign=top>
+                      <TD>10、</TD>
+                      <TD width=700>Dreamweaver不能创建层叠样式表CSS。</TD></TR>
+                    <TR>
+                      <TD width=20></TD>
+                      <TD>
+                        <TABLE id=ID_wucJudge.ascx_ID_15228 border=0>
+                          <TBODY>
+                          <TR>
+                            <TD><INPUT id=ID_wucJudge.ascx_ID_15228_0 
+                              name=ID_wucJudge.ascx:ID_15228 value=A 
+                              type=radio><LABEL 
+                              for=ID_wucJudge.ascx_ID_15228_0><SPAN 
+                              style="CURSOR: hand" 
+                              onclick="SetValue('ID_ANSWER_15228','A')">A、正确</SPAN></LABEL></TD>
+                            <TD><INPUT id=ID_wucJudge.ascx_ID_15228_1 
+                              name=ID_wucJudge.ascx:ID_15228 value=B 
+                              type=radio><LABEL 
+                              for=ID_wucJudge.ascx_ID_15228_1><SPAN 
+                              style="CURSOR: hand" 
+                              onclick="SetValue('ID_ANSWER_15228','B')">B、错误</SPAN></LABEL></TD></TR></TBODY></TABLE></TD></TR>
+                    <TR>
+                      <TD width=20></TD>
+                      <TD align=center><FONT color=#0000ff>解答：</FONT><INPUT 
+                        style="Z-INDEX: 104; BORDER-BOTTOM: green 1px solid; BORDER-LEFT: green 1px solid; WIDTH: 48px; BORDER-TOP: green 1px solid; BORDER-RIGHT: green 1px solid; LEFT: 88px" 
+                        id=ID_ANSWER_15228 value=未答></TD></TR>
+                    <TR vAlign=top>
+                      <TD>11、</TD>
+                      <TD 
+                        width=700>CMOS是指互补金属氧化物半导体，它是主板上的一块可读写的RAM芯片，它存储了系统的实时时钟信息和硬件配置信息等。</TD></TR>
+                    <TR>
+                      <TD width=20></TD>
+                      <TD>
+                        <TABLE id=ID_wucJudge.ascx_ID_15229 border=0>
+                          <TBODY>
+                          <TR>
+                            <TD><INPUT id=ID_wucJudge.ascx_ID_15229_0 
+                              name=ID_wucJudge.ascx:ID_15229 value=A 
+                              type=radio><LABEL 
+                              for=ID_wucJudge.ascx_ID_15229_0><SPAN 
+                              style="CURSOR: hand" 
+                              onclick="SetValue('ID_ANSWER_15229','A')">A、正确</SPAN></LABEL></TD>
+                            <TD><INPUT id=ID_wucJudge.ascx_ID_15229_1 
+                              name=ID_wucJudge.ascx:ID_15229 value=B 
+                              type=radio><LABEL 
+                              for=ID_wucJudge.ascx_ID_15229_1><SPAN 
+                              style="CURSOR: hand" 
+                              onclick="SetValue('ID_ANSWER_15229','B')">B、错误</SPAN></LABEL></TD></TR></TBODY></TABLE></TD></TR>
+                    <TR>
+                      <TD width=20></TD>
+                      <TD align=center><FONT color=#0000ff>解答：</FONT><INPUT 
+                        style="Z-INDEX: 104; BORDER-BOTTOM: green 1px solid; BORDER-LEFT: green 1px solid; WIDTH: 48px; BORDER-TOP: green 1px solid; BORDER-RIGHT: green 1px solid; LEFT: 88px" 
+                        id=ID_ANSWER_15229 value=未答></TD></TR>
+                    <TR vAlign=top>
+                      <TD>12、</TD>
+                      <TD width=700>计算机病毒是计算机内部自发产生的。</TD></TR>
+                    <TR>
+                      <TD width=20></TD>
+                      <TD>
+                        <TABLE id=ID_wucJudge.ascx_ID_15230 border=0>
+                          <TBODY>
+                          <TR>
+                            <TD><INPUT id=ID_wucJudge.ascx_ID_15230_0 
+                              name=ID_wucJudge.ascx:ID_15230 value=A 
+                              type=radio><LABEL 
+                              for=ID_wucJudge.ascx_ID_15230_0><SPAN 
+                              style="CURSOR: hand" 
+                              onclick="SetValue('ID_ANSWER_15230','A')">A、正确</SPAN></LABEL></TD>
+                            <TD><INPUT id=ID_wucJudge.ascx_ID_15230_1 
+                              name=ID_wucJudge.ascx:ID_15230 value=B 
+                              type=radio><LABEL 
+                              for=ID_wucJudge.ascx_ID_15230_1><SPAN 
+                              style="CURSOR: hand" 
+                              onclick="SetValue('ID_ANSWER_15230','B')">B、错误</SPAN></LABEL></TD></TR></TBODY></TABLE></TD></TR>
+                    <TR>
+                      <TD width=20></TD>
+                      <TD align=center><FONT color=#0000ff>解答：</FONT><INPUT 
+                        style="Z-INDEX: 104; BORDER-BOTTOM: green 1px solid; BORDER-LEFT: green 1px solid; WIDTH: 48px; BORDER-TOP: green 1px solid; BORDER-RIGHT: green 1px solid; LEFT: 88px" 
+                        id=ID_ANSWER_15230 value=未答></TD></TR>
+                    <TR vAlign=top>
+                      <TD>13、</TD>
+                      <TD 
+                      width=700>若ACCESS数据库中的某表的某字段是主键，则该字段无法输入重复值。&nbsp;&nbsp;</TD></TR>
+                    <TR>
+                      <TD width=20></TD>
+                      <TD>
+                        <TABLE id=ID_wucJudge.ascx_ID_15231 border=0>
+                          <TBODY>
+                          <TR>
+                            <TD><INPUT id=ID_wucJudge.ascx_ID_15231_0 
+                              name=ID_wucJudge.ascx:ID_15231 value=A 
+                              type=radio><LABEL 
+                              for=ID_wucJudge.ascx_ID_15231_0><SPAN 
+                              style="CURSOR: hand" 
+                              onclick="SetValue('ID_ANSWER_15231','A')">A、正确</SPAN></LABEL></TD>
+                            <TD><INPUT id=ID_wucJudge.ascx_ID_15231_1 
+                              name=ID_wucJudge.ascx:ID_15231 value=B 
+                              type=radio><LABEL 
+                              for=ID_wucJudge.ascx_ID_15231_1><SPAN 
+                              style="CURSOR: hand" 
+                              onclick="SetValue('ID_ANSWER_15231','B')">B、错误</SPAN></LABEL></TD></TR></TBODY></TABLE></TD></TR>
+                    <TR>
+                      <TD width=20></TD>
+                      <TD align=center><FONT color=#0000ff>解答：</FONT><INPUT 
+                        style="Z-INDEX: 104; BORDER-BOTTOM: green 1px solid; BORDER-LEFT: green 1px solid; WIDTH: 48px; BORDER-TOP: green 1px solid; BORDER-RIGHT: green 1px solid; LEFT: 88px" 
+                        id=ID_ANSWER_15231 value=未答></TD></TR>
+                    <TR vAlign=top>
+                      <TD>14、</TD>
+                      <TD width=700>计算机具有一定的“思考”能力，事实上就是指计算机有逻辑判断能力。</TD></TR>
+                    <TR>
+                      <TD width=20></TD>
+                      <TD>
+                        <TABLE id=ID_wucJudge.ascx_ID_15232 border=0>
+                          <TBODY>
+                          <TR>
+                            <TD><INPUT id=ID_wucJudge.ascx_ID_15232_0 
+                              name=ID_wucJudge.ascx:ID_15232 value=A 
+                              type=radio><LABEL 
+                              for=ID_wucJudge.ascx_ID_15232_0><SPAN 
+                              style="CURSOR: hand" 
+                              onclick="SetValue('ID_ANSWER_15232','A')">A、正确</SPAN></LABEL></TD>
+                            <TD><INPUT id=ID_wucJudge.ascx_ID_15232_1 
+                              name=ID_wucJudge.ascx:ID_15232 value=B 
+                              type=radio><LABEL 
+                              for=ID_wucJudge.ascx_ID_15232_1><SPAN 
+                              style="CURSOR: hand" 
+                              onclick="SetValue('ID_ANSWER_15232','B')">B、错误</SPAN></LABEL></TD></TR></TBODY></TABLE></TD></TR>
+                    <TR>
+                      <TD width=20></TD>
+                      <TD align=center><FONT color=#0000ff>解答：</FONT><INPUT 
+                        style="Z-INDEX: 104; BORDER-BOTTOM: green 1px solid; BORDER-LEFT: green 1px solid; WIDTH: 48px; BORDER-TOP: green 1px solid; BORDER-RIGHT: green 1px solid; LEFT: 88px" 
+                        id=ID_ANSWER_15232 value=未答></TD></TR>
+                    <TR vAlign=top>
+                      <TD>15、</TD>
+                      <TD 
+                    width=700>汇编语言是一种面向机器的编程语言，所以用它编写的程序能够被计算机直接识别和执行。</TD></TR>
+                    <TR>
+                      <TD width=20></TD>
+                      <TD>
+                        <TABLE id=ID_wucJudge.ascx_ID_15233 border=0>
+                          <TBODY>
+                          <TR>
+                            <TD><INPUT id=ID_wucJudge.ascx_ID_15233_0 
+                              name=ID_wucJudge.ascx:ID_15233 value=A 
+                              type=radio><LABEL 
+                              for=ID_wucJudge.ascx_ID_15233_0><SPAN 
+                              style="CURSOR: hand" 
+                              onclick="SetValue('ID_ANSWER_15233','A')">A、正确</SPAN></LABEL></TD>
+                            <TD><INPUT id=ID_wucJudge.ascx_ID_15233_1 
+                              name=ID_wucJudge.ascx:ID_15233 value=B 
+                              type=radio><LABEL 
+                              for=ID_wucJudge.ascx_ID_15233_1><SPAN 
+                              style="CURSOR: hand" 
+                              onclick="SetValue('ID_ANSWER_15233','B')">B、错误</SPAN></LABEL></TD></TR></TBODY></TABLE></TD></TR>
+                    <TR>
+                      <TD width=20></TD>
+                      <TD align=center><FONT color=#0000ff>解答：</FONT><INPUT 
+                        style="Z-INDEX: 104; BORDER-BOTTOM: green 1px solid; BORDER-LEFT: green 1px solid; WIDTH: 48px; BORDER-TOP: green 1px solid; BORDER-RIGHT: green 1px solid; LEFT: 88px" 
+                        id=ID_ANSWER_15233 value=未答></TD></TR></TBODY></TABLE></TD></TR>
+              <TR>
+                <TD bgColor=#ffffcc height=20></TD></TR>
+              <TR>
+                <TD><FONT face=宋体>
+                  <P 
+                  align=left>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+<INPUT style="WIDTH: 1px; HEIGHT: 1px" id=ID_wucJudge.ascx_Button4 name=ID_wucJudge.ascx:Button4 value=Button type=submit> 
+<INPUT style="DISPLAY: none" id=ID_wucJudge.ascx_Button5 onclick="__doPostBack('ID_wucJudge.ascx$Button5','')" name=ID_wucJudge.ascx:Button5 value=Button type=button> 
+                  </P>
+                  <P align=left>&nbsp;</P></FONT></TD></TR></TBODY></TABLE><!--实现保存按钮的滚动显示-->
+            <DIV 
+            style="Z-INDEX: 20; BORDER-BOTTOM: #336699 0px solid; POSITION: absolute; TEXT-ALIGN: left; BORDER-LEFT: #336699 0px solid; PADDING-BOTTOM: 5px; BACKGROUND-COLOR: #ffffee; PADDING-LEFT: 5px; WIDTH: 150px; PADDING-RIGHT: 5px; BACKGROUND-REPEAT: repeat; HEIGHT: 60px; VISIBILITY: hidden; BORDER-TOP: #336699 0px solid; BORDER-RIGHT: #336699 0px solid; PADDING-TOP: 5px; TOP: 103px; LEFT: 10px" 
+            id=AdLayer1><FONT size=4>
+            <DIV style="TEXT-ALIGN: center; BACKGROUND-COLOR: #ccff99"><INPUT style="BORDER-RIGHT-WIDTH: 1px; BACKGROUND-COLOR: #caffa4; WIDTH: 150px; BORDER-TOP-WIDTH: 1px; BORDER-BOTTOM-WIDTH: 1px; HEIGHT: 32px; BORDER-LEFT-WIDTH: 1px; CURSOR: hand" id=btnSubmitSave language=javascript onclick="return btnSubmitSave_onclick()" name=Button4 value=保存答题结果 type=button> 
+            </DIV></DIV>　　
+            <SCRIPT language=JScript for=window event=onload>
+　　   initAd1();//载入页面后，调用函数initAd()
+　　 </SCRIPT>
+             　　 　　 　　 　　 　　
+            <SCRIPT language=JScript>
+　
+　　     function MoveLayer1(layerName) {
+　　         var x = window.document.documentElement.scrollWidth  - AdLayer1.style.posWidth-90; //  800;//浮动广告层固定于浏览器的x方向位置
+　　
+         //alert(x);
+　　
+　　
+         var h = window.parent.frames[1].document.documentElement.scrollHeight-200; //+ window.parent.frames[0].document.documentElement.scrollHeight;
+　　         var y = h; //浮动广告层固定于浏览器的y方向位置
+　　         var diff = (document.body.scrollTop + y - document.all.AdLayer1.style.posTop) * .40;
+　　         var y = document.body.scrollTop + y - diff;
+　　         eval("document.all." + layerName + ".style.posTop = y");
+　　         eval("document.all." + layerName + ".style.posLeft = x"); //移动广告层
+　　         setTimeout("MoveLayer1('AdLayer1');", 20); //设置20毫秒后再调用函数MoveLayer()
+　　
+     }
+　　     
+　　     function initAd1() {
+　　
+            //alert("sdfsdf");
+　　
+         var h = window.parent.frames[1].document.documentElement.scrollHeight + window.parent.frames[0].document.documentElement.scrollHeight;
+        //alert(h);
+            //alert(window.parent.frames[1].document.all.AdLayer1.style.posTop);
+
+         window.parent.frames[1].document.all.AdLayer1.style.posTop = h; 
+             // -200; //设置onLoad事件激发以后，广告层相对于固定后的y方向位置
+　　     
+　　
+            //alert(document.all.AdLayer1.style.visibility);
+            document.all.AdLayer1.style.visibility = 'visible'; //设置层为可见
+　　         
+　　         
+　　        
+            MoveLayer1('AdLayer1'); //调用函数MoveLayer()
+　　        
+　　
+            //alert("s1");
+　　         
+　　     }
+　　    
+
+</SCRIPT>
+             </FONT></FONT></TD></TR></TBODY></TABLE></FONT></TD></TR>
+  <TR>
+    <TD bgColor=#99cc66 height=20 colSpan=2>
+      <TABLE border=0 cellSpacing=0 cellPadding=0 width="100%" bgColor=#000000 
+      align=center height=20>
+        <TBODY>
+        <TR>
+          <TD style="BACKGROUND-COLOR: #ccff99">
+            <MARQUEE style="WIDTH: 100%; HEIGHT: 0px" scrollDelay=300><SPAN 
+            style="BORDER-BOTTOM-COLOR: aliceblue; BORDER-TOP-COLOR: aliceblue; WIDTH: 100%; BORDER-RIGHT-COLOR: aliceblue; FONT-SIZE: 14px; BORDER-LEFT-COLOR: aliceblue" 
+            id=WucFooter1_lblOnline></SPAN></MARQUEE></TD></TR>
+        <TR>
+          <TD bgColor=#c2ed9c align=center>∷&nbsp;浙江大学计算机学院&nbsp;&nbsp;∷ 
+            &nbsp;OTS V1.00 &nbsp;2007 &nbsp;Copyright<SUP>&copy;</SUP>&nbsp;All 
+            Rights Reserved.<BR>College of Computer Science, Zhejiang 
+            University! </TD></TR></TBODY></TABLE></TD></TR></TBODY></TABLE></FORM>
+<SCRIPT language=javascript>
+
+    
+    
+    function FindObj1(OID) {
+        var i; var obj;
+        var tagNs = "";
+        //alert (OID);
+        //alert(document.all.length);
+        for (i = 0; i < document.all.length; i++) {
+            obj = document.all(i);
+            //alert(obj.id);
+            //if (obj.id == "btnSubmitSave") alert(obj.id);        
+
+            tagNs = obj.id;
+
+            if (tagNs.indexOf(OID) >= 0) {
+                //if (OID == "btnSubmitSave") alert(obj.id);
+                return (obj);
+            }
+        }
+  
+    }
+    function CheckSaved() {
+        var IsSaved = 0;
+        var IsSaveObj = document.getElementById("HidIsSave");
+        IsSaved = IsSaveObj.value;
+        //window.alert(IsSaved);
+        if (IsSaved == 0) return 0;
+        if (IsSaved == 1) {
+            window.alert("保存成功！");
+        }
+        else if (IsSaved == -1) {
+            window.alert("保存失败！");
+        }
+        else if (IsSaved == -2) {
+            window.alert("本题已经交卷,不能保存！");
+        }
+        return IsSaved;
+    }
+
+    function CheckCanSubmit() {
+        var IsSaved = 0;
+        
+        var IsSaveObj1 = document.getElementById("HidCanSubmit");
+        IsSaved = IsSaveObj1.value;
+        
+        //window.alert(IsSaved);
+
+        var submitobj = FindObj1("btnSubmitSave");  //document.getElementById("btnSubmitSave");
+        //window.alert(submitobj.value);
+        if (IsSaved == 0)
+            submitobj.disabled = false;
+        else {
+            submitobj.disabled = true;
+        }
+        //alert(IsSaved);
+        return IsSaved;
+    }
+
+    CheckSaved();
+    CheckCanSubmit();
+		    
+    </SCRIPT>
+</BODY></HTML>

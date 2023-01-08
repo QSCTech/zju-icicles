@@ -1,0 +1,180 @@
+BODY {
+	BORDER-BOTTOM: 0px; BORDER-LEFT: 0px; PADDING-BOTTOM: 0px; MARGIN: 0px; PADDING-LEFT: 0px; PADDING-RIGHT: 0px; FONT-FAMILY: Verdana, Arial; FONT-SIZE: xx-small; BORDER-TOP: 0px; CURSOR: default; BORDER-RIGHT: 0px; PADDING-TOP: 0px
+}
+.HeadLogin {
+	FILTER: progid:DXImageTransform.Microsoft.Gradient(startColorStr='#A9A9A9', endColorStr='#ffffff', gradientType='1'); FONT-FAMILY: 宋体; HEIGHT: 20px; FONT-SIZE: 12px
+}
+.PageHead {
+	FILTER: progid:DXImageTransform.Microsoft.Gradient(startColorStr='#A9A9A9', endColorStr='#D3D3D3', gradientType='1'); FONT-FAMILY: 宋体; FONT-SIZE: 20px; FONT-WEIGHT: bold
+}
+.PageTail {
+	BACKGROUND-COLOR: lavender; FONT-FAMILY: 宋体; FONT-SIZE: 12px
+}
+.mainTable {
+	WIDTH: 780px; FONT-FAMILY: 宋体; FONT-SIZE: 12px
+}
+.subTable {
+	WIDTH: 100%; FONT-FAMILY: 宋体; FONT-SIZE: 12px
+}
+.subBodyTable {
+	BORDER-BOTTOM: #dbdac9 1px solid; BORDER-LEFT: #dbdac9 1px solid; WIDTH: 100%; FONT-FAMILY: 宋体; FONT-SIZE: 12px; BORDER-TOP: #dbdac9 1px solid; BORDER-RIGHT: #dbdac9 1px solid
+}
+.fixTable {
+	BORDER-BOTTOM: #dbdac9 1px solid; BORDER-LEFT: #dbdac9 1px solid; FONT-FAMILY: 宋体; FONT-SIZE: 12px; BORDER-TOP: #dbdac9 1px solid; BORDER-RIGHT: #dbdac9 1px solid
+}
+.fixTableHead {
+	BACKGROUND-IMAGE: url(../image/common/toptoolright.gif); PADDING-BOTTOM: 2px; PADDING-LEFT: 3px; BACKGROUND-REPEAT: repeat-x; FONT-FAMILY: 宋体; HEIGHT: 28px; FONT-SIZE: 12px; FONT-WEIGHT: bold; PADDING-TOP: 2px
+}
+.MainMenuTable {
+	FONT-FAMILY: 宋体; FONT-SIZE: 12px
+}
+.grid {
+	BORDER-BOTTOM: #dbdac9 1px solid; BORDER-LEFT: #dbdac9 1px solid; WIDTH: 100%; FONT-SIZE: 12px; BORDER-TOP: #dbdac9 1px solid; BORDER-RIGHT: #dbdac9 1px solid
+}
+.gridHeader {
+	BACKGROUND-COLOR: lavender; PADDING-LEFT: 5px; HEIGHT: 24px; COLOR: black; FONT-SIZE: 12px; FONT-WEIGHT: bold
+}
+.gridFooter {
+	BACKGROUND-COLOR: blue
+}
+.lastGridItem {
+	BORDER-BOTTOM: #e9e7d7 1px dotted; PADDING-LEFT: 5px; FONT-FAMILY: 宋体; MARGIN-BOTTOM: 1px; HEIGHT: 22px; FONT-SIZE: 12px; PADDING-TOP: 1px
+}
+.gridItem {
+	BORDER-BOTTOM: #e9e7d7 1px dotted; PADDING-LEFT: 5px; FONT-FAMILY: 宋体; MARGIN-BOTTOM: 1px; HEIGHT: 22px; FONT-SIZE: 12px; PADDING-TOP: 1px
+}
+.gridItem1 {
+	BORDER-BOTTOM: #e9e7d7 1px solid; BORDER-LEFT: #e9e7d7 1px solid; PADDING-LEFT: 5px; FONT-FAMILY: 宋体; MARGIN-BOTTOM: 1px; HEIGHT: 22px; FONT-SIZE: 12px; BORDER-TOP: #e9e7d7 1px solid; BORDER-RIGHT: #e9e7d7 1px solid; PADDING-TOP: 1px
+}
+.gridAlternatingItem {
+	BACKGROUND-COLOR: #f1f1f1; PADDING-LEFT: 5px; FONT-FAMILY: 宋体; MARGIN-BOTTOM: 1px; HEIGHT: 24px; FONT-SIZE: 12px; PADDING-TOP: 1px
+}
+.gridItemOver {
+	BACKGROUND-COLOR: #cad3e4; PADDING-LEFT: 5px; MARGIN-BOTTOM: 1px; HEIGHT: 24px; FONT-SIZE: 12px; PADDING-TOP: 1px
+}
+.cellBordy {
+	BORDER-BOTTOM: #dbdac9 1px solid; BORDER-LEFT: #dbdac9 1px solid; BORDER-TOP: #dbdac9 1px solid; BORDER-RIGHT: #dbdac9 1px solid
+}
+.cellDotBordy {
+	BORDER-BOTTOM: #dbdac9 1px dotted; BORDER-LEFT: #dbdac9 1px dotted; BORDER-TOP: #dbdac9 1px dotted; BORDER-RIGHT: #dbdac9 1px dotted
+}
+.cellLeftTopBordy {
+	BORDER-LEFT: #000000 0.5pt solid; FONT-STYLE: normal; FONT-FAMILY: 宋体; WORD-WRAP: break-word; FONT-SIZE: 10pt; BORDER-TOP: #000000 0.5pt solid
+}
+.cellRightTopBordy {
+	BORDER-LEFT: #000000 1px solid; FONT-STYLE: normal; FONT-FAMILY: 宋体; WORD-WRAP: break-word; FONT-SIZE: 10pt; BORDER-TOP: #000000 0.5pt solid; BORDER-RIGHT: #000000 0.5pt solid
+}
+.cellLeftBottomBordy {
+	BORDER-BOTTOM: #000000 0.5pt solid; BORDER-LEFT: #000000 0.5pt solid; FONT-STYLE: normal; FONT-FAMILY: 宋体; WORD-WRAP: break-word; FONT-SIZE: 10pt; BORDER-TOP: #000000 0.5pt solid
+}
+.cellRightBottomBordy {
+	BORDER-BOTTOM: #000000 1px solid; BORDER-LEFT: #000000 0.5pt solid; FONT-STYLE: normal; FONT-FAMILY: 宋体; WORD-WRAP: break-word; FONT-SIZE: 10pt; BORDER-TOP: #000000 0.5pt solid; BORDER-RIGHT: #000000 0.5pt solid
+}
+.cellLeftRightBordy {
+	BORDER-BOTTOM: #000000 0px solid; BORDER-LEFT: #000000 1pt solid; FONT-STYLE: normal; FONT-FAMILY: 宋体; WORD-WRAP: break-word; FONT-SIZE: 10pt; BORDER-TOP: #000000 0.5pt solid; BORDER-RIGHT: #000000 1pt solid
+}
+.MenuGroupItem {
+	FONT-FAMILY: 宋体; HEIGHT: 28px; FONT-SIZE: 12px
+}
+.MenuGroupItemOver {
+	BORDER-BOTTOM: buttonshadow 1px solid; BORDER-LEFT: white 1px solid; FONT-FAMILY: 宋体; HEIGHT: 28px; FONT-SIZE: 13px; BORDER-TOP: white 1px solid; BORDER-RIGHT: buttonshadow 1px solid; PADDING-TOP: 1px
+}
+.MenuItem {
+	FONT-FAMILY: 宋体; COLOR: #ffffff; FONT-SIZE: 12px
+}
+.MenuItemOver {
+	MARGIN-BOTTOM: 1px; COLOR: #ffffff; FONT-SIZE: 12px; FONT-WEIGHT: bold; PADDING-TOP: 1px
+}
+.ModuleTitle {
+	FONT-FAMILY: 宋体; FONT-SIZE: 12px; FONT-WEIGHT: bold
+}
+.ContentTitle {
+	BACKGROUND-COLOR: lavender; FONT-FAMILY: 宋体; HEIGHT: 24px; COLOR: black; FONT-SIZE: 12px; FONT-WEIGHT: bold
+}
+.ContentTitle2 {
+	FONT-FAMILY: 宋体; FONT-SIZE: 12px; FONT-WEIGHT: bold
+}
+.ContentTitle3 {
+	FONT-FAMILY: 宋体; FONT-SIZE: 16px; FONT-WEIGHT: bold
+}
+.ContentItem {
+	WIDTH: 82%; FONT-FAMILY: 宋体; FONT-SIZE: 12px
+}
+.TileUnderLine1 {
+	FILTER: progid:DXImageTransform.Microsoft.Gradient(startColorStr='#008000', endColorStr='#008000', gradientType='1'); FONT-FAMILY: 宋体; HEIGHT: 1px; FONT-SIZE: 12px
+}
+.TileUnderLine2 {
+	FILTER: progid:DXImageTransform.Microsoft.Gradient(startColorStr='Gray', endColorStr='#ffffff', gradientType='1'); FONT-FAMILY: 宋体; HEIGHT: 2px; FONT-SIZE: 12px
+}
+.HeadToolBack {
+	BORDER-BOTTOM: #7b9ebd 1px solid; TEXT-ALIGN: left; FILTER: progid:DXImageTransform.Microsoft.Gradient(startColorStr='#D3D3D3', endColorStr='#ffffff', gradientType='0'); PADDING-LEFT: 5px; BACKGROUND-REPEAT: repeat-x; FONT-FAMILY: 宋体; HEIGHT: 26px; FONT-SIZE: 12px
+}
+.HeadToolBack1 {
+	BORDER-BOTTOM: #7b9ebd 1px solid; TEXT-ALIGN: left; FILTER: progid:DXImageTransform.Microsoft.Gradient(startColorStr='#D3D3D3', endColorStr='#ffffff', gradientType='0'); PADDING-LEFT: 5px; BACKGROUND-REPEAT: repeat-x; FONT-FAMILY: 宋体; HEIGHT: 26px; FONT-SIZE: 12px
+}
+.HeadToolButton {
+	BACKGROUND-IMAGE: url(../images/common/StandardButton.gif); BORDER-BOTTOM-STYLE: none; BACKGROUND-COLOR: transparent; BORDER-LEFT-STYLE: none; WIDTH: 72px; BACKGROUND-REPEAT: no-repeat; FONT-FAMILY: 宋体; BORDER-TOP-STYLE: none; HEIGHT: 21px; BORDER-RIGHT-STYLE: none; FONT-SIZE: 12px; CURSOR: hand
+}
+.HeadToolButtonMid {
+	BACKGROUND-IMAGE: url(../image/common/MiddleButton.gif); BORDER-BOTTOM-STYLE: none; BACKGROUND-COLOR: transparent; BORDER-LEFT-STYLE: none; WIDTH: 88px; BACKGROUND-REPEAT: no-repeat; FONT-FAMILY: 宋体; BORDER-TOP-STYLE: none; HEIGHT: 21px; BORDER-RIGHT-STYLE: none; FONT-SIZE: 12px; CURSOR: hand
+}
+.HeadToolButtonBig {
+	BACKGROUND-IMAGE: url(../image/common/BigButton.gif); BORDER-BOTTOM-STYLE: none; BACKGROUND-COLOR: transparent; BORDER-LEFT-STYLE: none; WIDTH: 100px; BACKGROUND-REPEAT: no-repeat; FONT-FAMILY: 宋体; BORDER-TOP-STYLE: none; HEIGHT: 21px; BORDER-RIGHT-STYLE: none; FONT-SIZE: 12px; CURSOR: hand
+}
+.HeadToolButtonSuperBig {
+	BACKGROUND-IMAGE: url(../image/common/SuperBigButton.gif); BORDER-BOTTOM-STYLE: none; BACKGROUND-COLOR: transparent; BORDER-LEFT-STYLE: none; WIDTH: 130px; BACKGROUND-REPEAT: no-repeat; FONT-FAMILY: 宋体; BORDER-TOP-STYLE: none; HEIGHT: 21px; BORDER-RIGHT-STYLE: none; FONT-SIZE: 12px; CURSOR: hand
+}
+.button {
+	BORDER-BOTTOM: #e9e7d7 1px solid; FILTER: progid:DXImageTransform.Microsoft.Gradient(GradientType=0, StartColorStr=#ffffff, EndColorStr=#cecfde); BORDER-LEFT: #e9e7d7 1px solid; PADDING-LEFT: 5px; WIDTH: 80px; PADDING-RIGHT: 5px; FONT-FAMILY: 宋体; HEIGHT: 24px; FONT-SIZE: 12px; BORDER-TOP: #e9e7d7 1px solid; CURSOR: hand; BORDER-RIGHT: #e9e7d7 1px solid
+}
+.inputFields {
+	BORDER-BOTTOM: #000000 1px solid; BORDER-LEFT: #000000 1px solid; WIDTH: 100%; FONT-FAMILY: Verdana; HEIGHT: 20px; FONT-SIZE: 12px; BORDER-TOP: #000000 1px solid; BORDER-RIGHT: #000000 1px solid
+}
+.labelFields {
+	BORDER-BOTTOM-STYLE: none; BORDER-LEFT-STYLE: none; WIDTH: 100%; FONT-FAMILY: Verdana; BORDER-TOP-STYLE: none; HEIGHT: 20px; BORDER-RIGHT-STYLE: none; FONT-SIZE: 12px
+}
+.inputNumber {
+	BORDER-BOTTOM: #000000 1px solid; TEXT-ALIGN: right; BORDER-LEFT: #000000 1px solid; WIDTH: 100%; FONT-FAMILY: Verdana; HEIGHT: 20px; FONT-SIZE: 12px; BORDER-TOP: #000000 1px solid; BORDER-RIGHT: #000000 1px solid
+}
+.combo {
+	WIDTH: 100%; HEIGHT: 19px; FONT-SIZE: 12px
+}
+.textArea {
+	BORDER-BOTTOM: #000000 1px solid; BORDER-LEFT: #000000 1px solid; WIDTH: 100%; FONT-FAMILY: Verdana; HEIGHT: 100%; FONT-SIZE: 12px; BORDER-TOP: #000000 1px solid; BORDER-RIGHT: #000000 1px solid
+}
+.link1 A {
+	FONT-FAMILY: 宋体; COLOR: black; FONT-SIZE: 12px; TEXT-DECORATION: none
+}
+.link1 A:hover {
+	COLOR: #008000; TEXT-DECORATION: underline
+}
+.link2 A {
+	FONT-FAMILY: 宋体; COLOR: black; FONT-SIZE: 12px; TEXT-DECORATION: underline
+}
+.link2 A:hover {
+	COLOR: #008000; TEXT-DECORATION: none
+}
+TABLE.toolBar {
+	BACKGROUND-IMAGE: url(../Image/frame/toolbar_bg.jpg); WIDTH: 100%; TABLE-LAYOUT: fixed; HEIGHT: 24px; FONT-SIZE: 9pt
+}
+SPAN.toolBarItem {
+	PADDING-BOTTOM: 2px; PADDING-LEFT: 4px; CURSOR: hand; PADDING-TOP: 2px
+}
+SPAN.toolBarItemOver {
+	BACKGROUND-COLOR: #ffe3af
+}
+SPAN.toolBarSep {
+	PADDING-BOTTOM: 2px; PADDING-LEFT: 2px; PADDING-RIGHT: 2px; COLOR: gray; PADDING-TOP: 2px
+}
+.td {
+	FONT-SIZE: 12px
+}
+.inputFields1 {
+	BORDER-BOTTOM: #000000 1px solid; BORDER-LEFT: #000000 1px solid; WIDTH: 100%; FONT-FAMILY: Verdana; HEIGHT: 100%; FONT-SIZE: 12px; BORDER-TOP: #000000 1px solid; BORDER-RIGHT: #000000 1px solid
+}
+.txtNoRight {
+	BORDER-BOTTOM: 1px solid; BORDER-LEFT: black 1px solid; WIDTH: 100%; FONT-FAMILY: Verdana; HEIGHT: 100%; BORDER-RIGHT-STYLE: none; FONT-SIZE: 12px; BORDER-TOP: black 1px solid
+}
+.txtNoLeft {
+	BORDER-BOTTOM: 1px solid; WIDTH: 100%; FONT-FAMILY: Verdana; HEIGHT: 100%; FONT-SIZE: 12px; BORDER-TOP: black 1px solid; BORDER-RIGHT: black 1px
+}
