@@ -1,0 +1,162 @@
+R2#show running-config
+Building configuration...
+
+Current configuration : 2114 bytes
+!
+version 12.4
+service timestamps debug datetime msec
+service timestamps log datetime msec
+no service password-encryption
+!
+hostname R2
+!
+boot-start-marker
+boot-end-marker
+!
+!
+no aaa new-model
+memory-size iomem 5
+no ip icmp rate-limit unreachable
+ip cef
+!
+!
+!
+!
+no ip domain lookup
+ip auth-proxy max-nodata-conns 3
+ip admission max-nodata-conns 3
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+username R4 password 0 1234
+!
+!
+ip tcp synwait-time 5
+!
+!
+!
+!
+!
+interface FastEthernet0/0
+ ip address dhcp
+ ip nat outside
+ ip virtual-reassembly
+ duplex auto
+ speed auto
+!
+interface Serial0/0
+ no ip address
+ shutdown
+ clock rate 2000000
+!
+interface FastEthernet0/1
+ no ip address
+ shutdown
+ duplex auto
+ speed auto
+!
+interface Serial0/1
+ no ip address
+ shutdown
+ clock rate 2000000
+!
+interface Serial0/2
+ no ip address
+ shutdown
+ clock rate 2000000
+!
+interface Serial0/3
+ no ip address
+ shutdown
+ clock rate 2000000
+!
+interface FastEthernet1/0
+ no ip address
+ shutdown
+ duplex auto
+ speed auto
+!
+interface FastEthernet2/0
+ no ip address
+ shutdown
+ duplex auto
+ speed auto
+!
+interface Serial3/0
+ ip address 192.168.12.2 255.255.255.0
+ ip nat inside
+ ip virtual-reassembly
+ serial restart-delay 0
+ clock rate 128000
+!
+interface Serial3/1
+ ip address 192.168.24.2 255.255.255.0
+ encapsulation ppp
+ serial restart-delay 0
+ ppp authentication chap
+!
+interface Serial3/2
+ no ip address
+ shutdown
+ serial restart-delay 0
+!
+interface Serial3/3
+ no ip address
+ shutdown
+ serial restart-delay 0
+!
+ip forward-protocol nd
+ip route 10.0.0.0 255.255.0.0 192.168.12.1
+ip route 10.1.0.0 255.255.0.0 192.168.12.1
+ip route 172.16.0.0 255.255.255.0 192.168.24.4
+ip route 172.16.1.0 255.255.255.0 192.168.24.4
+ip route 192.168.35.0 255.255.255.0 192.168.24.4
+!
+!
+no ip http server
+no ip http secure-server
+ip nat inside source list 2 interface FastEthernet0/0 overload
+!
+access-list 2 permit 10.0.0.0 0.255.255.255
+no cdp log mismatch duplex
+!
+!
+!
+control-plane
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+line con 0
+ exec-timeout 0 0
+ privilege level 15
+ logging synchronous
+line aux 0
+ exec-timeout 0 0
+ privilege level 15
+ logging synchronous
+line vty 0 4
+ login
+!
+!
+end
