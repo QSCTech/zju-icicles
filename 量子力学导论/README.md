@@ -4,3 +4,6 @@
 
 提取码：1234
 
+# 量子力学导论笔记
+
+https://zhuanlan.zhihu.com/p/609544084

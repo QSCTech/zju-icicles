@@ -45,3 +45,10 @@ https://pan.zju.edu.cn/share/a383feea8a00e693f0452da4ed （权限为仅限ZJU在
 下载地址：
 链接：https://pan.baidu.com/s/1foMlv656nhHy-gno1Eh4Kg?pwd=2apx 
 提取码：2apx
+
+
+### 理论力学教材
+
+链接：https://pan.baidu.com/s/1asY9lyW4E3XdG9jrDJ8APQ?pwd=1234 
+提取码：1234 
+复制这段内容后打开百度网盘手机App，操作更方便哦
