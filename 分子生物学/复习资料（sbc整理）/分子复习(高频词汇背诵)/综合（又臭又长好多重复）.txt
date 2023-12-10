@@ -1,0 +1,511 @@
+DNA structure(overall structure of the DNA molecule. )
+1.DNA is composed of 2 chains of nucleotides that form a double helix shape.
+2.The two strands are antiprallel
+3.The backbone of the DNA molecule is composed of alternating phosphate groups and sugars
+4.The complimentary nitrogenous bases form hydrogen bonds between the strands
+5.A is compimentary to T and G is complimentary to C
+
+DNA functions
+1.storage of genetic information
+2.self-duplication & inheritance
+3.expression of the genetic message
+DNA’s major function is to code for proteins.Information is encoded in the order of the nitrogenous bases.
+
+Biological roles of RNA
+1.RNA is the genetic proaterial of some viruses
+2.RNA functions as the protein-synthesizing machinery
+3.RNA functions as an asaptor(tRNA) between the codons in the mRNA and amino acids
+4.RNA serves as a regulatory molecule,which through equence complementarity binds to, and interferes with the translation of certain mRNAs.
+5.Some RNAs are enzymes that catalyze essential reactions in the cell
+
+Summarize the relationship between genes and DNA.
+
+1.During prophase of mitosis, chromatin fibers become coiled into chromosomes with each chromosome having two chromatids joined at a centromere.
+2.A centromere is a region of DNA typically found near the middle of a chromosome where two identical sister chromatids come in contact. It is involved in cell division as the 
+point of mitotic spindle.
+A telomere is a region of repetitive DNA at the end of a chromosome, which protects the end of the chromosome from deterioration
+
+
+Difference about chromosome in Prokaryotic and Eukaryotic?
+Prokaryotic:circular,very small,1chromosome per cell,some enzymes and proteins are associated with the DNA,not housed in a nucleus
+Enkaryotic:linear,fairly long,several chromosomes per cell,histone proteins spools same in all eukaryotes,housed in a nucleus,2 loops of DNA wrapped around 8 histone proteins in nucleosome,unity theme
+
+Functions of chromatin
+The functions of chromatin are to package DNA into a smaller volume to fit in the cell, to strengthen the DNA to allow 
+mitosis and meiosis, and to serve as a mechanism to control expression and DNA replication.
+
+Difference about Heterochromatin and euchromatin?
+
+1.parental strand = template
+2.Single strand Binding Proteins (SSB) keep the two strands from re-annealing (coming back together).
+3.Primase is an RNA polymerase that synthesize the RNA primer.
+4.exonuclease removes mismatches 3'to 5',degrades double stranded DNA 3'to 5'
+5.polymerase catalyzes chain growth 5' to 3'
+6.prokaryotes have a single origin of replication while eukaryotes have multiple origin of replication
+7.Replication happens in the S phase of Interphase
+
+ What DNA replication require
+1. H bonds between bases must be broken
+2. chain separation/unwinding
+3. available pools of 4 dNTPs: A = T, C ≡ G
+4. Enzymes
+
+Describe how replication works and the significant
+Enzymes unzip DNA and complementary nucleotides join each original strand. Both new cells will have the correct 
+DNA through replication.
+
+Nature of the Genetic Material
+①it must contain, in a stable form, information encoding the organism’s structure, function, development and reproduction
+②it must replicate accuratelyso progeny cells have the same genetic make up
+③it must be capable of some variation (mutation) to permit evolution
+
+Enzymes required in DNA replication：
+a DNA helicase must unwind the parental template
+a primase must synthesize short oligoribonucleotidesthat serve as primer for synthesis of the Okazaki fragments on the lagging strand, a single-stranded DNA-binding protein that coats the single-stranded lagging-strand template and interacts with other replication proteins
+a DNA polymerase must synthesize the nascent leading and lagging strands.
+
+Semiconservative replication：
+Semiconservative replication describes the method by which DNA is replicated in all known cells. This method of replication was one of three proposed models[1] [2] ofDNA replication:
+Semiconservative replication would produce two copies that each contained one of the original strands and one new strand.
+Conservative replication would leave the two original template DNA strands together in a double helix and would produce a copy composed of two new strands containing all of the new DNA base pairs.
+Dispersive replication would produce two copies of the DNA, both containing distinct regions of DNA composed of either both original strands or both new strands
+
+
+Mechanism of DNA replication？？？
+
+
+General concepts：
+RNA is a polymer composed of alternating units of ribonucleotides connected through a 3’-5’phosphodiesterbond.
+rRNA -Ribosome -contains enzymes and keeps everything together，the RNA structural component of the ribosome
+tRNA -Transfer RNA carries amino acid and read codonson m-RNA through its own anticodons.assists in decoding the information contained within mRNA duringtranslation by recruiting the correct amino acid to the growing peptide chain
+mRNA the RNA that transfers genetic information stored in DNA into a 
+form  useable for protein synthesis 
+
+General mechanism of RNA synthesis
+①elongation by addition of ribonucleotides to the 3’-OH end
+②3’-OH acts as a nucleophile, attacking the a-phosphate of the incoming ribonucleoside triphosphate and releasing pyrophosphate
+③mechanism is the same as that used for elongation of  a DNA strand 
+
+Function of 5′cap
+? Protection from degradation
+? Increased translational efficiency
+? Transport to cytoplasm
+? Splicing of first intron
+
+Function of poly(A) tail
+? Increased mRNA stability
+? Increased translational efficiency
+? Splicing of last intron
+
+1.  Why is transcription necessary?
+Transcription makes messenger RNA (mRNA) to carry the code for proteins out of the nucleus to the ribosomesin the cytoplasm.
+
+2.  Describe transcription.
+RNA polymerase binds to DNA, separates the strands, then uses one strand as a template to assemble mRNA.
+
+5.  What are the main differences between DNA and RNA.
+DNA has deoxyribose, RNA has ribose; DNA has 2 strands, RNA has one strand; DNA has thymine, RNA has uracil.
+
+
+
+What is different between the DNA replication and RNA transcription ?
+Transcription is very similar to DNA replication but there are some important differences:
+1.RNA is made of ribonucleotides
+2.RNA polymerase catalyzes the reaction
+3. The synthesized RNA does not remain base-paired to the template DNA strand
+4. Less accurate (error rate: 10-4)
+5.Transcription selectively copies only certain parts of the genome and makes one to several hundred, or even thousand, copies of any given section of the genome. 
+
+Genes are expressed in a 2 step process:
+First, an RNA copy of a single gene is made (transcription).  
+Then, the nucleotide sequence of the RNA copy (messenger RNA) is translated into the amino acid sequence of the polypeptide.
+
+Main challenge of translation
+? The genetic information in mRNA cannot be recognized by amino acids. 
+? The genetic code has to be recognized by an adaptor molecular (translator),
+and this adaptor has to accurately recruit the corresponding amino acid. 
+
+The structure and function of four components of the translation 
+Machinery.???
+functions of RNA
+tRNA are adaptors between codons and amino acids
+tRNAs share a common secondary structure that resemble a cloverleaf which shows the base pairing of various regions to form four stems (arms) and three loops. 
+Aminoacyl tRNA synthetases :Amino acids should attach to tRNA first before adding to polypeptide chain. 
+
+mRNA
+The protein-coding region of the mRNA consists of an ordered series of 3-nt-long units called codons that specify the order of amino acids.
+
+
+
+1 Prokaryotic mRNAs have a ribosome binding site that recruits the translational machinery
+2 Eukaryotic mRNA are modified at their 5’and 3’ends to facilitate translation.
+
+the ribosome is composed of a large and a small subunit
+? The large subunit contains the peptidyltransferase center, which is responsible for the formation of peptide bonds.
+? The small subunit interacting with mRNA contains the decoding center,in which charged tRNAs read or “decode”the codon units of the mRNA. 
+
+Translation initiation, elongation and termination???
+Translation initiation factors hold eukaryotic mRNAs in circles
+
+How do prokaryotes and eukaryotes find the translation start sites ?
+Eukaryotic mRNA uses a methylated cap to recruitthe ribosome. Once bound, the ribosome scans themRNA in a 5’-3’direction to find the AUG start codon.
+Prokaryotes???
+
+
+中心法则
+
+“The genetic code is degenerate”What does it mean? What’s the benefits? 
+it  means that many amino acids are speafied by more than one codon 
+Code degeneracy explains how therecan be great variation in the AT/GC ratios in the DNA of various organisms without large changes in the proportion of amino acids in their proteins.
+The benefit:
+1.The genetic code evolved in such a way as to minimize the deleterious effects of mutations.
+2.Code degeneracy may serve as asafety mechanism to minimize errors in the reading of codons.
+
+What’s about the anticodonrecognition? How the code was discovered? 
+What are the three rules governing the genetic code? What are the mutations altering genetic code? 
+Some tRNA could recognize several different codons
+Inosine【次黄(嘌呤核)苷】 is present in the anticodonloop as a fifth base
+
+Wobble Concept
+ the 5’end of the anticodonis not as spatially confined as the other two, allowing it to form hydrogen bonds with more than onebases located at the 3’end of a 
+codon.
+
+Why wobble is allowed at the 5’anticodon
+? The 3-D structure of tRNA shows that the stacking interactions between the 
+flat surfaces of the 3 anticodonbases + 2 followed bases position the first (5’) 
+anticodonbase at the end of the stack, thus less restricted in its movements.
+? The 3’base appears in the middle of the stack, resulting in the restriction of its 
+movements.
+
+Three codons, UAA, UAG, and UGA signify chain termination.
+
+ THREE RULES GOVERN THE GENETIC CODE
+1 Codonsare read in a 5’to 3’ direction.
+2 Codonsare nonoverlapping and the message contains no gaps.
+3 The message is translated in a fixed reading frame which is set by the initiation codon.
+
+Three Kinds of Point Mutations Alter the Genetic Code
+1. Missense（错义） mutation: An alternation that changes a codonspecific for one amino acid to a codonspecific for another amino acid.
+2. Nonsense无（意）义or stop mutation: An alternation causing a change to a chain-termination codon.
+3. Frameshift(移码) mutation:Insertions or deletions of one or a small number of base pairs that alter the reading frame.
+
+Reverse the harmful mutations by a second genetic change
+①Reverse (back) mutations: change an altered nucleotide sequence back to its 
+original arrangement.
+②Suppressor mutations: suppress the change due to mutation at site A by 
+producing an additional genetic change at site B.
+(1) Intragenic基因内的suppression
+(2) Intergenic基因间的suppression
+
+Benefits of the universal codes
+(1)Allow us to directly compare the protein coding sequences among all
+organisms.
+(2) Make it possible to express cloned copies of genes encoding useful protein in different host organism. Example: Human insulin expression in bacteria
+
+What are the benefits of the code universality? What’s about the 
+mitochondrial codes and tRNAs?
+the genetic code is slightly different from the standard code.
+Mitochondrial tRNAs are unusual in the way that they decode mitochondrial messages.
+Only 22 tRNAs are present in mammalian mitochondria. The U in the 5’ wobble position of a tRNA is capable of recognizing all four bases in the 3’ of the codon.
+
+1、Housekeeping genes(持家基因):      
+    expressed constitutively, essential for basic processes involving in cell 
+replication and growth
+Inducible genes: （诱导基因）
+    expressed only when they are activated by inducers or cellular factors.
+Operon: （操纵子）/ Lactose operon（乳糖操纵子）
+	a unit of prokaryotic gene expression and regulation ...有问题？
+4、lacZ半乳糖苷酶、lacY(半乳糖苷渗透酶)、lacA(硫代半乳糖苷转乙酰酶)
+
+
+Topic1 看
+Principles of Transcription  Regulation 
+Gene Expression is Controlled by Regulatory Proteins
+   Positive regulators or activators increase the transcription
+   Negative regulators or repressors decrease or ELIMINATE the transcription
+Transcription process：
+  Targeting promoter binding by activators or repressors →  Promoter “melting” → Initial  transcription → Elongation and termination 
+
+Topic2 看
+Regulation of Transcription Initiation
+  Operon includes：Structural genes、Control elements、 Regulator gene(s).
+ Lac operon
+   Lactose operon: a regulatory gene  and 3 stuctural genes, and 2 control elements
+ Structure genes：lacZ半乳糖苷酶、lacY(半乳糖苷渗透酶)、lacA(硫代半乳糖苷转乙酰酶)
+   The enzymes required for the use of lactose as a carbon source are only 
+synthesized when lactose is available as the sole carbon source. 
+	   ①Absence of inducer：
+	     repressor binds to operantor region and prevents the RNA polymerase from      transcribing the operon
+   ②presence of inducer:
+      Inducer binds repressors,(inducer bind repressor or represser mRNA). → inactive repressot ,operon transcription → lac mRNA
+  An activator and a repressor together control the lac genes
+  CAP and lac repressor have opposing effects on RNA polymerase binding to the lac
+promoter.   
+  The lac operator overlaps promoter, and so repressor bound to the operator physically prevents RNA polymerase from binding to the promoter. 
+ 
+ CAP has separate activating and DNA-binding surface;CAP and lac repressor bind 
+DNA using a common structural motif (DNA binding by a helix-turn-helix motif )
+  The activity of Lac repressor and CAP are controlled allosterically by their 
+Signals
+  Lack of inducer: the lac repressor block all but a very low level of transcription of lacZYA .
+
+
+
+Key points of this chapter
+1.Operon
+2.Operator
+3.Polycistronicmessage
+4.Cis-acting elements
+5.Activator/represor
+
+7.Regulatory gene/structural gene
+8.Regulation of transcription initiation in bacteria: the lacoperonmodel
+
+
+Catabolite repression （分解代谢物阻遏又被称为葡萄糖效应）
+
+
+Similarity of regulation between eukaryotes and prokaryote
+1、Principles are the same: signals, activators and repressors, recruitment and allostery（变构）, cooperative binding
+2、Expression of a gene can be regulated at the similar steps, and the initiation of transcription is the most pervasively regulated step.
+
+Difference in regulation between eukaryotes and prokaryote
+1. Pre-mRNA splicing adds an important stepfor regulation.
+2. The eukaryotic transcriptional machineryis more elaborate than its bacterial counterpart.
+3. Nucleosomesand their modifiers influenceaccess to genes.
+4. Many eukaryotic genes have more regulatory binding sites and are controlled by more regulatory proteins than are bacterial genes.
+
+cis-regulatory element
+A cis-regulatory element or cis-element is aregion of DNA or RNA that regulates the 
+expression of Genes located on that same strand. This term is constructed from the 
+Latin word cis, which means "on the same side as". These cis-regulatory elements are 
+often binding sites of one or more trans-acting factors. A cis-element may be located in the promoter region 5' to the gene it controls, in an intron, or in the 3'untranslated region.
+
+Trans-regulatory elements
+Trans-regulatory elements are species which may modify the expression of genes distant 
+from the gene that was originally transcribedto create them. To demonstrate the concept 
+(this is not a specific example), a transcription factor which regulates a gene 
+on chromosome 6 might itself have been transcribed from a gene on chromosome 11. 
+This term is constructed from the Latin root -trans, which means "across from". 
+
+
+Expound the general mechanism of control of gene expression of Eukaryotes???
+
+
+The Sanger sequencing reaction.
+ Single stranded DNA is amplified in the presence of fluorescently labelled ddNTPsthat 
+serve to terminate the reaction and label all the fragments of DNA 
+produced. The fragments of DNA are then separated via polyacrylamidegel 
+electrophoresis and the sequence read using a laser beam and computer.
+
+Two strategies for large-scale sequencing
+1 Clone by Clone
+2 Whole Genome Shot-gun
+
+Techniques of Molecular Biology
+1.Electrophoresis
+2.Restriction digestion
+3.Hybridization
+4.PCR 
+5.Genome sequence & analysis 
+6.DNA Cloning and gene expression
+
+ Gel electrophoresis separates DNA and RNA molecules according to size shape and topological properties
+
+To separate DNA of different size ranges
+Narrow size range of DNA: use polyacrylamide
+Wide size range of DNA: use agarosegel
+Very large DNA(>30-50kb): use pulsed-field gel electrophoresis
+
+Southern/Northern/Western Blotting, those techniques for what’s purpose ?
+Southern Blotting detects the target gene in genome
+Northern Blotting detects the RNA（usually mRNA）and expression level
+Western Blotting to detect specific protein
+
+
+
+
+
+PCR cycle principles
+①Denaturation: The target DNA (template) is separated into two stands by heating to 
+95℃
+②Primer annealing: The temperature is reduced to around 55℃ to allow the primers to anneal.
+③Polymerization (elongation, extension):The temperature is increased to 72℃ for 
+optimal polymerization step which uses up dNTPsand required Mg++.
+
+The requirement of PCR cycle
+①Template ：PCR can only be applied ifsome sequence information is known so that
+primers can be designed.
+②Primers：PCR primers need to be about 18 to 30 nt long and have similar G+C contents so that they anneal to their complementary sequences at similar temperatures.They are designed to anneal on opposite strands of the target sequence.
+
+Way to PCR optimization
+We can change the annealing temperature and the Mg++ concentration or carry out nested PCR to optimize PCR.
+
+Two ways for sequencing:
+1. DNA molecules (radioactivellabeled at 5’termini) are subjected to 4 regiments to be
+broken preferentially at Gs, CsTs, As, separately.
+2. chain-termination method
+
+Lecture 1
+1.1868 Johann Miescher discovered DNA 
+2.Mendel and Morgan find inherited factor
+2.1940s-1960s Griffith & Avery  Concluded that DNA, not protein, transforms bacteria
+Hershey and Chase find DNA from viruses is injected to host bacteria cells.
+the two experiment show   that DNA is the hereditary material not protein
+3.1938 William Astbury  creat  1st X-ray diffraction pattern
+4.1950 Rosalind Franklin & Maurice Wilkins creat High quality X-ray diffraction patterns
+5.1952 Alexander Todd find Nucleotides of DNA are linked by 3-5’phosphodiester bonds 
+6.1952 Rosalind Franklin succeeded intaking very good diffractograms of 'wet' DNA fibres. 
+7.Chargaff   Chargaff’s Rule(A=T;C=G)
+8.1953  Jim Watson & Francis Crick propose DNA double-stranded structure
+9.1962  Waston, Click & Wilkins win Nobel Prize 
+
+
+
+Lecture 2
+1. 1975–1977, Blackburn, working as a postdoctoral fellow at Yale University with Joseph Gall, discovered the unusual nature of telomeres, with their simple repeated DNA sequences composing chromosome ends. 
+2.2009,Elizabeth Blackburn, Carol Greider, and Jack Szostak were awarded the  Nobel Prize in Physiology or Medicine for the discovery of how chromosomes are protected by telomeres and the enzyme telomerase
+
+Lecture 3
+1.1953 Watson & Crick proposed model of replication 
+2.1958,Meselson, M. and Stahl, F.W. thrugh the expirement"TheReplication of DNA in Escherichia coli ",prove  Semiconservative Replication.
+3.1959,Arthur Kornberg found DNA polymerase
+
+Lectuer4
+无
+Lecture5
+2009 Venkatraman Ramakrishnan, Thomas A. Steitz, Ada E. Yonath win Noble chemistry prize through their study on ribosome structure and function
+Lecture6 
+1961  F.H.C.Crick in bacteriophage T4 prove codon consist of three continuous nucleotides.
+Lecture7
+1961，Monod and Jacob the model of operon, win 1965 Noble Prize
+Lecture8
+1961年，Monod和Jacob提出Operon学说，获1965年诺贝尔生理学和医学奖
+Lecture9
+Frederick Sanger 1958 he was awarded the Nobel Prize for his work in sequencing proteins. His second Nobel Prize, awarded in 1980 was developing the technique still used today - 'dideoxy' or 'Sanger' sequencing.
+Lecture10
+1993 The Nobel Prize in Chemistry"for his invention of the polymerase chain reaction (PCR) method"（人物待考证）
+
+Lecture 10
+Restriction endonucleases:
+ the nucleases that cleave DNA at particular sites by the recognition of specific sequences
+
+DNA/RNA hybridization
+the process of base-pairing between complementary ssDNAor RNA from two different sources
+
+Probe: 
+a labeled, defined sequence used to search mixtures of nucleic acids for molecules containing a complementary sequence
+
+radioactive labeling: 
+display and/or magnify the signals by radioactivity  
+
+Non-radioactive labeling: 
+display and/or magnify the signals by antigen labeling –antibody binding –enzyme binding -substrate application (signal release)
+
+End labeling: put the labels at the ends
+Uniform labeling: put the labels internally 
+
+Polymerase chain reaction
+It is to used to amplify a sequence of DNA using a pair of primers each complementary to one end of the the DNA target sequence.
+
+Degenerate primers:
+ an oligo poolderived from protein sequence.
+
+
+
+Lecture 9
+Gene:
+A gene is a segment of DNA on a chromosome that codes for a specific protein and thus 
+determines a trait.
+
+Exon: the expressed parts of the DNA sequence
+Intron: the intervening, “junk DNA”, not expressed
+
+genome
+the Genome is the entirety of an organism's  hereditary information. It is encoded either in DNA or, for many types of virus, in RNA. 
+
+Genomics 
+Genomics is the molecularcharacterization of wholegenomes.
+Lecture 8
+
+promoter
+a promoter is a regulatory region of DNA generally located  (towards the 5’region of the antisense strand) of a gene that generally promotes transcription of the gene. 
+
+Enhancer
+a nucleotide sequence that increases the rate of genetic transcription by preferentially increasing the activity of the nearest promoter on the same DNA molecule
+
+Silencer
+a nucleotide sequence that can bind transcription regulation factors termed repressors,Upon binding, RNA polymerase is prevented from initiating transcription thus decreasing or fully suppressing RNA synthesis.
+
+A regulatory sequence
+a segment of DNA where regulatory proteins such as transcription factors bind preferentially. These regulatory proteins bind to short stretches of DNA called regulatory regions, which are appropriately positioned in the genome, usually a short distance 'upstream' of the gene being regulated. By doing so, these regulatory proteins can recruit another protein complex, called the RNA polymerase. In this way, they controlgene expression and thus protein expression. 
+
+Ori
+Origin of replication
+
+Replication fork
+Y shape area that formed by double-stranded DNA during DNA replication
+
+Lecture 2
+1.Chromosome:A chromosome is an organized structure of DNA  and protein that is found in cells. It is a single piece of coiled DNA containing many genes,regulating elements and other nucleotide sequences. It also contains DNA-bound proteins,which serve to package the DNAand contral its function.
+2.Chromatin: Chromatin is the complex combination of DNA and proteins that makes up chromosomes.×
+3.Histone: package and order the DNA into structural units called nucleosomes.
+4.Nucleosome:used to pack the large eukaryotic genomes into the nucleus while still ensuring appropriate access to it
+5.MW:molecular weight 
+6.Centromeres:A centromere is a region of DNA typically found near the middle of a chromosome where two identical sister chromatids come in contact. 
+7.telomeres : A centromere is a region of DNA typically found near the middle of a chromosome where two identical sister chromatids come in contact. 
+
+
+Lecture 3
+1.DNA Replication : the process in which the DNA within a cell makes an exact copy of itself.
+2.Ori(origin of replication):where replication start
+3.Leading strand,
+4. lagging strand
+5.Okazaki fragment
+
+Lecture 4
+
+Promoter: the DNA sequence that initially binds the RNA polymerase
+Terminators：In some cells, termination occurs at thspecific and well-defined DNA sequences called terminators. 
+DNA template: Either strand of a DNA double helix can serve as a template for RNA synthesis.
+
+lecture 5
+
+opening reading frame (ORF) 
+The protein coding region of each mRNA  is composed of a continuous, non-overlapping string of codons called an opening reading frame (ORF) . 
+
+polycistronic mRNAs：mRNA containing more than one ORF is called polycistronic mRNAs.
+
+Polysome/polyribosome: an mRNA bearing multiple ribosomes
+
+Kozak sequence 
+KOZAK是一个女科学家，她研究过起始密码子ATG周
+边碱基定点突变后对转录和翻译所造成的影响，并总结
+出在真核生物中，起始密码子两端序列为：
+－G/N-C/N-C/N-ANNATGG－，如GCCACCATGG、
+GCCATGATGG时，转录和翻译效率最高，特别是-3位
+的A对翻译效率非常重要。该序列被后人称为Kozak序
+列，并被应用于表达载体的构建中。
+
+SD sequence=RBS(Ribosome binding site)
+Ribosome binding site (RBS) or SD-sequenceprokaryotic mRNA, complementary with the sequence at the 3’end of 16S (small subunit )rRNA. 
+
+ribosome/ribosome cycle
+In cells, the small and large ribosome subunassociate with each other and t
+mRNA, translate it, and then dissociate after each round of translation. This sequence of association and dissociation is called the ribosome cycle.
+
+
+ Translation
+
+？？？
+
+ alleles: the same gene in the same chromosomal location, but with minor nucleotide changes that yield slightly different proteins.
+
+Lecture 6
+
+Genetic codon
+
+Stop codon
+codon-degeneracy
+
+Synonyms：Codons specifying the same amino acid are called synonyms 
