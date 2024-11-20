@@ -1,0 +1,286 @@
+1.  Definitions
+Molecular biology	:An elusive term, More than one definition:--the study of gene structure and function at the molecular level.--Grew out of the disciplines of genetics and biochemistry. A cross-sciences discipline (交叉学科)includeAnimal ScienceCell Biology Biochemistry Genetics Molecular  Biology Biophysics Computer Science
+
+Deoxyribonucleic acid (DNA)     
+Key   : DNA is the genetic material. it is a polymer composed of monomers called nucleotides primary Structure secondary structure tertiary structure quaternary structure it has the DNA Double Helix
+
+Ribonucleic acid (RNA): 
+it is a polymercomposed of monomers called nucleotides (核苷酸),it is the genetic material as some virus such as TMV,HIV SARS there are some kinds of RNA,tRNA mRNA hnRNA snRNA siRNA scRNA asRNA 
+
+Messenger RNA (mRNA)：
+ usually 400 to 10,000 bases long, that serve as template for protein synthesis (translation). a copy of the information carried by a gene on the DNA. move the information contained in DNA to the translation machinery. mRNA is heterogeneous(异类的) in size and sequence. It always has a 5 ' cap ,most mRNA molecules contain a poly-Adenosine tail at the 3' end. 
+	
+Transfer RNA (tRNA) :transfer RNA? (tRNA) 20 or more varieties of small RNA molecules functioning in translation; each variety carries a specific amino acid to a site specified by an RNA codon, binding to amino acid, ribosome, and to the codon via an anticodon region .tRNA contains 10%～20%of rare bases such as mG、mA (甲基化的嘌呤)，DHU (双氢尿嘧啶)
+Ribosomal RNA (rRNA) :ribosomal RNA? (rRNA) that which together with proteins forms the ribosomes, playing a structural role and also a role in ribosomal binding of mRNA and tRNAs.
+	
+Gene: “基因”的分子生物学定义：产生一条多肽链或功能RNA所必需的全部核苷酸序列。
+是指携带有遗传信息的DNA或RNA序列，也称为遗传因子，是控制性状的基本遗传单位。基因通过指导蛋白质的合成来表达自己所携带的遗传信息，从而控制生物个体的性状表现。
+A gene is a set of segments of nucleic acid that contains the information necessary to produce a functional RNA product in a controlled manner. They contain regulatory regions dictating under what conditions this product is made, transcribed regions dictating the sequence of the RNA product, and/or other functional sequence regions. The physical development and phenotype of organisms can be thought of as a product of genes interacting with each other and with the environment，and genes can be considered as units of inheritance.
+
+DNA's hyperchromic effect： Effective denaturation of nucleic acids occurs with extreme pH, low ionic strength, and heat. Denaturation of DNA is usually achieved by heat treatment or high pH, which causes the double-stranded helix to dissociate into single strands在DNA的变性过程中，摩尔吸光系数增大。
+
+DNA's hypochromic effect :RenaturationThe process by which complementary strands of nucleic acids re-form their native conformations。在DNA的复性过程中，摩尔吸光系数减小。
+
+Exon:Those Stretches of DNA that do code for amino acids in the protein are called exons.
+Intron:such stretched of DNA which get transcribed into RNA but not translated into protein are called intron
+	
+	Nucleotide :a chemical compound that consists of a heterocyclic(杂环) base, a sugar, and one or more phosphate groups. In the most common nucleotides the base is a derivative(衍生物) of purine or pyrimidine, and the sugar is the pentose (five-carbon sugar) deoxyribose or ribose. Nucleotides are the monomers of nucleic acids, with three or more bonding together in order to form a nucleic acid.Nucleotides are the structural units of RNA, DNA, and several cofactors - CoA, FAD, FMN, NAD, and NADP. In the cell they play important roles in energy production, metabolism, and signaling
+	
+	Nucleoside :Nucleosides are glycosylamines made by attaching a base to a ribose or deoxyribose ring. Examples of these include cytidine, uridine, adenosine, guanosine(A U C G)
+	Nucleotide  =  nucleoside + phosphate
+           =  pentose + base + phosphate
+	
+	Open circular DNA (ocDNA):双链DNA的一条链在一处或多处断裂形成松弛的环状DNA
+	Covalently closed circular DNA (cccDNA)：
+	
+	Chromatin：In G1 eukaryotic chromosomes are linear dsDNA, and contain about twice as much protein as DNA by weight. The DNA-protein complex is called chromatin (染色质), and it is highly conserved in all eukaryotes. 
+	
+	Nucleosome：真核生物中，双螺旋DNA分子围绕一蛋白质八聚体进行盘绕，从而形成串珠状结构称为核小体，它是真核生物梁色体包装的基本单位。
+	
+	C-value paradox: the total amount of DNA in the ahplord genome of a species is its C value.the structural complexity and the C value of an organism are not related,creating the C value paradox.
+	
+	Nucleic acid denaturation: Effective denaturation of nucleic acids occurs with extreme pH, low ionic strength, and heat. Denaturation of DNA is usually achieved by heat treatment or high pH
+	
+	opening reading frame(ORF)：The protein coding region of each  mRNA  is composed of a continuous, non-overlapping string of codons called an opening reading frame (ORF) .  An ORF should begins with a start codon and end with stop codon.mRNA containing more than one ORF is called polycistronic mRNAs.
+
+polycistronic mRNAs: mRNA containing more than one ORF is called polycistronic mRNAs.
+	
+ribosome binding site (RBS) Prokaryotic mRNAs have a ribosome binding site that recruits the translational machinery .Eukaryotic mRNA are modified at their 5’ and 3’ ends to facilitate translation. 
+
+Translation：Messenger RNA carries coded information to ribosomes.the ribosomes “read” this information and use it for protein shnthesis.this process is called translation
+
+Kozak sequence Eukaryotic mRNA uses a methylated cap to recruit  the ribosome. Once bound, the ribosome scans the mRNA in a 5’-3’ direction to find the AUG start codon.Kozak sequence increases the translation efficiency.Poly-A in the 3’ end promotes the efficient recycling of ribosomes
+	
+SD sequence:在原核生物中, 核糖体中与mRNA结合位点位于16S rRNA 的3’端,mRNA中与核糖体16S rRNA结合的序列称为SD序列(SD sequence),它是1974年由J.Shine 和 L.Dalgarno发现的,故此而命名。SD序列是mRNA中5＇端富含嘌呤的短核苷酸序列,一般位于mRNA的起始密码AUG的上游5～10个碱基处,并且同16S rRNA 3＇端的序列互补。 
+	
+Ribosome :the ribosome is composed of a large and a small subunit.The large subunit contains the peptidyl transferase center, which is responsible for the formation of peptide bonds.The small subunit interacting with mRNA contains the decoding center, in which charged tRNAs read or “decode” the codon units of the mRNA.the large and the small subunits undergone association and dissociation during each cycle of translation
+
+ribosome cycle   In cells, the small and large ribosome subunits associate with each other and the mRNA, translate it, and then dissociate after each round of translation. This sequence of association and dissociation is called the ribosome cycle.
+	
+Polysome:an mRNA bearing multiple ribosomes Each mRNA can be translated simultaneously by multiple ribosomes 
+genetic codon 64个密码子中还包括3个不编码任何氨基酸的终止密码子?，它们是UAA、UAG、UGA。3个连续的核苷酸组成的密码称为三联体密码
+	
+stop codon UAA、UAG、UGA
+	
+codon degeneracy :Many amino acids are specified by more than one codon-degeneracy (简并性).Codons specifying the same amino acid are called synonyms (同义密码子). Often, when the first two nucleotides are identical, the third nucleotide can be either C or U without changing the code. A and G at the third position are interchangeable as well. Transition in the third position of a codon specifies a same amino acid. Transversion in this position changes the amino acid about half the time. how there can be great variation in the AT/GC ratios in the DNA of various organisms without large changes in the proportion of amino acids in their proteins? The genetic code evolved in such a way as to minimize the deleterious effects of mutations. Code degeneracy may serve as a safety mechanism to minimize errors in the reading of codons. 1.The second position of a codon:Pyrimidines（U、C）-hydrophobic (疏水)amino acids.Purines（A、G）-polar amino acids. 氨基酸的R基团不带电荷或极性极微弱的属于非极性R基氨基酸，它们的R基团具有疏水性。而极性R基团亲水。非极性氨基酸 ???包括：Gly、Ala、Val、Leu、Ile、Phe、Pro 极性氨基酸 :?极性中性氨基酸：Trp、Tyr、Ser、Cys、Met、Asn、Gln、 Thr ??酸性氨基酸：Asp、Glu碱性氨基酸：Lys、Arg、His. If the first two positions are both occupied by G or C, each of the four nucleotides in the third position specifies the same amino acid
+	 
+	The Wobble Rules: In 1966, Francis Crick devised the wobble concept. It states that the base at the 5’ end of the anticodon is not as spatially confined(空间限制) as the other two, allowing it to form hydrogen bonds with more than one bases located at the 3’ end of a codon.
+	The pairings permitted are those give ribose-ribose distances close to that of the standard A:U or G:C base pairs.
+	The ribose-ribose distances:
+	Purine-purine: too long
+	Pyrimidine-pyrimidine: too short
+	
+Operon：a unit of prokarytoic gene expression and regulation which typically includes:
+	   1. Structural genes for enzymes in a specific biosynthetic pathway whose expression is coordinately controlled. 
+	   2. Control elements, such as operator sequence.
+	   3. Regulator gene(s) whose products  recognize the control elements.
+	是基因表达的协调单位，由启动子、操纵基因及其所控制的一组功能上相关的结构基因所组成。操纵基因受调节基因产物的控制。
+	
+	
+Promoter：  a promoter is a regulatory region of DNA generally located  (towards the 5' region of the anti-sense strand) of a gene that generally promotes transcription of the gene.  结合RNA聚合酶并因此启动转录的DNA短区段
+	
+	Regulator binding site
+	Regulatory sequence
+	Enhancer  真核基因组中一种具有增强邻近基因转录过程的调控序列，其作用与增强子所在的位置和方向无关，在上下游均能发挥作用。指能使与它连锁的基因转录频率明显增加的DNA序列。特点：① 增强效应十分明显，一般能使基因转录频率增加10-200倍. ② 增强效应与其位置和取向无关，不论增强子以什么方向排列（5‘→3’或3‘→5’），甚至和靶基因相距3 kb，或在靶基因下游，均表现出增强效应；③大多为重复序列，一般长约50bp，适合与某些蛋白因子结合。其内部常含有一个核心序列：（G）TGGA/TA/TA/T（G），该序列是产生增强效应时所必需的；④ 增强效应有严密的组织和细胞特异性，说明增强子只有与特定的蛋白质（转录因子）相互作用才能发挥其功能；⑤ 没有基因专一性，可以在不同的基因组合上表现增强效应；⑥ 许多增强子还受外部信号的调控，如金属硫蛋白的基因启动区上游所带的增强子，就可以对环境中的锌、镉浓度做出反应。
+	
+Silencer： 某些基因含有负性调节元件——沉默子，当其结合特异蛋白因子时，对基因转录起阻遏作用。与增强子功能相反。
+	
+cis acting element  定义：能直接或间接地识别或结合在各类顺式作用元件核心序列上，参与调控靶基因转录效率的蛋白质。  A cis-regulatory element or cis-element is a region of DNA or RNA that regulates the expression of genes located on that same strand. This term is constructed from the Latin word cis, which means "on the same side as". These cis-regulatory elements are often binding sites of one or more trans-acting factors. A cis-element may be located in the promoter region 5' to the gene it controls, in an intron, or in the 3' untranslated region. 指与结构基因串联的特定DNA序列(不编码蛋白质)，对基因转录的精确起始和转录效率起重要作用。包括：启动子、增强子、沉默子silencer等。顺式作用成分是反式调控因子的结合位点，其调控是通过反式作用因子的作用来实现的。 
+
+trans acting element  trans-regulatory elements are species which may modify the expression of genes distant from the gene that was originally transcribed to create them. To demonstrate the concept (this is not a specific example), a transcription factor which regulates a gene on chromosome 6 might itself have been transcribed from a gene on chromosome 11. This term is constructed from the Latin root -trans, which means "across from". 常称为转录因子(transcription factors,TF)，指由位于不同染色体上或同一染色体上相距较远的基因编码的蛋白质因子，可以通过与顺式作用成分和RNA聚合酶的相互作用来调节基因的转录活性。转录因子在细胞质内合成，然后进入细胞核内发挥作用, 因此常被称为反式作用因子。
+	To summarize, cis- elements are present on the same strand as the gene they regulate whereas trans- elements can regulate genes distant from the gene they were transcribed from
+	
+2.  Questions
+	Goals of animal molecular biology ：The course enables students to acquire knowledge of animal molecular biology covering a broad range of animal chromosome structure, gene replication, mutation and repair, DNA transcription, RNA processing, protein biosynthesis, gene expression and regulation, and animal models. They also should know the basic research methods in animal molecular biology.The main aim of the course is not only to teach about themes in animal molecular biology, but also students required to use their knowledge of the relevant animal molecular biology to solve the particular problem.
+	
+General chemical composition of nucleic acids：元素组成： C   H   O   N   P (9-10%)核酸完全水解产生嘌呤和嘧啶等碱性物质、戊糖（核糖或脱氧核糖）和磷酸的混合物。核酸部分水解则产生核苷和核苷酸。每个核苷分子含一分子碱基和一分子戊糖，一分子核苷酸部分水解后除产生核苷外，还有一分子磷酸。DNA and RNA are polymers composed of monomers called nucleotides (核苷酸).Each nucleotide has three parts:(1) A pentose (5-carbon) sugar.(2) A nitrogenous base.(3) A phosphate group.The pentose sugar in RNA is ribose, and in DNA it’s deoxyribose. The only difference is at the 2’ position, where RNA has a hydroxyl (OH) group, while DNA has only a hydrogen (H).
+
+	
+The subunits in prokaryotic and eukaryotic rRNA
+	Type		Size		Large subunit		Small subunit	
+	prokaryotic		70S		50S (5S, 23S)		30S (16S)	
+	eukaryotic		80S		60S (5S, 5.8S, 28S)		40S (18S)	
+	
+	The Nobel Prize related to molecular biology
+	Genetic material:
+	Experiments proving DNA as genetic material
+	
+	Proof that DNA is Genetic Material
+Griffith’s Transformation Experiment
+Avery’s Transformation Experiment
+Hershey-Chase Experiment
+	Chargaff’s Rule
+	所有生物的DNA中，A=T，G=C  且A+G=C+T。
+	DNA的碱基组成具有种的特异性。
+	DNA碱基组成没有组织和器官的特异性。
+	年龄、营养状况、环境等因素不影响DNA的碱基组成。
+	
+	Base Pairing Principle
+	DNA primary structure:脱氧核苷酸分子间连接方式及排列顺序, 即是指四种核苷酸(dAMP、dCMP、dGMP、dTMP)按照一定的排列顺序，通过磷酸二酯键连接形成的多核苷酸，由于核苷酸之间的差异仅仅是碱基的不同，故又可称为碱基顺序。
+	
+	
+	DNA secondary structure (double helix structure): DNA的两条多聚核苷酸链间通过氢键形成的双螺旋结构
+	
+	Features of the DNA double helix structure
+	  反向平行;
+	  碱基配对；
+	  dsDNA螺旋直径 2.0 nm;
+	  碱基距离为 0.34 nm;
+	  螺距为 3.4 nm,10 bp;
+	  大沟和小沟：蛋白质识别DNA   
+	      的特定遗传信息的关键点。
+	
+	What forces maintain the double helix structure?
+	①   Stacking interaction碱基堆积力形成疏水环境（主要因素）。
+	②   Hydrogen bond碱基配对的氢键。GC含量越多，越稳定。
+	③  磷酸基上的负电荷与介质中的阳离子或组蛋白的正离子之间形成离子键，中和了磷酸基上的负电荷间的斥力，有助于DNA稳定。
+	④  碱基处于双螺旋内部的疏水环境中，可免受水溶性活性小分子的攻击。
+	
+	Function of supercoiling
+	1)超螺旋结构，可以认为是DNA分子对应于某种张力而产生的一种扭曲。在B型DNA双螺旋结构中，每10个核苷酸就旋转一圈，这种情况下，双螺旋处于热力学最稳定的状态。但是如果正常的双螺旋DNA额外地多转几圈或少转几圈，就会使分子内原子偏离正常位置，产生相应的张力。此时，若双螺旋的末端是游离的，那么这种张力可通过链的转动而释放出来，恢复到正常的双螺旋状态。但若其末端是以某种方式固定的话，或者分子本身是球状，上述张力就不能释放到分子外，而只能通过分子的内部原子重排来解决，使分子进一步扭曲，这种扭曲就是超螺旋形式（DNA supercoiling） 。
+	2)DNA分子十分巨大，要组装到有限的空间，压缩比达1000-2000，组装成染色体则高达8000-10000。为此绝大多数DNA以超螺旋形式存在，把很长的DNA压缩成很小的体积内。如人类第一号染色体DNA长7.2cm，经弯曲缠绕后只有近10μm(压缩约7700倍)。
+	3）超螺旋又可分左旋（负超螺旋）和右旋（正超螺旋）。由于DNA双螺旋为右旋，负超螺旋（左旋）有利于双螺旋解旋，自然界存在的环状DNA几乎全是负超螺旋。正超螺旋倾向于拧紧双螺旋。
+	4） DNA复制、重组或转录时，必须解旋解链，暴露出DNA结合位点，使各种调控蛋白发挥作用，随后再形成超螺旋，存在拓扑学问题。生物过程需负超螺旋程度不同，可通过DNA拓扑异构来调节其功能。
+	
+	How the DNA double helix structure was discovered? Who discovered the double helix structure of DNA? 
+	Deoxyribonucleic acid (DNA) was first isolated in 1869 by the Swiss scientist Friedrich Miescher. He called the white, slightly acidic chemical that he found in cells "nuclein." By the late 1940s, scientists knew what DNA contained -- phosphate, sugar, and four nitrogen-containing chemical "bases": adenine (A), thymine (T), guanine (G), and cytosine (C). But no one had figured out what the DNA molecule looked like. In 1953, Linus Pauling, the great American chemist, claimed to have discovered the structure of the DNA molecule, but when Watson saw Pauling's research paper (which had not yet been published) on January 28, 1953, he knew it was wrong. A few days later at King's College in London, Watson was shown an X-ray diffraction photograph of the DNA crystal taken by scientist Rosalind Franklin. "The instant I saw the picture, my mouth fell open and my pulse began to race," wrote Watson in his book The Double Helix (1968). The photo convinced him that the DNA molecule must consist of two chains arranged in a paired helix, which resembles a spiral staircase or ladder. 1953年，Watson和Crick根据Chargaff 规律和DNA Na盐纤维的X光衍射分析提出了DNA的双螺旋结构模型。The Molecular structure of Nucleic Acids: A Structure for Deoxyribose Nucleic Acid was an article published by James D. Watson and Francis Crick in the scientific journal Nature in its 171th volume on page 737-738 (dated April 25, 1953.) It was the first publication which described the discovery of the double helix structure of DNA. This discovery had a major impact on genetics in particular and biology in general. 
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	“The genetic code is degenerate” What does it mean? What’s the benefits ? 
+	
+What are the three rules governing the genetic code? What are the mutations altering genetic code?
+Codons are read in a 5’ to 3’ direction.
+Codons are nonoverlapping and the message contains no gaps.
+The message is translated in a fixed reading frame which is set by the initiation codon.
+1. Missense mutation: An alternation that changes a codon specific for one amino acid to a codon specific for another amino acid.
+2. Nonsense or stop mutation: An alternation causing a change to a chain-termination codon.
+3. Frameshift(移码) mutation: Insertions or deletions of one or a small number of base pairs that alter the reading frame.
+
+What are the benefits of the code universality? What’s about the mitochondrial codes and tRNAs? 
+Allow us to directly compare the protein coding sequences among all organisms.
+	Make it possible to express cloned copies of genes encoding useful protein in different host organism. Example: Human insulin expression in bacteria)
+	Mitochondrial tRNAs are unusual in the way that they decode mitochondrial messages.
+	Only 22 tRNAs are present in mammalian mitochondria. The U in the 5’ wobble position of a tRNA is capable of recognizing all four bases in the 3’ of the codon.
+	
+	Explain the regulation of transcription initiation in bacteria by using the lac operon model.
+	Expound the general mechanism of control of gene expression of Eukaryotes.
+	Some of the general methods used to control expression in prokaryotes are used in eukaryotes, but nothing resembling operons is known.
+	Eukaryotic genes are controlled individually and each gene has specific control sequences preceding the transcription start site
+	In addition to controlling transcription, there are additional ways in which expression can be controlled in eukaryotes
+	
+Genetics 遗传学
+Genome 基因组
+bond  键
+macromolecular 大分子
+Chromosome  染色体
+chromatins 染色质
+nucleosome 核小体
+DNA replication  复制
+mutability 可突变型
+homologous 同源的
+recombination  重组
+transposition  转座
+transcription  转录
+RNA splicing 剪接
+Regulation 规则
+Prokaryote 原核生物
+Eukaryote 真核生物
+Diversity 差异性
+Evolution 进化
+Revolution 革命
+Organism 有机体、生物、生命
+Bacteria 细菌
+Pathogenic 病原性的
+hereditary material 遗传物质
+amino acid 氨基酸
+pneumococcus 肺炎链球菌
+Bacteriophage 噬菌体
+Infect 感染
+Inject 注射
+complementary 互补的
+Adenine must pair with Thymine 
+Guanine must pair with Cytosine 
+uracil 尿嘧啶
+Pyrimidine 嘧啶
+purine 嘌呤
+tautomeric 互变异构
+nucleotide 核苷酸
+fundamental 基本的
+double-stranded 双链的
+double helix 双螺旋 
+template 模板
+antiparallel 反平行的
+backbone 骨架
+Storage 储存
+Ribose 核糖
+intermediate 中间物
+adaptor 衔接子
+codon 密码子
+complementarity 互补性
+sequence 顺序
+catalyze 催化剂
+essential 必要的
+phosphate 磷酸盐
+phosphodiester bond 磷酸二酯键
+Multicellular 多细胞的
+Nucleus 细胞核 Nucleolus 核仁Nucleoid 类核
+Mitosis 有丝分裂；Meiosis 减数分裂Interphase分裂间期
+Histone组蛋白；
+Nucleosome核小体
+Chromosome 染色体；Chromatin 染色质；eu-常; hetero-异
+Chromatids染色单体
+Centromere（中心粒）
+Telomere（端粒）
+Spindle 纺锤体
+Kinetochore着丝粒, 着丝点
+Condensed 浓缩的
+compaction 压缩
+Property 性质
+accurately 准确无误地
+variation 变种
+Semiconservative replication 半保留复制
+Mechanism 机制、原理
+Helicase 解旋酶
+Primase 引发酶
+polymerase 聚合酶
+exonuclease 外切核酸酶
+RNA synthesis 合成
+Enzyme 酶
+Elongation 延长
+Nucleophile 亲核体
+Fidelity 保真性，忠实性
+feature 特征
+topoisomerase 拓扑异构酶
+Core 核心
+promoter 启动子
+protein-binding sites 蛋白质结合位点
+nuclease 核酸酶
+footprinting 足迹法
+stability 稳定性
+efficiency 效率
+intron 内含子
+The Central Dogma 中心法测
+Degenerate 简并的
+Wobble Concept
+Operon 操纵子
+The lactose (Lac) Operon (乳糖操纵子)
+cap ?帽，帽（结构）
+interrupted gene 断裂基因
+exon 外显子
+diploid 二倍体
+silencer 沉默子
+cis acting ?顺式作用
+trans acting 反式作用
+enhancer ?增强子
+element  因子
+zinc finger 锌指结构
+Response Elements
+endonuclease ?内切核酸酶
