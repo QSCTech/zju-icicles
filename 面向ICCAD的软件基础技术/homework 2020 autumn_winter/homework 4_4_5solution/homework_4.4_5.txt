@@ -1,0 +1,17 @@
+
+Please CAREFULLY read the questions and follow instructions to answer.
+
+Problem 0. Briefly and clearly report what you have done for Homework Assignment #4.
+
+Problem 1. Build 'demo_fork.c' and run it, then try to change the red eyes to 'browse.tcl' and run it again.
+ Invoke more directory browsers from browse.tcl. Use 'pstree' to see the process hierarchy for all of them, 
+and show the hierarchy with a screenshot.se'r
+
+Problem 2. Run Python scripts of demo_8queen.py and demo_showqueens.py,
+ read the source code, comments and their outputs.
+
+
+ Then (OPTIONALLY) write a Perl or Python script to analyze the solutions in 8queen.out,
+ and show how many kinds of the solutions are unique.
+ (symmetrical solutions are not considered as unique, for example, one solution being mirrored or rotated
+ should be eliminated from the unique list)

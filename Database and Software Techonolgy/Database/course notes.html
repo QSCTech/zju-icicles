@@ -1,0 +1,1062 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>course notes.md</title>
+<meta http-equiv="Content-type" content="text/html;charset=UTF-8">
+
+<style>
+/* https://github.com/microsoft/vscode/blob/master/extensions/markdown-language-features/media/markdown.css */
+/*---------------------------------------------------------------------------------------------
+ *  Copyright (c) Microsoft Corporation. All rights reserved.
+ *  Licensed under the MIT License. See License.txt in the project root for license information.
+ *--------------------------------------------------------------------------------------------*/
+
+body {
+	font-family: var(--vscode-markdown-font-family, -apple-system, BlinkMacSystemFont, "Segoe WPC", "Segoe UI", "Ubuntu", "Droid Sans", sans-serif);
+	font-size: var(--vscode-markdown-font-size, 14px);
+	padding: 0 26px;
+	line-height: var(--vscode-markdown-line-height, 22px);
+	word-wrap: break-word;
+}
+
+#code-csp-warning {
+	position: fixed;
+	top: 0;
+	right: 0;
+	color: white;
+	margin: 16px;
+	text-align: center;
+	font-size: 12px;
+	font-family: sans-serif;
+	background-color:#444444;
+	cursor: pointer;
+	padding: 6px;
+	box-shadow: 1px 1px 1px rgba(0,0,0,.25);
+}
+
+#code-csp-warning:hover {
+	text-decoration: none;
+	background-color:#007acc;
+	box-shadow: 2px 2px 2px rgba(0,0,0,.25);
+}
+
+body.scrollBeyondLastLine {
+	margin-bottom: calc(100vh - 22px);
+}
+
+body.showEditorSelection .code-line {
+	position: relative;
+}
+
+body.showEditorSelection .code-active-line:before,
+body.showEditorSelection .code-line:hover:before {
+	content: "";
+	display: block;
+	position: absolute;
+	top: 0;
+	left: -12px;
+	height: 100%;
+}
+
+body.showEditorSelection li.code-active-line:before,
+body.showEditorSelection li.code-line:hover:before {
+	left: -30px;
+}
+
+.vscode-light.showEditorSelection .code-active-line:before {
+	border-left: 3px solid rgba(0, 0, 0, 0.15);
+}
+
+.vscode-light.showEditorSelection .code-line:hover:before {
+	border-left: 3px solid rgba(0, 0, 0, 0.40);
+}
+
+.vscode-light.showEditorSelection .code-line .code-line:hover:before {
+	border-left: none;
+}
+
+.vscode-dark.showEditorSelection .code-active-line:before {
+	border-left: 3px solid rgba(255, 255, 255, 0.4);
+}
+
+.vscode-dark.showEditorSelection .code-line:hover:before {
+	border-left: 3px solid rgba(255, 255, 255, 0.60);
+}
+
+.vscode-dark.showEditorSelection .code-line .code-line:hover:before {
+	border-left: none;
+}
+
+.vscode-high-contrast.showEditorSelection .code-active-line:before {
+	border-left: 3px solid rgba(255, 160, 0, 0.7);
+}
+
+.vscode-high-contrast.showEditorSelection .code-line:hover:before {
+	border-left: 3px solid rgba(255, 160, 0, 1);
+}
+
+.vscode-high-contrast.showEditorSelection .code-line .code-line:hover:before {
+	border-left: none;
+}
+
+img {
+	max-width: 100%;
+	max-height: 100%;
+}
+
+a {
+	text-decoration: none;
+}
+
+a:hover {
+	text-decoration: underline;
+}
+
+a:focus,
+input:focus,
+select:focus,
+textarea:focus {
+	outline: 1px solid -webkit-focus-ring-color;
+	outline-offset: -1px;
+}
+
+hr {
+	border: 0;
+	height: 2px;
+	border-bottom: 2px solid;
+}
+
+h1 {
+	padding-bottom: 0.3em;
+	line-height: 1.2;
+	border-bottom-width: 1px;
+	border-bottom-style: solid;
+}
+
+h1, h2, h3 {
+	font-weight: normal;
+}
+
+table {
+	border-collapse: collapse;
+}
+
+table > thead > tr > th {
+	text-align: left;
+	border-bottom: 1px solid;
+}
+
+table > thead > tr > th,
+table > thead > tr > td,
+table > tbody > tr > th,
+table > tbody > tr > td {
+	padding: 5px 10px;
+}
+
+table > tbody > tr + tr > td {
+	border-top: 1px solid;
+}
+
+blockquote {
+	margin: 0 7px 0 5px;
+	padding: 0 16px 0 10px;
+	border-left-width: 5px;
+	border-left-style: solid;
+}
+
+code {
+	font-family: Menlo, Monaco, Consolas, "Droid Sans Mono", "Courier New", monospace, "Droid Sans Fallback";
+	font-size: 1em;
+	line-height: 1.357em;
+}
+
+body.wordWrap pre {
+	white-space: pre-wrap;
+}
+
+pre:not(.hljs),
+pre.hljs code > div {
+	padding: 16px;
+	border-radius: 3px;
+	overflow: auto;
+}
+
+pre code {
+	color: var(--vscode-editor-foreground);
+	tab-size: 4;
+}
+
+/** Theming */
+
+.vscode-light pre {
+	background-color: rgba(220, 220, 220, 0.4);
+}
+
+.vscode-dark pre {
+	background-color: rgba(10, 10, 10, 0.4);
+}
+
+.vscode-high-contrast pre {
+	background-color: rgb(0, 0, 0);
+}
+
+.vscode-high-contrast h1 {
+	border-color: rgb(0, 0, 0);
+}
+
+.vscode-light table > thead > tr > th {
+	border-color: rgba(0, 0, 0, 0.69);
+}
+
+.vscode-dark table > thead > tr > th {
+	border-color: rgba(255, 255, 255, 0.69);
+}
+
+.vscode-light h1,
+.vscode-light hr,
+.vscode-light table > tbody > tr + tr > td {
+	border-color: rgba(0, 0, 0, 0.18);
+}
+
+.vscode-dark h1,
+.vscode-dark hr,
+.vscode-dark table > tbody > tr + tr > td {
+	border-color: rgba(255, 255, 255, 0.18);
+}
+
+</style>
+
+<style>
+/* Tomorrow Theme */
+/* http://jmblog.github.com/color-themes-for-google-code-highlightjs */
+/* Original theme - https://github.com/chriskempson/tomorrow-theme */
+
+/* Tomorrow Comment */
+.hljs-comment,
+.hljs-quote {
+	color: #8e908c;
+}
+
+/* Tomorrow Red */
+.hljs-variable,
+.hljs-template-variable,
+.hljs-tag,
+.hljs-name,
+.hljs-selector-id,
+.hljs-selector-class,
+.hljs-regexp,
+.hljs-deletion {
+	color: #c82829;
+}
+
+/* Tomorrow Orange */
+.hljs-number,
+.hljs-built_in,
+.hljs-builtin-name,
+.hljs-literal,
+.hljs-type,
+.hljs-params,
+.hljs-meta,
+.hljs-link {
+	color: #f5871f;
+}
+
+/* Tomorrow Yellow */
+.hljs-attribute {
+	color: #eab700;
+}
+
+/* Tomorrow Green */
+.hljs-string,
+.hljs-symbol,
+.hljs-bullet,
+.hljs-addition {
+	color: #718c00;
+}
+
+/* Tomorrow Blue */
+.hljs-title,
+.hljs-section {
+	color: #4271ae;
+}
+
+/* Tomorrow Purple */
+.hljs-keyword,
+.hljs-selector-tag {
+	color: #8959a8;
+}
+
+.hljs {
+	display: block;
+	overflow-x: auto;
+	color: #4d4d4c;
+	padding: 0.5em;
+}
+
+.hljs-emphasis {
+	font-style: italic;
+}
+
+.hljs-strong {
+	font-weight: bold;
+}
+</style>
+
+<style>
+/*
+ * Markdown PDF CSS
+ */
+
+ body {
+	font-family: -apple-system, BlinkMacSystemFont, "Segoe WPC", "Segoe UI", "Ubuntu", "Droid Sans", sans-serif, "Meiryo";
+	padding: 0 12px;
+}
+
+pre {
+	background-color: #f8f8f8;
+	border: 1px solid #cccccc;
+	border-radius: 3px;
+	overflow-x: auto;
+	white-space: pre-wrap;
+	overflow-wrap: break-word;
+}
+
+pre:not(.hljs) {
+	padding: 23px;
+	line-height: 19px;
+}
+
+blockquote {
+	background: rgba(127, 127, 127, 0.1);
+	border-color: rgba(0, 122, 204, 0.5);
+}
+
+.emoji {
+	height: 1.4em;
+}
+
+code {
+	font-size: 14px;
+	line-height: 19px;
+}
+
+/* for inline code */
+:not(pre):not(.hljs) > code {
+	color: #C9AE75; /* Change the old color so it seems less like an error */
+	font-size: inherit;
+}
+
+/* Page Break : use <div class="page"/> to insert page break
+-------------------------------------------------------- */
+.page {
+	page-break-after: always;
+}
+
+</style>
+
+<script src="https://unpkg.com/mermaid/dist/mermaid.min.js"></script>
+</head>
+<body>
+  <script>
+    mermaid.initialize({
+      startOnLoad: true,
+      theme: document.body.classList.contains('vscode-dark') || document.body.classList.contains('vscode-high-contrast')
+          ? 'dark'
+          : 'default'
+    });
+  </script>
+<p>In this course we use data from <a href="Data/dvdrental.sql">dvdrental.sql</a></p>
+<h1 id="content">Content</h1>
+<ul>
+<li><a href="#content">Content</a></li>
+<li><a href="#pre-requirements-for-windows">Pre-requirements for Windows</a>
+<ul>
+<li><a href="#download-and-install-mysql">Download and Install Mysql</a></li>
+<li><a href="#optional-download-and-install-dbeaver">Optional* Download and Install DBeaver</a></li>
+<li><a href="#open-or-stop-mysql-service">Open or stop Mysql service</a></li>
+<li><a href="#try-mysql-in-command-line">Try Mysql in command line</a></li>
+</ul>
+</li>
+<li><a href="#query">Query</a>
+<ul>
+<li><a href="#select--from--where--limit--as">SELECT &amp; FROM &amp; WHERE &amp; LIMIT &amp; AS</a></li>
+<li><a href="#special-operators">Special Operators</a></li>
+<li><a href="#group-by--having">GROUP BY &amp; HAVING</a></li>
+<li><a href="#order-by">ORDER BY</a></li>
+</ul>
+</li>
+<li><a href="#relational-set-operations">Relational Set Operations</a>
+<ul>
+<li><a href="#join-tables">Join Tables</a></li>
+</ul>
+</li>
+<li><a href="#datatypes">Datatypes</a>
+<ul>
+<li><a href="#data-type-conversion">Data type conversion</a></li>
+</ul>
+</li>
+<li><a href="#built-in-functions">Built-in Functions</a>
+<ul>
+<li><a href="#strings">Strings</a></li>
+<li><a href="#numeric">Numeric</a></li>
+<li><a href="#date-and-time">Date and Time</a></li>
+<li><a href="#if">if()</a></li>
+</ul>
+</li>
+<li><a href="#create-and-delete-databases">Create and Delete Databases</a>
+<ul>
+<li><a href="#column-constraints">Column constraints</a></li>
+</ul>
+</li>
+<li><a href="#functions-and-procedures">Functions and Procedures</a>
+<ul>
+<li><a href="#function">Function</a></li>
+<li><a href="#procedure">Procedure</a></li>
+<li><a href="#if-then-else">IF THEN ELSE</a></li>
+<li><a href="#simple-loop">Simple LOOP</a></li>
+</ul>
+</li>
+<li><a href="#database-design">Database Design</a>
+<ul>
+<li><a href="#entity-relationship-diagram-erd">Entity-Relationship Diagram (ERD)</a></li>
+<li><a href="#database-normalization">Database Normalization</a>
+<ul>
+<li><a href="#0nf---1nf">0NF -&gt; 1NF</a></li>
+<li><a href="#1nf---2nf">1NF -&gt; 2NF</a></li>
+<li><a href="#2nf---3nf">2NF -&gt; 3NF</a></li>
+<li><a href="#denormalization">Denormalization</a></li>
+</ul>
+</li>
+<li><a href="#database-indexing">Database Indexing</a></li>
+</ul>
+</li>
+<li><a href="#database-transactions">Database Transactions</a>
+<ul>
+<li><a href="#transaction-requirements--acid">Transaction Requirements – ACID</a></li>
+<li><a href="#transaction-atomicity-and-durability">Transaction Atomicity and Durability</a></li>
+<li><a href="#transaction-states">Transaction States</a></li>
+<li><a href="#concurrent-transaction-common-problems">Concurrent Transaction Common Problems</a></li>
+<li><a href="#transaction-isolation-levels">Transaction Isolation Levels</a></li>
+<li><a href="#serializable-schedule">Serializable Schedule</a></li>
+<li><a href="#transaction-management">Transaction management</a></li>
+</ul>
+</li>
+<li><a href="#practice">Practice</a></li>
+</ul>
+<h1 id="pre-requirements-for-windows">Pre-requirements for Windows</h1>
+<h2 id="download-and-install-mysql">Download and Install Mysql</h2>
+<p>Download Mysql from https://dev.mysql.com/downloads/installer/</p>
+<p><img src="Pictures/Download Mysql.png" alt="Download Mysql"><br>
+<em>do not select the web version</em></p>
+<p>follow the instructions (default, default, default...)</p>
+<h2 id="optional-download-and-install-dbeaver">Optional* Download and Install DBeaver</h2>
+<p>Download DBeaver from https://dbeaver.io/. It's like an IDE for databases which greatly eaiser the editing of sql and database.</p>
+<h2 id="open-or-stop-mysql-service">Open or stop Mysql service</h2>
+<p>The are two ways:</p>
+<ol>
+<li>
+<p>Through GUI (recommended for noobs)</p>
+<p><img src="Pictures/Open Services.png" alt="open Services"><br>
+<em>find</em> <strong><em>Services</em></strong></p>
+<p><img src="Pictures/Services.png" alt="Services"><br>
+<em>set as Manual and start service (stop service to reduce performance cost)</em></p>
+</li>
+<li>
+<p>Through command line (recommended for pros)</p>
+<p><img src="Pictures/cmd.png" alt="cmd"><br>
+<em>Run cmd as administrator</em></p>
+<pre class="hljs"><code><div># To enable mysql service, <span class="hljs-built_in">type</span>
+<span class="hljs-built_in">net</span> <span class="hljs-built_in">start</span> mysql80
+# <span class="hljs-keyword">if</span> it doesn't work, <span class="hljs-built_in">type</span>
+<span class="hljs-built_in">net</span> <span class="hljs-built_in">start</span> mysql
+# To stop mysql service, <span class="hljs-built_in">type</span>
+<span class="hljs-built_in">net</span> <span class="hljs-built_in">start</span> mysql80
+# <span class="hljs-keyword">if</span> it doesn't work, <span class="hljs-built_in">type</span>
+<span class="hljs-built_in">net</span> stop mysql
+</div></code></pre>
+</li>
+</ol>
+<h2 id="try-mysql-in-command-line">Try Mysql in command line</h2>
+<p><img src="Pictures/Environment Variables.png" alt="Env"><br>
+<em>add Mysql to Path</em></p>
+<pre class="hljs"><code><div># To enter mysql <span class="hljs-built_in">mode</span>, <span class="hljs-built_in">type</span>
+mysql
+# <span class="hljs-keyword">If</span> it doesn't work, <span class="hljs-built_in">type</span>
+mysqlsh
+# To <span class="hljs-keyword">exit</span> mysql <span class="hljs-built_in">mode</span>, <span class="hljs-built_in">type</span> \quit
+</div></code></pre>
+<h1 id="query">Query</h1>
+<pre class="hljs"><code><div><span class="hljs-keyword">show</span> <span class="hljs-keyword">databases</span>;
+<span class="hljs-keyword">use</span> dvdrental;
+<span class="hljs-keyword">show</span> <span class="hljs-keyword">tables</span>;
+</div></code></pre>
+<h2 id="select--from--where--limit--as">SELECT &amp; FROM &amp; WHERE &amp; LIMIT &amp; AS</h2>
+<pre class="hljs"><code><div><span class="hljs-keyword">select</span>
+	*
+<span class="hljs-keyword">from</span>
+	staff
+<span class="hljs-keyword">where</span>
+	first_name = <span class="hljs-string">"Mike"</span>;
+</div></code></pre>
+<pre class="hljs"><code><div><span class="hljs-keyword">select</span>
+	film_id,
+	title,
+	<span class="hljs-keyword">length</span>,
+	<span class="hljs-keyword">length</span> * <span class="hljs-number">60</span> <span class="hljs-keyword">as</span> length_in_secs
+<span class="hljs-keyword">from</span>
+	film
+<span class="hljs-keyword">limit</span> <span class="hljs-number">5</span>;
+</div></code></pre>
+<h2 id="special-operators">Special Operators</h2>
+<p>SQL allows the use of special operators in conjunction with the <code>WHERE</code> clause. These special operators include</p>
+<ul>
+<li><code>BETWEEN</code> Used to check whether an attribute value is within a range</li>
+<li><code>IN</code> Used to check whether an attribute value matches any value within a value list</li>
+<li><code>LIKE</code> Used to check whether an attribute value matches a given string pattern</li>
+<li><code>IS NULL</code> Used to check whether an attribute value is null</li>
+</ul>
+<pre class="hljs"><code><div><span class="hljs-comment">-- Find out customers whose last name start with J.</span>
+<span class="hljs-keyword">select</span>
+	*
+<span class="hljs-keyword">from</span>
+	customer
+<span class="hljs-keyword">where</span>
+	last_name <span class="hljs-keyword">like</span> <span class="hljs-string">"J%"</span>;
+</div></code></pre>
+<h2 id="group-by--having">GROUP BY &amp; HAVING</h2>
+<ul>
+<li><code>GROUP BY</code> groups the selected rows based on one or more attributes</li>
+<li><code>HAVING</code> chooses the grouped rows (by GROUP BY clause) based on a condition</li>
+</ul>
+<pre class="hljs"><code><div><span class="hljs-keyword">select</span>
+	customer_id,
+	staff_id,
+	<span class="hljs-keyword">COUNT</span>(*),
+	<span class="hljs-keyword">SUM</span>(amount)
+<span class="hljs-keyword">from</span>
+	payment
+<span class="hljs-keyword">group</span> <span class="hljs-keyword">by</span>
+	customer_id,
+	staff_id;
+</div></code></pre>
+<pre class="hljs"><code><div><span class="hljs-comment">-- What is the minimal length (&gt;46) for films with different rating ?</span>
+<span class="hljs-keyword">select</span>
+	rating,
+	<span class="hljs-keyword">MIN</span>(<span class="hljs-keyword">length</span>)
+<span class="hljs-keyword">from</span>
+	film
+<span class="hljs-keyword">group</span> <span class="hljs-keyword">by</span>
+	rating
+<span class="hljs-keyword">having</span>
+	<span class="hljs-keyword">MIN</span>(<span class="hljs-keyword">length</span>) &gt;<span class="hljs-number">46</span>;
+</div></code></pre>
+<h2 id="order-by">ORDER BY</h2>
+<p><code>ORDER BY</code> orders the selected rows based on one or more attributes. Can be followed by <code>ASC</code> or <code>DESC</code></p>
+<pre class="hljs"><code><div><span class="hljs-keyword">select</span>
+	*
+<span class="hljs-keyword">from</span>
+	actor
+<span class="hljs-keyword">order</span> <span class="hljs-keyword">by</span>
+	first_name,
+	last_name,
+	actor_id;
+</div></code></pre>
+<h1 id="relational-set-operations">Relational Set Operations</h1>
+<h2 id="join-tables">Join Tables</h2>
+<p><img src="Pictures/SQL joins1.jpg" alt="SQL joins1"></p>
+<p><img src="Pictures/SQL joins2.jpg" alt="SQL joins2"></p>
+<p>In MySQL, we use <code>UNION</code> instead of <code>UNION</code>, <code>INTERSECT</code>, and <code>EXCEPT</code>. <code>UNION</code> is set strict and no duplicates; if you want to keep duplicates, you can use <code>UNION ALL</code>.</p>
+<pre class="hljs"><code><div><span class="hljs-comment">-- find out actor whose first name is ‘Joe’ and customer whoes first name is ‘Lisa’.</span>
+<span class="hljs-keyword">select</span>
+	first_name,
+	last_name
+<span class="hljs-keyword">from</span>
+	actor
+<span class="hljs-keyword">where</span>
+	first_name = <span class="hljs-string">"Joe"</span>
+<span class="hljs-keyword">union</span>
+<span class="hljs-keyword">select</span>
+	first_name,
+	last_name
+<span class="hljs-keyword">from</span>
+	customer
+<span class="hljs-keyword">where</span>
+	first_name = <span class="hljs-string">"Lisa"</span>;
+</div></code></pre>
+<pre class="hljs"><code><div><span class="hljs-comment">-- inner join table city and country with country_id.</span>
+<span class="hljs-keyword">select</span>
+	*
+<span class="hljs-keyword">from</span>
+	city
+<span class="hljs-keyword">inner</span> <span class="hljs-keyword">join</span> country <span class="hljs-keyword">on</span>
+	city.country_id = country.country_id;
+</div></code></pre>
+<p>Difference between <code>IN</code> and <code>ON</code>: <code>IN</code> is followed by a table while <code>ON</code> is followed by a conditional statement.</p>
+<h1 id="datatypes">Datatypes</h1>
+<ul>
+<li>Character and text
+<ul>
+<li><code>CHAR(fixed_len)</code> len&lt;=255, fixed-length character strings. Strings shorter than expected will be padded with spaces to reach the fixed length.</li>
+<li><code>VARCHAR(max_len)</code> Variable-length character strings.</li>
+<li><code>TEXT</code> Character large object (other DMBSs &quot;CLOB&quot;).</li>
+<li><code>BLOB</code> Binary large object. Can store images, sounds, videos, PDF files, Word files, etc.</li>
+</ul>
+</li>
+<li>Numeric
+<ul>
+<li><code>INT</code>/<code>INTEGER</code> from -2,147,483,648 to 2,147,483,647.</li>
+<li><code>BOOL</code>/<code>BOOLEAN</code> 0 (false) or 1 (true)</li>
+<li><code>DECIMAL(m,d)</code> fixed-point, fixed number of digits; m is total digits (1~65), d is digits right of the decimal (0~30)</li>
+<li><code>FLOAT</code>/<code>DOUBLE</code> floating-point, up to 7/15 significant digits, less precise than DECIMAL but can store larger/smaller values</li>
+<li><code>UNSIGNED</code> only +, doubles the maximum of the datatype, e.g. <code>UNSIGNED INT</code> <code>UNSIGNED DECIMAL</code></li>
+</ul>
+</li>
+<li>Date and time
+<ul>
+<li><code>DATE</code> yyyy-mm-dd, from 1000-1-1 through 9999-12-31</li>
+<li><code>TIME</code> hh:mm:ss, from -838:59:59 through 838:59:59</li>
+<li><code>DATETIME</code> Combination of <code>DATE</code> + <code>TIME</code>, yyyy-mm-dd hh:mm:ss, from 1970-1-1 to 9999-12-31</li>
+<li><code>TIMESTAMP</code> Similar to <code>DATETIME</code>, but from 1970-1-1 to 2037-12-31. Can automatically change date by user time zone</li>
+<li><code>YEAR[(4)]</code> e.g. &quot;2021&quot;, &quot;2000&quot;</li>
+</ul>
+</li>
+</ul>
+<p><code>TIMESTAMP</code> and <code>DATETIME</code> can keep track of when a row was inserted or last updated</p>
+<h2 id="data-type-conversion">Data type conversion</h2>
+<pre class="hljs"><code><div>cast(expression as cast_ type)
+</div></code></pre>
+<h1 id="built-in-functions">Built-in Functions</h1>
+<h2 id="strings">Strings</h2>
+<pre class="hljs"><code><div><span class="hljs-keyword">select</span>
+	<span class="hljs-keyword">concat</span>(<span class="hljs-string">'a'</span>, <span class="hljs-keyword">space</span>(<span class="hljs-number">10</span>), <span class="hljs-string">'b'</span>),
+	<span class="hljs-comment">-- 'a          b'</span>
+	<span class="hljs-keyword">length</span>(<span class="hljs-string">'very good'</span>),
+	<span class="hljs-comment">-- 9</span>
+	<span class="hljs-keyword">upper</span>(<span class="hljs-string">'very good'</span>),
+	<span class="hljs-comment">-- 'VERY GOOD'</span>
+	<span class="hljs-keyword">lower</span>(<span class="hljs-string">'VERY GOOD'</span>),
+	<span class="hljs-comment">-- 'very good'</span>
+	<span class="hljs-keyword">reverse</span>(<span class="hljs-string">'very good'</span>),
+	<span class="hljs-comment">-- 'doog yrev'</span>
+</div></code></pre>
+<h2 id="numeric">Numeric</h2>
+<pre class="hljs"><code><div><span class="hljs-keyword">select</span>
+	<span class="hljs-keyword">round</span>(<span class="hljs-number">-3.14</span>),
+	<span class="hljs-comment">-- -3</span>
+	<span class="hljs-keyword">ceiling</span>(<span class="hljs-number">-3.14</span>),
+	<span class="hljs-comment">-- -3</span>
+	<span class="hljs-keyword">floor</span>(<span class="hljs-number">-3.14</span>),
+	<span class="hljs-comment">-- -4</span>
+	<span class="hljs-keyword">abs</span>(<span class="hljs-number">-3.14</span>),
+	<span class="hljs-comment">-- 3.14</span>
+	<span class="hljs-keyword">sign</span>(<span class="hljs-number">-3.14</span>),
+	<span class="hljs-comment">-- -1</span>
+	<span class="hljs-keyword">rand</span>(),
+	<span class="hljs-comment">-- a random float number, [0.0, 1.0)</span>
+	<span class="hljs-keyword">rand</span>(),
+	<span class="hljs-comment">-- another random float number</span>
+	<span class="hljs-keyword">rand</span>(<span class="hljs-number">123</span>),
+	<span class="hljs-comment">-- rand() with seed</span>
+	<span class="hljs-keyword">power</span>(<span class="hljs-number">3.14</span>, <span class="hljs-number">3</span>),
+	<span class="hljs-comment">-- 30.959144</span>
+</div></code></pre>
+<h2 id="date-and-time">Date and Time</h2>
+<pre class="hljs"><code><div><span class="hljs-keyword">set</span> @t = <span class="hljs-string">"2021-11-28 20:23:51"</span>; <span class="hljs-comment">-- setting a variable</span>
+
+<span class="hljs-keyword">select</span>
+	<span class="hljs-keyword">current_date</span>(),
+	<span class="hljs-keyword">current_time</span>(),
+	<span class="hljs-keyword">current_timestamp</span>(),
+	<span class="hljs-keyword">utc_date</span>(),
+	utc_time(),
+	<span class="hljs-keyword">year</span>(@t),
+	<span class="hljs-keyword">month</span>(@t),
+	<span class="hljs-keyword">dayofmonth</span>(@t),
+	<span class="hljs-keyword">dayofweek</span>(@t);
+
+<span class="hljs-keyword">select</span>
+	<span class="hljs-keyword">extract</span>(<span class="hljs-keyword">year</span> <span class="hljs-keyword">from</span> @t),
+	<span class="hljs-keyword">extract</span>(day_second <span class="hljs-keyword">from</span> @t);
+
+<span class="hljs-keyword">select</span>
+	<span class="hljs-keyword">date_add</span>(@t, <span class="hljs-built_in">interval</span> <span class="hljs-number">1</span> <span class="hljs-keyword">month</span>),
+	<span class="hljs-keyword">date_sub</span>(@t, <span class="hljs-built_in">interval</span> <span class="hljs-number">1</span> <span class="hljs-keyword">day</span>);
+
+<span class="hljs-keyword">select</span>
+	<span class="hljs-keyword">datediff</span>(<span class="hljs-string">"2021-11-21"</span>, <span class="hljs-string">"2021-11-1"</span>),
+	<span class="hljs-comment">-- returns the number of days</span>
+	<span class="hljs-keyword">to_days</span>(<span class="hljs-string">"2021-11-21"</span>),
+	<span class="hljs-comment">-- returns the number of days since the year 0. Not reliable for dates &lt;1582</span>
+	time_to_sec(<span class="hljs-string">"0:10"</span>);
+	<span class="hljs-comment">-- returns the number of seconds since midnight 00:00</span>
+</div></code></pre>
+<h2 id="if">if()</h2>
+<pre class="hljs"><code><div><span class="hljs-keyword">select</span>
+	title,
+	rating,
+	<span class="hljs-keyword">if</span>(rating != <span class="hljs-string">"R"</span>,
+	<span class="hljs-string">"good film"</span>,
+	<span class="hljs-string">"x"</span>) <span class="hljs-keyword">as</span> good_movie
+<span class="hljs-keyword">from</span>
+	film
+</div></code></pre>
+<h1 id="create-and-delete-databases">Create and Delete Databases</h1>
+<pre class="hljs"><code><div><span class="hljs-keyword">create</span> <span class="hljs-keyword">database</span> coursedb;
+<span class="hljs-keyword">create</span> <span class="hljs-keyword">table</span> Stu(
+	stu_id <span class="hljs-built_in">int</span> <span class="hljs-keyword">not</span> <span class="hljs-literal">null</span>,
+	<span class="hljs-keyword">name</span> <span class="hljs-built_in">varchar</span>(<span class="hljs-number">30</span>) <span class="hljs-keyword">default</span> <span class="hljs-string">"Not available"</span>,
+	primary <span class="hljs-keyword">key</span> (stu_id));
+<span class="hljs-keyword">drop</span> <span class="hljs-keyword">table</span> Stu;
+<span class="hljs-keyword">drop</span> <span class="hljs-keyword">database</span> coursedb;
+</div></code></pre>
+<h2 id="column-constraints">Column constraints</h2>
+<ul>
+<li><code>NOT NULL</code> NULL values not allowed</li>
+<li><code>UNIQUE</code> no duplicates</li>
+<li><code>AUTO INCREMENT</code> e.g. for an integer column, each new insertion would add 1 to it</li>
+<li><code>DEFAULT default_value</code> convenient to have a default value</li>
+<li><code>CHECK(P)</code> check the data value being entered into a record</li>
+<li><code>PRIMARY KEY</code> A valid relation (table) should have a primary key. By default, <code>PRIMARY KEY</code> == <code>NOT NULL</code> + <code>UNIQUE</code></li>
+<li><code>FOREIGN KEY</code> A field (or collection of fields) that refers to the <code>PRIMARY KEY</code> in another table</li>
+</ul>
+<pre class="hljs"><code><div><span class="hljs-keyword">create</span> <span class="hljs-keyword">table</span> table_name(
+	column_name_1  <span class="hljs-keyword">type</span>  column_constraints,
+	column_name_2  <span class="hljs-keyword">type</span>  column_constraints,
+	…,
+	[<span class="hljs-keyword">constraint</span> <span class="hljs-keyword">name</span>] primary <span class="hljs-keyword">key</span> (column_name_1),
+	[<span class="hljs-keyword">constraint</span> <span class="hljs-keyword">name</span>] <span class="hljs-keyword">foreign</span> <span class="hljs-keyword">key</span> (column_name_2) <span class="hljs-keyword">references</span> table_name_2 (column_name_1),
+	<span class="hljs-keyword">check</span>(column_name_2&gt;<span class="hljs-number">2</span>))
+</div></code></pre>
+<p>Referential Integrity ensures that a value that appears in one relation for a given set of attributes also appears for a certain set of attributes in another relation.</p>
+<h1 id="functions-and-procedures">Functions and Procedures</h1>
+<h2 id="function">Function</h2>
+<p>return values and can be run like built-in functions</p>
+<pre class="hljs"><code><div>delimiter // <span class="hljs-comment">-- change default delimiter from ";" to "//"</span>
+<span class="hljs-keyword">create</span> <span class="hljs-keyword">function</span> my_add(x <span class="hljs-built_in">integer</span>, y <span class="hljs-built_in">integer</span>)
+<span class="hljs-keyword">returns</span> <span class="hljs-built_in">integer</span>
+<span class="hljs-keyword">deterministic</span> <span class="hljs-comment">-- state same result on same input, not essential</span>
+	<span class="hljs-keyword">begin</span>
+		<span class="hljs-keyword">return</span> x + y;
+	<span class="hljs-keyword">end</span> //
+delimiter ; <span class="hljs-comment">-- new delimiter "//"</span>
+
+<span class="hljs-keyword">select</span> my_add(<span class="hljs-number">1</span>,<span class="hljs-number">2</span>); <span class="hljs-comment">-- test</span>
+</div></code></pre>
+<h2 id="procedure">Procedure</h2>
+<p>do not return values (<code>IN</code>/<code>OUT</code>/<code>INOUT</code> parameters) and can be run using <code>CALL</code> keyword</p>
+<pre class="hljs"><code><div>delimiter //
+<span class="hljs-keyword">create</span> <span class="hljs-keyword">procedure</span> get_film()
+<span class="hljs-keyword">deterministic</span>
+<span class="hljs-keyword">begin</span>
+	<span class="hljs-keyword">select</span>
+		film_id,
+		title
+	<span class="hljs-keyword">from</span>
+		film;
+<span class="hljs-keyword">end</span>//
+delimiter ;
+
+<span class="hljs-keyword">call</span> get_film();
+</div></code></pre>
+<blockquote>
+<p>Warning: Use &quot;Execute script&quot; instead of &quot;Execute SQL statement&quot; in DBeaver to avoid error.</p>
+</blockquote>
+<h2 id="if-then-else">IF THEN ELSE</h2>
+<pre class="hljs"><code><div>delimiter //
+<span class="hljs-keyword">create</span> <span class="hljs-keyword">procedure</span> my_compare(a <span class="hljs-built_in">int</span>, b <span class="hljs-built_in">int</span>)
+<span class="hljs-keyword">deterministic</span>
+<span class="hljs-keyword">begin</span>
+	<span class="hljs-keyword">if</span> a &gt; b <span class="hljs-keyword">then</span>
+		<span class="hljs-keyword">select</span>
+			<span class="hljs-string">"a is larger than b"</span>;
+	elseif a = b then
+		<span class="hljs-keyword">select</span>
+			<span class="hljs-string">"a equals b"</span>;
+	else
+		<span class="hljs-keyword">select</span>
+			<span class="hljs-string">"a is smaller than b"</span>;
+	<span class="hljs-keyword">end</span> <span class="hljs-keyword">if</span>;
+<span class="hljs-keyword">end</span>//
+delimiter ;
+
+<span class="hljs-keyword">call</span> my_compare(<span class="hljs-number">10</span>, <span class="hljs-number">20</span>);
+</div></code></pre>
+<h2 id="simple-loop">Simple LOOP</h2>
+<pre class="hljs"><code><div>delimiter //
+<span class="hljs-keyword">create</span> <span class="hljs-keyword">procedure</span> cumsum(N <span class="hljs-built_in">int</span>)
+<span class="hljs-keyword">deterministic</span>
+<span class="hljs-keyword">begin</span>
+	<span class="hljs-keyword">declare</span> s <span class="hljs-built_in">int</span> <span class="hljs-keyword">default</span> <span class="hljs-number">0</span>;
+	<span class="hljs-keyword">declare</span> i <span class="hljs-built_in">int</span> <span class="hljs-keyword">default</span> <span class="hljs-number">1</span>;
+	my_loop: loop
+		<span class="hljs-keyword">set</span> s = s + i;
+		<span class="hljs-keyword">select</span>
+			i <span class="hljs-keyword">as</span> added,
+			s <span class="hljs-keyword">as</span> <span class="hljs-keyword">result</span>;
+		<span class="hljs-keyword">set</span> i = i + <span class="hljs-number">1</span>;
+		if i&gt;N then
+			leave my_loop;
+		<span class="hljs-keyword">end</span> <span class="hljs-keyword">if</span>;
+	<span class="hljs-keyword">end</span> <span class="hljs-keyword">loop</span>;
+<span class="hljs-keyword">end</span> //
+delimiter ;
+
+<span class="hljs-keyword">call</span> cumsum(<span class="hljs-number">100</span>);
+</div></code></pre>
+<h1 id="database-design">Database Design</h1>
+<p><strong><em>Database requirements</em></strong> are statements that define the details and constraints of the data and metadata, which can be represented in a <strong><em>conceptual database model</em></strong>, such as <strong><em>Entity-Relationship (ER) model</em></strong>. The result of ER modeling is an <strong><em>ER diagram (ERD)</em></strong>.</p>
+<h2 id="entity-relationship-diagram-erd">Entity-Relationship Diagram (ERD)</h2>
+<p>We use a modified version of <strong><em>Peter Chen’s Notation</em></strong>. <a href="Courseware/L4%20Database%20design%20and%20E-R%20model.pdf">View full info</a></p>
+<h2 id="database-normalization">Database Normalization</h2>
+<p>Normalization is a process to improve the design of relational databases, mainly to reduce data redundancy while preserving information. Normal form (NF) is a set of particular conditions upon table structures.</p>
+<h3 id="0nf---1nf">0NF -&gt; 1NF</h3>
+<blockquote>
+<ol>
+<li>Remove duplicated rows.</li>
+<li>Eliminate multivalued columns.</li>
+</ol>
+</blockquote>
+<p>A table is in 1NF if each row is unique and not duplicated. Within each row, each value in each column must be single valued.</p>
+<h3 id="1nf---2nf">1NF -&gt; 2NF</h3>
+<blockquote>
+<p>Create an additional relation for each set of partial dependencies.</p>
+<ol>
+<li>The portion of the primary key in partial dependency =&gt; primary key of the new table (becomes a foreign key in original table).</li>
+<li>The columns determined in partial dependency =&gt; columns of the new table (removed from original table).</li>
+</ol>
+<p>The original table remains after the process of normalizing to 2NF, but no longer contains the partially dependent columns.</p>
+</blockquote>
+<p>A table is in 2NF if it is in 1NF and does not contain <strong><em><em>partial dependencies</em></em></strong> (a column of a relation is functionally dependent on a portion of a composite primary key). Table has a single-column primary key &lt;=&gt; Table is in 2NF.</p>
+<h3 id="2nf---3nf">2NF -&gt; 3NF</h3>
+<blockquote>
+<p>Create additional relations for each set of transitive dependencies in a relation.</p>
+<ol>
+<li>The transitively determinant nonkey column in the original table =&gt; the primary key of a new table.</li>
+<li>Move the determined nonkey columns to the new table.</li>
+</ol>
+<p>The original table remains after normalizing to 3NF, but it no longer contains the transitively dependent columns</p>
+</blockquote>
+<p>A table is in 2NF if it is in 2NF and does not contain <strong><em><em>transitive functional dependencies</em></em></strong> (nonkey columns functionally determine other nonkey columns).</p>
+<h3 id="denormalization">Denormalization</h3>
+<p>Denormalization is reversing the effect of normalization by joining normalized relations into a relation that is not normalized in order to improve query performance.</p>
+<h2 id="database-indexing">Database Indexing</h2>
+<p>Indexing is a mechanism for increasing the speed of data search and data retrieval on relations with a large number of records.</p>
+<ul>
+<li>
+<p><strong><em>Linear Search</em></strong> O(n) in the worst case
+not indexed
+<img src="Pictures/Linear Search.jpg" alt="Linear Search"></p>
+</li>
+<li>
+<p><strong><em>Binary Search</em></strong> O(log(n))
+creates an additional index table (sorted + pointer), and allows binary search on it and then points back to the original column (unsorted) to increase the speed of search and retrieval on the columns that are being indexed.
+<img src="Pictures/Binary Search.jpg" alt="Binary Search"></p>
+</li>
+<li>
+<p><strong><em>Hash Index</em></strong> O(1)
+is useful when files are not sequential. Data in the system distributes to storage spaces called buckets depending on the key value calculated by hash function.
+<img src="Pictures/Hash Index.jpg" alt="Hash Index"></p>
+<ul>
+<li>Very efficient at equality queries (column==value).</li>
+<li>Take constant time, independent of the number of rows in a table.</li>
+<li>Not efficient at inequality queries (eg. &lt;, &lt;=, &gt;, &lt;=, between, in, not in, like).</li>
+<li>Require more space than range indexes.</li>
+</ul>
+</li>
+<li>
+<p><strong><em>B-tree Index</em></strong> O(log(n))
+B-tree generalizes the binary search tree to allow more than 2 branches in the nodes. The index tree is stored separately from the data. The lower-level leaves contain the pointers to the actual data rows. <a href="https://www.cnblogs.com/qixinbo/p/11048269.html">More info about B-tree</a></p>
+<ul>
+<li>Range indexes are efficient at processing inequality queries (eg. &lt;, &lt;=, &gt;, &lt;=, between, in, not in, like).</li>
+<li>Not fast for equality queries.</li>
+</ul>
+</li>
+</ul>
+<pre class="hljs"><code><div><span class="hljs-keyword">create</span> <span class="hljs-keyword">index</span> index_name
+[<span class="hljs-keyword">using</span> {btree | <span class="hljs-keyword">hash</span>}]
+<span class="hljs-keyword">on</span> table_name (column_name [<span class="hljs-keyword">asc</span> | <span class="hljs-keyword">desc</span>],
+...);
+</div></code></pre>
+<h1 id="database-transactions">Database Transactions</h1>
+<p>Database operations have two types:</p>
+<ul>
+<li><strong><em>Read(X)</em></strong> query</li>
+<li><strong><em>Write(X)</em></strong> insertion, deletion, update</li>
+</ul>
+<p>Database transactions have two types:</p>
+<ul>
+<li><strong><em>Read-only</em></strong> only read(X) operations</li>
+<li><strong><em>Read-Write</em></strong> involves write(X) operations</li>
+</ul>
+<pre class="hljs"><code><div><span class="hljs-keyword">begin</span>;
+<span class="hljs-keyword">update</span>
+	accounts
+<span class="hljs-keyword">set</span>
+	balance = balance - <span class="hljs-number">100.00</span>
+<span class="hljs-keyword">where</span>
+	<span class="hljs-keyword">name</span> = <span class="hljs-string">'Bob'</span>;
+<span class="hljs-keyword">update</span>
+	accounts
+<span class="hljs-keyword">set</span>
+	balance = balance + <span class="hljs-number">100.00</span>
+<span class="hljs-keyword">where</span>
+	<span class="hljs-keyword">name</span> = <span class="hljs-string">'Alice'</span>;
+<span class="hljs-keyword">commit</span>;
+</div></code></pre>
+<p><strong><em>Consistent Database State</em></strong> all data integrity constraints satisfied</p>
+<ul>
+<li><strong><em>integrity rules</em></strong> e.g. primary key uniqueness, foreign key references, transaction completeness (enforced by DBMS)</li>
+<li><strong><em>business rules</em></strong> e.g. sum of account balance remains 0 after inter-account money transfer (enforced by programmer)</li>
+</ul>
+<p>A transaction must begin with a consistent database state, and end with another consistent state. But the intermediate state during a transaction could be inconsistent.</p>
+<h2 id="transaction-requirements-%E2%80%93-acid">Transaction Requirements – ACID</h2>
+<ul>
+<li><strong><em>Consistency</em></strong> On database state, a transaction can only bring it from one consistent state to another by preventing data corruption.</li>
+<li><strong><em>Atomicity</em></strong> A transaction’s operations should be executed as a single &quot;unit&quot; altogether (all-or-none).</li>
+<li><strong><em>Durability</em></strong> Results of a successful transaction are permanently stored in the system (even in case of power loss or system failures).</li>
+</ul>
+<blockquote>
+<p>The above is about a single transaction, called CAD requirements. In reality, multiple transactions can occur at the same time and access the same data items. Thus, we have ACID requirements for multiple transactions.</p>
+</blockquote>
+<ul>
+<li><strong><em>Isolation</em></strong> Transactions are executed independently/isolated from each other. Intermediate results of a transaction is not visible to others.</li>
+</ul>
+<h2 id="transaction-atomicity-and-durability">Transaction Atomicity and Durability</h2>
+<ul>
+<li><strong><em>Atomicity</em></strong> Transaction in “all-or-none” execution mode
+<ul>
+<li><strong><em>committed</em></strong> Transaction initiates and can complete its execution successfully</li>
+<li><strong><em>aborted</em></strong> Transaction fails at somewhere and can not complete successfully. It then proforms a rollback, all its executions undone</li>
+</ul>
+</li>
+<li><strong><em>Durability</em></strong> Once a transaction has been committed, the effects can not be undone by aborting it</li>
+</ul>
+<h2 id="transaction-states">Transaction States</h2>
+<ul>
+<li><strong><em>Active</em></strong> the initial state; the transaction begins from here.</li>
+<li><strong><em>Partially Committed</em></strong> after the final statement has been executed.</li>
+<li><strong><em>Failed</em></strong> after the discovery that normal execution can not proceed.</li>
+<li><strong><em>Aborted</em></strong> the transaction rolled back and restored to previous state.</li>
+<li><strong><em>Committed</em></strong> after successful completion.</li>
+</ul>
+<p><img src="Pictures/Transaction States.jpg" alt="Transaction States"></p>
+<h2 id="concurrent-transaction-common-problems">Concurrent Transaction Common Problems</h2>
+<ul>
+<li>
+<p><strong><em>Lost Update</em></strong> (&quot;modified after write&quot;, write-write)<br>
+two concurrent transactions update the same data element, and one of the updates is lost (overwritten by the other transaction)
+<img src="Pictures/Lost Update.jpg" alt="Lost Update">
+T1 and T2 read the same data and update the data concurrently. The results submited by T2 cause the lost of update by T1.</p>
+</li>
+<li>
+<p><strong><em>Dirty Read</em></strong> (&quot;modified before read&quot;, write-read-rollback)<br>
+a transaction reads data from a row that has been modified by another running transaction (but not yet committed)
+<img src="Pictures/Dirty Read.jpg" alt="Dirty Read">
+Just before T1 reads some data, T2 updates the same data. However, after that, T2 performs a rollback due to some reason. Now the data read by T1 is inconsistent with the data in the database.</p>
+</li>
+<li>
+<p><strong><em>Non-repeatable Read</em></strong> (&quot;modified between two reads&quot;, read-write-read)<br>
+a transaction reads the same data element twice, but the data element is changed by another transaction between the two reads
+<img src="Pictures/Non-repeatable Read.jpg" alt="Non-repeatable Read">
+T1 reads some data, T2 then updates the data, so when T1 reas the data again, the data is inconsistent with previous ones.</p>
+</li>
+<li>
+<p><strong><em>Phantom Read</em></strong> (&quot;modified after read&quot;, read-write)<br>
+a transaction queries the table, but new rows are added or removed by another transaction to the records being read
+<img src="Pictures/Phantom Read.jpg" alt="Phantom Read">
+T1 reads some data based on some conditions, then T2 inserts some new data that matches the condition. (if T1 searches for data with the same condition, more records are returned)</p>
+</li>
+</ul>
+<h2 id="transaction-isolation-levels">Transaction Isolation Levels</h2>
+<ul>
+<li><strong>Serializable</strong> the most restrictive one.</li>
+<li><strong><em>Repeatable Read</em></strong> allows only committed data to be read and further requires that, between two reads of a data item by a transaction, no other transaction is allowed to update it.</li>
+<li><strong><em>Read Committed</em></strong> allows only committed data to be read, but does not require repeatable reads. For instance, between two reads of a data item by the transaction, another transaction may have updated the data item and committed.</li>
+<li><strong><em>Read Uncommitted</em></strong> allows uncommitted data to be read. It is the lowest isolation level allowed by SQL.</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>Isolation Level</th>
+<th>Dirty Read</th>
+<th>Lost Update</th>
+<th>Non-repeatable Read</th>
+<th>Phantom Read</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Serializable</td>
+<td>N</td>
+<td>N</td>
+<td>N</td>
+<td>N</td>
+</tr>
+<tr>
+<td>Repeatable Read</td>
+<td>N</td>
+<td>N</td>
+<td>N</td>
+<td>Y</td>
+</tr>
+<tr>
+<td>Read Committed</td>
+<td>N</td>
+<td>Y</td>
+<td>Y</td>
+<td>Y</td>
+</tr>
+<tr>
+<td>Read Uncommitted</td>
+<td>Y</td>
+<td>Y</td>
+<td>Y</td>
+<td>Y</td>
+</tr>
+</tbody>
+</table>
+<h2 id="serializable-schedule">Serializable Schedule</h2>
+<ul>
+<li><strong><em>Serializable Schedule</em></strong> Interleaved execution of transactions that are equivalent to some serial schedule of these transactions</li>
+<li><strong><em>Equivalent Schedules</em></strong> Two schedules that yield the same results on the same transactions</li>
+</ul>
+<blockquote>
+<p>If two operations on the same data has at least one &quot;write&quot; in them, then they can not swap, otherwise will cause a conflict (loss of equivalence) before and after swapping.</p>
+<ol>
+<li>I = read(Q), J = read(Q);</li>
+<li>I = read(Q), J = write(Q);</li>
+<li>I = write(Q), J = read(Q);</li>
+<li>I = write(Q), J = write(Q);</li>
+</ol>
+<p>Case 1 to case 4 have different results if we swap the order, so I and J operations are conflict in above case 2~4.</p>
+</blockquote>
+<ul>
+<li><strong><em>(Conflict) Equivalence</em></strong> means a set of schedules can be transformed into each other by a series of swaps of nonconflicting instructions.</li>
+<li><strong><em>(Conflict) Serializability</em></strong> means a schedule is (conflict) equivalent to a serial schedule.</li>
+</ul>
+<p><a href="https://blog.csdn.net/u013288190/article/details/121276904">Further explaintion in Chinese</a></p>
+<h2 id="transaction-management">Transaction management</h2>
+<ul>
+<li><strong><em>Autocommit Mode</em></strong> default mode in MySQL
+<ul>
+<li>Each statement is a transaction, as if it were surrounded by <code>BEGIN</code> and <code>COMMIT</code></li>
+<li>If an error occurs during statement execution, the statement is automatically rolled back (can not control it using <code>ROLLBACK</code>)</li>
+</ul>
+</li>
+<li><strong><em>Transaction Mode</em></strong> use <code>BEGIN</code> and <code>COMMIT</code> to switch to transaction mode
+<ul>
+<li>Supports multiple statements/operations</li>
+<li>With <code>BEGIN</code>, autocommit is disabled until the transaction ends with <code>COMMIT</code> or <code>ROLLBACK</code></li>
+</ul>
+</li>
+</ul>
+<h1 id="practice">Practice</h1>
+<ul>
+<li>to dump a database named dvdrental<pre class="hljs"><code><div><span class="hljs-built_in">cd</span> <span class="hljs-string">"C:\Program Files\MySQL\MySQL Server 8.0\bin"</span>
+mysqldump -u root -p --databases dvdrental &gt; my_database.sql
+</div></code></pre>
+</li>
+</ul>
+
+</body>
+</html>

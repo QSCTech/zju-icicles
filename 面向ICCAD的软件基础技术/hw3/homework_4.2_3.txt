@@ -1,0 +1,12 @@
+
+Please CAREFULLY read the questions and follow instructions to answer.
+
+Problem 1. Try to insert a USB stick into your computer, then find whether it has been automatically mounted on somewhere in the file tree by 'diff'. If so, then try to unmount it manually from the file tree. After that, try to mount the USB stick to your home directory.
+
+Problem 2. Try to enter shell as superuser (with great care). Try to change the hostname of your computer and keep this new name after restarting computer. Clues might be found from the web, but do make sure everything before doing this experiment.
+
+Problem 3. Ask your friend to build demo_x.c (installing X11 development library first) and change the umbrella to another icon, then try to remotely enter your friend's computer by ssh, display this program on your own computer's screen, along with your local umbrella version program.
+
+Problem 4. Find a file makefile.bit from our ftp/github site. Read it and find other two related source files. Download them all to your computer and try to make and run. Explain the command line usage and the purpose of the result program.
+
+Problem 5. 1) Download cube_wrong.tar from our ftp site, check its contents, extract it, make it and execute it (all actions must be in text mode). 2) Find the reasons for compiling warnings, and remove them. 3) (OPTIONAL) Compare the running result with screenshot_cube_correct.png, and then try to find hidden bugs by running gdb/ddd. Take a screenshot too whether you fix all bugs or not; however if bugs are fixed, the screenshot should include the modified code.

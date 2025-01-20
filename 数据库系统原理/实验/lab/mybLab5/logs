@@ -1,0 +1,12 @@
+14:59:00,230 DEBUG LogFactory:105 - Logging initialized using 'class org.apache.ibatis.logging.slf4j.Slf4jImpl' adapter.
+14:59:00,275 DEBUG PooledDataSource:353 - PooledDataSource forcefully closed/removed all connections.
+14:59:00,276 DEBUG PooledDataSource:353 - PooledDataSource forcefully closed/removed all connections.
+14:59:00,276 DEBUG PooledDataSource:353 - PooledDataSource forcefully closed/removed all connections.
+14:59:00,276 DEBUG PooledDataSource:353 - PooledDataSource forcefully closed/removed all connections.
+14:59:00,377 DEBUG JdbcTransaction:136 - Opening JDBC Connection
+14:59:00,947 DEBUG PooledDataSource:424 - Created connection 1178587240.
+14:59:00,948 DEBUG JdbcTransaction:100 - Setting autocommit to false on JDBC Connection [com.mysql.cj.jdbc.ConnectionImpl@463fd068]
+14:59:00,955 DEBUG findAll:143 - ==>  Preparing: select * from Administrator 
+14:59:01,010 DEBUG findAll:143 - ==> Parameters: 
+14:59:01,069 DEBUG findAll:143 - <==      Total: 1
+14:59:01,073  INFO Main:17 -  please enter 1- 4 

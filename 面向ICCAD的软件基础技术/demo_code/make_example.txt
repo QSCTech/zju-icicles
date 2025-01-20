@@ -1,0 +1,21 @@
+AVI = class1.avi class2.avi
+ZIP = $(AVI: %.avi=%.gz)
+
+archive : $(ZIP)
+	tar   -cvf   $@   $(ZIP)
+%.gz : %.avi
+	cp  $<  tmp.avi
+	gzip  tmp.avi
+	mv   tmp.avi.gz  $@
+clean:
+	rm *.gz
+	rm archive
+
+SRC = abc.s  def.s
+OBJ = $(SRC: %.s=%.o)
+
+arch : $(OBJ)
+ar  rl  $@  $?
+
+%.o : %.s
+as  $<  -o  $@
