@@ -1,0 +1,144 @@
+\ProvidesPackage{thesis}  
+\RequirePackage[left=2.5cm,right=2.5cm,top=3.2cm,bottom=2.3cm]{geometry} 
+
+\RequirePackage{fontspec}
+
+\RequirePackage{xeCJK} % 用于支持中文显示，可以设置不同的中文字体。
+\RequirePackage{amsmath} % 提供了额外的数学公式环境和工具，是处理数学公式的基础。
+\RequirePackage{paralist} % 提供了额外的列表环境，允许在列表中更灵活地使用空间。
+\RequirePackage{enumerate} % 允许自定义枚举列表标签。
+\RequirePackage{booktabs} % 用于创建专业的表格线条，如“三线表”。
+\RequirePackage{multirow} % 允许在表格中跨多行合并单元格。
+\RequirePackage{graphicx} % 强大的图形管理工具，支持插入图片。
+\RequirePackage{setspace} % 用于设置文档的行间距。
+\RequirePackage{listings} % 用于在文档中插入代码块，并支持多种编程语言的语法高亮。
+\RequirePackage{lastpage} % 用于引用文档的最后一页，常用于页脚中显示总页数。
+\RequirePackage{hyperref} % 提供超链接功能，用于生成文档内外的链接。
+\RequirePackage{subcaption} % 提供子图表的支持，允许在一个图形环境内创建多个子图表。
+\RequirePackage{multicol} % 用于在文档中创建多栏布局。
+\RequirePackage{caption} % 提供了自定义图表标题外观的功能。
+\RequirePackage{fancyhdr} % 用于创建自定义的页眉和页脚。
+\RequirePackage[dvipsnames]{xcolor} % 提供颜色设置的功能，`dvipsnames` 选项允许使用更多预定义的颜色名称。
+\RequirePackage{zhlipsum}
+\RequirePackage{appendix} % 加入附录
+%-------------------------全局设置------------------------------%
+
+% 设置 headheight
+\setlength{\headheight}{14.49998pt}
+
+% 调整 topmargin
+\addtolength{\topmargin}{-2.49998pt}
+
+% 正文首行缩进两个汉字
+\setlength{\parindent}{2em}   
+
+% \hyphenpenalty=5000
+% \tolerance=1000
+% 解决英文自动换行的问题
+
+
+% 解决目录红框问题
+\hypersetup{  
+    colorlinks=true,  
+    linkcolor=black  
+}   
+
+% question 问题环境
+\RequirePackage{framed}
+\definecolor{shadecolor}{RGB}{241, 241, 255}
+% \newtheorem{problem}{Question.}[section]
+\newcounter{problemname}
+\newenvironment{problem}{\begin{shaded}\stepcounter{problemname}\par\noindent\textbf{Question.\arabic{problemname}. }}{\end{shaded}\par}
+\newenvironment{solution}{\par\noindent\textbf{解答.}}{\par}
+
+%-------------------------目录设置------------------------------%
+\newcommand{\maketoc}{%  
+    \newpage  
+    \tableofcontents  
+    \thispagestyle{empty} % Removes the page numbering.  
+    \newpage  
+    \pagenumbering{arabic} % 重新开始标号，阿拉伯数字形式  
+}  
+
+%-------------------------页眉页脚------------------------------%
+\newcommand{\classname}[1]{\gdef\@classname{#1}}
+\newcommand{\printclassname}{\@classname}
+  
+\newcommand{\makepagestyle}[2]{%  
+    \pagestyle{fancy}  
+    \rhead{#1}  
+    \lhead{#2}  
+    \cfoot{Page \thepage} % 当前页/总页数  
+    \rfoot{\today}  
+}  
+  
+% 分别是右页眉、左页眉、中页脚、右页脚  
+\renewcommand{\headrulewidth}{0.4pt}  
+\renewcommand{\theenumi}{(\arabic{enumi})}  
+
+%-------------------------封面设置------------------------------%
+\newcommand{\maketitlepage}[7]{% 封面
+    \begin{titlepage}  
+       \vspace*{-3cm}  
+          
+        \begin{figure}[h]  
+            \centering  
+            \includegraphics[width=0.65\linewidth]{figures/char.png}  
+        \end{figure}  
+          
+        \begin{figure}[h]  
+            \centering  
+            \includegraphics[width=0.48\linewidth]{logo.png}  
+        \end{figure}  
+        \vspace{-0.5cm}  
+        \begin{center}  
+            \Huge{\textbf{\printclassname}\\  
+            \textbf{额外工作报告}}  
+        \end{center}  
+        \vspace*{0.5cm}  
+        \begin{center}  
+            \Large  
+            实验名称\ \ \underline{\makebox[220pt]{#1}} \\   
+            \vspace{0.3cm}  
+            实验地点\ \ \underline{\makebox[220pt]{#2}}\\  
+            \vspace{0.3cm}  
+            \quad\ 姓\; 名 \ \ \underline{\makebox[220pt]{#3}}\\  
+            \vspace{0.3cm}  
+            \quad\ 学\; 号\ \ \underline{\makebox[220pt]{#4}}\\  
+            \vspace{0.3cm}  
+            指导老师\ \ \underline{\makebox[220pt]{#6}}\\  
+        \end{center}  
+    \end{titlepage}  
+}
+
+
+
+%-------------------------代码设置------------------------------%
+\lstset{
+    language=Tex, % 设置语言
+    basicstyle=\ttfamily, % 设置字体族
+    breaklines=true, % 自动换行
+    keywordstyle=\bfseries\color{NavyBlue}, % 设置关键字为粗体，颜色为 NavyBlue
+    morekeywords={}, % 设置更多的关键字，用逗号分隔
+    emph={self}, % 指定强调词，如果有多个，用逗号隔开
+    emphstyle=\bfseries\color{Rhodamine}, % 强调词样式设置
+    commentstyle=\itshape\color{black!50!white}, % 设置注释样式，斜体，浅灰色
+    stringstyle=\bfseries\color{PineGreen!90!black}, % 设置字符串样式
+    columns=flexible,
+    numbers=left, % 显示行号在左边
+    numbersep=2em, % 设置行号的具体位置
+    numberstyle=\footnotesize, % 缩小行号
+    frame=shadowbox, % 边框
+    rulesepcolor=\color{red!20!green!20!blue!20}, 
+    % framesep=1em % 设置代码与边框的距离
+    showstringspaces=false
+}
+
+
+\newcommand{\reference}{
+\nocite{*}   %打开此选项会列出bib里面的所有参考文献
+\bibliographystyle{unsrt} %规定了参考文献的格式
+\begin{center}%居中
+	\bibliography{ref}
+\end{center}
+}
