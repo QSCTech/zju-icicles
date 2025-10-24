@@ -1,0 +1,13 @@
+\contentsline {section}{\numberline {1}实验目的和要求}{1}{section.1}%
+\contentsline {section}{\numberline {2}数据集}{1}{section.2}%
+\contentsline {section}{\numberline {3}训练过程与结果}{2}{section.3}%
+\contentsline {section}{\numberline {4}准备阶段}{5}{section.4}%
+\contentsline {section}{\numberline {5}第一阶段——自己搭建网络}{8}{section.5}%
+\contentsline {subsection}{\numberline {5.1}增加label smoothing}{13}{subsection.5.1}%
+\contentsline {subsection}{\numberline {5.2}不同层使用不同的学习率}{15}{subsection.5.2}%
+\contentsline {subsection}{\numberline {5.3}k-fold}{16}{subsection.5.3}%
+\contentsline {section}{\numberline {6}第二阶段——使用预训练模型进行fine tuning}{18}{section.6}%
+\contentsline {subsection}{\numberline {6.1}使用vit和v2e模型}{18}{subsection.6.1}%
+\contentsline {subsection}{\numberline {6.2}使用timm库进行训练}{18}{subsection.6.2}%
+\contentsline {section}{\numberline {7}第三阶段——集成学习}{22}{section.7}%
+\contentsline {section}{\numberline {8}感受}{22}{section.8}%
