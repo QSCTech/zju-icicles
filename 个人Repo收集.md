@@ -14,3 +14,5 @@
 - https://github.com/tianyilt/ecust-CourseShare
 - https://github.com/tianyilt/ecnu-PGCourseShare
 - https://github.com/beiyuouo/hainanu-course-comments
+- https://github.com/Phil-Fan/awesome-zju-tools
+- https://github.com/Phil-Fan/Notebook
